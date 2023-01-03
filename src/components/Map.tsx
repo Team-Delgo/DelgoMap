@@ -1,16 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Map.scss';
 import { getMapData } from '../common/api/record';
-import { Mungple, Cert, certDefault, idDefault, WardOffice } from './maptype';
+import { Mungple, idDefault, } from './maptype';
 import Cafe from '../common/icons/cafe-map.svg';
 import CafeSmall from "../common/icons/cafe-map-small.svg";
 import PlaceCard from './PlaceCard';
 import { analytics } from '../index';
 import { setMarkerOptionBig, setMarkerOptionSmall, setMarkerOptionPrev, setCertOption } from './MapComponent';
+import SearchBar from './SearchBar';
 
 interface MakerItem {
   id: number;
@@ -21,7 +22,6 @@ function Map() {
   const mapElement = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [mungple, setMungple] = useState('ON');
   const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
   const [globarMap, setGlobarMap] = useState<naver.maps.Map>();
   const [selectedId, setSelectedId] = useState(idDefault);
@@ -156,6 +156,33 @@ function Map() {
 
   }, [mungpleList]);
 
+  const searchSelectId = (data: Mungple) => {
+    setSelectedId((prev: any) => {
+      return {
+        img: data.photoUrl,
+        title: data.placeName,
+        address: data.jibunAddress,
+        id: data.mungpleId,
+        prevId: prev.id,
+        lat: parseFloat(data.latitude),
+        lng: parseFloat(data.longitude),
+        categoryCode: data.categoryCode,
+        prevLat: prev.lat,
+        prevLng: prev.lng,
+        prevCategoryCode: prev.categoryCode,
+      };
+    });
+    const markerOptions = setMarkerOptionBig(Cafe, data, globarMap, selectedId.prevCategoryCode);
+    const index = markerList.findIndex((marker) => {
+      return marker.id === data.mungpleId;
+    });
+    markerList[index].marker.setOptions(markerOptions);
+    globarMap?.panTo(new naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)), {
+      duration: 500,
+      easing: 'easeOutCubic',
+    });
+  };
+
   useEffect(() => {
     if (selectedId.prevId === selectedId.id) return;
     if (selectedId.prevId > 0) {
@@ -178,6 +205,7 @@ function Map() {
     <div>
       <div className="map" ref={mapElement} style={{ position: 'absolute' }}>
       </div>
+      <SearchBar selectId={searchSelectId} cafeList={mungpleList} />
       {selectedId.title.length > 0 && (
         <PlaceCard img={selectedId.img} title={selectedId.title} address={selectedId.address} categoryCode={selectedId.categoryCode} />
       )}
