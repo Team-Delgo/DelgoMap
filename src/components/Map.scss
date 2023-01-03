@@ -1,0 +1,264 @@
+#id {
+  width: 100%;
+  height: 400px;
+}
+
+.wardOffice {
+  // box-shadow: 0px 0px 2.30214px rgba(0, 0, 0, 0.25);
+  filter: drop-shadow(0px 0px 2.3px rgba(0, 0, 0, 0.1));
+  position: relative;
+  &-name {
+    left: 10px;
+    top: 12px;
+    position: absolute;
+    font-weight: 700;
+    font-size: 9.8px;
+    color: #3f3f3f;
+  }
+}
+
+.map {
+  width: 100vw;
+  height: 82.6vh;
+  position: absolute;
+  bottom: 0;
+}
+
+.userLocation {
+  width: 45px;
+  background-color: white;
+  border-radius: 100%;
+  height: 45px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  right: 12px;
+  bottom: 135px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.userMarker {
+  position: absolute;
+  width: 33px;
+  height: 33px;
+  z-index: 9999;
+}
+
+.pin1 {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  display: flex;
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 100%;
+  background-color: white;
+
+  img {
+    position: absolute;
+    z-index: 10;
+    width: 0px;
+    height: 0px;
+    border-radius: 100%;
+  }
+
+  &.mungplepin {
+    background-color: #ff9162;
+  }
+}
+
+.pin2 {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  // display: flex;
+  z-index: 100;
+  // justify-content: center;
+  // align-items: center;
+  border: 1px solid #565656;
+  border-radius: 100%;
+  background-color: white;
+  filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.2));
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+  }
+
+  &::after {
+    border-top: 11px solid white;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 97%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &::before {
+    border-top: 11px solid #565656;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.mungplepin {
+    border: 1px solid white;
+    &::before {
+      border-top: 11px solid white;
+    }
+  }
+
+  &.CA0001 {
+    background-color: #9fd7ff;
+    &::after {
+      border-top: 11px solid #9fd7ff;
+    }
+  }
+
+  &.CA0002 {
+    background-color: #ccb7a3;
+    &::after {
+      border-top: 11px solid #ccb7a3;
+    }
+  }
+
+  &.CA0003 {
+    background-color: #ffcce8;
+    &::after {
+      border-top: 11px solid #ffcce8;
+    }
+  }
+
+  &.CA0004 {
+    background-color: #91cf9b;
+    &::after {
+      border-top: 11px solid #91cf9b;
+    }
+  }
+
+  &.CA0005 {
+    background-color: #aa93ec;
+    &::after {
+      border-top: 11px solid #aa93ec;
+    }
+  }
+
+  &.CA0006 {
+    background-color: #ffe99b;
+    &::after {
+      border-top: 11px solid #ffe99b;
+    }
+  }
+}
+
+.pin3 {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 100%;
+  background-color: white;
+
+  img {
+    position: absolute;
+    z-index: 10;
+    width: 90px;
+    height: 90px;
+    border-radius: 100%;
+  }
+
+  &::after {
+    border-top: 10px solid white;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 69px;
+  }
+
+  &::before {
+    border-top: 10px solid black;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 100px;
+  }
+
+  &.mungplepin {
+    background-color: #ff9162;
+    &::after {
+      border-top: 5px solid #ff9162;
+    }
+  }
+}
+
+.mungplace-toggle {
+  position: absolute;
+  right: 12px;
+  top: 26px;
+  z-index: 9999;
+  width: 80px;
+  height: 32px;
+  border-radius: 26px;
+  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.15);
+  background-color: #ff9162;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+.mungple {
+  filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.2));
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  z-index: 100;
+  border-radius: 100%;
+  &.big {
+    animation: markerAppear 0.3s ease-out;
+    z-index: 99999;
+    width: 50px;
+    height: 59px;
+  }
+}
+
+.mungpleOff {
+  background-color: #c9c5c5;
+}
+
+@keyframes markerAppear {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
