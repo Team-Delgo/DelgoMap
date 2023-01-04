@@ -1,5 +1,6 @@
 import React from 'react';
 import { initializeApp } from "firebase/app";
+import VConsole from 'vconsole';
 import { getAnalytics, logEvent } from "firebase/analytics";
 import ReactDOM from 'react-dom/client';
 import { Provider } from "react-redux";
@@ -20,6 +21,20 @@ const firebaseConfig = {
   appId: "1:184505678344:web:c65a45f1f295dd4b0bafbd",
   measurementId: "G-JSZ2SVJFBT"
 };
+
+const initVConsole = () => {
+  const config: any = {
+    onReady: () => {
+      const button = document.querySelector('.vc-switch') as HTMLElement;
+      button.style.position = 'fixed';
+      button.style.bottom = '200px';
+    },
+  };
+  // eslint-disable-next-line no-new, new-cap
+  new VConsole(config);
+};
+
+initVConsole();
 
 const app = initializeApp(firebaseConfig);
 
