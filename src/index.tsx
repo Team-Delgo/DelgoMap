@@ -17,8 +17,8 @@ const firebaseConfig = {
   projectId: "delgo-c49bc",
   storageBucket: "delgo-c49bc.appspot.com",
   messagingSenderId: "184505678344",
-  appId: "1:184505678344:web:278a572efd70815b0bafbd",
-  measurementId: "G-FYKR1QWZ8V"
+  appId: "1:184505678344:web:c65a45f1f295dd4b0bafbd",
+  measurementId: "G-JSZ2SVJFBT"
 };
 
 const app = initializeApp(firebaseConfig);
