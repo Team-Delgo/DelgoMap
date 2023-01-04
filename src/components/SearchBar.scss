@@ -15,6 +15,7 @@
   align-items: center;
   input {
     font-size: 1.15rem;
+    font-family: 'Spoqa Han Sans Neo';
     padding: 0px;
     width: 90%;
     height: 100%;
@@ -24,6 +25,12 @@
       outline: none;
       // outline: 1px solid blue;
     }
+  }
+  img{
+    position: absolute;
+    right: 25px;
+    width: 25px;
+    height: 25px;
   }
   &-auto {
     left: 50%;
@@ -40,8 +47,14 @@
     z-index: 10;
     position: absolute;
     &-item {
-      padding: 5px;
+      padding: 10px;
       color: gray;
+      span{
+        color: rgb(174, 174, 174);
+        margin-left: 5px;
+        font-size: .5rem;
+        font-weight: 400;
+      }
     }
   }
 }

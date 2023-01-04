@@ -41,6 +41,7 @@ export const idDefault = {
   img: "",
   title: "",
   address: "",
+  detailUrl: "",
   id: 0,
   prevId: 0,
   lat: 0,
@@ -57,6 +58,7 @@ export interface Mungple {
   jibunAddress: string;
   latitude: string;
   longitude: string;
+  detailUrl: string;
   mungpleId: number;
   p_geoCode: string;
   placeName: string;

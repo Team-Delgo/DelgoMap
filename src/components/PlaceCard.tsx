@@ -7,8 +7,8 @@ import CafeSmall from "../common/icons/cafe-map-small.svg";
 // import HospitalSmall from "../common/icons/hospital-map-small.svg";
 // import EatSmall from "../common/icons/eat-map-small.svg";
 
-function PlaceCard(props: { img: string, title: string, address: string, categoryCode: string }) {
-  const { img, title, address, categoryCode } = props;
+function PlaceCard(props: { detailUrl:string, img: string, title: string, address: string, categoryCode: string }) {
+  const { img, title, address, categoryCode, detailUrl } = props;
   let icon;
   // if (categoryCode === "CA0001") {
   // icon = <img src={WalkSmall} alt="" />
@@ -23,7 +23,7 @@ function PlaceCard(props: { img: string, title: string, address: string, categor
   // } else {
   //   icon = <img src={HospitalSmall} alt="" />
   // }
-  return <div className="placecard">
+  return <div className="placecard" aria-hidden="true" onClick={()=> window.open(detailUrl, '_blank')}>
     <img src={img} alt="cardimg" />
     <div className="placecard-box">
       <div className="placecard-box-title">{title}{icon}</div>

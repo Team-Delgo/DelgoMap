@@ -47,6 +47,7 @@ function Map() {
         id: 0,
         prevId: prev.id,
         lat: 0,
+        detailUrl:"",
         lng: 0,
         categoryCode: '0',
         prevLat: prev.lat,
@@ -60,6 +61,7 @@ function Map() {
     getMapData(
       (response: AxiosResponse) => {
         const { data } = response.data;
+        console.log(data);
         setMungpleList(data);
       },
       dispatch,
@@ -139,6 +141,7 @@ function Map() {
             address: data.jibunAddress,
             id: data.mungpleId,
             prevId: prev.id,
+            detailUrl: data.detailUrl,
             lat: parseFloat(data.latitude),
             lng: parseFloat(data.longitude),
             categoryCode: data.categoryCode,
@@ -164,6 +167,7 @@ function Map() {
         address: data.jibunAddress,
         id: data.mungpleId,
         prevId: prev.id,
+        detailUrl: data.detailUrl,
         lat: parseFloat(data.latitude),
         lng: parseFloat(data.longitude),
         categoryCode: data.categoryCode,
@@ -207,7 +211,7 @@ function Map() {
       </div>
       <SearchBar selectId={searchSelectId} cafeList={mungpleList} />
       {selectedId.title.length > 0 && (
-        <PlaceCard img={selectedId.img} title={selectedId.title} address={selectedId.address} categoryCode={selectedId.categoryCode} />
+        <PlaceCard img={selectedId.img} title={selectedId.title} address={selectedId.address} categoryCode={selectedId.categoryCode} detailUrl={selectedId.detailUrl}/>
       )}
     </div>
   );

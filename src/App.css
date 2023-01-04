@@ -1,38 +1,25 @@
-.App {
-  text-align: center;
+body { 
+  font-family: 'Spoqa Han Sans Neo';
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('./common/fonts/SpoqaHanSansNeo-Regular.woff2');
+  font-weight: 400;
+  font-display: swap;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('./common/fonts/SpoqaHanSansNeo-Medium.woff2');
+  font-weight: 500;
+  font-display: swap;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('./common/fonts/SpoqaHanSansNeo-Bold.woff2');
+  font-weight: 700;
+  font-display: swap;
 }
