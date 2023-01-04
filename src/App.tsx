@@ -11,6 +11,7 @@ function App() {
   return <QueryClientProvider client={queryClient}><BrowserRouter>
     <Routes>
       <Route path='/' element={<MapPage />} />
+      <Route path='/:id' element={<MapPage />} />
     </Routes>
   </BrowserRouter>
   </QueryClientProvider>;

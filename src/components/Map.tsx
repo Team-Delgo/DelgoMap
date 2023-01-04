@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
 import { AxiosResponse } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Map.scss";
 import { getMapData } from "../common/api/record";
 import { Mungple, idDefault } from "./maptype";
@@ -31,6 +31,7 @@ function Map() {
   const [selectedId, setSelectedId] = useState(idDefault);
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
+  const [linkId, setLinkId] = useState(NaN);
   const initMapCenter = useSelector((state: any) => state);
   const [currentLocation, setCurrentLocation] = useState({
     lat: !initMapCenter.y ? 37.5057018 : initMapCenter.y,
@@ -41,6 +42,7 @@ function Map() {
   const mutation = useAnalyticsLogEvent(analytics, "screen_view");
   const mungpleClickEvent = useAnalyticsCustomLogEvent(analytics, "map_mungple");
   let map: naver.maps.Map;
+  const routerLocation = useLocation();
 
   const clearSelectedId = useCallback(() => {
     setSelectedId((prev: any) => {
@@ -64,6 +66,7 @@ function Map() {
   const getMapPageData = useCallback(() => {
     getMapData((response: AxiosResponse) => {
       const { data } = response.data;
+      console.log(data);
       setMungpleList(data);
     }, dispatch);
   }, []);
@@ -91,6 +94,7 @@ function Map() {
       e.preventDefault();
       clearSelectedId();
     });
+    setLinkId(parseInt(routerLocation.pathname.slice(1)));
   }, []);
 
   useEffect(() => {
@@ -164,9 +168,58 @@ function Map() {
     }
   }, [selectedId]);
 
+  useEffect(() => {
+    console.log(linkId);
+    if (linkId > 0 && markerList.length > 0) {
+      const index = mungpleList.findIndex((mungple) => mungple.mungpleId === linkId);
+      if (index >= 0) {
+        setSelectedId((prev: any) => {
+          return {
+            img: mungpleList[index].photoUrl,
+            title: mungpleList[index].placeName,
+            address: mungpleList[index].jibunAddress,
+            id: mungpleList[index].mungpleId,
+            prevId: prev.id,
+            detailUrl: mungpleList[index].detailUrl,
+            lat: parseFloat(mungpleList[index].latitude),
+            lng: parseFloat(mungpleList[index].longitude),
+            categoryCode: mungpleList[index].categoryCode,
+            prevLat: prev.lat,
+            prevLng: prev.lng,
+            prevCategoryCode: prev.categoryCode,
+          };
+        });
+        globarMap?.panTo(
+          new naver.maps.LatLng(
+            parseFloat(mungpleList[index].latitude),
+            parseFloat(mungpleList[index].longitude)
+          ),
+          {
+            duration: 500,
+            easing: "easeOutCubic",
+          }
+        );
+        const markerOptions = setMarkerOptionBig(
+          Cafe,
+          mungpleList[index],
+          globarMap,
+          selectedId.prevCategoryCode
+        );
+        markerList[index].marker.setOptions(markerOptions);
+      }
+      setLinkId(NaN);
+    }
+  }, [markerList]);
+
   return (
     <div className="map-wrapper">
-      <div className="cafe" aria-hidden="true" onClick={()=>window.open('https://cafe.naver.com/delgo1234')}>카페이동</div>
+      <div
+        className="cafe"
+        aria-hidden="true"
+        onClick={() => window.open("https://cafe.naver.com/delgo1234")}
+      >
+        카페이동
+      </div>
       <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
       <SearchBar selectId={searchSelectId} cafeList={mungpleList} />
       {selectedId.title.length > 0 && (
