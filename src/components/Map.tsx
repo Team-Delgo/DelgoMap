@@ -1,17 +1,22 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
-import { AxiosResponse } from 'axios';
-import { useNavigate } from 'react-router-dom';
-import './Map.scss';
-import { getMapData } from '../common/api/record';
-import { Mungple, idDefault, } from './maptype';
-import Cafe from '../common/icons/cafe-map.svg';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
+import { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
+import "./Map.scss";
+import { getMapData } from "../common/api/record";
+import { Mungple, idDefault } from "./maptype";
+import Cafe from "../common/icons/cafe-map.svg";
 import CafeSmall from "../common/icons/cafe-map-small.svg";
-import PlaceCard from './PlaceCard';
-import { analytics } from '../index';
-import { setMarkerOptionBig, setMarkerOptionSmall, setMarkerOptionPrev, setCertOption } from './MapComponent';
-import SearchBar from './SearchBar';
+import PlaceCard from "./PlaceCard";
+import { analytics } from "../index";
+import {
+  setMarkerOptionBig,
+  setMarkerOptionSmall,
+  setMarkerOptionPrev,
+  setCertOption,
+} from "./MapComponent";
+import SearchBar from "./SearchBar";
 
 interface MakerItem {
   id: number;
@@ -33,50 +38,44 @@ function Map() {
     zoom: !initMapCenter.zoom ? 17 : initMapCenter.zoom,
     option: { zoom: 2, size: 70 },
   });
-  const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
-  const mungpleClickEvent = useAnalyticsCustomLogEvent(analytics, 'map_mungple');
+  const mutation = useAnalyticsLogEvent(analytics, "screen_view");
+  const mungpleClickEvent = useAnalyticsCustomLogEvent(analytics, "map_mungple");
   let map: naver.maps.Map;
 
-  const clearSelectedId = () => {
+  const clearSelectedId = useCallback(() => {
     setSelectedId((prev: any) => {
       return {
-        img: '',
-        title: '',
-        address: '',
+        img: "",
+        title: "",
+        address: "",
         id: 0,
         prevId: prev.id,
         lat: 0,
-        detailUrl:"",
+        detailUrl: "",
         lng: 0,
-        categoryCode: '0',
+        categoryCode: "0",
         prevLat: prev.lat,
         prevLng: prev.lng,
         prevCategoryCode: prev.categoryCode,
       };
     });
-  };
+  }, [selectedId]);
 
-  const getMapPageData = () => {
-    getMapData(
-      (response: AxiosResponse) => {
-        const { data } = response.data;
-        setMungpleList(data);
-      },
-      dispatch,
-    );
-  };
+  const getMapPageData = useCallback(() => {
+    getMapData((response: AxiosResponse) => {
+      const { data } = response.data;
+      setMungpleList(data);
+    }, dispatch);
+  }, []);
 
   useEffect(() => {
     mutation.mutate({
       params: {
-        firebase_screen: 'Map',
-        firebase_screen_class: 'MapPage',
+        firebase_screen: "Map",
+        firebase_screen_class: "MapPage",
       },
     });
     getMapPageData();
-  }, []);
-
-  useEffect(() => {
     if (!mapElement.current || !naver) return;
     const location = new window.naver.maps.LatLng(currentLocation.lat, currentLocation.lng);
     const mapOptions: naver.maps.MapOptions = {
@@ -88,24 +87,18 @@ function Map() {
     map = new naver.maps.Map(mapElement.current, mapOptions);
 
     setGlobarMap(map);
-    naver.maps.Event.addListener(map, 'tap', (e) => {
+    naver.maps.Event.addListener(map, "tap", (e) => {
       e.preventDefault();
       clearSelectedId();
     });
-    // return () => {
-    //   const center = map.getCenter();
-    //   const zoom = map.getZoom();
-    //   // dispatch(scrollActions.setMapCenter({ x: center?.x, y: center?.y, zoom }));
-    // };
   }, []);
 
   useEffect(() => {
-    deleteMungpleList();
     const tempList = mungpleList.map((data) => {
       let markerOptions: naver.maps.MarkerOptions;
       markerOptions = setMarkerOptionSmall(CafeSmall, data, globarMap);
       const marker = new naver.maps.Marker(markerOptions);
-      marker.addListener('click', () => {
+      marker.addListener("click", () => {
         mungpleClickEvent.mutate();
         setSelectedId((prev: any) => {
           return {
@@ -129,7 +122,6 @@ function Map() {
       return { marker, id: data.mungpleId };
     });
     setMarkerList(tempList);
-
   }, [mungpleList]);
 
   const searchSelectId = (data: Mungple) => {
@@ -156,7 +148,7 @@ function Map() {
     markerList[index].marker.setOptions(markerOptions);
     globarMap?.panTo(new naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)), {
       duration: 500,
-      easing: 'easeOutCubic',
+      easing: "easeOutCubic",
     });
   };
 
@@ -172,19 +164,19 @@ function Map() {
     }
   }, [selectedId]);
 
-  const deleteMungpleList = () => {
-    markerList.forEach((marker) => {
-      marker.marker.setMap(null);
-    });
-  };
-
   return (
-    <div className='map-wrapper'>
-      <div className="map" ref={mapElement} style={{ position: 'absolute' }}>
-      </div>
+    <div className="map-wrapper">
+      <div className="cafe" aria-hidden="true" onClick={()=>window.open('https://cafe.naver.com/delgo1234')}>카페이동</div>
+      <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
       <SearchBar selectId={searchSelectId} cafeList={mungpleList} />
       {selectedId.title.length > 0 && (
-        <PlaceCard img={selectedId.img} title={selectedId.title} address={selectedId.address} categoryCode={selectedId.categoryCode} detailUrl={selectedId.detailUrl}/>
+        <PlaceCard
+          img={selectedId.img}
+          title={selectedId.title}
+          address={selectedId.address}
+          categoryCode={selectedId.categoryCode}
+          detailUrl={selectedId.detailUrl}
+        />
       )}
     </div>
   );
