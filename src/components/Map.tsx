@@ -206,7 +206,7 @@ function Map() {
   };
 
   return (
-    <div>
+    <div className='map-wrapper'>
       <div className="map" ref={mapElement} style={{ position: 'absolute' }}>
       </div>
       <SearchBar selectId={searchSelectId} cafeList={mungpleList} />

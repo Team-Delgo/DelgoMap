@@ -19,10 +19,13 @@
 
 .map {
   width: 100vw;
-  height: 110vh;
-  overflow: hidden;
+  height: 100vh;
   position: absolute;
   top: 0;
+  // &-wrapper{
+  //   height: 100vh;
+  //   overflow: hidden;
+  // }
 }
 
 .userLocation {
