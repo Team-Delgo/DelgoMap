@@ -22,7 +22,6 @@ function Map() {
   const mapElement = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
   const [globarMap, setGlobarMap] = useState<naver.maps.Map>();
   const [selectedId, setSelectedId] = useState(idDefault);
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
@@ -61,7 +60,6 @@ function Map() {
     getMapData(
       (response: AxiosResponse) => {
         const { data } = response.data;
-        console.log(data);
         setMungpleList(data);
       },
       dispatch,
@@ -76,34 +74,10 @@ function Map() {
       },
     });
     getMapPageData();
-    console.log(initMapCenter);
-    if (initMapCenter.x === 0 && initMapCenter.y === 0) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        setCurrentLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-          zoom: 17,
-          option: { zoom: 2, size: 70 },
-        });
-        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-      });
-    } else {
-      // setCurrentLocation({
-      //   lat: initMapCenter.x,
-      //   lng: initMapCenter.y,
-      //   zoom: 17,
-      //   option: {zoom:2, size:70},
-      // })
-      navigator.geolocation.getCurrentPosition((pos) => {
-        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-      });
-    }
-
   }, []);
 
   useEffect(() => {
     if (!mapElement.current || !naver) return;
-    console.log(currentLocation);
     const location = new window.naver.maps.LatLng(currentLocation.lat, currentLocation.lng);
     const mapOptions: naver.maps.MapOptions = {
       center: location,
@@ -118,12 +92,11 @@ function Map() {
       e.preventDefault();
       clearSelectedId();
     });
-
-    return () => {
-      const center = map.getCenter();
-      const zoom = map.getZoom();
-      // dispatch(scrollActions.setMapCenter({ x: center?.x, y: center?.y, zoom }));
-    };
+    // return () => {
+    //   const center = map.getCenter();
+    //   const zoom = map.getZoom();
+    //   // dispatch(scrollActions.setMapCenter({ x: center?.x, y: center?.y, zoom }));
+    // };
   }, []);
 
   useEffect(() => {

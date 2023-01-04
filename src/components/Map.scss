@@ -124,6 +124,7 @@
 
   &.mungplepin {
     border: 1px solid white;
+
     &::before {
       border-top: 11px solid white;
     }
@@ -243,12 +244,22 @@
   width: 20px;
   height: 20px;
   z-index: 100;
+  &.small {
+    img {
+      width: 21px;
+      height: 21px;
+    }
+  }
   border-radius: 100%;
   &.big {
     animation: markerAppear 0.3s ease-out;
     z-index: 99999;
     width: 50px;
     height: 59px;
+    img {
+      width: 57px;
+      height: 62px;
+    }
   }
 }
 

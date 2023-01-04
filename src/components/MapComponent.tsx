@@ -19,7 +19,7 @@ function setMarkerOptionSmall(icon: string, data: Mungple, globarMap: naver.maps
     map: globarMap!,
     icon: {
       content: [
-        `<div id=${data.mungpleId} class="mungple ${data.categoryCode}" >`,
+        `<div id=${data.mungpleId} class="mungple ${data.categoryCode} small" >`,
         `<img src=${icon}  style="" alt="pin"/>`,
         `</div>`,
       ].join(''),
