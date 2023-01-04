@@ -33,9 +33,9 @@ function Map() {
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const initMapCenter = useSelector((state: any) => state);
   const [currentLocation, setCurrentLocation] = useState({
-    lat: !initMapCenter.y ? 37.5626571 : initMapCenter.y,
-    lng: !initMapCenter.x ? 127.00086 : initMapCenter.x,
-    zoom: !initMapCenter.zoom ? 17 : initMapCenter.zoom,
+    lat: !initMapCenter.y ? 37.5057018 : initMapCenter.y,
+    lng: !initMapCenter.x ? 127.1141119 : initMapCenter.x,
+    zoom: !initMapCenter.zoom ? 14 : initMapCenter.zoom,
     option: { zoom: 2, size: 70 },
   });
   const mutation = useAnalyticsLogEvent(analytics, "screen_view");

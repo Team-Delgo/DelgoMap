@@ -12,13 +12,13 @@ const root = ReactDOM.createRoot(
 );
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAbcJl2QUduGjVvoHE7d39yhQvTso0QVTw",
-  authDomain: "delgo-c49bc.firebaseapp.com",
-  projectId: "delgo-c49bc",
-  storageBucket: "delgo-c49bc.appspot.com",
-  messagingSenderId: "184505678344",
-  appId: "1:184505678344:web:c65a45f1f295dd4b0bafbd",
-  measurementId: "G-JSZ2SVJFBT"
+  apiKey: "AIzaSyAw18Fs8u3NsOxaco9L6OyHyICYb6HyDCs",
+  authDomain: "delgomap-c4ca0.firebaseapp.com",
+  projectId: "delgomap-c4ca0",
+  storageBucket: "delgomap-c4ca0.appspot.com",
+  messagingSenderId: "751246508342",
+  appId: "1:751246508342:web:eea89f1186f282b36db397",
+  measurementId: "G-Z01M95BEQW"
 };
 
 const app = initializeApp(firebaseConfig);
