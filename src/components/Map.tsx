@@ -18,6 +18,8 @@ import {
 } from "./MapComponent";
 import SearchBar from "./SearchBar";
 import LinkCopy from "./LinkCopy";
+import Search from "../common/icons/search.svg";
+import Logo from "../common/icons/logo.svg";
 
 interface MakerItem {
   id: number;
@@ -214,8 +216,12 @@ function Map() {
 
   return (
     <div className="map-wrapper">
+      <div className="whiteBox" />
+      <img className="map-logo" src={Logo} alt="logo" />
+      <img className="map-search" src={Search} alt="search" />
+      <div className="slogun">강이지 델고 동내생활</div>
       <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
-      <SearchBar selectId={searchSelectId} cafeList={mungpleList} />
+      {/* <SearchBar selectId={searchSelectId} cafeList={mungpleList} /> */}
       {selectedId.title.length > 0 && (
         <PlaceCard
           img={selectedId.img}

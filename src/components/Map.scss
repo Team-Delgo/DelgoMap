@@ -3,6 +3,39 @@
   height: 400px;
 }
 
+.whiteBox{
+  z-index: 10;
+  position: absolute;
+  width: 100vw;
+  height: 200px;
+  background: linear-gradient(to bottom, #fff, #fff 10%, transparent);
+}
+
+
+.map-logo{
+  position: absolute;
+  z-index: 10;
+  top: 28px;
+  left: 20px;
+}
+.map-search{
+  position: absolute;
+  z-index: 10;
+  top: 28px;
+  right: 20px;
+}
+
+.slogun{
+  position: absolute;
+  z-index: 10;
+  top: 60px;
+  left: 20px;
+  width: 123px;
+  height: 21px;
+  font-weight: 400;
+  font-size: 14px;
+}
+
 .cafe{
   position: absolute;
   z-index: 10;
