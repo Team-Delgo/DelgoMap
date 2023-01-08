@@ -5,7 +5,9 @@ const initialState = {
   lat: 0,
   lng: 0,
   selectedIcon: 0,
-  selectedArea: "송파"
+  selectedArea: "송파",
+  link: "https://map.delgo.pet",
+  isCopy: false,
 };
 
 export const mapSlice = createSlice({
@@ -17,6 +19,12 @@ export const mapSlice = createSlice({
     },
     clearPosition(state) {
       state = initialState;
+    },
+    setIsCopy(state) {
+      state.isCopy = true;
+    },
+    setIsCopyFalse(state) {
+      state.isCopy = false;
     }
   }
 });

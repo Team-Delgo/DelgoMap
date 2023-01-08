@@ -21,9 +21,18 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEnteredInput(e.target.value);
     if (cafeList.length > 0 && e.target.value.length > 0) {
-      const autoComplete = cafeList.filter((cafe) => {
-        return cafe.placeName.includes(e.target.value);
-      });
+      let autoComplete: Mungple[];
+      if (e.target.value.length > 1) {
+        autoComplete = cafeList.filter((cafe) => {
+          return (
+            cafe.placeName.includes(e.target.value) || cafe.jibunAddress.includes(e.target.value)
+          );
+        });
+      } else {
+        autoComplete = cafeList.filter((cafe) => {
+          return cafe.placeName.includes(e.target.value);
+        });
+      }
       setOption(autoComplete);
     }
   };

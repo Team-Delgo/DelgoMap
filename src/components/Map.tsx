@@ -17,6 +17,7 @@ import {
   setCertOption,
 } from "./MapComponent";
 import SearchBar from "./SearchBar";
+import LinkCopy from "./LinkCopy";
 
 interface MakerItem {
   id: number;
@@ -231,6 +232,7 @@ function Map() {
           detailUrl={selectedId.detailUrl}
         />
       )}
+      {selectedId.title.length > 0 && <LinkCopy />}
     </div>
   );
 }
