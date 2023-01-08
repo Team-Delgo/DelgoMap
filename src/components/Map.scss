@@ -26,13 +26,13 @@
 
 .map {
   width: 100vw;
-  height: 100vh;
+  height: 110vh;
   position: absolute;
   top: 0;
-  // &-wrapper{
-  //   height: 100vh;
-  //   overflow: hidden;
-  // }
+  &-wrapper{
+    height: 100vh;
+    overflow: hidden;
+  }
 }
 
 .userLocation {

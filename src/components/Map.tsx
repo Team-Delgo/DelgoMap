@@ -73,6 +73,7 @@ function Map() {
   }, []);
 
   useEffect(() => {
+    document.body.style.overflow = "hidden";
     mutation.mutate({
       params: {
         firebase_screen: "Map",
@@ -91,8 +92,7 @@ function Map() {
     map = new naver.maps.Map(mapElement.current, mapOptions);
 
     setGlobarMap(map);
-    naver.maps.Event.addListener(map, "tap", (e) => {
-      e.preventDefault();
+    naver.maps.Event.addListener(map, "click", (e) => {
       clearSelectedId();
     });
     setLinkId(parseInt(routerLocation.pathname.slice(1)));
@@ -214,13 +214,6 @@ function Map() {
 
   return (
     <div className="map-wrapper">
-      <div
-        className="cafe"
-        aria-hidden="true"
-        onClick={() => window.open("https://cafe.naver.com/delgo1234")}
-      >
-        카페이동
-      </div>
       <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
       <SearchBar selectId={searchSelectId} cafeList={mungpleList} />
       {selectedId.title.length > 0 && (
