@@ -30,6 +30,7 @@ function Map() {
   const mapElement = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchIsOpen, setSearchIsOpen] = useState(false);
   const [globarMap, setGlobarMap] = useState<naver.maps.Map>();
   const [selectedId, setSelectedId] = useState(idDefault);
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
@@ -132,6 +133,7 @@ function Map() {
   }, [mungpleList]);
 
   const searchSelectId = (data: Mungple) => {
+    setSearchIsOpen(false);
     setSelectedId((prev: any) => {
       return {
         img: data.photoUrl,
@@ -214,14 +216,22 @@ function Map() {
     }
   }, [markerList]);
 
+  const searchClickHander = () => {
+    setSearchIsOpen(true);
+  };
+
+  const searchClose = () => {
+    setSearchIsOpen(false);
+  };
+
   return (
     <div className="map-wrapper">
       <div className="whiteBox" />
       <img className="map-logo" src={Logo} alt="logo" />
-      <img className="map-search" src={Search} alt="search" />
+      <img className="map-search" src={Search} alt="search" onClick={searchClickHander}/>
       <div className="slogun">강이지 델고 동내생활</div>
       <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
-      {/* <SearchBar selectId={searchSelectId} cafeList={mungpleList} /> */}
+      {searchIsOpen && <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />}
       {selectedId.title.length > 0 && (
         <PlaceCard
           img={selectedId.img}
