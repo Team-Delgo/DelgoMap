@@ -20,6 +20,7 @@ import SearchBar from "./SearchBar";
 import LinkCopy from "./LinkCopy";
 import Search from "../common/icons/search.svg";
 import Logo from "../common/icons/logo.svg";
+import ToastMessage from "./ToastMessage";
 
 interface MakerItem {
   id: number;
@@ -37,6 +38,7 @@ function Map() {
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [linkId, setLinkId] = useState(NaN);
   const initMapCenter = useSelector((state: any) => state);
+  const isCopy = useSelector((state: any) => state.isCopy);
   const [currentLocation, setCurrentLocation] = useState({
     lat: !initMapCenter.y ? 37.5057018 : initMapCenter.y,
     lng: !initMapCenter.x ? 127.1141119 : initMapCenter.x,
@@ -233,11 +235,12 @@ function Map() {
       <div className="whiteBox" />
       <img className="map-logo" src={Logo} alt="logo" />
       <img className="map-search" src={Search} alt="search" onClick={searchClickHander} />
-      <div className="slogun">강이지 델고 동내생활</div>
+      <div className="slogun">강아지 델고 동네생활</div>
       <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
       {searchIsOpen && <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />}
       {selectedId.title.length > 0 && (
         <PlaceCard
+          id={selectedId.id}
           img={selectedId.img}
           title={selectedId.title}
           address={selectedId.address}
@@ -246,6 +249,7 @@ function Map() {
           instaUrl={selectedId.instaUrl}
         />
       )}
+      {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
       {selectedId.title.length > 0 && <LinkCopy />}
     </div>
   );

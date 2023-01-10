@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
+import { useDispatch } from "react-redux";
 import "./PlaceCard.scss";
 import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
 // import BathSmall from "../common/icons/bath-map-small.svg";
 import CafeSmall from "../common/icons/cafe-map-small.svg";
 import { analytics } from "..";
+import { mapAction } from "../redux/mapSlice";
 // import BeautySmall from "../common/icons/beauty-map-small.svg";
 // import WalkSmall from "../common/icons/walk-map-small.svg";
 // import HospitalSmall from "../common/icons/hospital-map-small.svg";
 // import EatSmall from "../common/icons/eat-map-small.svg";
 
-function PlaceCard(props: { instaUrl: string, detailUrl: string, img: string, title: string, address: string, categoryCode: string }) {
+function PlaceCard(props: { id: number, instaUrl: string, detailUrl: string, img: string, title: string, address: string, categoryCode: string }) {
   const linkClickEvent = useAnalyticsCustomLogEvent(analytics, 'card_click');
-  const { img, title, address, categoryCode, detailUrl, instaUrl } = props;
+  const dispatch = useDispatch();
+  const { id, img, title, address, categoryCode, detailUrl, instaUrl } = props;
   let icon;
+  useEffect(() => {
+    return () => { dispatch((mapAction).clearLink()); }
+  }, [])
+  useEffect(() => {
+    dispatch(mapAction.setLink(`https://map.delgo.pet/${id}`));
+  }, [id]);
   // if (categoryCode === "CA0001") {
   // icon = <img src={WalkSmall} alt="" />
   // } else if (categoryCode === "CA0002") {
