@@ -9,9 +9,9 @@ import { analytics } from "..";
 // import HospitalSmall from "../common/icons/hospital-map-small.svg";
 // import EatSmall from "../common/icons/eat-map-small.svg";
 
-function PlaceCard(props: { detailUrl:string, img: string, title: string, address: string, categoryCode: string }) {
+function PlaceCard(props: { instaUrl: string, detailUrl: string, img: string, title: string, address: string, categoryCode: string }) {
   const linkClickEvent = useAnalyticsCustomLogEvent(analytics, 'card_click');
-  const { img, title, address, categoryCode, detailUrl } = props;
+  const { img, title, address, categoryCode, detailUrl, instaUrl } = props;
   let icon;
   // if (categoryCode === "CA0001") {
   // icon = <img src={WalkSmall} alt="" />
@@ -28,7 +28,7 @@ function PlaceCard(props: { detailUrl:string, img: string, title: string, addres
   // }
   const cardClickHandler = () => {
     linkClickEvent.mutate();
-    window.open(detailUrl, '_blank');
+    window.open(instaUrl, '_blank');
   };
 
   return <div className="placecard" aria-hidden="true" onClick={cardClickHandler}>

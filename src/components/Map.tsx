@@ -58,6 +58,7 @@ function Map() {
         prevId: prev.id,
         lat: 0,
         detailUrl: "",
+        instaUrl: "",
         lng: 0,
         categoryCode: "0",
         prevLat: prev.lat,
@@ -116,6 +117,7 @@ function Map() {
             id: data.mungpleId,
             prevId: prev.id,
             detailUrl: data.detailUrl,
+            instaUrl: data.instaUrl,
             lat: parseFloat(data.latitude),
             lng: parseFloat(data.longitude),
             categoryCode: data.categoryCode,
@@ -142,6 +144,7 @@ function Map() {
         id: data.mungpleId,
         prevId: prev.id,
         detailUrl: data.detailUrl,
+        instaUrl: data.instaUrl,
         lat: parseFloat(data.latitude),
         lng: parseFloat(data.longitude),
         categoryCode: data.categoryCode,
@@ -186,6 +189,7 @@ function Map() {
             id: mungpleList[index].mungpleId,
             prevId: prev.id,
             detailUrl: mungpleList[index].detailUrl,
+            instaUrl: mungpleList[index].instaUrl,
             lat: parseFloat(mungpleList[index].latitude),
             lng: parseFloat(mungpleList[index].longitude),
             categoryCode: mungpleList[index].categoryCode,
@@ -228,7 +232,7 @@ function Map() {
     <div className="map-wrapper">
       <div className="whiteBox" />
       <img className="map-logo" src={Logo} alt="logo" />
-      <img className="map-search" src={Search} alt="search" onClick={searchClickHander}/>
+      <img className="map-search" src={Search} alt="search" onClick={searchClickHander} />
       <div className="slogun">강이지 델고 동내생활</div>
       <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
       {searchIsOpen && <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />}
@@ -239,6 +243,7 @@ function Map() {
           address={selectedId.address}
           categoryCode={selectedId.categoryCode}
           detailUrl={selectedId.detailUrl}
+          instaUrl={selectedId.instaUrl}
         />
       )}
       {selectedId.title.length > 0 && <LinkCopy />}
