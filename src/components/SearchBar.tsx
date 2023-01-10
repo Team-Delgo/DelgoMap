@@ -65,6 +65,7 @@ function SearchBar(props: {
         <div className="search">
           <input
             id="search"
+            autoComplete="off"
             placeholder="강아지 델고 갈 카페 검색"
             value={enteredInput}
             onChange={inputChangeHandler}
