@@ -1,41 +1,41 @@
-export interface Cert {
-  categoryCode: string;
-  address: string;
-  certificationId: number;
-  description: string;
-  geoCode: string;
-  isPhotoChecked: boolean;
-  latitude: string;
-  isLike: boolean;
-  longitude: string;
-  likeCount: number;
-  commentCount: number;
-  mungpleId: number;
-  p_geoCode: string;
-  photoUrl: string;
-  placeName: string;
-  registDt: string;
-  userId: number;
-}
-export const certDefault: Cert = {
-  categoryCode: "",
-  certificationId: 0,
-  description: "",
-  likeCount: 0,
-  commentCount: 0,
-  isLike: false,
-  address: "",
-  geoCode: "",
-  isPhotoChecked: false,
-  latitude: "",
-  longitude: "",
-  mungpleId: 0,
-  p_geoCode: "",
-  photoUrl: "",
-  placeName: "",
-  registDt: "",
-  userId: 0
-};
+// export interface Cert {
+//   categoryCode: string;
+//   address: string;
+//   certificationId: number;
+//   description: string;
+//   geoCode: string;
+//   isPhotoChecked: boolean;
+//   latitude: string;
+//   isLike: boolean;
+//   longitude: string;
+//   likeCount: number;
+//   commentCount: number;
+//   mungpleId: number;
+//   p_geoCode: string;
+//   photoUrl: string;
+//   placeName: string;
+//   registDt: string;
+//   userId: number;
+// }
+// export const certDefault: Cert = {
+//   categoryCode: "",
+//   certificationId: 0,
+//   description: "",
+//   likeCount: 0,
+//   commentCount: 0,
+//   isLike: false,
+//   address: "",
+//   geoCode: "",
+//   isPhotoChecked: false,
+//   latitude: "",
+//   longitude: "",
+//   mungpleId: 0,
+//   p_geoCode: "",
+//   photoUrl: "",
+//   placeName: "",
+//   registDt: "",
+//   userId: 0
+// };
 
 export const idDefault = {
   img: "",

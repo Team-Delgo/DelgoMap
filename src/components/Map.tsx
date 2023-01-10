@@ -14,13 +14,14 @@ import {
   setMarkerOptionBig,
   setMarkerOptionSmall,
   setMarkerOptionPrev,
-  setCertOption,
 } from "./MapComponent";
 import SearchBar from "./SearchBar";
 import LinkCopy from "./LinkCopy";
 import Search from "../common/icons/search.svg";
 import Logo from "../common/icons/logo.svg";
 import ToastMessage from "./ToastMessage";
+import Regist from "./Regist";
+import { mapAction } from "../redux/mapSlice";
 
 interface MakerItem {
   id: number;
@@ -37,6 +38,8 @@ function Map() {
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [linkId, setLinkId] = useState(NaN);
+  const [registOpen, setIsRegistOpen] = useState(false);
+  const viewCount = useSelector((state: any) => state.viewCount);
   const initMapCenter = useSelector((state: any) => state);
   const isCopy = useSelector((state: any) => state.isCopy);
   const [currentLocation, setCurrentLocation] = useState({
@@ -73,7 +76,6 @@ function Map() {
   const getMapPageData = useCallback(() => {
     getMapData((response: AxiosResponse) => {
       const { data } = response.data;
-      console.log(data);
       setMungpleList(data);
     }, dispatch);
   }, []);
@@ -102,6 +104,18 @@ function Map() {
       clearSelectedId();
     });
     setLinkId(parseInt(routerLocation.pathname.slice(1)));
+  }, []);
+
+  useEffect(() => {
+    if (viewCount === 2 && !localStorage.getItem('isRegisted')) {
+      setIsRegistOpen(true);
+    }
+  }, [viewCount]);
+
+  const reigstCloseHandler = useCallback(() => {
+    dispatch(mapAction.setViewCount());
+    localStorage.setItem('isRegisted', 'true');
+    setIsRegistOpen(false);
   }, []);
 
   useEffect(() => {
@@ -179,7 +193,6 @@ function Map() {
   }, [selectedId]);
 
   useEffect(() => {
-    console.log(linkId);
     if (linkId > 0 && markerList.length > 0) {
       const index = mungpleList.findIndex((mungple) => mungple.mungpleId === linkId);
       if (index >= 0) {
@@ -251,6 +264,7 @@ function Map() {
       )}
       {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
       {selectedId.title.length > 0 && <LinkCopy />}
+      {registOpen && <Regist close={reigstCloseHandler} />}
     </div>
   );
 }

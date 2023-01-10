@@ -1,4 +1,4 @@
-import { Mungple, WardOffice, Cert } from './maptype';
+import { Mungple } from './maptype';
 
 function setMarkerOptionBig(icon: string, data: Mungple, globarMap: naver.maps.Map | undefined, prevCategoryCode: string) {
   const markerOptions = {
@@ -62,20 +62,20 @@ function setMarkerOptionPrev(
 }
 
 
-function setCertOption(data: Cert, globarMap: naver.maps.Map | undefined, currentLocation: { lat: number; lng: number; zoom: number; option: { zoom: number; size: number; }; }) {
-  return {
-    position: new window.naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)),
-    map: globarMap!,
-    icon: {
-      content: [
-        `<div class="pin${currentLocation.option.zoom}" style="z-index:${data.certificationId}">`,
-        `<img src=${data.photoUrl} style="z-index:${data.certificationId + 1}" alt="pin"/>`,
-        `</div>`,
-      ].join(''),
-      size: new naver.maps.Size(currentLocation.option.size, currentLocation.option.size),
-      origin: new naver.maps.Point(0, 0),
-    },
-  };
-}
+// function setCertOption(data: Cert, globarMap: naver.maps.Map | undefined, currentLocation: { lat: number; lng: number; zoom: number; option: { zoom: number; size: number; }; }) {
+//   return {
+//     position: new window.naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)),
+//     map: globarMap!,
+//     icon: {
+//       content: [
+//         `<div class="pin${currentLocation.option.zoom}" style="z-index:${data.certificationId}">`,
+//         `<img src=${data.photoUrl} style="z-index:${data.certificationId + 1}" alt="pin"/>`,
+//         `</div>`,
+//       ].join(''),
+//       size: new naver.maps.Size(currentLocation.option.size, currentLocation.option.size),
+//       origin: new naver.maps.Point(0, 0),
+//     },
+//   };
+// }
 
-export { setCertOption, setMarkerOptionBig, setMarkerOptionSmall, setMarkerOptionPrev }
+export { setMarkerOptionBig, setMarkerOptionSmall, setMarkerOptionPrev }

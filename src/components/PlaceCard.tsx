@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import "./PlaceCard.scss";
 import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
@@ -15,7 +15,7 @@ function PlaceCard(props: { id: number, instaUrl: string, detailUrl: string, img
   const linkClickEvent = useAnalyticsCustomLogEvent(analytics, 'card_click');
   const dispatch = useDispatch();
   const { id, img, title, address, categoryCode, detailUrl, instaUrl } = props;
-  let icon;
+  let icon = useMemo(() => <img src={CafeSmall} alt="" />, []);
   useEffect(() => {
     return () => { dispatch((mapAction).clearLink()); }
   }, [])
@@ -25,7 +25,7 @@ function PlaceCard(props: { id: number, instaUrl: string, detailUrl: string, img
   // if (categoryCode === "CA0001") {
   // icon = <img src={WalkSmall} alt="" />
   // } else if (categoryCode === "CA0002") {
-  icon = <img src={CafeSmall} alt="" />
+  // icon = <img src={CafeSmall} alt="" />
   // } else if (categoryCode === "CA0003") {
   //   icon = <img src={EatSmall} alt="" />
   // } else if (categoryCode === "CA0004") {
@@ -35,10 +35,11 @@ function PlaceCard(props: { id: number, instaUrl: string, detailUrl: string, img
   // } else {
   //   icon = <img src={HospitalSmall} alt="" />
   // }
-  const cardClickHandler = () => {
+  const cardClickHandler = useCallback(() => {
     linkClickEvent.mutate();
+    dispatch(mapAction.setViewCount());
     window.open(instaUrl, '_blank');
-  };
+  }, [instaUrl]);
 
   return <div className="placecard" aria-hidden="true" onClick={cardClickHandler}>
     <img src={img} alt="cardimg" />

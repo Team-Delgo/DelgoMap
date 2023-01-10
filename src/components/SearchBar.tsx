@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { Mungple } from "./maptype";
 import "./SearchBar.scss";
@@ -18,9 +18,9 @@ function SearchBar(props: {
     document.getElementById("search")?.blur();
   });
 
-  const inputFoucs = () => {
+  const inputFoucs = useCallback(() => {
     setIsFocus(true);
-  };
+  }, []);
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEnteredInput(e.target.value);
