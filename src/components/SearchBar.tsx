@@ -3,6 +3,8 @@ import useOnclickOutside from "react-cool-onclickoutside";
 import { Mungple } from "./maptype";
 import "./SearchBar.scss";
 import BackArrow from "../common/icons/back-arrow.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { searchAction } from "../redux/searchSlice";
 
 function SearchBar(props: {
   cafeList: Mungple[];
@@ -12,12 +14,13 @@ function SearchBar(props: {
   const { cafeList, selectId, close } = props;
   const [isFocus, setIsFocus] = useState(false);
   const [enteredInput, setEnteredInput] = useState("");
+  const recentSearch:Mungple[] = useSelector((state: any) => state.persist.recentSearch);
   const [option, setOption] = useState<Mungple[]>([]);
   const ref = useOnclickOutside(() => {
     setIsFocus(false);
     document.getElementById("search")?.blur();
   });
-
+  const dispatch = useDispatch();
   const inputFoucs = useCallback(() => {
     setIsFocus(true);
   }, []);
@@ -44,7 +47,7 @@ function SearchBar(props: {
   const autoCompleteContext = option.map((cafe) => {
     const onClickHandler = () => {
       selectId(cafe);
-      setEnteredInput(cafe.placeName);
+      dispatch(searchAction.setRecentSearch(cafe));
       setIsFocus(false);
       setOption([]);
     };
@@ -55,6 +58,19 @@ function SearchBar(props: {
       </div>
     );
   });
+
+  const recentContext = recentSearch.map((cafe)=>{
+    const onClickHandler = () => {
+      selectId(cafe);
+      setIsFocus(false);
+    };
+    return (
+      <div className="search-auto-item" onClick={onClickHandler}>
+        {cafe.placeName}
+        <span>{cafe.roadAddress}</span>
+      </div>
+    );
+  })
 
   // const recentSearchContext =
 
@@ -82,8 +98,11 @@ function SearchBar(props: {
             델고에 송파의 모든 반려견 동반 카페가 있어요 검색해보세요
           </div>
           <div className="search-empty-line" />
+          <div className="search-recent-tag"><h4>최근 검색</h4></div>
+          <div className="search-recent">{recentContext}</div>
         </div>
       )}
+
     </div>
   );
 }

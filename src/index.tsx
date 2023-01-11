@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 import { initializeApp } from "firebase/app";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 import { getAnalytics, logEvent } from "firebase/analytics";
-import ReactDOM from 'react-dom/client';
+import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import './index.css';
-import App from './App';
-import store from './redux/store';
+import "./index.css";
+import App from "./App";
+import store from "./redux/store";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 const firebaseConfig = {
   apiKey: "AIzaSyAw18Fs8u3NsOxaco9L6OyHyICYb6HyDCs",
@@ -18,18 +18,22 @@ const firebaseConfig = {
   storageBucket: "delgomap-c4ca0.appspot.com",
   messagingSenderId: "751246508342",
   appId: "1:751246508342:web:eea89f1186f282b36db397",
-  measurementId: "G-Z01M95BEQW"
+  measurementId: "G-Z01M95BEQW",
 };
 
 const app = initializeApp(firebaseConfig);
 
+const persistor = persistStore(store);
+
 export const analytics = getAnalytics(app);
-logEvent(analytics, 'notification_received');
+logEvent(analytics, "notification_received");
 
 root.render(
   <Provider store={store}>
     <React.StrictMode>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </React.StrictMode>
   </Provider>
 );

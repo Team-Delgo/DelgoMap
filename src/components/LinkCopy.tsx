@@ -6,7 +6,7 @@ import "./LinkCopy.scss";
 
 function LinkCopy() {
   const dispatch = useDispatch();
-  const url = useSelector((state: any) => state.link);
+  const url = useSelector((state: any) => state.map.link);
 
   const buttonClickHandler = useCallback(() => {
     navigator.clipboard.writeText(url);

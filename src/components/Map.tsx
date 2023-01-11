@@ -39,9 +39,9 @@ function Map() {
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [linkId, setLinkId] = useState(NaN);
   const [registOpen, setIsRegistOpen] = useState(false);
-  const viewCount = useSelector((state: any) => state.viewCount);
-  const initMapCenter = useSelector((state: any) => state);
-  const isCopy = useSelector((state: any) => state.isCopy);
+  const viewCount = useSelector((state: any) => state.map.viewCount);
+  const initMapCenter = useSelector((state: any) => state.map);
+  const isCopy = useSelector((state: any) => state.map.isCopy);
   const [currentLocation, setCurrentLocation] = useState({
     lat: !initMapCenter.y ? 37.5057018 : initMapCenter.y,
     lng: !initMapCenter.x ? 127.1141119 : initMapCenter.x,
