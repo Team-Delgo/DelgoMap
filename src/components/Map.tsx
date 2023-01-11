@@ -78,7 +78,6 @@ function Map() {
   const getMapPageData = useCallback(() => {
     getMapData((response: AxiosResponse) => {
       const { data } = response.data;
-      console.log(data);
       setMungpleList(data);
     }, dispatch);
   }, []);
