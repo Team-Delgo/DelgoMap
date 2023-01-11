@@ -13,6 +13,11 @@ function LinkCopy() {
 
   const buttonClickHandler = useCallback(() => {
     navigator.clipboard.writeText(url);
+    navigator.share({
+      title:'delgo 공유',
+      text:'delgo 공유',
+      url:url,
+    })
     linkCopyEvent.mutate();
     dispatch(mapAction.setIsCopy());
     setTimeout(() => {
