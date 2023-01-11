@@ -14,8 +14,8 @@ function LinkCopy() {
   const buttonClickHandler = useCallback(() => {
     navigator.clipboard.writeText(url);
     navigator.share({
-      title:'delgo 공유',
-      text:'delgo 공유',
+      title:'Delgo',
+      text:'Delgo',
       url:url,
     })
     linkCopyEvent.mutate();
@@ -28,6 +28,7 @@ function LinkCopy() {
   return (
     <div className="link" aria-hidden="true" onClick={buttonClickHandler}>
       <img src={Link} alt="link" />
+      친구에게 공유하기
     </div>
   );
 }

@@ -272,7 +272,7 @@ function Map() {
           instaUrl={selectedId.instaUrl}
         />
       )}
-      {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
+      {/* {isCopy && <ToastMessage message="URL이 복사되었습니다." />} */}
       {selectedId.title.length > 0 && <LinkCopy />}
       {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
       {/* <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} /> */}
