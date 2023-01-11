@@ -50,7 +50,7 @@ export const idDefault = {
   categoryCode: "0",
   prevLat: 0,
   prevLng: 0,
-  prevCategoryCode: "0"
+  prevCategoryCode: "0",
 };
 
 export interface Mungple {
@@ -64,6 +64,7 @@ export interface Mungple {
   mungpleId: number;
   p_geoCode: string;
   placeName: string;
+  placeNameEn: string | null;
   registDt: string;
   roadAddress: string;
   photoUrl: string;

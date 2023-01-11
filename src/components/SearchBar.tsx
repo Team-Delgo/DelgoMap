@@ -14,7 +14,7 @@ function SearchBar(props: {
   const { cafeList, selectId, close } = props;
   const [isFocus, setIsFocus] = useState(false);
   const [enteredInput, setEnteredInput] = useState("");
-  const recentSearch:Mungple[] = useSelector((state: any) => state.persist.recentSearch);
+  const recentSearch: Mungple[] = useSelector((state: any) => state.persist.recentSearch);
   const [option, setOption] = useState<Mungple[]>([]);
   const ref = useOnclickOutside(() => {
     setIsFocus(false);
@@ -32,7 +32,9 @@ function SearchBar(props: {
       if (e.target.value.length > 1) {
         autoComplete = cafeList.filter((cafe) => {
           return (
-            cafe.placeName.includes(e.target.value) || cafe.jibunAddress.includes(e.target.value)
+            cafe.placeName.includes(e.target.value) ||
+            cafe.jibunAddress.includes(e.target.value) ||
+            cafe.placeNameEn?.includes(e.target.value)
           );
         });
       } else {
@@ -59,7 +61,7 @@ function SearchBar(props: {
     );
   });
 
-  const recentContext = recentSearch.map((cafe)=>{
+  const recentContext = recentSearch.map((cafe) => {
     const onClickHandler = () => {
       selectId(cafe);
       setIsFocus(false);
@@ -70,7 +72,7 @@ function SearchBar(props: {
         <span>{cafe.roadAddress}</span>
       </div>
     );
-  })
+  });
 
   // const recentSearchContext =
 
@@ -98,11 +100,12 @@ function SearchBar(props: {
             델고에 송파의 모든 반려견 동반 카페가 있어요 검색해보세요
           </div>
           <div className="search-empty-line" />
-          <div className="search-recent-tag"><h4>최근 검색</h4></div>
+          <div className="search-recent-tag">
+            <h4>최근 검색</h4>
+          </div>
           <div className="search-recent">{recentContext}</div>
         </div>
       )}
-
     </div>
   );
 }

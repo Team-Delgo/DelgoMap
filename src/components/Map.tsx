@@ -22,6 +22,7 @@ import Logo from "../common/icons/logo.svg";
 import ToastMessage from "./ToastMessage";
 import Regist from "./Regist";
 import { mapAction } from "../redux/mapSlice";
+import Feedback from "./Feedback";
 
 interface MakerItem {
   id: number;
@@ -38,6 +39,7 @@ function Map() {
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [linkId, setLinkId] = useState(NaN);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [registOpen, setIsRegistOpen] = useState(false);
   const viewCount = useSelector((state: any) => state.map.viewCount);
   const initMapCenter = useSelector((state: any) => state.map);
@@ -76,6 +78,7 @@ function Map() {
   const getMapPageData = useCallback(() => {
     getMapData((response: AxiosResponse) => {
       const { data } = response.data;
+      console.log(data);
       setMungpleList(data);
     }, dispatch);
   }, []);
@@ -111,6 +114,14 @@ function Map() {
       setIsRegistOpen(true);
     }
   }, [viewCount]);
+
+  const feedbackOpenHandler = useCallback(()=>{
+    setFeedbackOpen(true);
+  },[]);
+  
+  const feedbackCloseHandler = useCallback(()=>{
+    setFeedbackOpen(false);
+  },[]);
 
   const reigstCloseHandler = useCallback(() => {
     dispatch(mapAction.setViewCount());
@@ -264,7 +275,10 @@ function Map() {
       )}
       {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
       {selectedId.title.length > 0 && <LinkCopy />}
-      {registOpen && <Regist close={reigstCloseHandler} />}
+      {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
+      {/* <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} /> */}
+      {feedbackOpen && <Feedback close={feedbackCloseHandler}/>}
+      {/* <Feedback close={feedbackCloseHandler}/> */}
     </div>
   );
 }
