@@ -38,7 +38,7 @@ function PlaceCard(props: { id: number, instaUrl: string, detailUrl: string, img
   const cardClickHandler = useCallback(() => {
     linkClickEvent.mutate();
     dispatch(mapAction.setViewCount());
-    window.open(detailUrl, '_blank');
+    window.open(instaUrl, '_blank');
   }, [instaUrl]);
 
   return <div className="placecard" aria-hidden="true" onClick={cardClickHandler}>
