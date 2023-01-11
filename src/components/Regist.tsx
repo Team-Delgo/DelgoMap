@@ -1,4 +1,6 @@
 import { AxiosResponse } from "axios";
+import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
+import { analytics } from "../index";
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { sendEmail } from "../common/api/record";
@@ -10,11 +12,13 @@ const text = `강아지와의 동네생활을 위한 앱\n델고의 사전예약
 function Regist(props: { close: () => void, feedbackOpen: ()=>void }) {
   const { close, feedbackOpen } = props;
   const dispatch = useDispatch();
+  const registEvent = useAnalyticsCustomLogEvent(analytics, "email_regist");
   const emailRef = useRef<HTMLInputElement>(null);
   const submitHandler = () => {
     sendEmail(
       emailRef.current!.value,
       (data: AxiosResponse) => {
+        registEvent.mutate();
         console.log(data);
       },
       dispatch

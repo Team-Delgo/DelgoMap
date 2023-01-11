@@ -1,15 +1,19 @@
 import React, { useCallback } from "react";
+import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "../common/icons/link.svg";
+import { analytics } from "../index";
 import { mapAction } from "../redux/mapSlice";
 import "./LinkCopy.scss";
 
 function LinkCopy() {
+  const linkCopyEvent = useAnalyticsCustomLogEvent(analytics, "link_copy");
   const dispatch = useDispatch();
   const url = useSelector((state: any) => state.map.link);
 
   const buttonClickHandler = useCallback(() => {
     navigator.clipboard.writeText(url);
+    linkCopyEvent.mutate();
     dispatch(mapAction.setIsCopy());
     setTimeout(() => {
       dispatch(mapAction.setIsCopyFalse());

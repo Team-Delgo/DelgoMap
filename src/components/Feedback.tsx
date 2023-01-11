@@ -1,4 +1,6 @@
 import React, { useRef } from "react";
+import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
+import { analytics } from "../index";
 import Logo from "../common/icons/regist.svg";
 import "./Regist.scss";
 
@@ -7,8 +9,10 @@ const text = `델고의 추천플레이스들, 어땠나요?\n의견을 들려�
 function Feedback(props: { close: () => void }) {
   const { close } = props;
   const emailRef = useRef<HTMLInputElement>(null);
+  const feedbackEvent = useAnalyticsCustomLogEvent(analytics, "feedback_enter");
   const submitHandler = () => {
     close();
+    feedbackEvent.mutate();
     window.open('https://naver.me/GLAI3XNe', '_blank');
   };
   return (
