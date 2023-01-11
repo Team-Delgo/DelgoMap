@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
+import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
 import { analytics } from "../index";
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
