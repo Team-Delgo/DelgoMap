@@ -114,13 +114,13 @@ function Map() {
     }
   }, [viewCount]);
 
-  const feedbackOpenHandler = useCallback(()=>{
+  const feedbackOpenHandler = useCallback(() => {
     setFeedbackOpen(true);
-  },[]);
-  
-  const feedbackCloseHandler = useCallback(()=>{
+  }, []);
+
+  const feedbackCloseHandler = useCallback(() => {
     setFeedbackOpen(false);
-  },[]);
+  }, []);
 
   const reigstCloseHandler = useCallback(() => {
     dispatch(mapAction.setViewCount());
@@ -272,11 +272,11 @@ function Map() {
           instaUrl={selectedId.instaUrl}
         />
       )}
-      {/* {isCopy && <ToastMessage message="URL이 복사되었습니다." />} */}
+      {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
       {selectedId.title.length > 0 && <LinkCopy />}
       {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
       {/* <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} /> */}
-      {feedbackOpen && <Feedback close={feedbackCloseHandler}/>}
+      {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
       {/* <Feedback close={feedbackCloseHandler}/> */}
     </div>
   );

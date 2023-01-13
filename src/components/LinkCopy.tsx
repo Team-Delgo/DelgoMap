@@ -13,11 +13,11 @@ function LinkCopy() {
 
   const buttonClickHandler = useCallback(() => {
     navigator.clipboard.writeText(url);
-    navigator.share({
-      title:'Delgo',
-      text:'Delgo',
-      url:url,
-    })
+    // navigator.share({
+    //   title:'Delgo',
+    //   text:'Delgo',
+    //   url:url,
+    // })
     linkCopyEvent.mutate();
     dispatch(mapAction.setIsCopy());
     setTimeout(() => {
