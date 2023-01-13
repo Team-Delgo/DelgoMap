@@ -41,7 +41,7 @@ function Map() {
   const [linkId, setLinkId] = useState(NaN);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [registOpen, setIsRegistOpen] = useState(false);
-  const viewCount = useSelector((state: any) => state.map.viewCount);
+  const viewCount = useSelector((state: any) => state.persist.viewCount);
   const initMapCenter = useSelector((state: any) => state.map);
   const isCopy = useSelector((state: any) => state.map.isCopy);
   const [currentLocation, setCurrentLocation] = useState({
@@ -109,7 +109,7 @@ function Map() {
   }, []);
 
   useEffect(() => {
-    if (viewCount === 2 && !localStorage.getItem('isRegisted')) {
+    if (viewCount === 2) {
       setIsRegistOpen(true);
     }
   }, [viewCount]);
