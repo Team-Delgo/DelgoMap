@@ -3,10 +3,12 @@ import { Mungple } from "../components/maptype";
 
 interface searchStateType {
   recentSearch: Mungple[];
+  viewCount: number;
 }
 
 const initialState: searchStateType = {
   recentSearch: [],
+  viewCount: 0
 };
 
 export const searchSlice = createSlice({
@@ -14,7 +16,11 @@ export const searchSlice = createSlice({
   initialState,
   reducers: {
     setRecentSearch(state, action) {
-      if (!state.recentSearch.find((e)=>e.placeName === action.payload.placeName)) {
+      if (
+        !state.recentSearch.find(
+          (e) => e.placeName === action.payload.placeName
+        )
+      ) {
         if (state.recentSearch.length >= 5) {
           state.recentSearch.pop();
         }
@@ -24,7 +30,10 @@ export const searchSlice = createSlice({
     clearRecentSearch(state) {
       state.recentSearch = [];
     },
-  },
+    addViewCount(state) {
+      state.viewCount += 1;
+    }
+  }
 });
 
 export const searchAction = searchSlice.actions;

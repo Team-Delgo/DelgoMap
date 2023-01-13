@@ -6,6 +6,7 @@ import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
 import CafeSmall from "../common/icons/cafe-map-small.svg";
 import { analytics } from "..";
 import { mapAction } from "../redux/mapSlice";
+import { searchAction } from "../redux/searchSlice";
 // import BeautySmall from "../common/icons/beauty-map-small.svg";
 // import WalkSmall from "../common/icons/walk-map-small.svg";
 // import HospitalSmall from "../common/icons/hospital-map-small.svg";
@@ -37,7 +38,7 @@ function PlaceCard(props: { id: number, instaUrl: string, detailUrl: string, img
   // }
   const cardClickHandler = useCallback(() => {
     linkClickEvent.mutate();
-    dispatch(mapAction.setViewCount());
+    dispatch(searchAction.addViewCount());
     window.open(instaUrl, '_blank');
   }, [instaUrl]);
 
