@@ -8,7 +8,8 @@ const initialState = {
   selectedArea: "송파",
   link: "https://map.delgo.pet",
   isCopy: false,
-  viewCount: 0
+  viewCount: 0,
+  detailImgUrl: "",
 };
 
 export const mapSlice = createSlice({
@@ -35,6 +36,9 @@ export const mapSlice = createSlice({
     },
     setViewCount(state) {
       state.viewCount += 1;
+    },
+    setDetailUrl(state, action){
+      state.detailImgUrl = action.payload;
     }
   }
 });

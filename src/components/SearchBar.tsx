@@ -62,6 +62,7 @@ function SearchBar(props: {
   });
 
   const recentContext = recentSearch.map((cafe) => {
+    console.log(cafe);
     const onClickHandler = () => {
       selectId(cafe);
       setIsFocus(false);

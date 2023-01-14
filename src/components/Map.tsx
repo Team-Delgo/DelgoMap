@@ -23,6 +23,7 @@ import ToastMessage from "./ToastMessage";
 import Regist from "./Regist";
 import { mapAction } from "../redux/mapSlice";
 import Feedback from "./Feedback";
+import DetailPage from "../page/DetailPage";
 
 interface MakerItem {
   id: number;
@@ -38,6 +39,7 @@ function Map() {
   const [selectedId, setSelectedId] = useState(idDefault);
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
+  const [detailUrl, setDetailUrl] = useState('');
   const [linkId, setLinkId] = useState(NaN);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [registOpen, setIsRegistOpen] = useState(false);
@@ -77,13 +79,15 @@ function Map() {
 
   const getMapPageData = useCallback(() => {
     getMapData((response: AxiosResponse) => {
+      console.log(response);
       const { data } = response.data;
       setMungpleList(data);
     }, dispatch);
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    // document.getElementsByClassName('map-wrapper') = "hidden";
+
     mutation.mutate({
       params: {
         firebase_screen: "Map",
@@ -253,6 +257,15 @@ function Map() {
     setSearchIsOpen(false);
   };
 
+  const setDetailPage = (url:string) => {
+    setDetailUrl(url);
+  }
+
+  const closeDetailUrl = () => {
+    setDetailUrl('');
+  }
+
+  console.log(selectedId);
   return (
     <div className="map-wrapper">
       <div className="whiteBox" />
@@ -278,6 +291,7 @@ function Map() {
       {/* <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} /> */}
       {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
       {/* <Feedback close={feedbackCloseHandler}/> */}
+      {detailUrl.length > 0 && <DetailPage />}
     </div>
   );
 }

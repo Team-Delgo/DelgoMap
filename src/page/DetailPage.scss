@@ -1,0 +1,20 @@
+.detail{
+  // position: absolute;
+  // z-index: 15;
+  overflow: scroll !important;
+
+  &-back{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+  }
+  &-img{
+    // display: block;
+    width: 100vw;
+  }
+}
+
+div :not(div) {
+  overflow: scroll;
+}
+
