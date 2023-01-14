@@ -17,9 +17,10 @@ const firebaseConfig = {
   projectId: "delgomap-c4ca0",
   storageBucket: "delgomap-c4ca0.appspot.com",
   messagingSenderId: "751246508342",
-  appId: "1:751246508342:web:eea89f1186f282b36db397",
-  measurementId: "G-Z01M95BEQW",
+  appId: "1:751246508342:web:71f9041c5703d6ae6db397",
+  measurementId: "G-H4RX9ZCL5R"
 };
+
 
 const app = initializeApp(firebaseConfig);
 
