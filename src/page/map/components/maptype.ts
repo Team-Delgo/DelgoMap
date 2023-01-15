@@ -1,22 +1,22 @@
-// export interface Cert {
-//   categoryCode: string;
-//   address: string;
-//   certificationId: number;
-//   description: string;
-//   geoCode: string;
-//   isPhotoChecked: boolean;
-//   latitude: string;
-//   isLike: boolean;
-//   longitude: string;
-//   likeCount: number;
-//   commentCount: number;
-//   mungpleId: number;
-//   p_geoCode: string;
-//   photoUrl: string;
-//   placeName: string;
-//   registDt: string;
-//   userId: number;
-// }
+export interface Cert {
+  categoryCode: string;
+  address: string;
+  certificationId: number;
+  description: string;
+  geoCode: string;
+  isPhotoChecked: boolean;
+  latitude: string;
+  isLike: boolean;
+  longitude: string;
+  likeCount: number;
+  commentCount: number;
+  mungpleId: number;
+  p_geoCode: string;
+  photoUrl: string;
+  placeName: string;
+  registDt: string;
+  userId: number;
+}
 // export const certDefault: Cert = {
 //   categoryCode: "",
 //   certificationId: 0,

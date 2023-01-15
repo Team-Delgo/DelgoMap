@@ -1,0 +1,75 @@
+.recordHeader {
+  margin-top: 1vh;
+  padding-bottom: 2vh;
+  // margin: 20px 20px 20px 20px;
+  display: flex;
+  height: 3vh;
+  justify-content: space-evenly;
+  background-color: white;
+  &-header{
+    &-title{
+      position: absolute;
+      top: 8vh;
+      left: 50%;
+      transform: translateX(-50%);
+      font-weight: 500;
+      font-size: 18px;
+    }
+    img{
+      width: 22px;
+      height: 21px;
+    }
+  }
+  &-divider{
+    position: absolute;
+    top: 17vh;
+    margin-top: 2px;
+    width: 100%;
+    height: 1px;
+    background-color: #ececec;
+  }
+  &-wrapper {
+    background-color: white;
+    height: 18vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    &.fixed{
+      position: fixed;
+    }
+    z-index: 9999;
+
+    img {
+      margin-left: 20px;
+      margin-top: 8vh;
+      height: 3vh;
+      aspect-ratio: 119.02/26.88;
+    }
+  }
+
+  &-item {
+    width: 40px;
+    text-align: center;
+    margin-top: 1.5vh;
+    font-size: 16px;
+    font-weight: 400;
+    color: #8a8a8a;
+    &.select {
+      position: relative;
+      color: black;
+      font-weight: 600;
+
+      &::after {
+        position: absolute;
+        top: 3.5vh;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        z-index: 99999;
+        transform: translateY(-5px);
+        content: "";
+        background-color: black;
+      }
+    }
+  }
+}

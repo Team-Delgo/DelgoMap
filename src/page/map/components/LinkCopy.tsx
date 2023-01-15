@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
 import { useDispatch, useSelector } from "react-redux";
-import Link from "../common/icons/link.svg";
-import { analytics } from "../index";
-import { mapAction } from "../redux/mapSlice";
+import Link from "../../../common/icons/link.svg";
+import { analytics } from "../../../index";
+import { mapAction } from "../../../redux/mapSlice";
 import "./LinkCopy.scss";
 
 function LinkCopy() {

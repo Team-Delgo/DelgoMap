@@ -1,9 +1,9 @@
 import { AxiosResponse } from "axios";
 import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
-import { analytics } from "../index";
+import { analytics } from "../../../index";
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { sendEmail } from "../common/api/record";
+import { sendEmail } from "../../../common/api/record";
 import Logo from "../common/icons/regist.svg";
 import "./Regist.scss";
 
