@@ -6,6 +6,20 @@
   height: 3vh;
   justify-content: space-evenly;
   background-color: white;
+  &-header{
+    &-title{
+      position: absolute;
+      top: 8vh;
+      left: 50%;
+      transform: translateX(-50%);
+      font-weight: 500;
+      font-size: 18px;
+    }
+    img{
+      width: 22px;
+      height: 21px;
+    }
+  }
   &-divider{
     position: absolute;
     top: 17vh;
@@ -18,6 +32,8 @@
     background-color: white;
     height: 18vh;
     width: 100%;
+    position: fixed;
+    top: 0;
     &.fixed{
       position: fixed;
     }

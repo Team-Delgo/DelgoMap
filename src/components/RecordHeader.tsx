@@ -2,16 +2,18 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './RecordHeader.scss';
+import BackArrow from "../common/icons/back-arrow.svg";
+import { ROOT_PATH } from '../common/constants/path.const';
 
 function RecordHeader() {
-  let tab = (useLocation().state as any) || 'photo';
+  let tab = (useLocation().state as any) || 'calendar';
   if (tab.from === 'home') {
-    tab = 'photo';
+    tab = 'calendar';
   }
   const [selected, setSeleceted] = useState({
     photo: false,
     calendar: true,
-    map: false,
+    achieve: false,
   });
   const navigate = useNavigate();
 
@@ -22,14 +24,23 @@ function RecordHeader() {
       const temp = {
         photo: false,
         calendar: false,
-        map: false,
+        achieve: false,
       };
       return { ...temp, [id]: true };
     });
     navigate(`/${id}`, { state: id });
   };
+
+  const backButtonClickHandler = () => {
+    navigate(ROOT_PATH);
+  };
+
   return (
     <div className={classNames('recordHeader-wrapper', { fixed: tab === 'calendar' })}>
+      <div className='recordHeader-header'>
+        <img className='recordHeader-header-back' src={BackArrow} alt="back" onClick={backButtonClickHandler}/>
+        <div className="recordHeader-header-title">내 기록</div>
+      </div>
       <div className="recordHeader">
         <div
           aria-hidden="true"
@@ -49,8 +60,8 @@ function RecordHeader() {
         </div>
         <div
           aria-hidden="true"
-          id="map"
-          className={classNames('recordHeader-item', { select: tab === 'map' })}
+          id="achieve"
+          className={classNames('recordHeader-item', { select: tab === 'achieve' })}
           onClick={clickHandler}
         >
           업적

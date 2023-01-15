@@ -49,7 +49,7 @@ export const CAMERA_PATH = {
 export const RECORD_PATH = {
   PHOTO: '/photo',
   CALENDAR: '/calendar',
-  MAP: '/map',
+  ACHIEVE: '/achieve',
   CERT:'/certs',
   COMMENT:'/comments/:id'
 };

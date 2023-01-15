@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import { mapSlice } from "./mapSlice";
 import scrollSlice from "./scrollSlice";
 import searchSlice from "./searchSlice";
+import userSlice from "./userSlice";
 
 const persistConfig = {
   key: "root",
@@ -13,6 +14,8 @@ const persistConfig = {
 const reducers = combineReducers({
   scroll: scrollSlice,
   search: searchSlice,
+  user: userSlice
+
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);
