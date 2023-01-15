@@ -4,12 +4,12 @@ import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from "@react-query-f
 import { AxiosResponse } from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Map.scss";
-import { getMapData } from "../common/api/record";
+import { getMapData } from "../../../common/api/record";
 import { Mungple, idDefault } from "./maptype";
-import Cafe from "../common/icons/cafe-map.svg";
-import CafeSmall from "../common/icons/cafe-map-small.svg";
+import Cafe from "../../../common/icons/cafe-map.svg";
+import CafeSmall from "../../../common/icons/cafe-map-small.svg";
 import PlaceCard from "./PlaceCard";
-import { analytics } from "../index";
+import { analytics } from "../../../index";
 import {
   setMarkerOptionBig,
   setMarkerOptionSmall,
@@ -17,13 +17,15 @@ import {
 } from "./MapComponent";
 import SearchBar from "./SearchBar";
 import LinkCopy from "./LinkCopy";
-import Search from "../common/icons/search.svg";
-import Logo from "../common/icons/logo.svg";
+import Search from "../../../common/icons/search.svg";
+import Logo from "../../../common/icons/logo.svg";
 import ToastMessage from "./ToastMessage";
 import Regist from "./Regist";
-import { mapAction } from "../redux/mapSlice";
+import { mapAction } from "../../../redux/mapSlice";
 import Feedback from "./Feedback";
-import DetailPage from "../page/DetailPage";
+import DetailPage from "../../../page/DetailPage";
+import FooterNavigation from "../../../components/FooterNavigation";
+import CertToggle from "./CertToggle";
 
 interface MakerItem {
   id: number;
@@ -41,6 +43,7 @@ function Map() {
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [detailUrl, setDetailUrl] = useState('');
   const [linkId, setLinkId] = useState(NaN);
+  const [isCertVisible, setIsCertVisible] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [registOpen, setIsRegistOpen] = useState(false);
   const viewCount = useSelector((state: any) => state.persist.viewCount);
@@ -265,7 +268,13 @@ function Map() {
     setDetailUrl('');
   }
 
-  console.log(selectedId);
+  const onClickCertToggle = () => {
+    setIsCertVisible(prev => !prev);
+    console.log(isCertVisible);
+  };
+
+
+
   return (
     <div className="map-wrapper">
       <div className="whiteBox" />
@@ -285,6 +294,7 @@ function Map() {
           instaUrl={selectedId.instaUrl}
         />
       )}
+      <CertToggle onClick={onClickCertToggle} state={isCertVisible}/>
       {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
       {selectedId.title.length > 0 && <LinkCopy />}
       {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
@@ -292,6 +302,7 @@ function Map() {
       {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
       {/* <Feedback close={feedbackCloseHandler}/> */}
       {detailUrl.length > 0 && <DetailPage />}
+      {selectedId.title.length === 0 && <FooterNavigation />}
     </div>
   );
 }

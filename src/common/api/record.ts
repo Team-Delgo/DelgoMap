@@ -15,6 +15,17 @@ function getMapData(
     });
 }
 
+function getCalendarData(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
+  axios
+    .get(`/calendar/${userId}`)
+    .then((data) => {
+      success(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 function sendEmail(
   email: string,
   success: (data: AxiosResponse) => void,
@@ -32,4 +43,4 @@ function sendEmail(
     });
 }
 
-export { getMapData, sendEmail };
+export { getMapData, sendEmail, getCalendarData };

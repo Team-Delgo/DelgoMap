@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
-import { analytics } from "../index";
-import Logo from "../common/icons/regist.svg";
+import { analytics } from "../../../index";
+import Logo from "../../../common/icons/regist.svg";
 import "./Regist.scss";
 
 const text = `델고의 추천플레이스들, 어땠나요?\n의견을 들려주세요`;

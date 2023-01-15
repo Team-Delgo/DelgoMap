@@ -2,9 +2,10 @@ import React, { useCallback, useState } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { Mungple } from "./maptype";
 import "./SearchBar.scss";
-import BackArrow from "../common/icons/back-arrow.svg";
+import BackArrow from "../../../common/icons/back-arrow.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { searchAction } from "../redux/searchSlice";
+import { searchAction } from "../../../redux/searchSlice";
+import { RootState } from "../../../redux/store";
 
 function SearchBar(props: {
   cafeList: Mungple[];
@@ -14,7 +15,7 @@ function SearchBar(props: {
   const { cafeList, selectId, close } = props;
   const [isFocus, setIsFocus] = useState(false);
   const [enteredInput, setEnteredInput] = useState("");
-  const recentSearch: Mungple[] = useSelector((state: any) => state.persist.recentSearch);
+  const recentSearch: Mungple[] = useSelector((state: RootState) => state.persist.search.recentSearch);
   const [option, setOption] = useState<Mungple[]>([]);
   const ref = useOnclickOutside(() => {
     setIsFocus(false);
