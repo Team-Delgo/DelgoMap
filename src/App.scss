@@ -1,7 +1,15 @@
 body { 
   font-family: 'Spoqa Han Sans Neo';
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  input{
+    &:focus {
+      outline: none;
+      // outline: 1px solid blue;
+    }
+  }
 }
+
+
 
 @font-face {
   font-family: 'Spoqa Han Sans Neo';

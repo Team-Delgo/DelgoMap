@@ -1,0 +1,27 @@
+@import "../../Sign.scss";
+@mixin font($weight, $size) {
+  font-family: "Spoqa Han Sans Neo";
+  font-style: normal;
+  font-weight: $weight;
+  font-size: $size;
+  line-height: 150%;
+  color: #3f3f3f;
+}
+
+.wrapper {
+  margin: 46px 34px;
+  max-height: 60vh;
+  overflow: scroll;
+  &.serviceterm{
+    max-height: 70vh;
+  }
+}
+.title {
+  width: 63vw;
+  @include font(700, 16px);
+}
+.description {
+  margin-top: 25px;
+  white-space: pre-line;
+  @include font(400, 12px);
+}

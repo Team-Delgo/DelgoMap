@@ -1,10 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { mapSlice } from "./mapSlice";
-import scrollSlice from "./scrollSlice";
-import searchSlice from "./searchSlice";
-import userSlice from "./userSlice";
+import deviceSlice from "./slice/deviceSlice";
+import { mapSlice } from "./slice/mapSlice";
+import scrollSlice from "./slice/scrollSlice";
+import searchSlice from "./slice/searchSlice";
+import userSlice from "./slice/userSlice";
 
 const persistConfig = {
   key: "root",
@@ -14,7 +15,8 @@ const persistConfig = {
 const reducers = combineReducers({
   scroll: scrollSlice,
   search: searchSlice,
-  user: userSlice
+  user: userSlice,
+  device: deviceSlice
 
 })
 

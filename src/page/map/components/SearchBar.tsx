@@ -4,7 +4,7 @@ import { Mungple } from "./maptype";
 import "./SearchBar.scss";
 import BackArrow from "../../../common/icons/back-arrow.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { searchAction } from "../../../redux/searchSlice";
+import { searchAction } from "../../../redux/slice/searchSlice";
 import { RootState } from "../../../redux/store";
 
 function SearchBar(props: {

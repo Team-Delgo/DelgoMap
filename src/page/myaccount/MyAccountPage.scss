@@ -1,0 +1,83 @@
+.my-account-page {
+  &-back {
+    position: absolute;
+    left: 20px;
+    top: 40px;
+  }
+  &-title {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 500;
+    font-size: 18px;
+  }
+  &-header {
+    background-color: #ffffff;
+    height: 20vh;
+    &-title {
+      color: #8a8a8a;
+      font-size: 16px;
+      text-align: center;
+      font-weight: 500;
+      margin-top: 50px;
+    }
+
+    &-my-pet {
+      // display: flex;
+      // justify-content: space-between;
+      margin: 140px 5% 50px 5%;
+      display: flex;
+      &-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 4px;
+      }
+      &-profile {
+        margin-left: 25px;
+        margin-top: 15px;
+        &-address {
+          color: black;
+          font-size: 14px;
+          font-weight: 400;
+          margin-top: 10px;
+        }
+
+        &-name {
+          color: #000000;
+          font-size: 24px;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+          img {
+            margin-left: 9px;
+          }
+        }
+        &-date {
+          color: #8a8a8a;
+          font-weight: 400;
+          font-size: 14px;
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+
+  &-body {
+    background-color: #3f3f3f;
+    padding-top: 37px;
+    height: 80vh;
+    &-item {
+      padding: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 400;
+      color: white;
+      &-wrapper-sub {
+        font-size: 12px;
+      }
+    }
+  }
+}
