@@ -11,10 +11,10 @@ import RecordHeader from '../../../../components/RecordHeader';
 import './Photo.scss';
 import UnderArrow from '../../../../common/icons/under-arrow-gray.svg';
 import { Cert } from '../../../map/components/maptype';
-import { getPhotoData } from '../../../../common/api/record';
+import { getPhotoCount, getPhotoData } from '../../../../common/api/record';
 import { RECORD_PATH } from '../../../../common/constants/path.const';
 import { analytics } from '../../../../index';
-import { scrollActions } from '../../../../redux/scrollSlice';
+import { scrollActions } from '../../../../redux/slice/scrollSlice';
 import { RootState } from '../../../../redux/store';
 
 function Photo() {
@@ -31,6 +31,7 @@ function Photo() {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [page, setPage] = useState<number>(0);
+  const [certCount, setCertCount] = useState(0);
   const [pageSizeFor, setPageSizeFor] = useState(pageSize);
   const [buttonIsClicked, setButtonIsClicked] = useState(false);
   const [isFetching, setFetching] = useState(false);
@@ -47,6 +48,7 @@ function Photo() {
         firebase_screen_class: 'AlbumPage',
       },
     });
+    getTotalCount();
     if (location?.state?.from !== 'home' && pageSizeFor === 1) {
       getPhotoDataList();
     }
@@ -63,6 +65,7 @@ function Photo() {
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
 
   const touchStartFunc = (e: any) => {
     setTouchStart(e.touches[0].clientX);
@@ -85,6 +88,11 @@ function Photo() {
     else if (isLast) setFetching(true);
   }, [isFetching]);
 
+  const getTotalCount = () => {
+    getPhotoCount(userId, (response:AxiosResponse) => {
+      setCertCount(response.data.data);
+    }, dispatch)
+  };
   const changePhotoData = () => {
     getPhotoData(
       userId,
@@ -97,6 +105,7 @@ function Photo() {
         setPage(1);
         setPhotos(data.data.content);
         setLast(data.data.last);
+        setPageSizeFor(1);
         setFetching(false);
       },
       dispatch,
@@ -124,7 +133,6 @@ function Photo() {
       sortOption,
       (response: AxiosResponse) => {
         const { data } = response;
-        console.log(data);
         if (pageSizeFor > 1) {
           setPage(pageSizeFor);
         } else {
@@ -155,7 +163,7 @@ function Photo() {
   return (
     <div className="photo">
       <div className="photo-history">
-        <div className="photo-history-title">{categoryTab}기록</div>
+        <div className="photo-history-title">{certCount}장의 사진</div>
         <div className="photo-history-select">
           <div
             className="photo-history-select-sort"
@@ -191,6 +199,7 @@ function Photo() {
                 aria-hidden="true"
                 onClick={() => {
                   setSortOption(true);
+                  
                   setButtonIsClicked(false);
                 }}
               >

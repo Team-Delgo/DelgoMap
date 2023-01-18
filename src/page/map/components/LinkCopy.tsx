@@ -3,7 +3,7 @@ import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "../../../common/icons/link.svg";
 import { analytics } from "../../../index";
-import { mapAction } from "../../../redux/mapSlice";
+import { mapAction } from "../../../redux/slice/mapSlice";
 import "./LinkCopy.scss";
 
 function LinkCopy() {

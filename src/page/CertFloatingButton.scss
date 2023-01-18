@@ -1,0 +1,20 @@
+.cert-floating-button {
+  position: fixed;
+  z-index: 12;
+  right: 20px;
+  bottom: 52px;
+  width: 65px;
+  height: 65px;
+  background: #212122;
+  /* Reward Gray/4 */
+  border-radius: 100%;
+  border: 1px solid #3d3d3d;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img{
+    width: 22px;
+    height: 22px;
+  }
+}

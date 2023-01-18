@@ -64,15 +64,15 @@ function getPhotoData(
     });
 }
 
-// function getCategoryCount(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
-//   axiosInstance
-//     .get(`/certification/category/count/${userId}`)
-//     .then((data) => {
-//       success(data);
-//     })
-//     .catch((error) => {
-//       useErrorHandlers(dispatch, error);
-//     });
-// }
+function getPhotoCount(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
+  axios
+    .get(`https://www.reward.delgo.pet:8443/certification/count/${userId}`)
+    .then((data) => {
+      success(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 
-export { getMapData, sendEmail, getCalendarData, getPhotoData };
+export { getMapData, sendEmail, getCalendarData, getPhotoData, getPhotoCount };

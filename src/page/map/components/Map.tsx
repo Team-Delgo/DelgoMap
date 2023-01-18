@@ -17,11 +17,14 @@ import Search from "../../../common/icons/search.svg";
 import Logo from "../../../common/icons/logo.svg";
 import ToastMessage from "./ToastMessage";
 import Regist from "./Regist";
-import { mapAction } from "../../../redux/mapSlice";
+import { mapAction } from "../../../redux/slice/mapSlice";
 import Feedback from "./Feedback";
 import DetailPage from "../../../page/DetailPage";
 import FooterNavigation from "../../../components/FooterNavigation";
 import CertToggle from "./CertToggle";
+import Human from "../../../common/icons/human.svg";
+import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from "../../../common/constants/path.const";
+import { RootState } from "../../../redux/store";
 
 interface MakerItem {
   id: number;
@@ -32,6 +35,7 @@ function Map() {
   const mapElement = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isSignIn = useSelector((state:RootState) => state.persist.user.isSignIn);
   const [searchIsOpen, setSearchIsOpen] = useState(false);
   const [globarMap, setGlobarMap] = useState<naver.maps.Map>();
   const [selectedId, setSelectedId] = useState(idDefault);
@@ -272,11 +276,17 @@ function Map() {
     console.log(isCertVisible);
   };
 
+  const navigateMyPage = () => {
+    if(isSignIn) navigate(MY_ACCOUNT_PATH.MAIN);
+    else navigate(SIGN_IN_PATH.MAIN);
+  };
+
   return (
     <div className="map-wrapper">
       <div className="whiteBox" />
       <img className="map-logo" src={Logo} alt="logo" />
       <img className="map-search" src={Search} alt="search" onClick={searchClickHander} />
+      <img className="map-mypage" src={Human} alt="mypage" onClick={navigateMyPage} />
       <div className="slogun">강아지 델고 동네생활</div>
       <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
       {searchIsOpen && (

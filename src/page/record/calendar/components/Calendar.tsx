@@ -10,7 +10,7 @@ import { Cert } from '../../../map/components/maptype';
 import { DateType } from './calendarType';
 import { RECORD_PATH } from '../../../../common/constants/path.const';
 import { RootState } from '../../../../redux/store';
-import { scrollActions } from '../../../../redux/scrollSlice';
+import { scrollActions } from '../../../../redux/slice/scrollSlice';
 import { analytics } from "../../../../index";
 
 function Calender() {
