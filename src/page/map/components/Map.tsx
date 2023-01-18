@@ -10,11 +10,7 @@ import Cafe from "../../../common/icons/cafe-map.svg";
 import CafeSmall from "../../../common/icons/cafe-map-small.svg";
 import PlaceCard from "./PlaceCard";
 import { analytics } from "../../../index";
-import {
-  setMarkerOptionBig,
-  setMarkerOptionSmall,
-  setMarkerOptionPrev,
-} from "./MapComponent";
+import { setMarkerOptionBig, setMarkerOptionSmall, setMarkerOptionPrev } from "./MapComponent";
 import SearchBar from "./SearchBar";
 import LinkCopy from "./LinkCopy";
 import Search from "../../../common/icons/search.svg";
@@ -41,7 +37,7 @@ function Map() {
   const [selectedId, setSelectedId] = useState(idDefault);
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
-  const [detailUrl, setDetailUrl] = useState('');
+  const [detailUrl, setDetailUrl] = useState("");
   const [linkId, setLinkId] = useState(NaN);
   const [isCertVisible, setIsCertVisible] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
@@ -90,7 +86,7 @@ function Map() {
 
   useEffect(() => {
     // document.getElementsByClassName('map-wrapper') = "hidden";
-
+    document.body.style.overflow = "hidden";
     mutation.mutate({
       params: {
         firebase_screen: "Map",
@@ -113,6 +109,9 @@ function Map() {
       clearSelectedId();
     });
     setLinkId(parseInt(routerLocation.pathname.slice(1)));
+    return () => {
+      document.body.style.overflow = "scroll";
+    };
   }, []);
 
   useEffect(() => {
@@ -131,7 +130,7 @@ function Map() {
 
   const reigstCloseHandler = useCallback(() => {
     dispatch(mapAction.setViewCount());
-    localStorage.setItem('isRegisted', 'true');
+    localStorage.setItem("isRegisted", "true");
     setIsRegistOpen(false);
   }, []);
 
@@ -260,20 +259,18 @@ function Map() {
     setSearchIsOpen(false);
   };
 
-  const setDetailPage = (url:string) => {
+  const setDetailPage = (url: string) => {
     setDetailUrl(url);
-  }
-
-  const closeDetailUrl = () => {
-    setDetailUrl('');
-  }
-
-  const onClickCertToggle = () => {
-    setIsCertVisible(prev => !prev);
-    console.log(isCertVisible);
   };
 
+  const closeDetailUrl = () => {
+    setDetailUrl("");
+  };
 
+  const onClickCertToggle = () => {
+    setIsCertVisible((prev) => !prev);
+    console.log(isCertVisible);
+  };
 
   return (
     <div className="map-wrapper">
@@ -282,7 +279,9 @@ function Map() {
       <img className="map-search" src={Search} alt="search" onClick={searchClickHander} />
       <div className="slogun">강아지 델고 동네생활</div>
       <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
-      {searchIsOpen && <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />}
+      {searchIsOpen && (
+        <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />
+      )}
       {selectedId.title.length > 0 && (
         <PlaceCard
           id={selectedId.id}
@@ -294,7 +293,7 @@ function Map() {
           instaUrl={selectedId.instaUrl}
         />
       )}
-      <CertToggle onClick={onClickCertToggle} state={isCertVisible}/>
+      <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
       {selectedId.title.length > 0 && <LinkCopy />}
       {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
