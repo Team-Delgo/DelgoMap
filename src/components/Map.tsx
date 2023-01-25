@@ -10,20 +10,17 @@ import Cafe from "../common/icons/cafe-map.svg";
 import CafeSmall from "../common/icons/cafe-map-small.svg";
 import PlaceCard from "./PlaceCard";
 import { analytics } from "../index";
-import {
-  setMarkerOptionBig,
-  setMarkerOptionSmall,
-  setMarkerOptionPrev,
-} from "./MapComponent";
+import { setMarkerOptionBig, setMarkerOptionSmall, setMarkerOptionPrev } from "./MapComponent";
 import SearchBar from "./SearchBar";
 import LinkCopy from "./LinkCopy";
 import Search from "../common/icons/search.svg";
 import Logo from "../common/icons/logo.svg";
 import ToastMessage from "./ToastMessage";
 import Regist from "./Regist";
-import { mapAction } from "../redux/mapSlice";
+// import { mapAction } from "../../../redux/mapSlice";
 import Feedback from "./Feedback";
 import DetailPage from "../page/DetailPage";
+import {mapAction} from "../redux/mapSlice";
 
 interface MakerItem {
   id: number;
@@ -39,8 +36,9 @@ function Map() {
   const [selectedId, setSelectedId] = useState(idDefault);
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
-  const [detailUrl, setDetailUrl] = useState('');
+  const [detailUrl, setDetailUrl] = useState("");
   const [linkId, setLinkId] = useState(NaN);
+  const [isCertVisible, setIsCertVisible] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [registOpen, setIsRegistOpen] = useState(false);
   const viewCount = useSelector((state: any) => state.persist.viewCount);
@@ -87,7 +85,7 @@ function Map() {
 
   useEffect(() => {
     // document.getElementsByClassName('map-wrapper') = "hidden";
-
+    document.body.style.overflow = "hidden";
     mutation.mutate({
       params: {
         firebase_screen: "Map",
@@ -110,6 +108,9 @@ function Map() {
       clearSelectedId();
     });
     setLinkId(parseInt(routerLocation.pathname.slice(1)));
+    return () => {
+      document.body.style.overflow = "scroll";
+    };
   }, []);
 
   useEffect(() => {
@@ -128,7 +129,7 @@ function Map() {
 
   const reigstCloseHandler = useCallback(() => {
     dispatch(mapAction.setViewCount());
-    localStorage.setItem('isRegisted', 'true');
+    localStorage.setItem("isRegisted", "true");
     setIsRegistOpen(false);
   }, []);
 
@@ -228,20 +229,20 @@ function Map() {
           };
         });
         globarMap?.panTo(
-          new naver.maps.LatLng(
-            parseFloat(mungpleList[index].latitude),
-            parseFloat(mungpleList[index].longitude)
-          ),
-          {
-            duration: 500,
-            easing: "easeOutCubic",
-          }
+            new naver.maps.LatLng(
+                parseFloat(mungpleList[index].latitude),
+                parseFloat(mungpleList[index].longitude)
+            ),
+            {
+              duration: 500,
+              easing: "easeOutCubic",
+            }
         );
         const markerOptions = setMarkerOptionBig(
-          Cafe,
-          mungpleList[index],
-          globarMap,
-          selectedId.prevCategoryCode
+            Cafe,
+            mungpleList[index],
+            globarMap,
+            selectedId.prevCategoryCode
         );
         markerList[index].marker.setOptions(markerOptions);
       }
@@ -257,42 +258,48 @@ function Map() {
     setSearchIsOpen(false);
   };
 
-  const setDetailPage = (url:string) => {
+  const setDetailPage = (url: string) => {
     setDetailUrl(url);
-  }
+  };
 
   const closeDetailUrl = () => {
-    setDetailUrl('');
-  }
+    setDetailUrl("");
+  };
 
-  console.log(selectedId);
+  const onClickCertToggle = () => {
+    setIsCertVisible((prev) => !prev);
+    console.log(isCertVisible);
+  };
+
   return (
-    <div className="map-wrapper">
-      <div className="whiteBox" />
-      <img className="map-logo" src={Logo} alt="logo" />
-      <img className="map-search" src={Search} alt="search" onClick={searchClickHander} />
-      <div className="slogun">강아지 델고 동네생활</div>
-      <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
-      {searchIsOpen && <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />}
-      {selectedId.title.length > 0 && (
-        <PlaceCard
-          id={selectedId.id}
-          img={selectedId.img}
-          title={selectedId.title}
-          address={selectedId.address}
-          categoryCode={selectedId.categoryCode}
-          detailUrl={selectedId.detailUrl}
-          instaUrl={selectedId.instaUrl}
-        />
-      )}
-      {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
-      {selectedId.title.length > 0 && <LinkCopy />}
-      {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
-      {/* <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} /> */}
-      {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
-      {/* <Feedback close={feedbackCloseHandler}/> */}
-      {detailUrl.length > 0 && <DetailPage />}
-    </div>
+      <div className="map-wrapper">
+        <div className="whiteBox" />
+        <img className="map-logo" src={Logo} alt="logo" />
+        <img className="map-search" src={Search} alt="search" onClick={searchClickHander} />
+        <div className="slogun">강아지 델고 동네생활</div>
+        <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
+        {searchIsOpen && (
+            <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />
+        )}
+        {selectedId.title.length > 0 && (
+            <PlaceCard
+                id={selectedId.id}
+                img={selectedId.img}
+                title={selectedId.title}
+                address={selectedId.address}
+                categoryCode={selectedId.categoryCode}
+                detailUrl={selectedId.detailUrl}
+                instaUrl={selectedId.instaUrl}
+            />
+        )}
+        {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
+        {selectedId.title.length > 0 && <LinkCopy />}
+        {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
+        {/* <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} /> */}
+        {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
+        {/* <Feedback close={feedbackCloseHandler}/> */}
+        {detailUrl.length > 0 && <DetailPage />}
+      </div>
   );
 }
 

@@ -14,6 +14,7 @@ function App() {
       <Route path='/' element={<MapPage />} />
       <Route path='/:id' element={<MapPage />} />
       <Route path='/detail' element={<DetailPage />} />
+      <Route path='/:id/detail' element={<DetailPage />} />
     </Routes>
   </BrowserRouter>
   </QueryClientProvider>;
