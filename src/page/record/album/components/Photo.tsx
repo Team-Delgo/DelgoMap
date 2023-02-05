@@ -164,6 +164,18 @@ function Photo() {
     []
   );
 
+  const otherDogsFeed = useMemo(() => {
+    return (
+      <div className="photo-others">
+        <div className="photo-others-header">
+          <h5>다른 강아지들은 뭐 할까?</h5>
+          <span className="photo-others-more">더보기</span>
+        </div>
+        <div className="photo-others-photo"></div>
+      </div>
+    );
+  }, []);
+
   const photoContext = useMemo(
     () =>
       photos.map((photo) => {
@@ -185,7 +197,7 @@ function Photo() {
       }),
     [photos]
   );
-  
+
   if (photoContext.length % 2 === 0) {
     photoContext.concat(<div className="photo-fake" />);
   }
