@@ -37,7 +37,6 @@ function FooterNavigation() {
 
 
  const moveToPostsPage = () => {
-    console.log(POSTS_PATH)
     navigate(POSTS_PATH);
   }
   const sendLoginPage = () => {
@@ -69,9 +68,7 @@ function FooterNavigation() {
       <div
         className="navigation-button"
         aria-hidden="true"
-        onClick={() => {
-          console.log(1);
-        }}
+        onClick={moveToPostsPage}
       >
         <img src={DogFoot} alt="foot" />
         동네강아지
