@@ -112,7 +112,7 @@ function Map() {
     naver.maps.Event.addListener(map, "click", (e) => {
       clearSelectedId();
     });
-    setLinkId(parseInt(routerLocation.pathname.slice(1)));
+    setLinkId(parseInt(routerLocation.pathname.slice(1),10));
     return () => {
       document.body.style.overflow = "scroll";
     };
@@ -206,8 +206,8 @@ function Map() {
       const index = markerList.findIndex((e) => {
         return e.id === selectedId.prevId;
       });
-      let markerOptions: naver.maps.MarkerOptions;
-      markerOptions = setMarkerOptionPrev(CafeSmall, selectedId, globarMap);
+      // let markerOptions: naver.maps.MarkerOptions;
+      const markerOptions = setMarkerOptionPrev(CafeSmall, selectedId, globarMap);
       markerList[index].marker.setOptions(markerOptions);
     }
   }, [selectedId]);
@@ -285,10 +285,10 @@ function Map() {
     <div className="map-wrapper">
       <div className="whiteBox" />
       <img className="map-logo" src={Logo} alt="logo" />
-      <img className="map-search" src={Search} alt="search" onClick={searchClickHander} />
-      <img className="map-mypage" src={Human} alt="mypage" onClick={navigateMyPage} />
+      <img className="map-search" src={Search} alt="search" aria-hidden="true" onClick={searchClickHander} />
+      <img className="map-mypage" src={Human} alt="mypage" aria-hidden="true" onClick={navigateMyPage} />
       <div className="slogun">강아지 델고 동네생활</div>
-      <div className="map" ref={mapElement} style={{ position: "absolute" }}></div>
+      <div className="map" ref={mapElement} style={{ position: "absolute" }}/>
       {searchIsOpen && (
         <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />
       )}

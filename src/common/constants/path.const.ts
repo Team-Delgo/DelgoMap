@@ -54,7 +54,7 @@ export const RECORD_PATH = {
   COMMENT:'/comments/:id'
 };
 
-
+export const CROP_PATH = '/crop'
 
 export const ACHIEVEMENT_PATH = '/achievement';
 

@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import "./PlaceCard.scss";
+import { useNavigate } from "react-router-dom";
 import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
+import "./PlaceCard.scss";
 // import BathSmall from "../common/icons/bath-map-small.svg";
 import CafeSmall from "../../../common/icons/cafe-map-small.svg";
 import { analytics } from "../../../index";
 import { mapAction } from "../../../redux/slice/mapSlice";
 import { searchAction } from "../../../redux/slice/searchSlice";
-import { useNavigate } from "react-router-dom";
+
 // import BeautySmall from "../common/icons/beauty-map-small.svg";
 // import WalkSmall from "../common/icons/walk-map-small.svg";
 // import HospitalSmall from "../common/icons/hospital-map-small.svg";
@@ -26,7 +27,7 @@ function PlaceCard(props: {
   const linkClickEvent = useAnalyticsCustomLogEvent(analytics, "card_click");
   const dispatch = useDispatch();
   const { id, img, title, address, categoryCode, detailUrl, instaUrl } = props;
-  let icon = useMemo(() => <img src={CafeSmall} alt="" />, []);
+  const icon = useMemo(() => <img src={CafeSmall} alt="" />, []);
   useEffect(() => {
     return () => {
       dispatch(mapAction.clearLink());
