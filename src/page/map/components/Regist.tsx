@@ -4,7 +4,6 @@ import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { analytics } from "../../../index";
 import { sendEmail } from "../../../common/api/record";
-import Logo from "../common/icons/regist.svg";
 import "./Regist.scss";
 
 const text = `강아지와의 동네생활을 위한 앱\n델고의 사전예약을 받고 있어요`
@@ -19,7 +18,6 @@ function Regist(props: { close: () => void, feedbackOpen: () => void }) {
       emailRef.current!.value,
       (data: AxiosResponse) => {
         registEvent.mutate();
-        console.log(data);
       },
       dispatch
     );
@@ -28,7 +26,6 @@ function Regist(props: { close: () => void, feedbackOpen: () => void }) {
   };
   return (
     <div className="regist">
-      {/* <h2>Delgo의 추천플레이스를 둘러보셨군요!</h2> */}
       <h2>
       {text}
       </h2>
