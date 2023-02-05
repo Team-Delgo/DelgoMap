@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { CROP_PATH, RECORD_PATH } from "../common/constants/path.const";
+import { CROP_PATH, POSTS_PATH, RECORD_PATH } from "../common/constants/path.const";
 import DogFoot from "../common/icons/dogfoot.svg";
 import Plus from "../common/icons/plus.svg";
 import { uploadAction } from "../redux/slice/uploadSlice";
@@ -28,9 +28,14 @@ function FooterNavigation(){
     }
   };
 
+  const moveToPostsPage = () => {
+    console.log(POSTS_PATH)
+    navigate(POSTS_PATH);
+  }
+
 
   return <div className="navigation">
-    <div className="navigation-button" aria-hidden="true"  onClick={()=>{console.log(1)}}>
+    <div className="navigation-button" aria-hidden="true"  onClick={moveToPostsPage}>
       <img src={DogFoot} alt="foot"/>
       동네강아지
     </div>
