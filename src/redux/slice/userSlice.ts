@@ -4,7 +4,7 @@ const initialState = {
   isSignIn: false,
   appleCode:'',
   user: {
-    id: 248,
+    id: 0,
     address: '',
     nickname: '',
     email: '',

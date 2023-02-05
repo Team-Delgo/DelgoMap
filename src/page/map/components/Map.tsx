@@ -25,6 +25,7 @@ import CertToggle from './CertToggle';
 import Human from '../../../common/icons/human.svg';
 import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from '../../../common/constants/path.const';
 import { RootState } from '../../../redux/store';
+import AlertConfirm from '../../../common/dialog/AlertConfirm';
 
 interface MakerItem {
   id: number;
@@ -37,6 +38,7 @@ function Map() {
   const dispatch = useDispatch();
   const isSignIn = useSelector((state: RootState) => state.persist.user.isSignIn);
   const [searchIsOpen, setSearchIsOpen] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [globarMap, setGlobarMap] = useState<naver.maps.Map>();
   const [selectedId, setSelectedId] = useState(idDefault);
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
@@ -253,11 +255,26 @@ function Map() {
 
   const navigateMyPage = useCallback(() => {
     if (isSignIn) navigate(MY_ACCOUNT_PATH.MAIN);
-    else navigate(SIGN_IN_PATH.MAIN);
+    else setIsAlertOpen(true);
   }, []);
+
+  const sendLoginPage = () => {
+    navigate(SIGN_IN_PATH.MAIN);
+  };
+
+  const closeAlert = () => {
+    setIsAlertOpen(false);
+  };
+
 
   return (
     <div className="map-wrapper">
+      {isAlertOpen && <AlertConfirm
+        text="로그인이 필요한 기능입니다."
+        buttonText="로그인"
+        yesButtonHandler={sendLoginPage}
+        noButtonHandler={closeAlert}
+      />}
       <div className="whiteBox" />
       <img className="map-logo" src={Logo} alt="logo" />
       <img className="map-search" src={Search} alt="search" aria-hidden="true" onClick={searchClickHander} />
