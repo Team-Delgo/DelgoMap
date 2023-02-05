@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -12,6 +13,7 @@ import './FooterNavigation.scss';
 function FooterNavigation() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
+
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -32,6 +34,12 @@ function FooterNavigation() {
     }
   };
 
+
+
+ const moveToPostsPage = () => {
+    console.log(POSTS_PATH)
+    navigate(POSTS_PATH);
+  }
   const sendLoginPage = () => {
     navigate(SIGN_IN_PATH.MAIN);
   };
