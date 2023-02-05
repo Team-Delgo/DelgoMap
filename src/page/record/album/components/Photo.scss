@@ -13,6 +13,9 @@
     }
     &-guide{
       display: flex;
+      font-size: 16px;
+      color: #8a8a8a;
+      font-weight: 400;
       &-icon{
         margin: 0 3px;
         display: flex;
@@ -24,8 +27,8 @@
         background-color: #212122;
         &-img{
           margin: 0;
-          width: 7px;
-          height: 7px;
+          width: 8px;
+          height: 8px;
         }
       }
     }
