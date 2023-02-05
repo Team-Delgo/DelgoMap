@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CROP_PATH, RECORD_PATH, SIGN_IN_PATH } from '../common/constants/path.const';
+import { CROP_PATH, RECORD_PATH, SIGN_IN_PATH,POSTS_PATH } from '../common/constants/path.const';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import DogFoot from '../common/icons/dogfoot.svg';
 import Plus from '../common/icons/plus.svg';

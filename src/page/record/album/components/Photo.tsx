@@ -171,7 +171,7 @@ function Photo() {
           <h5>다른 강아지들은 뭐 할까?</h5>
           <span className="photo-others-more">더보기</span>
         </div>
-        <div className="photo-others-photo"></div>
+        <div className="photo-others-photo">a</div>
       </div>
     );
   }, []);
