@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
+import { useDispatch, useSelector } from "react-redux";
 import { Mungple } from "./maptype";
 import "./SearchBar.scss";
 import BackArrow from "../../../common/icons/back-arrow.svg";
-import { useDispatch, useSelector } from "react-redux";
 import { searchAction } from "../../../redux/slice/searchSlice";
 import { RootState } from "../../../redux/store";
 
@@ -55,7 +55,7 @@ function SearchBar(props: {
       setOption([]);
     };
     return (
-      <div className="search-auto-item" onClick={onClickHandler}>
+      <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler}>
         {cafe.placeName}
         <span>{cafe.roadAddress}</span>
       </div>
@@ -69,7 +69,7 @@ function SearchBar(props: {
       setIsFocus(false);
     };
     return (
-      <div className="search-auto-item" onClick={onClickHandler}>
+      <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler}>
         {cafe.placeName}
         <span>{cafe.roadAddress}</span>
       </div>
@@ -81,7 +81,7 @@ function SearchBar(props: {
   return (
     <div ref={ref} className="search-wrapper">
       <div className="search-header">
-        <img src={BackArrow} alt="back" onClick={close} />
+        <img src={BackArrow} alt="back" aria-hidden="true" onClick={close} />
         <div className="search">
           <input
             id="search"

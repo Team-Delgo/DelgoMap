@@ -6,6 +6,8 @@ import { mapSlice } from "./slice/mapSlice";
 import scrollSlice from "./slice/scrollSlice";
 import searchSlice from "./slice/searchSlice";
 import userSlice from "./slice/userSlice";
+import uploadSlice from './slice/uploadSlice';
+import errorSlice from './slice/errorSlice';
 
 const persistConfig = {
   key: "root",
@@ -16,7 +18,9 @@ const reducers = combineReducers({
   scroll: scrollSlice,
   search: searchSlice,
   user: userSlice,
-  device: deviceSlice
+  device: deviceSlice,
+  upload: uploadSlice,
+  error: errorSlice,
 
 })
 

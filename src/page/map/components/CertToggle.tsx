@@ -5,7 +5,7 @@ import "./CertToggle.scss";
 
 function CertToggle(props:{onClick:()=>void, state:boolean}){
   const {onClick, state} = props;
-  return <div className={classNames("certtoggle",{off:!state})} onClick={onClick}>
+  return <div className={classNames("certtoggle",{off:!state})} aria-hidden="true" onClick={onClick}>
     <img src={DogFoot} alt="toggle"/>
   </div>
 };

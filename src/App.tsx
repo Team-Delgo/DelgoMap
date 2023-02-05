@@ -2,7 +2,12 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.scss";
-import { APPLE_REDIRECT_HANDLE_PATH, KAKAO_REDIRECT_HANDLE_PATH, MY_ACCOUNT_PATH, NAVER_REDIRECT_HANDLE_PATH, RECORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "./common/constants/path.const";
+import { APPLE_REDIRECT_HANDLE_PATH, CAMERA_PATH, CROP_PATH, KAKAO_REDIRECT_HANDLE_PATH, MY_ACCOUNT_PATH, NAVER_REDIRECT_HANDLE_PATH, RECORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "./common/constants/path.const";
+import CaptureCertificationPage from "./page/capture/CaptureCertificationPage";
+import CaptureCertificationResultPage from "./page/capture/CaptureCertificationResultPage";
+import CaptureCertificationUpatePage from "./page/capture/CaptureCertificationUpatePage";
+import CaptureLocationPage from "./page/capture/CaptureLocationPage";
+import CapturePage from "./page/capture/CapturePage";
 import DetailPage from "./page/DetailPage";
 import MapPage from "./page/map/MapPage";
 import ChangePassword from "./page/myaccount/ChangePassword";
@@ -30,6 +35,7 @@ import VerifyPhone from "./page/sign/signup/phone/VerifyPhone";
 import SignUpComplete from "./page/sign/signup/SignUpComplete";
 import Terms from "./page/sign/signup/term/Terms";
 import UserInfo from "./page/sign/signup/userinfo/UserInfo";
+import CropPage from "./page/crop/CropPage"
 
 function App() {
   const queryClient = new QueryClient();
@@ -56,6 +62,12 @@ function App() {
           <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
           <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
           <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
+          <Route path={CAMERA_PATH.CAPTURE} element={<CapturePage />} />
+          <Route path={CAMERA_PATH.CERTIFICATION} element={<CaptureCertificationPage />} />
+          <Route path={CAMERA_PATH.LOCATION} element={<CaptureLocationPage />} />
+          <Route path={CAMERA_PATH.UPDATE} element={<CaptureCertificationUpatePage />} />
+          <Route path={CAMERA_PATH.RESULT} element={<CaptureCertificationResultPage />} />
+          <Route path={CROP_PATH} element={<CropPage />} />
           <Route path={MY_ACCOUNT_PATH.MAIN} element={<MyAccountPage />} />
           <Route path={MY_ACCOUNT_PATH.PETINFO} element={<ChangePetInfo />} />
           <Route path={MY_ACCOUNT_PATH.SETTINGS} element={<Setting />} />
