@@ -1,30 +1,30 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
-import { AxiosResponse } from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
-import "./Map.scss";
-import { getMapData } from "../../../common/api/record";
-import { Mungple, idDefault } from "./maptype";
-import Cafe from "../../../common/icons/cafe-map.svg";
-import CafeSmall from "../../../common/icons/cafe-map-small.svg";
-import PlaceCard from "./PlaceCard";
-import { analytics } from "../../../index";
-import { setMarkerOptionBig, setMarkerOptionSmall, setMarkerOptionPrev } from "./MapComponent";
-import SearchBar from "./SearchBar";
-import LinkCopy from "./LinkCopy";
-import Search from "../../../common/icons/search.svg";
-import Logo from "../../../common/icons/logo.svg";
-import ToastMessage from "./ToastMessage";
-import Regist from "./Regist";
-import { mapAction } from "../../../redux/slice/mapSlice";
-import Feedback from "./Feedback";
-import DetailPage from "../../../page/DetailPage";
-import FooterNavigation from "../../../components/FooterNavigation";
-import CertToggle from "./CertToggle";
-import Human from "../../../common/icons/human.svg";
-import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from "../../../common/constants/path.const";
-import { RootState } from "../../../redux/store";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
+import { AxiosResponse } from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
+import './Map.scss';
+import { getMapData } from '../../../common/api/record';
+import { Mungple, idDefault } from './maptype';
+import Cafe from '../../../common/icons/cafe-map.svg';
+import CafeSmall from '../../../common/icons/cafe-map-small.svg';
+import PlaceCard from './PlaceCard';
+import { analytics } from '../../../index';
+import { setMarkerOptionBig, setMarkerOptionSmall, setMarkerOptionPrev } from './MapComponent';
+import SearchBar from './SearchBar';
+import LinkCopy from './LinkCopy';
+import Search from '../../../common/icons/search.svg';
+import Logo from '../../../common/icons/logo.svg';
+import ToastMessage from './ToastMessage';
+import Regist from './Regist';
+import { mapAction } from '../../../redux/slice/mapSlice';
+import Feedback from './Feedback';
+import DetailPage from '../../../page/DetailPage';
+import FooterNavigation from '../../../components/FooterNavigation';
+import CertToggle from './CertToggle';
+import Human from '../../../common/icons/human.svg';
+import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from '../../../common/constants/path.const';
+import { RootState } from '../../../redux/store';
 
 interface MakerItem {
   id: number;
@@ -35,13 +35,13 @@ function Map() {
   const mapElement = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isSignIn = useSelector((state:RootState) => state.persist.user.isSignIn);
+  const isSignIn = useSelector((state: RootState) => state.persist.user.isSignIn);
   const [searchIsOpen, setSearchIsOpen] = useState(false);
   const [globarMap, setGlobarMap] = useState<naver.maps.Map>();
   const [selectedId, setSelectedId] = useState(idDefault);
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
-  const [detailUrl, setDetailUrl] = useState("");
+  const [detailUrl, setDetailUrl] = useState('');
   const [linkId, setLinkId] = useState(NaN);
   const [isCertVisible, setIsCertVisible] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
@@ -55,24 +55,24 @@ function Map() {
     zoom: !initMapCenter.zoom ? 14 : initMapCenter.zoom,
     option: { zoom: 2, size: 70 },
   });
-  const mutation = useAnalyticsLogEvent(analytics, "screen_view");
-  const mungpleClickEvent = useAnalyticsCustomLogEvent(analytics, "map_mungple");
+  const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
+  const mungpleClickEvent = useAnalyticsCustomLogEvent(analytics, 'map_mungple');
   let map: naver.maps.Map;
   const routerLocation = useLocation();
 
   const clearSelectedId = useCallback(() => {
     setSelectedId((prev: any) => {
       return {
-        img: "",
-        title: "",
-        address: "",
+        img: '',
+        title: '',
+        address: '',
         id: 0,
         prevId: prev.id,
         lat: 0,
-        detailUrl: "",
-        instaUrl: "",
+        detailUrl: '',
+        instaUrl: '',
         lng: 0,
-        categoryCode: "0",
+        categoryCode: '0',
         prevLat: prev.lat,
         prevLng: prev.lng,
         prevCategoryCode: prev.categoryCode,
@@ -89,12 +89,11 @@ function Map() {
   }, []);
 
   useEffect(() => {
-    // document.getElementsByClassName('map-wrapper') = "hidden";
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     mutation.mutate({
       params: {
-        firebase_screen: "Map",
-        firebase_screen_class: "MapPage",
+        firebase_screen: 'Map',
+        firebase_screen_class: 'MapPage',
       },
     });
     getMapPageData();
@@ -109,12 +108,12 @@ function Map() {
     map = new naver.maps.Map(mapElement.current, mapOptions);
 
     setGlobarMap(map);
-    naver.maps.Event.addListener(map, "click", (e) => {
+    naver.maps.Event.addListener(map, 'click', (e) => {
       clearSelectedId();
     });
-    setLinkId(parseInt(routerLocation.pathname.slice(1),10));
+    setLinkId(parseInt(routerLocation.pathname.slice(1), 10));
     return () => {
-      document.body.style.overflow = "scroll";
+      document.body.style.overflow = 'scroll';
     };
   }, []);
 
@@ -134,7 +133,7 @@ function Map() {
 
   const reigstCloseHandler = useCallback(() => {
     dispatch(mapAction.setViewCount());
-    localStorage.setItem("isRegisted", "true");
+    localStorage.setItem('isRegisted', 'true');
     setIsRegistOpen(false);
   }, []);
 
@@ -143,7 +142,7 @@ function Map() {
       let markerOptions: naver.maps.MarkerOptions;
       markerOptions = setMarkerOptionSmall(CafeSmall, data, globarMap);
       const marker = new naver.maps.Marker(markerOptions);
-      marker.addListener("click", () => {
+      marker.addListener('click', () => {
         mungpleClickEvent.mutate();
         setSelectedId((prev: any) => {
           return {
@@ -196,7 +195,7 @@ function Map() {
     markerList[index].marker.setOptions(markerOptions);
     globarMap?.panTo(new naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)), {
       duration: 500,
-      easing: "easeOutCubic",
+      easing: 'easeOutCubic',
     });
   };
 
@@ -206,7 +205,6 @@ function Map() {
       const index = markerList.findIndex((e) => {
         return e.id === selectedId.prevId;
       });
-      // let markerOptions: naver.maps.MarkerOptions;
       const markerOptions = setMarkerOptionPrev(CafeSmall, selectedId, globarMap);
       markerList[index].marker.setOptions(markerOptions);
     }
@@ -233,53 +231,30 @@ function Map() {
             prevCategoryCode: prev.categoryCode,
           };
         });
-        globarMap?.panTo(
-          new naver.maps.LatLng(
-            parseFloat(mungpleList[index].latitude),
-            parseFloat(mungpleList[index].longitude)
-          ),
-          {
-            duration: 500,
-            easing: "easeOutCubic",
-          }
-        );
-        const markerOptions = setMarkerOptionBig(
-          Cafe,
-          mungpleList[index],
-          globarMap,
-          selectedId.prevCategoryCode
-        );
+        globarMap?.panTo(new naver.maps.LatLng(parseFloat(mungpleList[index].latitude), parseFloat(mungpleList[index].longitude)), {
+          duration: 500,
+          easing: 'easeOutCubic',
+        });
+        const markerOptions = setMarkerOptionBig(Cafe, mungpleList[index], globarMap, selectedId.prevCategoryCode);
         markerList[index].marker.setOptions(markerOptions);
       }
       setLinkId(NaN);
     }
   }, [markerList]);
 
-  const searchClickHander = () => {
-    setSearchIsOpen(true);
-  };
+  const searchClickHander = useCallback(() => setSearchIsOpen(true), []);
 
-  const searchClose = () => {
-    setSearchIsOpen(false);
-  };
-
-  const setDetailPage = (url: string) => {
-    setDetailUrl(url);
-  };
-
-  const closeDetailUrl = () => {
-    setDetailUrl("");
-  };
+  const searchClose = useCallback(() => setSearchIsOpen(false), []);
 
   const onClickCertToggle = () => {
     setIsCertVisible((prev) => !prev);
     console.log(isCertVisible);
   };
 
-  const navigateMyPage = () => {
-    if(isSignIn) navigate(MY_ACCOUNT_PATH.MAIN);
+  const navigateMyPage = useCallback(() => {
+    if (isSignIn) navigate(MY_ACCOUNT_PATH.MAIN);
     else navigate(SIGN_IN_PATH.MAIN);
-  };
+  }, []);
 
   return (
     <div className="map-wrapper">
@@ -288,10 +263,8 @@ function Map() {
       <img className="map-search" src={Search} alt="search" aria-hidden="true" onClick={searchClickHander} />
       <img className="map-mypage" src={Human} alt="mypage" aria-hidden="true" onClick={navigateMyPage} />
       <div className="slogun">강아지 델고 동네생활</div>
-      <div className="map" ref={mapElement} style={{ position: "absolute" }}/>
-      {searchIsOpen && (
-        <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />
-      )}
+      <div className="map" ref={mapElement} style={{ position: 'absolute' }} />
+      {searchIsOpen && <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />}
       {selectedId.title.length > 0 && (
         <PlaceCard
           id={selectedId.id}
@@ -307,9 +280,7 @@ function Map() {
       {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
       {selectedId.title.length > 0 && <LinkCopy />}
       {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
-      {/* <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} /> */}
       {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
-      {/* <Feedback close={feedbackCloseHandler}/> */}
       {detailUrl.length > 0 && <DetailPage />}
       {selectedId.title.length === 0 && <FooterNavigation />}
     </div>

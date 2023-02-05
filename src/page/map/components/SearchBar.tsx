@@ -1,25 +1,21 @@
-import React, { useCallback, useState } from "react";
-import useOnclickOutside from "react-cool-onclickoutside";
-import { useDispatch, useSelector } from "react-redux";
-import { Mungple } from "./maptype";
-import "./SearchBar.scss";
-import BackArrow from "../../../common/icons/back-arrow.svg";
-import { searchAction } from "../../../redux/slice/searchSlice";
-import { RootState } from "../../../redux/store";
+import React, { useCallback, useState, useMemo } from 'react';
+import useOnclickOutside from 'react-cool-onclickoutside';
+import { useDispatch, useSelector } from 'react-redux';
+import { Mungple } from './maptype';
+import './SearchBar.scss';
+import BackArrow from '../../../common/icons/back-arrow.svg';
+import { searchAction } from '../../../redux/slice/searchSlice';
+import { RootState } from '../../../redux/store';
 
-function SearchBar(props: {
-  cafeList: Mungple[];
-  selectId: (data: Mungple) => void;
-  close: () => void;
-}) {
+function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => void; close: () => void }) {
   const { cafeList, selectId, close } = props;
   const [isFocus, setIsFocus] = useState(false);
-  const [enteredInput, setEnteredInput] = useState("");
+  const [enteredInput, setEnteredInput] = useState('');
   const recentSearch: Mungple[] = useSelector((state: RootState) => state.persist.search.recentSearch);
   const [option, setOption] = useState<Mungple[]>([]);
   const ref = useOnclickOutside(() => {
     setIsFocus(false);
-    document.getElementById("search")?.blur();
+    document.getElementById('search')?.blur();
   });
   const dispatch = useDispatch();
   const inputFoucs = useCallback(() => {
@@ -47,36 +43,41 @@ function SearchBar(props: {
     }
   };
 
-  const autoCompleteContext = option.map((cafe) => {
-    const onClickHandler = () => {
-      selectId(cafe);
-      dispatch(searchAction.setRecentSearch(cafe));
-      setIsFocus(false);
-      setOption([]);
-    };
-    return (
-      <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler}>
-        {cafe.placeName}
-        <span>{cafe.roadAddress}</span>
-      </div>
-    );
-  });
+  const autoCompleteContext = useMemo(
+    () =>
+      option.map((cafe) => {
+        const onClickHandler = () => {
+          selectId(cafe);
+          dispatch(searchAction.setRecentSearch(cafe));
+          setIsFocus(false);
+          setOption([]);
+        };
+        return (
+          <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler}>
+            {cafe.placeName}
+            <span>{cafe.roadAddress}</span>
+          </div>
+        );
+      }),
+    [option],
+  );
 
-  const recentContext = recentSearch.map((cafe) => {
-    console.log(cafe);
-    const onClickHandler = () => {
-      selectId(cafe);
-      setIsFocus(false);
-    };
-    return (
-      <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler}>
-        {cafe.placeName}
-        <span>{cafe.roadAddress}</span>
-      </div>
-    );
-  });
-
-  // const recentSearchContext =
+  const recentContext = useMemo(
+    () =>
+      recentSearch.map((cafe) => {
+        const onClickHandler = () => {
+          selectId(cafe);
+          setIsFocus(false);
+        };
+        return (
+          <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler}>
+            {cafe.placeName}
+            <span>{cafe.roadAddress}</span>
+          </div>
+        );
+      }),
+    [recentSearch],
+  );
 
   return (
     <div ref={ref} className="search-wrapper">
@@ -93,14 +94,10 @@ function SearchBar(props: {
           />
         </div>
       </div>
-      {isFocus && option.length > 0 && enteredInput.length > 0 && (
-        <div className="search-auto">{autoCompleteContext}</div>
-      )}
+      {isFocus && option.length > 0 && enteredInput.length > 0 && <div className="search-auto">{autoCompleteContext}</div>}
       {option.length === 0 && enteredInput.length === 0 && (
         <div className="search-empty">
-          <div className="search-empty-desc">
-            델고에 송파의 모든 반려견 동반 카페가 있어요 검색해보세요
-          </div>
+          <div className="search-empty-desc">델고에 송파의 모든 반려견 동반 카페가 있어요 검색해보세요</div>
           <div className="search-empty-line" />
           <div className="search-recent-tag">
             <h4>최근 검색</h4>

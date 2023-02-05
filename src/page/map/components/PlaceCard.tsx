@@ -52,7 +52,6 @@ function PlaceCard(props: {
   const cardClickHandler = useCallback(() => {
     linkClickEvent.mutate();
     dispatch(searchAction.addViewCount());
-    // window.open(instaUrl, '_blank');
     dispatch(mapAction.setDetailUrl(detailUrl));
     navigate(`detail`);
   }, [instaUrl]);
