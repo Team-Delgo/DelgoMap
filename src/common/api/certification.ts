@@ -4,7 +4,7 @@ import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
 async function getMungPlaceList(categoryCode: string) {
-  const { data } = await axios.get(`https://www.reward.delgo.pet:8443/mungple/category/CA0002`);
+  const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/map/mungple?categoryCode=CA0002`);
   return data;
 }
 

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="63" height="63" fill="none">
+  <circle cx="31.5" cy="31.5" r="31.5" fill="#CCB7A3"/>
+  <g filter="url(#a)">
+    <ellipse cx="32" cy="47.428" fill="#fff" rx="19" ry="5.572"/>
+  </g>
+  <g filter="url(#b)">
+    <ellipse cx="32.084" cy="46.836" fill="url(#c)" rx="18.672" ry="4.979" shape-rendering="crispEdges"/>
+  </g>
+  <g filter="url(#d)">
+    <ellipse cx="32.084" cy="46.643" fill="url(#e)" rx="8.478" ry="2.261" shape-rendering="crispEdges"/>
+  </g>
+  <path fill="#fff" d="M42.323 29.388c0 1.584-4.622 2.868-10.323 2.868-5.701 0-10.323-1.284-10.323-2.868 0-1.584 4.622-2.868 10.323-2.868 5.701 0 10.323 1.284 10.323 2.868Z"/>
+  <path fill="#6E614D" d="M41.192 29.884c0 1.404-4.078 2.542-9.108 2.542s-9.109-1.138-9.109-2.542 4.078-2.542 9.109-2.542c5.03 0 9.108 1.138 9.108 2.542Z"/>
+  <path fill="#fff" fill-rule="evenodd" d="M42.164 17.619c-1.058-.15-2.305.049-3.27.3l-.806-2.965c1.112-.289 2.815-.599 4.46-.366 1.701.24 3.561 1.12 4.36 3.357.774 2.163.028 4.133-1.005 5.544-1.025 1.4-2.47 2.466-3.642 3.018l-1.33-2.774c.77-.363 1.804-1.124 2.503-2.078.69-.943.91-1.855.604-2.714-.282-.787-.874-1.18-1.874-1.322Z" clip-rule="evenodd"/>
+  <path fill="#fff" fill-rule="evenodd" d="M30.74 18.855c5.378-1.866 9.253-4.691 8.695-6.249L43.1 22.811c1.504 4.207-.75 8.821-5.032 10.307l-3.964 1.375c-4.283 1.485-8.974-.72-10.478-4.927l-3.63-10.155c.556 1.558 5.367 1.309 10.745-.556Z" clip-rule="evenodd"/>
+  <path fill="#fff" d="M39.487 12.705c.534 1.494-3.392 4.218-8.77 6.083-5.378 1.865-10.17 2.166-10.704.672-.534-1.494 3.392-4.217 8.77-6.083 5.377-1.865 10.17-2.166 10.704-.672Z"/>
+  <path fill="#6E614D" d="M38.588 13.543c.473 1.324-2.99 3.732-7.735 5.378-4.744 1.646-8.975 1.907-9.448.582-.474-1.324 2.99-3.732 7.734-5.377 4.745-1.646 8.975-1.907 9.449-.583Z"/>
+  <path fill="#AFA089" d="M37.725 13.798c-1.634.054-4.01-.001-8.11 1.42-4.098 1.422-5.557 2.55-6.732 3.729.287-1.173 2.62-2.843 6.719-4.265 4.099-1.422 7.428-1.384 8.123-.884Z"/>
+  <g filter="url(#f)">
+    <path fill="#fff" fill-rule="evenodd" d="M40.239 31.138c-1.885.722-4.874 1.189-8.239 1.189-5.701 0-10.323-1.34-10.323-2.991v10.766c0 4.46 3.68 8.075 8.222 8.075H34.1c3.493 0 6.477-2.138 7.668-5.155a10.181 10.181 0 0 0 2.97-1.363c1.45-.993 2.818-2.607 2.818-4.9 0-2.372-1.458-3.81-2.982-4.594-.725-.373-1.507-.626-2.252-.798v-2.031c0 .645-.705 1.242-1.903 1.73l-.175-.014-.006.086Zm2.084 3.406v4.991c.243-.123.48-.261.705-.414.969-.664 1.485-1.451 1.485-2.363 0-.834-.427-1.399-1.322-1.86a5.797 5.797 0 0 0-.868-.354Z" clip-rule="evenodd"/>
+  </g>
+  <defs>
+    <filter id="a" width="64" height="37.144" x="0" y="33.856" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="5"/>
+      <feGaussianBlur stdDeviation="6.5"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_2_3"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow_2_3" result="shape"/>
+    </filter>
+    <filter id="b" width="63.344" height="35.959" x=".412" y="33.856" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="5"/>
+      <feGaussianBlur stdDeviation="6.5"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_2_3"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow_2_3" result="shape"/>
+    </filter>
+    <filter id="d" width="42.956" height="30.522" x="10.606" y="36.382" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="5"/>
+      <feGaussianBlur stdDeviation="6.5"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_2_3"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow_2_3" result="shape"/>
+    </filter>
+    <filter id="f" width="33.88" height="28.841" x="17.677" y="22.336" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="-3"/>
+      <feGaussianBlur stdDeviation="2"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_2_3"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="1"/>
+      <feGaussianBlur stdDeviation="1"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+      <feBlend in2="effect1_dropShadow_2_3" result="effect2_dropShadow_2_3"/>
+      <feBlend in="SourceGraphic" in2="effect2_dropShadow_2_3" result="shape"/>
+    </filter>
+    <linearGradient id="c" x1="32.084" x2="32.084" y1="41.856" y2="51.815" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EBEBEB"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".11"/>
+    </linearGradient>
+    <linearGradient id="e" x1="32.084" x2="32.084" y1="44.382" y2="48.904" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B7B7B7"/>
+      <stop offset="1" stop-color="#F3F3F3" stop-opacity=".11"/>
+    </linearGradient>
+  </defs>
+</svg>

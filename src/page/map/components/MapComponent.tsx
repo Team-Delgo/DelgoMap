@@ -6,8 +6,9 @@ function setMarkerOptionBig(icon: string, data: Mungple, globarMap: naver.maps.M
     map: globarMap!,
     icon: {
       content: [`<div class="mungple ${prevCategoryCode} big" >`, `<img src=${icon} style="" alt="pin"/>`, `</div>`].join(''),
-      size: new naver.maps.Size(50, 59),
+      size: new naver.maps.Size(34, 48),
       origin: new naver.maps.Point(0, 0),
+      anchor: new naver.maps.Point(-50, -50),
     },
   };
   return markerOptions;

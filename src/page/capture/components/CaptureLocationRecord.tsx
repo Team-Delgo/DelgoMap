@@ -66,13 +66,17 @@ function CaptureLocationRecord() {
     // }, 500);
   }, [placeName]);
 
+  const navigateCertMap = () => {
+    navigate(CAMERA_PATH.MAP);
+  };
+
   const manualPlace = () => {
     // onClick={selectManualPlace}
     return (
       <div className="review-manual-place-wrapper" aria-hidden="true" onClick={selectManualPlace}>
         <div className={manualChecked === true ? 'review-place-wrapper-active-name' : 'review-place-wrapper-name'}>{placeName}</div>
         {/* {manualChecked === true ? <img className="review-place-check" src={Check} alt="category-img" /> : null} */}
-        <div className="review-place-wrapper-second">
+        <div className="review-place-wrapper-second" aria-hidden="true" onClick={navigateCertMap}>
           <div className="review-place-map-choice">지도에 직접추가</div>
           <img className="review-place-map-choice-img" alt="right-arrow-img" src={RightArrow} height={13} width={8} />
         </div>
