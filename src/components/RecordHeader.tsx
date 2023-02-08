@@ -6,9 +6,9 @@ import BackArrow from "../common/icons/back-arrow.svg";
 import { ROOT_PATH } from '../common/constants/path.const';
 
 function RecordHeader() {
-  let tab = (useLocation().state as any) || 'calendar';
+  let tab = (useLocation().state as any) || 'photo';
   if (tab.from === 'home') {
-    tab = 'calendar';
+    tab = 'photo';
   }
   const [selected, setSeleceted] = useState({
     photo: false,

@@ -39,6 +39,8 @@ import CropPage from "./page/crop/CropPage"
 import AchievementPage from "./page/achievement/AchievementPage";
 import PostsPage from './page/certification/CertificationPostsPage';
 import CommentsPage from './page/comment/CommentsPage';
+import RecordCertificationPage from "./page/certification/RecordCertificationPage";
+import CertificationMap from "./page/certification/CertificationMap";
 
 function App() {
   const queryClient = new QueryClient();
@@ -65,12 +67,14 @@ function App() {
           <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
           <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
           <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
+          <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
           <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
           <Route path={CAMERA_PATH.CAPTURE} element={<CapturePage />} />
           <Route path={CAMERA_PATH.CERTIFICATION} element={<CaptureCertificationPage />} />
           <Route path={CAMERA_PATH.LOCATION} element={<CaptureLocationPage />} />
           <Route path={CAMERA_PATH.UPDATE} element={<CaptureCertificationUpatePage />} />
           <Route path={CAMERA_PATH.RESULT} element={<CaptureCertificationResultPage />} />
+          <Route path={CAMERA_PATH.MAP} element={<CertificationMap />} />
           <Route path={CROP_PATH} element={<CropPage />} />
           <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
           <Route path={POSTS_PATH} element={<PostsPage />} />
