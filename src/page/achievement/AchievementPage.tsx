@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAchievementList, setMainAchievements } from '../../common/api/achievement';
 import { RootState } from '../../redux/store';
-import MainAchievment from './components/MainAchievment';
+import PetInfo from './components/PetInfo';
 import Achievment from './components/Achievement';
 import { analytics } from '../../index';
 import Loading from '../../common/utils/Loading';
@@ -130,14 +130,7 @@ function AchievementPage() {
 
   return (
     <div aria-hidden="true" onClick={achievementBottomSheetIsOpen ? closeAchievementBottomSheet : undefined}>
-      <MainAchievment
-        editActivation={editActivation}
-        mainAchievementList={mainAchievementList}
-        editRepresentativeAchievementsOn={onEditActivation}
-        editRepresentativeAchievementsOff={setRepresentativeAchievements}
-        filterRepresentativeAchievements={filterRepresentativeAchievements}
-        openBottomSheet={openBottomSheet}
-      />
+      <PetInfo/>
       <Achievment
         editActivation={editActivation}
         achievementList={achievementList}

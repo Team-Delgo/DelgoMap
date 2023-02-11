@@ -1,3 +1,44 @@
+.pet-info-container{
+    margin-top: 190px;
+    text-align: center;
+    .pet-info{
+        &-img{
+            border-radius: 4px;
+        }
+        &-name{
+            font-weight: 700;
+            font-size: 18px;
+            margin: 5px 0 2px 0;
+        }
+        &-birth-day{
+            font-weight: 400;
+            font-size: 12px;
+            color:#646566;
+        }
+    }
+    .pet-history-info-wrapper{
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        align-items: center;
+        background-color: #F6F6F6;
+        height: 85px;
+        border-radius: 16px;
+        margin: 0 5%;
+        margin-top: 20px;
+        .pet-history-info{
+            &-first-line{
+                font-weight: 400;
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            &-second-line{
+                font-weight: 500;
+                font-size: 18px;
+            }
+        }
+    }
+}
 .achievement-page {
     &-header {
         padding: 140px 5% 20px 5%;
