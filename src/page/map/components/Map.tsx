@@ -167,7 +167,7 @@ function Map() {
   };
 
   useEffect(() => {
-    if (isCertVisible) {
+    if (userId > 0 && isCertVisible) {
       deleteMungpleList();
       deleteCertList();
       const tempList1 = normalCertList.map((data) => {
