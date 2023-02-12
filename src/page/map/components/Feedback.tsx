@@ -14,6 +14,7 @@ function Feedback(props: { close: () => void }) {
     feedbackEvent.mutate();
     window.open('https://naver.me/GLAI3XNe', '_blank');
   }, []);
+  
   return (
     <div className="regist">
       <img src={Logo} alt="logo" />
