@@ -17,8 +17,8 @@ interface SignUpData {
 }
 
 function emailCheck(email: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/auth/email/check`, {
+  axiosInstance
+    .get(`/auth/email/check`, {
       params: { email },
     })
     .then((data) => {
@@ -30,8 +30,8 @@ function emailCheck(email: string, success: (data: AxiosResponse) => void, dispa
 }
 
 function nicknameCheck(name: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/auth/name/check`, {
+  axiosInstance
+    .get(`/auth/name/check`, {
       params: { name },
     })
     .then((data) => {
@@ -44,8 +44,8 @@ function nicknameCheck(name: string, success: (data: AxiosResponse) => void, dis
 
 function signup(info: SignUpData, success: (data: AxiosResponse) => void, dispatch: any) {
   const { userName, email, password, phoneNo, geoCode, pGeoCode, petName, breed, birthday } = info;
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/user`, {
+  axiosInstance
+    .post(`/user`, {
       // user: {
       //   name: nickname,
       //   email,
@@ -78,8 +78,8 @@ function signup(info: SignUpData, success: (data: AxiosResponse) => void, dispat
 }
 
 function deleteUser(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .delete(`${process.env.REACT_APP_API_URL}/account/user/${userId}`)
+  axiosInstance
+    .delete(`/account/user/${userId}`)
     .then((data) => {
       success(data);
     })
@@ -89,8 +89,8 @@ function deleteUser(userId: number, success: (data: AxiosResponse) => void, disp
 }
 
 function getRegion(success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/code/geo`)
+  axiosInstance
+    .get(`/code/geo`)
     .then((data) => {
       success(data);
     })
@@ -100,8 +100,8 @@ function getRegion(success: (data: AxiosResponse) => void, dispatch: any) {
 }
 
 function phoneSendMessage(phone: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/auth/sms?isJoin=false`, {
+  axiosInstance
+    .get(`/auth/sms?isJoin=false`, {
       params: {
         phoneNo: phone,
       },
@@ -115,8 +115,8 @@ function phoneSendMessage(phone: string, success: (data: AxiosResponse) => void,
 }
 
 function phoneSendMessageForFind(phone: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/auth/sms?isJoin=true`, {
+  axiosInstance
+    .get(`/auth/sms?isJoin=true`, {
       params: {
         phoneNo: phone,
       },
@@ -131,8 +131,8 @@ function phoneSendMessageForFind(phone: string, success: (data: AxiosResponse) =
 
 function phoneCheckNumber(data: { number: string; smsId: number }, success: (data: AxiosResponse) => void, dispatch: any) {
   const { number, smsId } = data;
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/auth/sms/check`, {
+  axiosInstance
+    .get(`/auth/sms/check`, {
       params: {
         smsId,
         enterNum: number,
@@ -162,7 +162,7 @@ function petImageUpload(data: { formData: FormData; userId: number }, success: (
 }
 
 async function getPetType() {
-  const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/code/breed`);
+  const { data } = await axiosInstance.get(`/code/breed`);
   return data;
 }
 

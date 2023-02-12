@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
+import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
 function setAccessCode(code: string | null, success: (data: AxiosResponse) => void, navigate: () => void, dispatch: any) {
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/oauth/kakao/${code}`)
+  axiosInstance
+    .post(`/oauth/kakao/${code}`)
     .then((data) => {
       success(data);
     })
@@ -30,8 +31,8 @@ function oAuthSignup(
   dispatch: any,
 ) {
   const { email, geoCode, pGeoCode, userName, phoneNo, petName, breed, birthday, userSocial, appleUniqueNo } = data;
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/user/oauth `, {
+  axiosInstance
+    .post(`/user/oauth `, {
       email,
       userName,
       phoneNo,
@@ -58,8 +59,8 @@ function setStateCode(
   dispatch: any,
 ) {
   const { code, state } = data;
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/oauth/naver/${state}/${code}`)
+  axiosInstance
+    .post(`/oauth/naver/${state}/${code}`)
     .then((data) => {
       success(data);
     })
@@ -71,8 +72,8 @@ function setStateCode(
 }
 
 function appleSendToken(token: string | null, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/oauth/apple/${token}`)
+  axiosInstance
+    .post(`/oauth/apple/${token}`)
     .then((data) => {
       success(data);
     })

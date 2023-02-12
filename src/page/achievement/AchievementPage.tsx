@@ -61,6 +61,8 @@ function AchievementPage() {
       (response: AxiosResponse) => {
         const { data } = response.data;
 
+        console.log('data',data)
+
         const activeAchievementList = data.filter((element: achievementType) => element.isActive === true);
         setAchievementListCount(activeAchievementList.length);
 
@@ -75,31 +77,6 @@ function AchievementPage() {
     setTimeout(() => {
       closeLoading();
     }, 100);
-  };
-
-  const setRepresentativeAchievements = () => {
-    setMainAchievements(
-      user.id,
-      mainAchievementList[0] !== undefined ? mainAchievementList[0]?.achievementsId : 0,
-      mainAchievementList[1] !== undefined ? mainAchievementList[1]?.achievementsId : 0,
-      mainAchievementList[2] !== undefined ? mainAchievementList[2]?.achievementsId : 0,
-      (response: AxiosResponse) => {
-        const { code } = response.data;
-        if (code === 200) {
-          openMainAchievementSuccessToast();
-        }
-      },
-      dispatch,
-    );
-    offEditActivation();
-  };
-
-  const filterRepresentativeAchievements = (achievement: achievementType) => (event: React.MouseEvent) => {
-    setTimeout(() => {
-      const newMainAchievementList = mainAchievementList.filter((element: achievementType) => element !== achievement);
-      setMainAchievementList(newMainAchievementList);
-      setAchievementList([...achievementList, achievement]);
-    }, 300);
   };
 
   const selectRepresentativeAchievements = (achievement: achievementType) => (event: React.MouseEvent) => {

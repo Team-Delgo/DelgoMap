@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
+import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
 function login(data: { email: string; password: string }, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/login`, {
+  axiosInstance
+    .post(`/login`, {
       email: data.email,
       password: data.password,
     })
@@ -16,8 +17,8 @@ function login(data: { email: string; password: string }, success: (data: AxiosR
 }
 
 function emailAuth(email: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/auth/email`, {
+  axiosInstance
+    .get(`/auth/email`, {
       params: { email },
     })
     .then((data) => {
@@ -29,8 +30,8 @@ function emailAuth(email: string, success: (data: AxiosResponse) => void, dispat
 }
 
 function changePassword(email: string, password: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .put(`${process.env.REACT_APP_API_URL}/user/password`, {
+  axiosInstance
+    .put(`/user/password`, {
       email,
       newPassword: password,
     })
