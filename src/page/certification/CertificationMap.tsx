@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Back from '../../common/icons/back-arrow.svg';
 import Exit from '../../common/icons/exit.svg';
@@ -7,6 +7,8 @@ import Marker from '../../common/icons/cert-map-marker.svg';
 import RightArrow from "../../common/icons/right-arrow-gray.svg";
 import './CertificationMap.scss';
 import { RootState } from '../../redux/store';
+import { CAMERA_PATH } from '../../common/constants/path.const';
+import { uploadAction } from '../../redux/slice/uploadSlice';
 
 function CertificationMap() {
   const mapElement = useRef(null);
@@ -24,6 +26,7 @@ function CertificationMap() {
     option: { zoom: 2, size: 70 },
   });
   let map: naver.maps.Map;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -49,12 +52,24 @@ function CertificationMap() {
     };
   }, []);
 
+  const selectManualPlace = () => {
+    dispatch(
+      uploadAction.setManualPlace({
+        placeName: currentPlaceName,
+        address,
+        latitude: String(pointerLocation.lat),
+        longitude: String(pointerLocation.lng),
+      }),
+    );
+    navigate(CAMERA_PATH.CERTIFICATION);
+  };
+
   const locationCard = <div className='location-card'>
     <div className='location-card-left'>
       <h4>{currentPlaceName}</h4>
       <p>{address}</p>
     </div>
-    <div className='location-card-right'>여기로 기록<img src={RightArrow} alt="next"/></div>
+    <div className='location-card-right' aria-hidden="true" onClick={selectManualPlace}>여기로 기록<img src={RightArrow} alt="next"/></div>
   </div>
 
 

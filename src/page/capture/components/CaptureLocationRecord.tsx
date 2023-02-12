@@ -44,7 +44,7 @@ function CaptureLocationRecord() {
 
   const moveToCapturePage = useCallback(() => {
     navigate(CAMERA_PATH.CAPTURE);
-  }, []);
+  }, []);2
 
 
   const selectMongPlace = useCallback(
@@ -61,15 +61,14 @@ function CaptureLocationRecord() {
 
   const selectManualPlace = useCallback(() => {
     onCheckManual();
-    // dispatch(uploadAction.setMongPlace({ mungpleId: 0, placeName }));
-    // setTimeout(() => {
-    //   navigate(CAMERA_PATH.CERTIFICATION);
-    // }, 500);
+    setTimeout(() => {
+      navigateCertMap()
+    }, 500);
   }, [placeName]);
 
   const navigateCertMap = () => {
-    navigate(CAMERA_PATH.MAP);
     dispatch(mapAction.setCurrentPlaceName(inputRef.current.value));
+    navigate(CAMERA_PATH.MAP);
   };
 
   const manualPlace = () => {
@@ -78,7 +77,7 @@ function CaptureLocationRecord() {
       <div className="review-manual-place-wrapper" aria-hidden="true" onClick={selectManualPlace}>
         <div className={manualChecked === true ? 'review-place-wrapper-active-name' : 'review-place-wrapper-name'}>{placeName}</div>
         {/* {manualChecked === true ? <img className="review-place-check" src={Check} alt="category-img" /> : null} */}
-        <div className="review-place-wrapper-second" aria-hidden="true" onClick={navigateCertMap}>
+        <div className="review-place-wrapper-second">
           <div className="review-place-map-choice">지도에 직접추가</div>
           <img className="review-place-map-choice-img" alt="right-arrow-img" src={RightArrow} height={13} width={8} />
         </div>
