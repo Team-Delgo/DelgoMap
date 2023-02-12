@@ -25,8 +25,8 @@ function getCalendarData(userId: number, success: (data: AxiosResponse) => void,
 }
 
 function sendEmail(email: string, success: (data: AxiosResponse) => void, dispatch: Dispatch<AnyAction>) {
-  axios
-    .post(`https://www.reward.delgo.pet:8443/survey`, {
+  axiosInstance
+    .post(`/survey`, {
       email,
     })
     .then((data) => {

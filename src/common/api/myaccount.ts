@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 // import axiosInstance from './interceptors';
 
@@ -8,8 +9,8 @@ function changePetInfo(
   dispatch: any,
 ) {
   const { email, name, birthday, breed } = data;
-  axios
-    .put(`${process.env.REACT_APP_API_URL}/account/pet`, {
+  axiosInstance
+    .put(`/account/pet`, {
       email,
       name,
       birthday,
@@ -24,8 +25,8 @@ function changePetInfo(
 }
 
 function changePassword(email: string, password: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .put(`${process.env.REACT_APP_API_URL}/account/password`, {
+  axiosInstance
+    .put(`/account/password`, {
       email,
       newPassword: password,
     })
@@ -38,8 +39,7 @@ function changePassword(email: string, password: string, success: (data: AxiosRe
 }
 
 function changeGeoCode(email: string, geoCode: string, pGeoCode: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .put(`${process.env.REACT_APP_API_URL}/account/user`, {
+  axiosInstance.put(`/account/user`, {
       email,
       geoCode,
       pGeoCode,
@@ -53,8 +53,8 @@ function changeGeoCode(email: string, geoCode: string, pGeoCode: string, success
 }
 
 function changeName(email: string, name: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .put(`${process.env.REACT_APP_API_URL}/account/user`, {
+  axiosInstance
+    .put(`/account/user`, {
       email,
       name,
     })
@@ -67,8 +67,8 @@ function changeName(email: string, name: string, success: (data: AxiosResponse) 
 }
 
 function setPushNotification(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .put(`${process.env.REACT_APP_API_URL}/account/notify/${userId}`)
+  axiosInstance
+    .put(`/account/notify/${userId}`)
     .then((data) => {
       success(data);
     })
@@ -79,8 +79,8 @@ function setPushNotification(userId: number, success: (data: AxiosResponse) => v
 
 
 function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/account/logout/${userId}`)
+  axiosInstance
+    .post(`/account/logout/${userId}`)
     .then((data) => {
       success(data);
     })
@@ -90,8 +90,8 @@ function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch
 }
 
 async function getMyInfo(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/user?userId=${userId}`)
+  axiosInstance
+    .post(`/user?userId=${userId}`)
     .then((data) => {
       success(data);
     })
@@ -101,7 +101,7 @@ async function getMyInfo(userId: number, success: (data: AxiosResponse) => void,
 }
 
 async function getMyPoint(userId: number) {
-  const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/account/point?userId=${userId}`);
+  const { data } = await axiosInstance.get(`/account/point?userId=${userId}`);
   return data;
 }
 
