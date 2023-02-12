@@ -11,6 +11,7 @@ const initialState = {
   viewCount: 0,
   detailImgUrl: "",
   currentPlaceName: "",
+  certToggle: false,
 };
 
 export const mapSlice = createSlice({
@@ -18,7 +19,9 @@ export const mapSlice = createSlice({
   initialState,
   reducers: {
     setCurrentPosition(state, action) {
-      state = action.payload;
+      state.lat = action.payload.lat;
+      state.lng = action.payload.lng;
+      state.zoom = action.payload.zoom;
     },
     clearPosition(state) {
       state = initialState;
@@ -43,6 +46,9 @@ export const mapSlice = createSlice({
     },
     setCurrentPlaceName(state, action){
       state.currentPlaceName = action.payload;
+    },
+    setCertToggle(state, action){
+      state.certToggle = action.payload;
     }
   }
 });

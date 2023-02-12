@@ -24,6 +24,7 @@ import Human from '../../../common/icons/human.svg';
 import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from '../../../common/constants/path.const';
 import { RootState } from '../../../redux/store';
 import AlertConfirm from '../../../common/dialog/AlertConfirm';
+import CertCard from './CertCard';
 
 interface MakerItem {
   id: number;
@@ -34,6 +35,7 @@ function Map() {
   const mapElement = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const toggleDefault = useSelector((state: RootState) => state.map.certToggle);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const isSignIn = useSelector((state: RootState) => state.persist.user.isSignIn);
   const [searchIsOpen, setSearchIsOpen] = useState(false);
@@ -49,15 +51,15 @@ function Map() {
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [detailUrl, setDetailUrl] = useState('');
   const [linkId, setLinkId] = useState(NaN);
-  const [isCertVisible, setIsCertVisible] = useState(false);
+  const [isCertVisible, setIsCertVisible] = useState(toggleDefault);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [registOpen, setIsRegistOpen] = useState(false);
   const viewCount = useSelector((state: any) => state.persist.viewCount);
-  const initMapCenter = useSelector((state: any) => state.map);
+  const initMapCenter = useSelector((state: RootState) => state.map);
   const isCopy = useSelector((state: any) => state.map.isCopy);
   const [currentLocation, setCurrentLocation] = useState({
-    lat: !initMapCenter.y ? 37.5057018 : initMapCenter.y,
-    lng: !initMapCenter.x ? 127.1141119 : initMapCenter.x,
+    lat: !initMapCenter.lat ? 37.5057018 : initMapCenter.lat,
+    lng: !initMapCenter.lng ? 127.1141119 : initMapCenter.lng,
     zoom: !initMapCenter.zoom ? 14 : initMapCenter.zoom,
     option: { zoom: 2, size: 70 },
   });
@@ -87,13 +89,17 @@ function Map() {
   }, [selectedId]);
 
   const getMapPageData = useCallback(() => {
-    getMapData(userId, (response: AxiosResponse) => {
-      console.log(response);
-      const { data } = response.data;
-      setMungpleList(data.mungpleList);
-      setNormalCertList(data.normalCertList);
-      setMunpleCertList(data.mungpleCertList);
-    }, dispatch);
+    getMapData(
+      userId,
+      (response: AxiosResponse) => {
+        console.log(response);
+        const { data } = response.data;
+        setMungpleList(data.mungpleList);
+        setNormalCertList(data.normalCertList);
+        setMunpleCertList(data.mungpleCertList);
+      },
+      dispatch,
+    );
   }, []);
 
   useEffect(() => {
@@ -118,6 +124,7 @@ function Map() {
     setGlobarMap(map);
     naver.maps.Event.addListener(map, 'click', (e) => {
       clearSelectedId();
+      setSelectedCert(certDefault);
     });
     setLinkId(parseInt(routerLocation.pathname.slice(1), 10));
     return () => {
@@ -218,8 +225,7 @@ function Map() {
         return marker;
       });
       setMungpleCertMarkerList(tempList2);
-    }
-    if (isCertVisible) {
+    } else if (!isCertVisible) {
       deleteCertList();
       deleteMungpleList();
       const tempList = mungpleList.map((data) => {
@@ -320,7 +326,12 @@ function Map() {
           duration: 500,
           easing: 'easeOutCubic',
         });
-        const markerOptions = setMarkerOptionBig(mungpleList[index].categoryCode, mungpleList[index], globarMap, selectedId.prevCategoryCode);
+        const markerOptions = setMarkerOptionBig(
+          mungpleList[index].categoryCode,
+          mungpleList[index],
+          globarMap,
+          selectedId.prevCategoryCode,
+        );
         markerList[index].marker.setOptions(markerOptions);
       }
       setLinkId(NaN);
@@ -331,15 +342,25 @@ function Map() {
 
   const searchClose = useCallback(() => setSearchIsOpen(false), []);
 
+  const setCurrentMapPosition = () => {
+    const center = globarMap?.getCenter();
+    const zoom = globarMap?.getZoom();
+    dispatch(mapAction.setCurrentPosition({ lat: center?.y, lng: center?.x, zoom }));
+  };
+
   const onClickCertToggle = () => {
     setIsCertVisible((prev) => !prev);
+    dispatch(mapAction.setCertToggle(!isCertVisible));
     console.log(isCertVisible);
   };
 
   const navigateMyPage = useCallback(() => {
-    if (isSignIn) navigate(MY_ACCOUNT_PATH.MAIN);
+    if (isSignIn) {
+      setCurrentMapPosition();
+      navigate(MY_ACCOUNT_PATH.MAIN);
+    }
     else setIsAlertOpen(true);
-  }, []);
+  }, [globarMap]);
 
   const sendLoginPage = () => {
     navigate(SIGN_IN_PATH.MAIN);
@@ -349,15 +370,16 @@ function Map() {
     setIsAlertOpen(false);
   };
 
-
   return (
     <div className="map-wrapper">
-      {isAlertOpen && <AlertConfirm
-        text="로그인이 필요한 기능입니다."
-        buttonText="로그인"
-        yesButtonHandler={sendLoginPage}
-        noButtonHandler={closeAlert}
-      />}
+      {isAlertOpen && (
+        <AlertConfirm
+          text="로그인이 필요한 기능입니다."
+          buttonText="로그인"
+          yesButtonHandler={sendLoginPage}
+          noButtonHandler={closeAlert}
+        />
+      )}
       <div className="whiteBox" />
       <img className="map-logo" src={Logo} alt="logo" />
       <img className="map-search" src={Search} alt="search" aria-hidden="true" onClick={searchClickHander} />
@@ -376,13 +398,24 @@ function Map() {
           instaUrl={selectedId.instaUrl}
         />
       )}
+      {selectedCert.placeName.length > 0 && (
+        <CertCard
+          cert={selectedCert}
+          img={selectedCert.photoUrl}
+          title={selectedCert.placeName}
+          categoryCode={selectedCert.categoryCode}
+          registDt={selectedCert.registDt}
+          description={selectedCert.description}
+          setCenter={setCurrentMapPosition}
+        />
+      )}
       <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
       {selectedId.title.length > 0 && <LinkCopy />}
       {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
       {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
       {detailUrl.length > 0 && <DetailPage />}
-      {selectedId.title.length === 0 && <FooterNavigation />}
+      {selectedId.title.length === 0 && selectedCert.placeName.length === 0 && <FooterNavigation setCenter={setCurrentMapPosition} />}
     </div>
   );
 }
