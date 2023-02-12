@@ -1,13 +1,10 @@
-import axios, { AxiosResponse } from "axios";
-import { AnyAction, Dispatch } from "redux";
-import axiosInstance from "./interceptors";
+import axios, { AxiosResponse } from 'axios';
+import { AnyAction, Dispatch } from 'redux';
+import axiosInstance from './interceptors';
 
-function getMapData(
-  success: (data: AxiosResponse) => void,
-  dispatch: Dispatch<AnyAction>
-) {
-  axios
-    .get(`https://www.reward.delgo.pet:8443/map/mungple?categoryCode=CA0002`)
+function getMapData(userId: number, success: (data: AxiosResponse) => void, dispatch: Dispatch<AnyAction>) {
+  axiosInstance
+    .get(`/map/${userId}`)
     .then((data) => {
       success(data);
     })
@@ -27,14 +24,10 @@ function getCalendarData(userId: number, success: (data: AxiosResponse) => void,
     });
 }
 
-function sendEmail(
-  email: string,
-  success: (data: AxiosResponse) => void,
-  dispatch: Dispatch<AnyAction>
-) {
+function sendEmail(email: string, success: (data: AxiosResponse) => void, dispatch: Dispatch<AnyAction>) {
   axios
     .post(`https://www.reward.delgo.pet:8443/survey`, {
-      email
+      email,
     })
     .then((data) => {
       success(data);
