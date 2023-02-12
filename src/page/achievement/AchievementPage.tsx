@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
 import { AxiosResponse } from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAchievementList, setMainAchievements } from '../../common/api/achievement';
+import { getAchievementList } from '../../common/api/achievement';
 import { RootState } from '../../redux/store';
 import PetInfo from './components/PetInfo';
 import Achievment from './components/Achievement';
