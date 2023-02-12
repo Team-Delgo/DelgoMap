@@ -80,7 +80,7 @@ function setPushNotification(userId: number, success: (data: AxiosResponse) => v
 
 function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
-    .post(`/account/logout/${userId}`)
+    .post(`account/logout/${userId}`)
     .then((data) => {
       success(data);
     })
