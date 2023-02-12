@@ -1,0 +1,10 @@
+<svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="10.5" cy="10.5" r="10" fill="#9FD7FF" stroke="#328995" />
+  <ellipse cx="3.96574" cy="3.96712" rx="3.96574" ry="3.96712"
+    transform="matrix(-0.865875 -0.50026 0.49974 -0.866176 10.7178 12.7903)" fill="white" />
+  <ellipse cx="1.9376" cy="1.93827" rx="1.9376" ry="1.93827"
+    transform="matrix(-0.865875 -0.50026 0.49974 -0.866176 14.6733 11.8531)" fill="white" />
+  <ellipse cx="2.5034" cy="2.50427" rx="2.5034" ry="2.50427"
+    transform="matrix(-0.865875 -0.50026 0.49974 -0.866176 13.4355 18.0944)" fill="white" />
+</svg>
+  
