@@ -105,5 +105,9 @@ async function getMyPoint(userId: number) {
   return data;
 }
 
+async function getMyProfileInfo(userId: number) {
+  const { data } = await axiosInstance.get(`/account?userId=${userId}`);
+  return data;
+}
 
-export { changePetInfo, changePassword, changeGeoCode, changeName, setPushNotification, logOut, getMyInfo, getMyPoint };
+export { changePetInfo, changePassword, changeGeoCode, changeName, setPushNotification, logOut, getMyInfo, getMyPoint, getMyProfileInfo };

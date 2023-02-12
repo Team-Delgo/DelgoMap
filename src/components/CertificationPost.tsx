@@ -9,7 +9,7 @@ import Heart from '../common/icons/heart-empty.svg';
 import FillHeart from '../common/icons/heart.svg';
 import Comments from '../common/icons/comments.svg';
 import { RootState } from '../redux/store';
-import { CAMERA_PATH } from '../common/constants/path.const';
+import { CAMERA_PATH, SIGN_IN_PATH } from '../common/constants/path.const';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { scrollActions } from '../redux/slice/scrollSlice';
 import DeleteBottomSheet from '../common/dialog/ConfirmBottomSheet';
@@ -20,6 +20,7 @@ import { postType } from '../common/types/post';
 import { weekDay } from '../common/types/week';
 // import { categoryIcon2, categoryCode2 } from '../common/types/category';
 import useActive from '../common/hooks/useActive';
+import AlertConfirm from '../common/dialog/AlertConfirm';
 
 interface CertificationPostPropsType {
   post: postType;
@@ -35,7 +36,8 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
   const [deletePostSuccessToastIsOpen, openDeletePostSuccessToast, closeDeletePostSuccessToast] = useActive(false);
   const [blockUserbottomSheetIsOpen, openBlockUserBottomSheet, closeBlockUserBottomSheet] = useActive(false);
   const [blockUserSuccessToastIsOpen, openBlockUserSuccessToastIsOpen, closeBlockUserSuccessToast] = useActive(false);
-  const { user } = useSelector((state: RootState) => state.persist.user);
+  const [loginAlertIsOpen, setLoginAlertIsOpen] = useState(false);
+  const { user,isSignIn } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -43,9 +45,6 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_view');
   const profileImgRef = useRef<HTMLImageElement>(null);
   const postImgRef = useRef<HTMLImageElement>(null);
-
-  console.log('post',post.address
-  )
 
   const observeImg = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     entries.forEach((entry: any) => {
@@ -80,6 +79,10 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
   }, [blockUserSuccessToastIsOpen]);
 
   const handleCertificationLike = () => {
+    if(!isSignIn){
+      setLoginAlertIsOpen(true)
+      return
+    }
     setLikeCount(isLike ? likeCount - 1 : likeCount + 1);
 
     if(isLike) inActiveLike()
@@ -135,6 +138,10 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
   }, []);
 
   const moveToCommentPage = () => {
+    if(!isSignIn){
+      setLoginAlertIsOpen(true)
+      return
+    }
     commentEvent.mutate();
     dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
     navigate(`/comments/${post?.certificationId}`, {
@@ -160,6 +167,13 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
       },
     });
   };
+  const closeAlert = () => {
+    setLoginAlertIsOpen(false);
+  };
+
+  const sendLoginPage = () => {
+    navigate(SIGN_IN_PATH.MAIN);
+  };
 
   return (
     <>
@@ -177,7 +191,7 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
             <div className="post-img-result-header-profile-name">{post?.user?.name}</div>
           </div>
         </div>
-        {user.id !== post?.user.userId ? (
+        {isSignIn === false ? null : user.id !== post?.user.userId ? (
           <div className="post-img-result-header-report" aria-hidden="true" onClick={openBlockUserBottomSheet}>
             차단
           </div>
@@ -242,6 +256,14 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
         cancelButtonHandler={closeBlockUserBottomSheet}
         bottomSheetIsOpen={blockUserbottomSheetIsOpen}
       />
+      {loginAlertIsOpen && (
+        <AlertConfirm
+          text="로그인이 필요한 기능입니다."
+          buttonText="로그인"
+          yesButtonHandler={sendLoginPage}
+          noButtonHandler={closeAlert}
+        />
+      )}
     </>
   );
 }

@@ -7,5 +7,6 @@ export const GET_MY_PET_RANKING_DATA  = 'getMyPetRankingData';
 export const GET_MY_POINT_DATA = 'getMyPointData';
 export const GET_PET_TYPE_DATA_LIST = 'getPetTypeDataList';
 export const GET_ALL_CERTIFICATION_DATA_LIST = "getAllCertificationPostsList";
+export const GET_MY_PROFILE_INFO_DATA = "getMyProfileInfoData";
 export const CACHE_TIME = 1000 * 60 * 5;
 export const STALE_TIME = 1000 * 60 * 3;

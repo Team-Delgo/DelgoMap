@@ -53,6 +53,7 @@ function MyAccountPage() {
         user.id,
         (response: AxiosResponse) => {
           const { code, codeMsg, data } = response.data;
+          console.log('response',response)
           if (code === 200) {
             window.localStorage.removeItem('accessToken');
             window.localStorage.removeItem('refreshToken');
@@ -63,6 +64,7 @@ function MyAccountPage() {
         dispatch,
       );
     } else {
+      console.log('response')
       window.localStorage.removeItem('accessToken');
       window.localStorage.removeItem('refreshToken');
       dispatch(userActions.signout());

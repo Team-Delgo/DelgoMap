@@ -37,6 +37,8 @@ function CertificationPostsPage() {
     },
   );
 
+  console.log('data',data)
+
   useEffect(() => {
     mutation.mutate({
       params: {

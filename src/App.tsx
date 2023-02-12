@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import "./App.scss";
 import { ACHIEVEMENT_PATH, APPLE_REDIRECT_HANDLE_PATH, CAMERA_PATH, CROP_PATH, KAKAO_REDIRECT_HANDLE_PATH, MY_ACCOUNT_PATH, NAVER_REDIRECT_HANDLE_PATH, POSTS_PATH, RECORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "./common/constants/path.const";
 import CaptureCertificationPage from "./page/capture/CaptureCertificationPage";
@@ -41,9 +42,32 @@ import PostsPage from './page/certification/CertificationPostsPage';
 import CommentsPage from './page/comment/CommentsPage';
 import RecordCertificationPage from "./page/certification/RecordCertificationPage";
 import CertificationMap from "./page/certification/CertificationMap";
+import { deviceAction } from "./redux/slice/deviceSlice";
 
 function App() {
   const queryClient = new QueryClient();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const pcDevice = 'win16|win32|win64|mac|macintel';
+    if (navigator.platform) {
+      if (pcDevice.indexOf(navigator.platform.toLowerCase()) < 0) {
+        dispatch(deviceAction.mobile());
+      } else {
+        dispatch(deviceAction.pc());
+      }
+    }
+  }, []);
+
+
+  useEffect(() => {
+    const varUA = navigator.userAgent.toLowerCase();
+    if (varUA.indexOf('android') > -1) {
+      dispatch(deviceAction.android());
+    } else if (varUA.indexOf('iphone') > -1 || varUA.indexOf('ipad') > -1 || varUA.indexOf('ipod') > -1) {
+      dispatch(deviceAction.ios());
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
