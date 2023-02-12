@@ -35,7 +35,7 @@ function VerifyPhone() {
   const authRef = useRef<any>();
 
   const authIsValid = timeIsValid && authNumber.length === 4;
-  const isValid = phoneNumber.length === 13;
+  const isValid = phoneNumber.length >= 12;
   const isEntered = phoneNumber.length > 0;
 
   const buttonClickHandler = () => {
