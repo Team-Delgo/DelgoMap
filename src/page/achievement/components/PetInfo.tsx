@@ -1,9 +1,28 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useQuery } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMyProfileInfo } from '../../../common/api/myaccount';
+import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
+import { CACHE_TIME, GET_MY_PROFILE_INFO_DATA, STALE_TIME } from '../../../common/constants/queryKey.const';
 import { RootState } from '../../../redux/store';
 
 function PetInfo() {
-  const { pet } = useSelector((state: RootState) => state.persist.user);
+  const dispatch = useDispatch();
+  const { pet, user } = useSelector((state: RootState) => state.persist.user);
+
+  const { isLoading: getMyProfileInfoDataIsLoading, data: getMyProfileInfoData } = useQuery(
+    GET_MY_PROFILE_INFO_DATA,
+    () => getMyProfileInfo(user.id),
+    {
+      cacheTime: CACHE_TIME,
+      staleTime: STALE_TIME,
+      onError: (error: any) => {
+        useErrorHandlers(dispatch, error);
+      },
+    },
+  );
+
+  console.log('getMyProfileInfoData',getMyProfileInfoData)
   return (
     <header className="pet-info-container">
       <img className="pet-info-img" src={pet.image} alt="copy url" width={81} height={81} />
@@ -12,15 +31,15 @@ function PetInfo() {
       <div className="pet-history-info-wrapper">
         <div>
           <div className="pet-history-info-first-line">내 포인트</div>
-          <div className="pet-history-info-second-line">1255</div>
+          <div className="pet-history-info-second-line">{getMyProfileInfoData?.data?.user?.point?.accumulatedPoint}</div>
         </div>
         <div>
           <div className="pet-history-info-first-line">멍플기록</div>
-          <div className="pet-history-info-second-line">14</div>
+          <div className="pet-history-info-second-line">{getMyProfileInfoData?.data?.mungpleCount}</div>
         </div>
         <div>
           <div className="pet-history-info-first-line">전체기록</div>
-          <div className="pet-history-info-second-line">50</div>
+          <div className="pet-history-info-second-line">{getMyProfileInfoData?.data?.totalCount}</div>
         </div>
       </div>
     </header>
