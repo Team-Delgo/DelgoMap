@@ -7,7 +7,6 @@ import Sheet from 'react-modal-sheet';
 import imageCompression from 'browser-image-compression';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
 import {
-  registerCameraCertificationPost,
   registerGalleryCertificationPost,
   registerGalleryCertificationImg,
 } from '../../../common/api/certification'
