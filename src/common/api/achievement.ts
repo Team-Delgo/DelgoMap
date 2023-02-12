@@ -4,8 +4,8 @@ import { useErrorHandlers } from './useErrorHandlers';
 
 
 function getAchievementList(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
-   axios
-    .get(`https://www.reward.delgo.pet:8443/achievements/user/${userId}`)
+  axiosInstance
+    .get(`/achievements/user/${userId}`)
     .then((data) => {
       console.log(data)
       success(data);
@@ -16,7 +16,7 @@ function getAchievementList(userId: number, success: (data: AxiosResponse) => vo
 }
 
 async function getAchievementListByMain(userId: number) {
-  const { data } = await axios.get(`https://www.reward.delgo.pet:8443/achievements/user/${userId}`);
+  const { data } = await axiosInstance.get(`/achievements/user/${userId}`);
   console.log(data);
   return data;
 }
@@ -30,7 +30,7 @@ async function setMainAchievements(
   dispatch: any,
 ) {
   try {
-    const result = await axios.put(`https://www.reward.delgo.pet:8443/achievements/main`, {
+    const result = await axiosInstance.put(`/achievements/main`, {
       userId,
       first: firstAchievementsId,
       second: secondAchievementsId,

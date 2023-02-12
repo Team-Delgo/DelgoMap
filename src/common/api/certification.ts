@@ -8,10 +8,10 @@ async function getMungPlaceList(categoryCode: string) {
   return data;
 }
 
-async function getCertificationDataCount(userId: number) {
-  const { data } = await axiosInstance.get(`/certification/category/count/${userId}`);
-  return data;
-}
+// async function getCertificationDataCount(userId: number) {
+//   const { data } = await axiosInstance.get(`/certification/category/count/${userId}`);
+//   return data;
+// }
 
 async function certificationLike(userId: number, certificationId: number, success: (data: AxiosResponse) => void, dispatch: any) {
   try {
@@ -29,37 +29,37 @@ async function certificationLike(userId: number, certificationId: number, succes
 //   return axiosInstance.post(`/certification/like/${userId}/${certificationId}`)
 // }
 
-async function registerCameraCertificationPost(
-  data: {
-    userId: number;
-    categoryCode: string;
-    mungpleId: number;
-    placeName: string;
-    description: string;
-    latitude: string;
-    longitude: string;
-    photo: string;
-  },
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  try {
-    const result = await axiosInstance.post(`/certification/live`, {
-      userId: data.userId,
-      categoryCode: data.categoryCode,
-      mungpleId: data.mungpleId,
-      placeName: data.placeName,
-      description: data.description,
-      latitude: data.latitude,
-      longitude: data.longitude,
-      photo: data.photo,
-    });
-    console.log(result);
-    success(result);
-  } catch (err: any) {
-    useErrorHandlers(dispatch, err);
-  }
-}
+// async function registerCameraCertificationPost(
+//   data: {
+//     userId: number;
+//     categoryCode: string;
+//     mungpleId: number;
+//     placeName: string;
+//     description: string;
+//     latitude: string;
+//     longitude: string;
+//     photo: string;
+//   },
+//   success: (data: AxiosResponse) => void,
+//   dispatch: any,
+// ) {
+//   try {
+//     const result = await axiosInstance.post(`/certification/live`, {
+//       userId: data.userId,
+//       categoryCode: data.categoryCode,
+//       mungpleId: data.mungpleId,
+//       placeName: data.placeName,
+//       description: data.description,
+//       latitude: data.latitude,
+//       longitude: data.longitude,
+//       photo: data.photo,
+//     });
+//     console.log(result);
+//     success(result);
+//   } catch (err: any) {
+//     useErrorHandlers(dispatch, err);
+//   }
+// }
 
 async function registerGalleryCertificationPost(
   data: {
@@ -68,7 +68,7 @@ async function registerGalleryCertificationPost(
     mungpleId: number;
     placeName: string;
     description: string;
-    address:string
+    address:string;
   },
   success: (data: AxiosResponse) => void,
   dispatch: any,
@@ -130,11 +130,11 @@ async function updateCertificationPost(
   }
 }
 
-async function getCertificationPostsByHome(userId: number) {
-  const { data } = await axiosInstance.get(`/certification/main?userId=${userId}`);
-  console.log('data', data);
-  return data;
-}
+// async function getCertificationPostsByHome(userId: number) {
+//   const { data } = await axiosInstance.get(`/certification/main?userId=${userId}`);
+//   console.log('data', data);
+//   return data;
+// }
 
 async function getCertificationPostAll(pageParam: number, userId: number, pageSize: number, dispatch: any) {
   try {
@@ -157,11 +157,11 @@ async function deleteCertificationPost(userId: number, certificationId: number, 
 
 export {
   getMungPlaceList,
-  getCertificationDataCount,
-  registerCameraCertificationPost,
+  // getCertificationDataCount,
+  // registerCameraCertificationPost,
   registerGalleryCertificationPost,
   registerGalleryCertificationImg,
-  getCertificationPostsByHome,
+  // getCertificationPostsByHome,
   getCertificationPostAll,
   updateCertificationPost,
   certificationLike,
