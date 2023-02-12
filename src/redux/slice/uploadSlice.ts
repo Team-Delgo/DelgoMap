@@ -49,7 +49,7 @@ const initialState: initialStateType = {
   title: '',
   content: '',
   registDt: '',
-  mongPlaceId: -1,
+  mongPlaceId: 0,
   certificationId: 0,
   tool: '',
   file: '',
@@ -68,7 +68,7 @@ const uploadSlice = createSlice({
     },
     setPrevImg(state, action) {
       return {
-        ...state,
+        ...initialState,
         prevImg:action.payload.prevImg,
         prevImgName:action.payload.prevImgName
 
@@ -101,6 +101,16 @@ const uploadSlice = createSlice({
         title: action.payload.placeName,
         mongPlaceId: action.payload.mungpleId,
         address:action.payload.address
+      };
+    },
+    setManualPlace(state, action) {
+      return {
+        ...state,
+        title: action.payload.placeName,
+        address:action.payload.address,
+        latitude: action.payload.latitude,
+        longitude: action.payload.longitude,
+
       };
     },
     setContentRegistDtCertificationIdAddress(state, action) {

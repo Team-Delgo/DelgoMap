@@ -68,20 +68,21 @@ async function registerGalleryCertificationPost(
     mungpleId: number;
     placeName: string;
     description: string;
-    address:string;
+    latitude:string;
+    longitude:string;
   },
   success: (data: AxiosResponse) => void,
   dispatch: any,
 ) {
   try {
-    const result = await axiosInstance.post(`/certification/past`, {
+    const result = await axiosInstance.post(`/certification`, {
       userId: data.userId,
       categoryCode: data.categoryCode,
       mungpleId: data.mungpleId,
       placeName: data.placeName,
       description: data.description,
-      address: data.address,
-      photo: 'null img',
+      latitude: data.latitude,
+      longitude:data.longitude
     });
     console.log(result);
     success(result);

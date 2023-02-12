@@ -90,7 +90,7 @@ function deleteUser(userId: number, success: (data: AxiosResponse) => void, disp
 
 function getRegion(success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
-    .get(`/code/geo`)
+    .get(`code/geo`)
     .then((data) => {
       success(data);
     })

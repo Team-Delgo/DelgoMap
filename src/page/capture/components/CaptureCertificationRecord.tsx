@@ -119,6 +119,7 @@ function CaptureCertificationRecord({
       return;
     }
     onPostCertificationLoading();
+
     registerGalleryCertificationPost(
       {
         userId: user.id,
@@ -126,7 +127,8 @@ function CaptureCertificationRecord({
         mungpleId: mongPlaceId,
         placeName: title,
         description: certificationPostContent,
-        address,
+        latitude,
+        longitude,
       },
       (response: AxiosResponse) => {
         const { code, data } = response.data;
@@ -138,11 +140,13 @@ function CaptureCertificationRecord({
           };
 
           formData.append('photo', file);
+          console.log('file',file)
 
           registerGalleryCertificationImg(
             formData,
             data.certificationId,
             (response: AxiosResponse) => {
+              console.log('response',response)
               const { code } = response.data;
               if (code === 200) {
                 dispatch(
