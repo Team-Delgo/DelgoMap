@@ -46,6 +46,7 @@ function Calender() {
       userId,
       (response: AxiosResponse) => {
         const { code, data } = response.data;
+        console.log(data);
         setDateList(data);
       },
       dispatch,
@@ -133,6 +134,7 @@ function Calender() {
       let isCertificated = false;
       let imageSrc;
       let certification: Cert[];
+      if(dateList.length > 0){
       dateList.forEach((date) => {
         if (date.date === id) {
           isCertificated = true;
@@ -140,7 +142,7 @@ function Calender() {
           imageSrc = date.dateList[0].photoUrl;
           achieve = date.isAchievements;
         }
-      });
+      })};
 
       return (
         <div
