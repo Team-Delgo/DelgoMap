@@ -6,10 +6,12 @@ import Exit from '../../common/icons/exit.svg';
 import Marker from '../../common/icons/cert-map-marker.svg';
 import RightArrow from "../../common/icons/right-arrow-gray.svg";
 import './CertificationMap.scss';
+import { RootState } from '../../redux/store';
 
 function CertificationMap() {
   const mapElement = useRef(null);
   const navigate = useNavigate();
+  const currentPlaceName = useSelector((state:RootState) => state.map.currentPlaceName);
   const initMapCenter = useSelector((state: any) => state.map);
   const [address, setAddress] = useState('');
   const [currentMarker, setCurrentMarker] = useState<naver.maps.Marker>();
@@ -49,7 +51,7 @@ function CertificationMap() {
 
   const locationCard = <div className='location-card'>
     <div className='location-card-left'>
-      <h4>멍플아닌카페</h4>
+      <h4>{currentPlaceName}</h4>
       <p>{address}</p>
     </div>
     <div className='location-card-right'>여기로 기록<img src={RightArrow} alt="next"/></div>
@@ -57,6 +59,7 @@ function CertificationMap() {
 
 
   useEffect(() => {
+    console.log(pointerLocation, currentPlaceName);
     if (currentMarker) {
       currentMarker.setMap(null);
     }

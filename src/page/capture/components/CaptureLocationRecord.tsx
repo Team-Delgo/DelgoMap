@@ -15,6 +15,7 @@ import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
 import {MungPlaceType} from '../../../common/types/mungPlace'
 import useActive from '../../../common/hooks/useActive';
 import useInput from '../../../common/hooks/useInput';
+import { mapAction } from '../../../redux/slice/mapSlice';
 
 
 const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
@@ -68,6 +69,7 @@ function CaptureLocationRecord() {
 
   const navigateCertMap = () => {
     navigate(CAMERA_PATH.MAP);
+    dispatch(mapAction.setCurrentPlaceName(inputRef.current.value));
   };
 
   const manualPlace = () => {

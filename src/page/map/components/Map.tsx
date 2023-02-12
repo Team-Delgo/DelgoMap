@@ -219,7 +219,7 @@ function Map() {
       });
       setMungpleCertMarkerList(tempList2);
     }
-    else if (!isCertVisible) {
+    if (isCertVisible) {
       deleteCertList();
       deleteMungpleList();
       const tempList = mungpleList.map((data) => {

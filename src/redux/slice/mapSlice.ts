@@ -10,6 +10,7 @@ const initialState = {
   isCopy: false,
   viewCount: 0,
   detailImgUrl: "",
+  currentPlaceName: "",
 };
 
 export const mapSlice = createSlice({
@@ -39,6 +40,9 @@ export const mapSlice = createSlice({
     },
     setDetailUrl(state, action){
       state.detailImgUrl = action.payload;
+    },
+    setCurrentPlaceName(state, action){
+      state.currentPlaceName = action.payload;
     }
   }
 });
