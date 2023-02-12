@@ -3,12 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import VerticalDevider from '../../common/icons/vertical-devide.svg';
-import Cafe from '../../common/icons/cafe.svg';
-import Walk from '../../common/icons/walk.svg';
-import Hair from '../../common/icons/beauty.svg';
-import Hospital from '../../common/icons/hospital.svg';
-import Bath from '../../common/icons/bath.svg';
-import Eat from '../../common/icons/eat.svg';
 import Heart from '../../common/icons/heart-empty.svg';
 import FillHeart from '../../common/icons/heart.svg';
 import Comments from '../../common/icons/comments.svg';
@@ -92,14 +86,6 @@ function RecordCertification(props: { certification: Cert }) {
     setBottomSheetIsOpen(false);
   },[])
 
-  let icon;
-  if (certification.categoryCode === 'CA0001') icon = Walk;
-  else if (certification.categoryCode === 'CA0002') icon = Cafe;
-  else if (certification.categoryCode === 'CA0003') icon = Eat;
-  else if (certification.categoryCode === 'CA0004') icon = Bath;
-  else if (certification.categoryCode === 'CA0005') icon = Hair;
-  else if (certification.categoryCode === 'CA0006') icon = Hospital;
-  else icon = Walk;
   return (
     <>
       <div className="record-cert">
@@ -118,7 +104,6 @@ function RecordCertification(props: { certification: Cert }) {
             <div className="record-cert-main-text-title">{certification.placeName}</div>
             <div className="record-cert-main-text-sub">{certification.address}</div>
           </div>
-          <img src={icon} alt="icon" />
         </div>
         <div className="record-cert-devider" />
         <div className="record-cert-description">{certification.description}</div>
