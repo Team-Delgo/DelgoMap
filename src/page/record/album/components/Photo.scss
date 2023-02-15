@@ -74,21 +74,23 @@
     }
   }
   &-wrapper {
-    // display: flex;
+    display: flex;
     // justify-content: center;
-    align-items: center;
+    // align-items: center;
     flex-wrap: wrap;
+    padding: 4%;
     // min-height: 100vh;
     
     &-img {
-      width: 45%;
-      margin: 2.5%;
+      width: 46%;
+      margin: 2%;
       border-radius: 7px;
     }
   }
   &-history {
-    margin: 1rem;
+    margin: 6%;
     margin-top: 15vh;
+    margin-bottom: 0px;
     font-size: 16px;
     font-weight: 600;
     display: flex;
