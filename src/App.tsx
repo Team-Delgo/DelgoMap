@@ -1,4 +1,3 @@
-import VConsole from "vconsole";
 import React, { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -48,7 +47,6 @@ import { deviceAction } from "./redux/slice/deviceSlice";
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
-  const vConsole = new VConsole();
   useEffect(() => {
     const pcDevice = 'win16|win32|win64|mac|macintel';
     if (navigator.platform) {
