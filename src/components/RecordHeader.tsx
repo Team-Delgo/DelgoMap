@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './RecordHeader.scss';
-import BackArrow from "../common/icons/back-arrow.svg";
+import BackArrow from "../common/icons/prev-arrow-black.svg";
 import { ROOT_PATH } from '../common/constants/path.const';
 
 function RecordHeader() {

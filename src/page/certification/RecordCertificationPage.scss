@@ -1,9 +1,9 @@
 .record-certs{
   &-content{
-    padding-top: 100px;
+    padding-top: 70px;
   }
   &-header{
-    padding-top: 50px;
+    padding-top: 4vh;
     position: fixed;
     width: 100vw;
     height: 50px;
@@ -11,14 +11,13 @@
     background-color: white;
     img{
       position: absolute;
-      left: 22px;
+      left: 20px;
     }
     margin-bottom: 20px;
     &-date{
       position: absolute;
       left: 50%;
       transform: translateX(-50%);      
-      font-weight: 600;
       font-size: 18px;
     }
   }
