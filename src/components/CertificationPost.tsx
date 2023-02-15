@@ -207,7 +207,7 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
         )}
       </header>
       <main className="post-img-result-main">
-        <img className="post-img-result-main-img" data-src={post?.photoUrl} width={window.innerWidth} ref={postImgRef} alt="postImg" />
+        <img className="post-img-result-main-img" src={post?.photoUrl} data-src={post?.photoUrl} width={window.innerWidth} ref={postImgRef} alt="postImg" />
         <header className="post-img-result-main-header">
           <div className="post-img-result-main-header-place">
             <div className="post-img-result-main-header-place-name">{post?.placeName}</div>
