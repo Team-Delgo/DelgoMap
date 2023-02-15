@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CROP_PATH, RECORD_PATH, SIGN_IN_PATH, POSTS_PATH } from '../common/constants/path.const';
@@ -12,6 +13,7 @@ import './FooterNavigation.scss';
 function FooterNavigation(props: { setCenter: () => void }) {
   const { setCenter } = props;
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const device = useSelector((state: RootState) => state.persist.device.OS);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
 
   const navigate = useNavigate();
@@ -50,20 +52,18 @@ function FooterNavigation(props: { setCenter: () => void }) {
     if (userId) {
       setCenter();
       navigate(RECORD_PATH.PHOTO);
-    }
-    else setIsAlertOpen(true);
+    } else setIsAlertOpen(true);
   };
 
   const certButtonHandler = () => {
     if (userId) {
       setCenter();
       openFileGallery();
-    }
-    else setIsAlertOpen(true);
+    } else setIsAlertOpen(true);
   };
 
   return (
-    <div className="navigation">
+    <div className={classNames("navigation", {ios:device==="ios"})}>
       {isAlertOpen && (
         <AlertConfirm
           text="로그인이 필요한 기능입니다."
