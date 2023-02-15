@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { CROP_PATH, RECORD_PATH, SIGN_IN_PATH, POSTS_PATH } from '../common/constants/path.const';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import DogFoot from '../common/icons/dogfoot.svg';
+import Home from "../common/icons/home.svg";
 import Plus from '../common/icons/plus.svg';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { RootState } from '../redux/store';
@@ -73,7 +74,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
         />
       )}
       <div className="navigation-button" aria-hidden="true" onClick={moveToPostsPage}>
-        <img src={DogFoot} alt="foot" />
+        <img src={Home} alt="home" />
         동네강아지
       </div>
       <div className="navigation-plus" aria-hidden="true" onClick={certButtonHandler}>
