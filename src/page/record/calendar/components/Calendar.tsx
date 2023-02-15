@@ -143,7 +143,7 @@ function Calender() {
           achieve = date.isAchievements;
         }
       })};
-      console.log(imageSrc, isCertificated);
+      console.log(imageSrc, isCertificated, date, <img src={imageSrc} alt="park" className="date-day-after" />);
       return (
         <div
           key={id}
