@@ -66,7 +66,7 @@ function ChangeUserInfo() {
           setNicknameDupCheckFail(false);
           setFeedback('닉네임이 변경되었습니다.');
           changeName(
-            email,
+            user.id,
             enteredInput.nickname,
             (response: AxiosResponse) => {
               dispatch(userActions.changeNickName({ name: enteredInput.nickname }));

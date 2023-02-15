@@ -52,10 +52,10 @@ function changeGeoCode(email: string, geoCode: string, pGeoCode: string, success
     });
 }
 
-function changeName(email: string, name: string, success: (data: AxiosResponse) => void, dispatch: any) {
+function changeName(userId: number, name: string, success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
     .put(`/account/user`, {
-      email,
+      userId,
       name,
     })
     .then((data) => {
