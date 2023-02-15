@@ -3,7 +3,13 @@
   z-index: 100;
   bottom: 0;
   width: 100vw;
-  height: 96px;
+  &.android{
+    height: 80px;
+  }
+  &.ios{
+    height: 60px;
+  }
+  height: 80px;
   background-color: white;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
   border-radius: 18px 18px 0px 0px;
