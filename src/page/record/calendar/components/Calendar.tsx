@@ -143,7 +143,7 @@ function Calender() {
           achieve = date.isAchievements;
         }
       })};
-
+      console.log(imageSrc, isCertificated);
       return (
         <div
           key={id}
