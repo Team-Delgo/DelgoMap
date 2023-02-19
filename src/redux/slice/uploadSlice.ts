@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Action } from 'history';
 
 interface initialStateType {
   prevImg:string,
@@ -72,13 +71,6 @@ const uploadSlice = createSlice({
         prevImg:action.payload.prevImg,
         prevImgName:action.payload.prevImgName
 
-      };
-    },
-    setLocation(state, action) {
-      return {
-        ...state,
-        latitude: action.payload.latitude,
-        longitude: action.payload.longitude,
       };
     },
     setImg(state, action) {

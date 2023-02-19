@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import NotChecked from '../../../common/icons/not-checked.svg';
 import { achievementType } from '../../../../common/types/achievement';
 
 interface achievementDataPropsType {
