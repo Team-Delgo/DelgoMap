@@ -3,8 +3,8 @@ import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
 function login(data: { email: string; password: string }, success: (data: AxiosResponse) => void, dispatch: any) {
-  axiosInstance
-    .post(`/login`, {
+  axios
+    .post(`https://www.test.delgo.pet/login`, {
       email: data.email,
       password: data.password,
     })

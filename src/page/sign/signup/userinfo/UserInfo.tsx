@@ -60,6 +60,7 @@ function UserInfo() {
   const [region, setRegion] = useState<Region>();
   const emailRef = useRef<HTMLInputElement>(null);
   const nicknameRef = useRef<HTMLInputElement>(null);
+  const regionRef = useRef<HTMLInputElement>(null);
   const firstPageIsValid = validInput.email.length && validInput.password.length && validInput.confirm.length;
 
   const getRegionData = async () => {
@@ -401,10 +402,12 @@ function UserInfo() {
             <input
               className={classNames('login-input input-location')}
               placeholder="지역"
+              ref={regionRef}
               value={enteredInput.region}
               id={Id.REGION}
               onClick={() => {
                 setModalActive(true);
+                regionRef.current?.blur();
               }}
               onFocus={() => {
                 setModalActive(true);

@@ -8,7 +8,7 @@ function BirthSelector(props: { changeBirth: (year: number, month: number, day: 
   const [selectedYear, setSelectedYear] = useState<number>(2000);
   const [selectedMonth, setSelectedMonth] = useState<number>(1);
   const [selectedDay, setSelectedDay] = useState<number>(1);
-  const { years, months, days, leapYear } = Birth(2000, 2022, true);
+  const { years, months, days, leapYear } = Birth(2000, 2023, true);
   const [dayArray, setDayArray] = useState<(number | string)[]>(days[0]);
   const yearRef = useRef<HTMLDivElement>(null);
   const monthRef = useRef<HTMLDivElement>(null);
