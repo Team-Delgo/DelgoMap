@@ -11,7 +11,7 @@ import { DateType } from './calendarType';
 import { RECORD_PATH } from '../../../../common/constants/path.const';
 import { RootState } from '../../../../redux/store';
 import { scrollActions } from '../../../../redux/slice/scrollSlice';
-import { analytics } from "../../../../index";
+import { analytics } from '../../../../index';
 
 function Calender() {
   const [touchStart, setTouchStart] = useState(0);
@@ -23,7 +23,7 @@ function Calender() {
   const [scrollY, setScrollY] = useState(scroll);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [dateList, setDateList] = useState<DateType[]>([]);
-  const certEvent = useAnalyticsCustomLogEvent(analytics, "calendar_cert");
+  const certEvent = useAnalyticsCustomLogEvent(analytics, 'calendar_cert');
   const getNextYear = (currentMonth: number, currentYear: number, add: number) => {
     if (currentMonth + add > 12) {
       return currentYear + 1;
@@ -46,7 +46,6 @@ function Calender() {
       userId,
       (response: AxiosResponse) => {
         const { code, data } = response.data;
-        console.log(data);
         setDateList(data);
       },
       dispatch,
@@ -56,8 +55,7 @@ function Calender() {
   useEffect(() => {
     if (touchStart - touchEnd > 200) {
       navigate(RECORD_PATH.ACHIEVE, { state: 'achieve' });
-    }
-    else if (touchStart - touchEnd < - 200) {
+    } else if (touchStart - touchEnd < -200) {
       navigate(RECORD_PATH.PHOTO, { state: 'photo' });
     }
   }, [touchEnd]);
@@ -65,12 +63,10 @@ function Calender() {
   useEffect(() => {
     if (scroll === 0) {
       scrollRef.current?.scrollIntoView({ block: 'end' });
-    }
-    else {
+    } else {
       window.scroll(0, scrollY);
     }
   }, [dateList]);
-
 
   const getDateContext = (prev: number) => {
     const date = new Date();
@@ -134,16 +130,16 @@ function Calender() {
       let isCertificated = false;
       let imageSrc;
       let certification: Cert[];
-      if(dateList.length > 0){
-      dateList.forEach((date) => {
-        if (date.date === id) {
-          isCertificated = true;
-          certification = date.dateList;
-          imageSrc = date.dateList[0].photoUrl;
-          achieve = date.isAchievements;
-        }
-      })};
-      console.log(imageSrc, isCertificated, date, <img src={imageSrc} alt="park" className="date-day-after" />);
+      if (dateList.length > 0) {
+        dateList.forEach((date) => {
+          if (date.date === id) {
+            isCertificated = true;
+            certification = date.dateList;
+            imageSrc = date.dateList[0].photoUrl;
+            achieve = date.isAchievements;
+          }
+        });
+      }
       return (
         <div
           key={id}
@@ -153,15 +149,15 @@ function Calender() {
           onClick={
             isCertificated
               ? () => {
-                certEvent.mutate();
-                dispatch(scrollActions.calendarScroll({ scroll: window.scrollY }));
-                navigate('/certs', { state: { certifications: certification, pageFrom: RECORD_PATH.CALENDAR } })
-              }
+                  certEvent.mutate();
+                  dispatch(scrollActions.calendarScroll({ scroll: window.scrollY }));
+                  navigate('/certs', { state: { certifications: certification, pageFrom: RECORD_PATH.CALENDAR } });
+                }
               : undefined
           }
         >
           {date}
-          {achieve && <div className='date-day-achieve' />}
+          {achieve && <div className="date-day-achieve" />}
           {isCertificated && <img src={imageSrc} alt="park" className="date-day-after" />}
         </div>
       );
@@ -204,11 +200,14 @@ function Calender() {
       </div>
     );
     return (
-      <>
-        <div className="current-month">{`${element.currentYear}.${element.currentMonth}`}</div>
+      <div key={`${element.currentYear}.${element.currentMonth}`}>
+        <div
+          className="current-month"
+          
+        >{`${element.currentYear}.${element.currentMonth}`}</div>
         {weekDay}
         <div className="date">{element.datesElement}</div>
-      </>
+      </div>
     );
   });
 

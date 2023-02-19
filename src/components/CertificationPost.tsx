@@ -223,7 +223,7 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
             aria-hidden="true"
             onClick={handleCertificationLike}
           />
-          <div className="post-img-result-main-footer-count">{likeCount}</div>
+          {likeCount>0 && <div className="post-img-result-main-footer-count">{likeCount}</div>}
           <img
             className="post-img-result-main-footer-comments"
             src={Comments}
@@ -231,7 +231,7 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
             aria-hidden="true"
             onClick={moveToCommentPage}
           />
-          <div className="post-img-result-main-footer-count">{post?.commentCount}</div>
+          {post?.commentCount>0 && <div className="post-img-result-main-footer-count">{post?.commentCount}</div>}
         </footer>
       </main>
       <div className="border-line" />

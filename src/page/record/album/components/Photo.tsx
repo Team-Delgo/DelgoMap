@@ -15,6 +15,7 @@ import { analytics } from "../../../../index";
 import { scrollActions } from "../../../../redux/slice/scrollSlice";
 import { RootState } from "../../../../redux/store";
 import Plus from "../../../../common/icons/plus.svg";
+import Loading from "../../../../common/utils/Loading";
 
 function Photo() {
   const mutation = useAnalyticsLogEvent(analytics, "screen_view");
@@ -39,7 +40,6 @@ function Photo() {
   const [isLast, setLast] = useState(false);
   const dispatch = useDispatch();
   const location: any = useLocation();
-
   useEffect(() => {
     mutation.mutate({
       params: {
@@ -61,7 +61,6 @@ function Photo() {
       }
     };
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -150,7 +149,7 @@ function Photo() {
 
   const noRecordContext = useMemo(
     () => (
-      <div className="photo-nocert">
+      isLoading && <div className="photo-nocert">
         <h4>기록이 없어요</h4>
         <span className="photo-nocert-guide">
           오른쪽 하단
@@ -161,7 +160,7 @@ function Photo() {
         </span>
       </div>
     ),
-    []
+    [isLoading]
   );
 
   const otherDogsFeed = useMemo(() => {
@@ -191,6 +190,7 @@ function Photo() {
             src={photo.photoUrl}
             alt="cert"
             aria-hidden="true"
+            key={photo.certificationId}
             onClick={photoClickHandler}
           />
         );
