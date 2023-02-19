@@ -156,6 +156,15 @@ async function deleteCertificationPost(userId: number, certificationId: number, 
   }
 }
 
+async function getFiveOtherDogsCert(userId: number, count: number, success: (data: AxiosResponse) => void, dispatch: any) {
+  try {
+    const result = await axiosInstance.get(`/certification/recent?userId=${userId}&count=${count}`);
+    success(result);
+  } catch (error: any) {
+    useErrorHandlers(dispatch, error);
+  }
+}
+
 export {
   getMungPlaceList,
   // getCertificationDataCount,
@@ -167,4 +176,5 @@ export {
   updateCertificationPost,
   certificationLike,
   deleteCertificationPost,
+  getFiveOtherDogsCert
 };
