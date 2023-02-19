@@ -14,7 +14,22 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    // "baseUrl": ".",
+    // "paths": {
+    //   // "@/*": ["src/*"],
+    //   "@api/*": ["src/common/apis/*"],
+    //   "@constants/*": ["src/common/components/*"],
+    //   "@dialog/*": ["src/common/dialog/*"],
+    //   "@fonts/*": ["src/common/fonts/*"],
+    //   "@hooks/*": ["src/common/hooks/*"],
+    //   "@icons/*": ["src/common/icons/*"],
+    //   "@types/*": ["src/common/types/*"],
+    //   "@utils/*": ["src/common/utils/*"],
+    //   "@components/*": ["src/components/*"],
+    //   "@page/*": ["src/page/*"],
+    //   "@redux/*": ["src/redux/*"]
+    // }
   },
   "include": ["src", "src/custom.d.ts"]
 }

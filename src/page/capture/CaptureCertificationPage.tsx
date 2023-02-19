@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
 import CaptureCertificationImg from './components/CaptureCertificationImg';

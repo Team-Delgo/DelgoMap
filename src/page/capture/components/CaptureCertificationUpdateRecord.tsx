@@ -1,4 +1,4 @@
-import React, { useState, useCallback} from 'react';
+import React, { useCallback} from 'react';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,8 +7,6 @@ import { CAMERA_PATH } from '../../../common/constants/path.const';
 import {updateCertificationPost } from '../../../common/api/certification';
 import { RootState } from '../../../redux/store';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
-import WrittingButton from '../../../common/icons/writting-button.svg';
-import WrittingButtonActive from '../../../common/icons/writting-button-active.svg';
 import useActive from '../../../common/hooks/useActive';
 import useInput from '../../../common/hooks/useInput';
 
@@ -16,7 +14,7 @@ import useInput from '../../../common/hooks/useInput';
 const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
 
 function CaptureCategoryUpdateRecord() {
-  const { categoryKo, title, certificationId, content,address } = useSelector((state: RootState) => state.persist.upload);
+  const { title, certificationId, content,address } = useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const [certificationPostContent, onChangeCertificationPostContent] = useInput(content);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
@@ -81,23 +79,6 @@ function CaptureCategoryUpdateRecord() {
       <Sheet.Container style={sheetStyle}>
         <Sheet.Content>
           <main className="capture-img-record">
-            {/* <header className="capture-img-record-container">
-              <img src={categoryIcon[categoryKo]} alt="category-img" />
-              <div className="capture-img-record-category">
-                <div className="capture-img-record-category-label">{categoryKo}</div>
-              </div>
-              {certificationPostContent.length > 0 ? (
-                <img
-                  className="writting-button"
-                  src={WrittingButtonActive}
-                  alt="category-img"
-                  aria-hidden="true"
-                  onClick={uploadCertificationPost}
-                />
-              ) : (
-                <img className="writting-button" src={WrittingButton} alt="category-img" />
-              )}
-            </header> */}
             <body className="review-container">
             <div className="review-place-info">
                   <div className="review-place-info-title">{title}</div>

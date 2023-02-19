@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
@@ -12,8 +12,6 @@ import {
 } from '../../../common/api/certification'
 import { RootState } from '../../../redux/store';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
-import WrittingButton from '../../../common/icons/writting-button.svg';
-import WrittingButtonActive from '../../../common/icons/writting-button-active.svg';
 import ToastPurpleMessage from '../../../common/dialog/ToastPurpleMessage';
 import { analytics } from '../../../index';
 import useActive from '../../../common/hooks/useActive';
@@ -36,7 +34,7 @@ function CaptureCertificationRecord({
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [certificateErrorToastIsOpen, openCertificateErrorToast, closeCertificateErrorToast] = useActive(false);
-  const { categoryKo, img, latitude, longitude, mongPlaceId, title, tool, file, address } = useSelector(
+  const { latitude, longitude, mongPlaceId, title, tool, file, address } = useSelector(
     (state: RootState) => state.persist.upload,
   );
   const { user } = useSelector((state: RootState) => state.persist.user);
@@ -54,66 +52,6 @@ function CaptureCertificationRecord({
     }
   }, [certificateErrorToastIsOpen]);
 
-  // const uploadCameraImgCertification = () => {
-  //   if (postCertificationIsLoading) {
-  //     return;
-  //   }
-  //   onPostCertificationLoading();
-  //   registerCameraCertificationPost(
-  //     {
-  //       userId: user.id,
-  //       categoryCode: categoryCode[categoryKo],
-  //       mungpleId: mongPlaceId,
-  //       placeName: title,
-  //       description: certificationPostContent,
-  //       latitude: latitude.toString(),
-  //       longitude: longitude.toString(),
-  //       photo: img,
-  //     },
-  //     (response: AxiosResponse) => {
-  //       const { code, data } = response.data;
-  //       if (code === 200) {
-  //         certCompleteEvent.mutate();
-  //         dispatch(
-  //           uploadAction.setContentRegistDtCertificationIdAddress({
-  //             content: certificationPostContent,
-  //             registDt: data.registDt,
-  //             certificationId: data.certificationId,
-  //             address: data.address,
-  //             achievements: [],
-  //           }),
-  //         );
-  //         if (data.isAchievements) {
-  //           dispatch(
-  //             uploadAction.setAchievements({
-  //               achievements: data.achievements,
-  //             }),
-  //           );
-  //         }
-  //         offPostCertificationLoading();
-  //         moveToCaptureResultPage();
-  //       } else if (code === 314) {
-  //         offPostCertificationLoading();
-  //         setCertificateErrorToastMessage('카테고리당 하루 5번까지 인증 가능합니다');
-  //         openCertificateErrorToast();
-  //       } else if (code === 313) {
-  //         offPostCertificationLoading();
-  //         setCertificateErrorToastMessage('6시간 이내 같은 장소에서 인증 불가능합니다');
-  //         openCertificateErrorToast();
-  //       } else if (code === 312) {
-  //         offPostCertificationLoading();
-  //         setCertificateErrorToastMessage('인증 가능한 장소에 있지 않습니다');
-  //         openCertificateErrorToast();
-  //       } else if (code === 316) {
-  //         offPostCertificationLoading();
-  //         setCertificateErrorToastMessage('GPS가 켜져 있지 않거나 권한 설정이 되어있지 않습니다');
-  //         openCertificateErrorToast();
-  //       }
-  //     },
-  //     dispatch,
-  //   );
-  // };
-
   const uploadGalleryImgCertification = () => {
     if (postCertificationIsLoading) {
       return;
@@ -123,7 +61,7 @@ function CaptureCertificationRecord({
     registerGalleryCertificationPost(
       {
         userId: user.id,
-        categoryCode: 'CA0001',
+        categoryCode: 'CA9999',
         mungpleId: mongPlaceId,
         placeName: title,
         description: certificationPostContent,

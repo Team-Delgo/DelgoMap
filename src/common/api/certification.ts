@@ -8,19 +8,23 @@ async function getMungPlaceList(categoryCode: string) {
   return data;
 }
 
-// async function getCertificationDataCount(userId: number) {
-//   const { data } = await axiosInstance.get(`/certification/category/count/${userId}`);
-//   return data;
-// }
 
-async function certificationLike(userId: number, certificationId: number, success: (data: AxiosResponse) => void, dispatch: any) {
-  try {
-    const result = await axiosInstance.post(`/certification/like/${userId}/${certificationId}`);
-    console.log(result);
-    success(result);
-  } catch (err: any) {
-    useErrorHandlers(dispatch, err);
-  }
+ function certificationLike(
+  data:{  userId: number,
+    certificationId: number}
+  // success: (data: AxiosResponse) => void,
+  // dispatch: any,
+){
+  return axiosInstance.post(
+    `/certification/like/${data.userId}/${data.certificationId}`,
+  );
+  // try {
+  //   const result = await axiosInstance.post(`/certification/like/${userId}/${certificationId}`);
+  //   console.log(result);
+  //   success(result);
+  // } catch (err: any) {
+  //   useErrorHandlers(dispatch, err);
+  // }
 }
 
 //  function certificationLike2(userId: number, certificationId: number) {
@@ -147,24 +151,16 @@ async function getCertificationPostAll(pageParam: number, userId: number, pageSi
   }
 }
 
-async function deleteCertificationPost(userId: number, certificationId: number, success: (data: AxiosResponse) => void, dispatch: any) {
-  try {
-    const result = await axiosInstance.delete(`/certification/${userId}/${certificationId}`);
-    success(result);
-  } catch (error: any) {
-    useErrorHandlers(dispatch, error);
-  }
+function certificationDelete(data: { userId: number; certificationId: number }) {
+  return axiosInstance.delete(`/certification/${data.userId}/${data.certificationId}`);
 }
 
 export {
   getMungPlaceList,
-  // getCertificationDataCount,
-  // registerCameraCertificationPost,
   registerGalleryCertificationPost,
   registerGalleryCertificationImg,
-  // getCertificationPostsByHome,
   getCertificationPostAll,
   updateCertificationPost,
   certificationLike,
-  deleteCertificationPost,
+  certificationDelete,
 };

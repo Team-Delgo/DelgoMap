@@ -3,39 +3,54 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
+import { useMutation } from 'react-query';
 import { RootState } from '../../../redux/store';
 import { CAMERA_PATH, POSTS_PATH, ROOT_PATH, RECORD_PATH } from '../../../common/constants/path.const';
-import { deleteCertificationPost } from '../../../common/api/certification';
+import { certificationDelete } from '../../../common/api/certification';
 import X from '../../../common/icons/xx.svg';
 import DeleteBottomSheet from '../../../common/dialog/ConfirmBottomSheet';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import { weekDay } from '../../../common/types/week';
 import useActive from '../../../common/hooks/useActive';
+import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
 
+
+interface CertificationLIkeDataType{
+  userId: number;
+  certificationId: number;
+}
 
 function CaptureResultHeader() {
   const [deletePostBottomSheetIsOpen, openDeletePostBottomSheet, closeDeletePostBottomSheet] = useActive(false);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { registDt, certificationId } = useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location: any = useLocation();
 
 
-  const deleteCertification = () => {
-    closeDeletePostBottomSheet();
-    deleteCertificationPost(
-      user.id,
-      certificationId,
-      (response: AxiosResponse) => {
+  const { mutate: certificationDeleteMutate, isLoading: cettificationDeleteIsLoading } =
+    useMutation((data: CertificationLIkeDataType) => certificationDelete(data), {
+      onSuccess: (response: any) => {
         const { code } = response.data;
-        console.log(response);
+
         if (code === 200) {
-          moveToHomePage();
+          moveToPhotoPage();
         }
       },
-      dispatch,
-    );
+      onError: (error: any, variables, context) => {
+        useErrorHandlers(dispatch, error);
+      },
+    });
+
+
+  const deleteCertification = () => {
+    if (cettificationDeleteIsLoading) return
+    closeDeletePostBottomSheet();
+    certificationDeleteMutate({
+      userId: user?.id,
+      certificationId,
+    });
   };
 
   const moveToUpdatePage = () => {

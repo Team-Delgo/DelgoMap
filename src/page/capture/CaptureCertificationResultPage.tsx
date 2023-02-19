@@ -12,10 +12,28 @@ import useActive from '../../common/hooks/useActive';
 import './CaptureCertificationResultPage.scss';
 
 function CaptureResult() {
-  const [certificateSuccessToastIsOpen, onCertificateSuccessToast, closeCertificateSuccessToast] = useActive(false);
-  const [certificateUpdateSuccessToastIsOpen, onCertificateUpdateSuccessToast, offCertificateUpdateSuccessToast] = useActive(false);
-  const [achievementBottomSheetIsOpen1, openAchievementBottomSheet1, closeAchievementBottomSheet1] = useActive(false);
-  const [achievementBottomSheetIsOpen2, openAchievementBottomSheet2, closeAchievementBottomSheet2] = useActive(false);
+  const [
+    certificateSuccessToastIsOpen,
+    onCertificateSuccessToast,
+    closeCertificateSuccessToast,
+  ] = useActive(false);
+  const [
+    certificateUpdateSuccessToastIsOpen,
+    onCertificateUpdateSuccessToast,
+    offCertificateUpdateSuccessToast,
+  ] = useActive(false);
+  const [
+    achievementBottomSheetIsOpen1,
+    openAchievementBottomSheet1,
+    closeAchievementBottomSheet1,
+  ] = useActive(false);
+  const [
+    achievementBottomSheetIsOpen2,
+    openAchievementBottomSheet2,
+    closeAchievementBottomSheet2,
+  ] = useActive(false);
+
+  
   const { achievements } = useSelector((state: RootState) => state.persist.upload);
   const location: any = useLocation();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
@@ -72,8 +90,12 @@ function CaptureResult() {
         cancelButtonHandler={closeAchievementBottomSheet2}
         bottomSheetIsOpen={achievementBottomSheetIsOpen2}
       />
-      {certificateSuccessToastIsOpen && <ToastPurpleMessage message="인증에 성공하였습니다" />}
-      {certificateUpdateSuccessToastIsOpen && <ToastPurpleMessage message="인증 수정에 성공하였습니다" />}
+      {certificateSuccessToastIsOpen && (
+        <ToastPurpleMessage message="인증에 성공하였습니다" />
+      )}
+      {certificateUpdateSuccessToastIsOpen && (
+        <ToastPurpleMessage message="인증 수정에 성공하였습니다" />
+      )}
     </>
   );
 }

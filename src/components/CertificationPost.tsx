@@ -1,10 +1,10 @@
 import { AxiosResponse } from 'axios';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { certificationLike, deleteCertificationPost } from '../common/api/certification';
+import { certificationDelete, certificationLike } from '../common/api/certification';
 import Heart from '../common/icons/heart-empty.svg';
 import FillHeart from '../common/icons/heart.svg';
 import Comments from '../common/icons/comments.svg';
@@ -14,13 +14,13 @@ import { uploadAction } from '../redux/slice/uploadSlice';
 import { scrollActions } from '../redux/slice/scrollSlice';
 import DeleteBottomSheet from '../common/dialog/ConfirmBottomSheet';
 import ToastPurpleMessage from '../common/dialog/ToastPurpleMessage';
-import { banUser } from '../common/api/ban';
+import { blockUser } from '../common/api/ban';
 import { analytics } from '../index';
 import { postType } from '../common/types/post';
 import { weekDay } from '../common/types/week';
-// import { categoryIcon2, categoryCode2 } from '../common/types/category';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
+import { useErrorHandlers } from '../common/api/useErrorHandlers';
 
 interface CertificationPostPropsType {
   post: postType;
@@ -28,47 +28,31 @@ interface CertificationPostPropsType {
   pageSize: number;
 }
 
+interface CertificationLIkeDataType{
+  userId: number;
+  certificationId: number;
+}
+
+interface UserBlockDataType{
+  myUserId:number;
+  blockedUserId:number
+}
+
 function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsType) {
   const [likeCount, setLikeCount] = useState(post?.likeCount);
   const [blockedUserName, setBlockedUserName] = useState(post?.likeCount);
-  const [isLike, activeLike,inActiveLike] = useActive(post?.isLike);
+  const [isLike, activeLike, inActiveLike] = useActive(post?.isLike);
   const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDelteBottomSheet] = useActive(false);
   const [deletePostSuccessToastIsOpen, openDeletePostSuccessToast, closeDeletePostSuccessToast] = useActive(false);
   const [blockUserbottomSheetIsOpen, openBlockUserBottomSheet, closeBlockUserBottomSheet] = useActive(false);
   const [blockUserSuccessToastIsOpen, openBlockUserSuccessToastIsOpen, closeBlockUserSuccessToast] = useActive(false);
   const [loginAlertIsOpen, setLoginAlertIsOpen] = useState(false);
-  const { user,isSignIn } = useSelector((state: RootState) => state.persist.user);
+  const { user, isSignIn } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const heartEvent = useAnalyticsCustomLogEvent(analytics, 'cert_like');
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_view');
-  const profileImgRef = useRef<HTMLImageElement>(null);
-  const postImgRef = useRef<HTMLImageElement>(null);
-
-  const observeImg = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
-    entries.forEach((entry: any) => {
-      if (entry.isIntersecting) {
-        entry.target.src = entry.target.dataset.src;
-        observer.unobserve(entry.target);
-      }
-    });
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(observeImg);
-    profileImgRef.current && observer.observe(profileImgRef.current);
-    postImgRef.current && observer.observe(postImgRef.current);
-  }, []);
-
-
-  useEffect(() => {
-    if (deletePostSuccessToastIsOpen) {
-      setTimeout(() => {
-        closeDeletePostSuccessToast();
-      }, 2000);
-    }
-  }, [deletePostSuccessToastIsOpen]);
 
   useEffect(() => {
     if (blockUserSuccessToastIsOpen) {
@@ -78,51 +62,43 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
     }
   }, [blockUserSuccessToastIsOpen]);
 
-  const handleCertificationLike = () => {
-    if(!isSignIn){
-      setLoginAlertIsOpen(true)
-      return
-    }
-    setLikeCount(isLike ? likeCount - 1 : likeCount + 1);
+  const {
+    mutate: certificationLikeMutate,
+  } = useMutation((data: CertificationLIkeDataType) => certificationLike(data), {
+    onSuccess: () => {
+      setLikeCount(isLike ? likeCount - 1 : likeCount + 1);
+      if (isLike) inActiveLike();
+      else activeLike();
+      heartEvent.mutate()
+    },
+    onError: (error: any, variables, context) => {
+      useErrorHandlers(dispatch, error);
+    },
+  });
 
-    if(isLike) inActiveLike()
-    else activeLike()
-
-    certificationLike(
-      user.id,
-      post?.certificationId,
-      (response: AxiosResponse) => {
-        if (response.data.code === 200) {
-          heartEvent.mutate();
-        }
-      },
-      dispatch,
-    );
-  };
-
-  const deleteCertification = useCallback(() => {
-    deleteCertificationPost(
-      user.id,
-      post?.certificationId,
-      (response: AxiosResponse) => {
+  const { mutate: certificationDeleteMutate, isLoading: cettificationDeleteIsLoading } =
+    useMutation((data: CertificationLIkeDataType) => certificationDelete(data), {
+      onSuccess: (response: AxiosResponse) => {
         const { code } = response.data;
         if (code === 200) {
-          openDeletePostSuccessToast();
           closeDelteBottomSheet();
+          openDeletePostSuccessToast();
           refetch();
+          setTimeout(() => {
+            closeDeletePostSuccessToast();
+          }, 2000);
         } else {
           closeDelteBottomSheet();
         }
       },
-      dispatch,
-    );
-  }, []);
+      onError: (error: any, variables, context) => {
+        useErrorHandlers(dispatch, error);
+      },
+    });
 
-  const handleBlockUser = useCallback(() => {
-    banUser(
-      user.id,
-      post?.user?.userId,
-      (response: AxiosResponse) => {
+    const { mutate: userBlockMutate, isLoading: userBlockIsLoading } =
+    useMutation((data: UserBlockDataType) => blockUser(data), {
+      onSuccess: (response: AxiosResponse) => {
         const { code, data } = response.data;
         if (code === 200) {
           setBlockedUserName(data?.name);
@@ -132,15 +108,44 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
         } else {
           closeBlockUserBottomSheet();
         }
+        
       },
-      dispatch,
-    );
-  }, []);
+      onError: (error: any, variables, context) => {
+        useErrorHandlers(dispatch, error);
+      },
+    });
+
+  const handleCertificationLike = () => {
+    if (!isSignIn) {
+      setLoginAlertIsOpen(true);
+      return;
+    }
+    certificationLikeMutate({
+      userId: user?.id,
+      certificationId: post?.certificationId,
+    });
+  }
+
+  const handleCertificationDelete = () => {
+    if (userBlockIsLoading) return;
+    certificationDeleteMutate({
+      userId: user?.id,
+      certificationId: post?.certificationId,
+    });
+  }
+
+  const handleUserBlock = () => {
+    if (cettificationDeleteIsLoading) return;
+    userBlockMutate({
+      myUserId: user?.id,
+      blockedUserId: post?.userId,
+    });
+  };
 
   const moveToCommentPage = () => {
-    if(!isSignIn){
-      setLoginAlertIsOpen(true)
-      return
+    if (!isSignIn) {
+      setLoginAlertIsOpen(true);
+      return;
     }
     commentEvent.mutate();
     dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
@@ -154,11 +159,10 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
     dispatch(
       uploadAction.setCertificationUpdate({
         img: post?.photoUrl,
-        // categoryKo: categoryCode2[post?.categoryCode],
         title: post?.placeName,
         certificationId: post?.certificationId,
         content: post?.description,
-        address: post?.address
+        address: post?.address,
       }),
     );
     navigate(CAMERA_PATH.UPDATE, {
@@ -179,7 +183,11 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
     <>
       <header className="post-img-result-header">
         <div className="post-img-result-header-profile">
-          <img className="post-img-result-header-profile-img" data-src={post?.user.profile} ref={profileImgRef} alt="copy url" />
+          <img
+            className="post-img-result-header-profile-img"
+            src={post?.user.profile}
+            alt="copy url"
+          />
           <div>
             <div className="post-img-result-header-profile-date">
               {' '}
@@ -192,7 +200,11 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
           </div>
         </div>
         {isSignIn === false ? null : user.id !== post?.user.userId ? (
-          <div className="post-img-result-header-report" aria-hidden="true" onClick={openBlockUserBottomSheet}>
+          <div
+            className="post-img-result-header-report"
+            aria-hidden="true"
+            onClick={openBlockUserBottomSheet}
+          >
             차단
           </div>
         ) : (
@@ -207,11 +219,20 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
         )}
       </header>
       <main className="post-img-result-main">
-        <img className="post-img-result-main-img" src={post?.photoUrl} data-src={post?.photoUrl} width={window.innerWidth} ref={postImgRef} alt="postImg" />
+        <img
+          className="post-img-result-main-img"
+          src={post?.photoUrl}
+          width={window.innerWidth}
+          alt="postImg"
+        />
         <header className="post-img-result-main-header">
           <div className="post-img-result-main-header-place">
-            <div className="post-img-result-main-header-place-name">{post?.placeName}</div>
-            <div className="post-img-result-main-header-place-address">{post?.address}</div>
+            <div className="post-img-result-main-header-place-name">
+              {post?.placeName}
+            </div>
+            <div className="post-img-result-main-header-place-address">
+              {post?.address}
+            </div>
           </div>
         </header>
         <body className="post-img-result-main-body">{post?.description}</body>
@@ -221,9 +242,13 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
             src={isLike ? FillHeart : Heart}
             alt="heart"
             aria-hidden="true"
-            onClick={handleCertificationLike}
+            onClick={
+              handleCertificationLike
+            }
           />
-          {likeCount>0 && <div className="post-img-result-main-footer-count">{likeCount}</div>}
+          {likeCount > 0 && (
+            <div className="post-img-result-main-footer-count">{likeCount}</div>
+          )}
           <img
             className="post-img-result-main-footer-comments"
             src={Comments}
@@ -231,28 +256,34 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
             aria-hidden="true"
             onClick={moveToCommentPage}
           />
-          {post?.commentCount>0 && <div className="post-img-result-main-footer-count">{post?.commentCount}</div>}
+          {post?.commentCount > 0 && (
+            <div className="post-img-result-main-footer-count">{post?.commentCount}</div>
+          )}
         </footer>
       </main>
       <div className="border-line" />
-      {deletePostSuccessToastIsOpen && <ToastPurpleMessage message="게시물이 삭제 되었습니다." />}
+      {deletePostSuccessToastIsOpen && (
+        <ToastPurpleMessage message="게시물이 삭제 되었습니다." />
+      )}
       <DeleteBottomSheet
         text="기록을 삭제하실건가요?"
         description="지우면 다시 볼 수 없어요"
         cancelText="취소"
         acceptText="삭제"
-        acceptButtonHandler={deleteCertification}
+        acceptButtonHandler={handleCertificationDelete}
         cancelButtonHandler={closeDelteBottomSheet}
         bottomSheetIsOpen={deleteBottomSheetIsOpen}
       />
 
-      {blockUserSuccessToastIsOpen && <ToastPurpleMessage message={`${blockedUserName}님을 신고 하였습니다`} />}
+      {blockUserSuccessToastIsOpen && (
+        <ToastPurpleMessage message={`${blockedUserName}님을 신고 하였습니다`} />
+      )}
       <DeleteBottomSheet
         text={`${post?.user?.name} 님을 신고 하시겠어요?`}
         description={`앞으로 ${post?.user?.name} 님의 게시물을 볼 수 없어요`}
         cancelText="취소"
         acceptText="신고"
-        acceptButtonHandler={handleBlockUser}
+        acceptButtonHandler={handleUserBlock}
         cancelButtonHandler={closeBlockUserBottomSheet}
         bottomSheetIsOpen={blockUserbottomSheetIsOpen}
       />

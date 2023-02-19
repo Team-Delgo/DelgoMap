@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMyProfileInfo } from '../../../../common/api/myaccount';
 import { useErrorHandlers } from '../../../../common/api/useErrorHandlers';
 import { CACHE_TIME, GET_MY_PROFILE_INFO_DATA, STALE_TIME } from '../../../../common/constants/queryKey.const';
+import Loading from '../../../../common/utils/Loading';
 import { RootState } from '../../../../redux/store';
 
 function PetInfo() {
@@ -22,7 +23,11 @@ function PetInfo() {
     },
   );
 
-  console.log('getMyProfileInfoData',getMyProfileInfoData)
+  if (getMyProfileInfoDataIsLoading) {
+    return <Loading />;
+  }
+
+
   return (
     <header className="pet-info-container">
       <img className="pet-info-img" src={pet.image} alt="copy url" width={81} height={81} />

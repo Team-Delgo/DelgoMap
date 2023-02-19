@@ -1,65 +1,81 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { useErrorHandlers } from '../../common/api/useErrorHandlers';
 import VerticalDevider from '../../common/icons/vertical-devide.svg';
 import Heart from '../../common/icons/heart-empty.svg';
 import FillHeart from '../../common/icons/heart.svg';
 import Comments from '../../common/icons/comments.svg';
 import { Cert } from '../../common/types/map';
 import './RecordCertification.scss';
-import { certificationLike, deleteCertificationPost } from '../../common/api/certification';
+import {
+  certificationLike,
+  certificationDelete,
+} from '../../common/api/certification';
 import { uploadAction } from '../../redux/slice/uploadSlice';
 import { CAMERA_PATH, RECORD_PATH } from '../../common/constants/path.const';
 import { RootState } from '../../redux/store';
 import DeleteBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import { categoryCode2 } from '../../common/types/category';
+import useActive from '../../common/hooks/useActive';
 
+interface CertificationLIkeDataType {
+  userId: number;
+  certificationId: number;
+}
 
 function RecordCertification(props: { certification: Cert }) {
   const { certification } = props;
   const dispatch = useDispatch();
   const [selfHeart, setSelfHeart] = useState(certification.isLike);
   const [count, setCount] = useState(certification.likeCount);
-  const [bottomSheetIsOpen, setBottomSheetIsOpen] = useState(false);
-  const [likeIsLoading, setLikeIsLoading] = useState(false);
+  const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDeleteBottomSheet] =
+    useActive(false);
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.persist.user);
 
-  const handleCertificationLike = () => {
-    setSelfHeart(!selfHeart);
-    setCount(selfHeart ? count - 1 : count + 1);
-    certificationLike(
-      certification.userId,
-      certification.certificationId,
-      (response: AxiosResponse) => {
-        if (response.data.code === 200) {
-          console.log('좋아요 성공ㅋ')
-        }
+  const { mutate: certificationLikeMutate } = useMutation(
+    (data: CertificationLIkeDataType) => certificationLike(data),
+    {
+      onSuccess: () => {
+        setSelfHeart(!selfHeart);
+        setCount(selfHeart ? count - 1 : count + 1);
       },
-      dispatch,
-    );
-  };
+      onError: (error: any, variables, context) => {
+        useErrorHandlers(dispatch, error);
+      },
+    },
+  );
 
-  const deleteCertification = useCallback(() => {
-    closeBottomSheet();
-    deleteCertificationPost(
-      user.id,
-      certification?.certificationId,
-      (response: AxiosResponse) => {
+  const { mutate: certificationDeleteMutate, isLoading: cettificationDeleteIsLoading } =
+    useMutation((data: CertificationLIkeDataType) => certificationDelete(data), {
+      onSuccess: (response: any) => {
         const { code } = response.data;
-        console.log(response);
+
         if (code === 200) {
           moveToPhotoPage();
         }
       },
-      dispatch,
-    );
-  },[])
+      onError: (error: any, variables, context) => {
+        useErrorHandlers(dispatch, error);
+      },
+    });
+
+  const deleteCertification = useCallback(() => {
+    if (cettificationDeleteIsLoading) {
+      return;
+    }
+    closeDeleteBottomSheet();
+    certificationDeleteMutate({
+      userId: user?.id,
+      certificationId: certification.certificationId,
+    });
+  }, []);
 
   const moveToPhotoPage = useCallback(() => {
     navigate(RECORD_PATH.PHOTO);
-  },[])
+  }, []);
 
   const moveToUpdatePage = useCallback(() => {
     dispatch(
@@ -76,15 +92,7 @@ function RecordCertification(props: { certification: Cert }) {
         prevPath: RECORD_PATH.PHOTO,
       },
     });
-  },[])
-
-  const openBottomSheet = useCallback(() => {
-    setBottomSheetIsOpen(true);
-  },[])
-
-  const closeBottomSheet = useCallback(() => {
-    setBottomSheetIsOpen(false);
-  },[])
+  }, []);
 
   return (
     <>
@@ -94,11 +102,15 @@ function RecordCertification(props: { certification: Cert }) {
             수정
           </div>
           <img src={VerticalDevider} alt="devider" />
-          <div aria-hidden="true" onClick={openBottomSheet}>
+          <div aria-hidden="true" onClick={openDeleteBottomSheet}>
             삭제
           </div>
         </div>
-        <img className="record-cert-img" src={certification.photoUrl} alt={certification.placeName} />
+        <img
+          className="record-cert-img"
+          src={certification.photoUrl}
+          alt={certification.placeName}
+        />
         <div className="record-cert-main">
           <div className="record-cert-main-text">
             <div className="record-cert-main-text-title">{certification.placeName}</div>
@@ -113,7 +125,12 @@ function RecordCertification(props: { certification: Cert }) {
             src={selfHeart ? FillHeart : Heart}
             alt="heart"
             aria-hidden="true"
-            onClick={handleCertificationLike}
+            onClick={() =>
+              certificationLikeMutate({
+                userId: certification.userId,
+                certificationId: certification.certificationId,
+              })
+            }
           />
           {count > 0 && <div className="record-cert-icons-count">{count}</div>}
           <img
@@ -123,11 +140,16 @@ function RecordCertification(props: { certification: Cert }) {
             aria-hidden="true"
             onClick={() => {
               navigate(`/comments/${certification.certificationId}`, {
-                state: { certificationId: certification?.certificationId, posterId: certification?.userId },
+                state: {
+                  certificationId: certification?.certificationId,
+                  posterId: certification?.userId,
+                },
               });
             }}
           />
-          {certification.commentCount > 0 && <div className="record-cert-icons-count">{certification.commentCount}</div>}
+          {certification.commentCount > 0 && (
+            <div className="record-cert-icons-count">{certification.commentCount}</div>
+          )}
         </div>
       </div>
       <DeleteBottomSheet
@@ -136,8 +158,8 @@ function RecordCertification(props: { certification: Cert }) {
         cancelText="취소"
         acceptText="삭제"
         acceptButtonHandler={deleteCertification}
-        cancelButtonHandler={closeBottomSheet}
-        bottomSheetIsOpen={bottomSheetIsOpen}
+        cancelButtonHandler={closeDeleteBottomSheet}
+        bottomSheetIsOpen={deleteBottomSheetIsOpen}
       />
     </>
   );
