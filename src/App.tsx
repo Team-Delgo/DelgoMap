@@ -37,7 +37,7 @@ import SignUpComplete from "./page/sign/signup/SignUpComplete";
 import Terms from "./page/sign/signup/term/Terms";
 import UserInfo from "./page/sign/signup/userinfo/UserInfo";
 import CropPage from "./page/crop/CropPage"
-import AchievementPage from "./page/achievement/AchievementPage";
+import AchievementPage from "./page/record/achieve/components/AchieveConatiner";
 import PostsPage from './page/certification/CertificationPostsPage';
 import CommentsPage from './page/comment/CommentsPage';
 import RecordCertificationPage from "./page/certification/RecordCertificationPage";

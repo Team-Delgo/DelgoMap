@@ -1,13 +1,15 @@
-import React from "react";
-import RecordHeader from "../../../components/RecordHeader";
-import CertFloatingButton from "../../CertFloatingButton";
-import AchievementPage from "../../achievement/AchievementPage";
+import React from 'react';
+import RecordHeader from '../../../components/RecordHeader';
+import CertFloatingButton from '../../CertFloatingButton';
+import AchieveConatiner from './components/AchieveConatiner';
 
-function AchievePage () {
-  return <>
-    <RecordHeader/>
-    <AchievementPage/>
-  </>
-};
+function AchievePage() {
+  return (
+    <>
+      <RecordHeader />
+      <AchieveConatiner />
+    </>
+  );
+}
 
 export default AchievePage;

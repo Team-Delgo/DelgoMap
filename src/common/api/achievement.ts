@@ -2,17 +2,12 @@ import axios, { AxiosResponse } from 'axios';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
+async function getAchievementList(userId: number) {
+  const { data } = await axiosInstance.get(`/achievements/user/${userId}`);
 
-function getAchievementList(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
-  axiosInstance
-    .get(`/achievements/user/${userId}`)
-    .then((data) => {
-      console.log(data)
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
+  return data;
 }
 
 export { getAchievementList };
+
+// /useErrorHandlers(dispatch, error);
