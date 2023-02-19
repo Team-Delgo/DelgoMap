@@ -1,10 +1,10 @@
 import React from 'react';
 import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyProfileInfo } from '../../../common/api/myaccount';
-import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
-import { CACHE_TIME, GET_MY_PROFILE_INFO_DATA, STALE_TIME } from '../../../common/constants/queryKey.const';
-import { RootState } from '../../../redux/store';
+import { getMyProfileInfo } from '../../../../common/api/myaccount';
+import { useErrorHandlers } from '../../../../common/api/useErrorHandlers';
+import { CACHE_TIME, GET_MY_PROFILE_INFO_DATA, STALE_TIME } from '../../../../common/constants/queryKey.const';
+import { RootState } from '../../../../redux/store';
 
 function PetInfo() {
   const dispatch = useDispatch();
