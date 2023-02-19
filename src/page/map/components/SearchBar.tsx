@@ -53,7 +53,7 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
           setOption([]);
         };
         return (
-          <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler}>
+          <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler} key={cafe.placeName}>
             {cafe.placeName}
             <span>{cafe.roadAddress}</span>
           </div>
@@ -70,7 +70,7 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
           setIsFocus(false);
         };
         return (
-          <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler}>
+          <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler} key={cafe.placeName}>
             {cafe.placeName}
             <span>{cafe.roadAddress}</span>
           </div>

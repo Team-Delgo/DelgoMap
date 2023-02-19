@@ -58,11 +58,11 @@
     &.select {
       position: relative;
       color: black;
-      font-weight: 600;
+      font-weight: 500;
 
       &::after {
         position: absolute;
-        top: 33px;
+        top: 34px;
         // margin-top: 3px;
         left: 0;
         width: 40px;

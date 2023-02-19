@@ -117,10 +117,11 @@ function Map() {
       center: location,
       zoom: currentLocation.zoom,
       zoomControl: false,
+      minZoom:10,
+      logoControl: false
     };
 
     map = new naver.maps.Map(mapElement.current, mapOptions);
-
     setGlobarMap(map);
     naver.maps.Event.addListener(map, 'click', (e) => {
       clearSelectedId();
@@ -284,7 +285,7 @@ function Map() {
       return marker.id === data.mungpleId;
     });
     markerList[index].marker.setOptions(markerOptions);
-    globarMap?.panTo(new naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)), {
+    globarMap?.morph(new naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)), 16, {
       duration: 500,
       easing: 'easeOutCubic',
     });

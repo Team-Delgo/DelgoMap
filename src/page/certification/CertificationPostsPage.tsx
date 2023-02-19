@@ -75,7 +75,7 @@ function CertificationPostsPage() {
     <div className="certificationPostsPage">
       <div className="certificationPostsPage-header">
         <img src={PrevArrow} alt="back" aria-hidden="true" onClick={moveToHomePage} />
-        <div className="certificationPostsPage-header-text">친구들의 기록</div>
+        <div className="certificationPostsPage-header-text">동네 강아지</div>
       </div>
       {data?.pages?.map((page) => (
         <>
