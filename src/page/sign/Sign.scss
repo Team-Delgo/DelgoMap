@@ -20,14 +20,16 @@ $color-orange: #ffab6f;
 
   &-back {
     position: absolute;
-    width: 40px;
-    height: 40px;
     border-radius: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 48px;
-    left: 14px;
+    top: 31px;
+    left: 24px;
+    img{
+      width: 22px;
+      height: 20px;
+    }
     &:active {
       animation: backButton 0.1s ease;
       animation-fill-mode: forwards;
@@ -35,7 +37,7 @@ $color-orange: #ffab6f;
   }
   &-header {
     @include typosettings(20px, #3f3f3f);
-    margin-top: 54px;
+    margin-top: 30px;
   }
   &-description {
     @include typosettings(14px, $color-light-grey);

@@ -406,10 +406,11 @@ function UserInfo() {
               value={enteredInput.region}
               id={Id.REGION}
               onClick={() => {
+                regionRef.current!.blur();
                 setModalActive(true);
-                regionRef.current?.blur();
               }}
               onFocus={() => {
+                regionRef.current!.blur();
                 setModalActive(true);
               }}
               required
