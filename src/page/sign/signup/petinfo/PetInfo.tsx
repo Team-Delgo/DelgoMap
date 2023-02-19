@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useRef } from 'react';
 import classNames from 'classnames';
 import imageCompression from 'browser-image-compression';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
@@ -30,6 +30,7 @@ function PetInfo() {
   const { email, password, nickname, phone, isSocial, geoCode, pGeoCode } = state;
   const [image, setImage] = useState<any>();
   const [sendingImage, setSendingImage] = useState<any>([]);
+  const birthRef = useRef<HTMLInputElement>(null);
   const [enteredInput, setEnteredInput] = useState<Input>({
     name: '',
     birth: undefined,
@@ -364,6 +365,7 @@ function PetInfo() {
 
   const openModal = () => {
     setModalActive(true);
+    birthRef.current?.blur();
     document.body.style.overflow = 'hidden';
   };
 
@@ -439,6 +441,7 @@ function PetInfo() {
           placeholder="생일"
           value={enteredInput.birth}
           id={Id.BIRTH}
+          ref={birthRef}
           onClick={openModal}
           onFocus={openModal}
           required

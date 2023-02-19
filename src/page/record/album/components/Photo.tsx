@@ -28,8 +28,6 @@ function Photo() {
   });
   const [photos, setPhotos] = useState<Cert[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
   const [page, setPage] = useState<number>(0);
   const [certCount, setCertCount] = useState(0);
   const [pageSizeFor, setPageSizeFor] = useState(pageSize);
@@ -63,20 +61,6 @@ function Photo() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const touchStartFunc = (e: any) => {
-    setTouchStart(e.touches[0].clientX);
-  };
-
-  const touchEndFunc = (e: any) => {
-    setTouchEnd(e.changedTouches[0].clientX);
-  };
-
-  useEffect(() => {
-    if (touchStart - touchEnd > 200) {
-      navigate(RECORD_PATH.CALENDAR, { state: "calendar" });
-    }
-  }, [touchEnd]);
 
   useEffect(() => {
     if (isFetching && !isLast) {
@@ -149,7 +133,7 @@ function Photo() {
 
   const noRecordContext = useMemo(
     () => (
-      isLoading && <div className="photo-nocert">
+      !isLoading && <div className="photo-nocert">
         <h4>기록이 없어요</h4>
         <span className="photo-nocert-guide">
           오른쪽 하단
@@ -220,7 +204,7 @@ function Photo() {
         </div>
       </div>
 
-      <div className="photo-wrapper" onTouchStart={touchStartFunc} onTouchEnd={touchEndFunc}>
+      <div className="photo-wrapper">
         {photos.length > 0 ? photoContext : noRecordContext}
       </div>
       <Sheet
