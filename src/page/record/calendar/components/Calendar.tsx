@@ -14,8 +14,6 @@ import { scrollActions } from '../../../../redux/slice/scrollSlice';
 import { analytics } from '../../../../index';
 
 function Calender() {
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const scroll = useSelector((state: RootState) => state.persist.scroll.calendar.scroll);
   const dispatch = useDispatch();
@@ -31,16 +29,6 @@ function Calender() {
     return currentYear;
   };
 
-  const touchStartFunc = (e: any) => {
-    // e.preventDefault();
-    setTouchStart(e.touches[0].clientX);
-  };
-
-  const touchEndFunc = (e: any) => {
-    // e.preventDefault();
-    setTouchEnd(e.changedTouches[0].clientX);
-  };
-
   useEffect(() => {
     getCalendarData(
       userId,
@@ -51,14 +39,6 @@ function Calender() {
       dispatch,
     );
   }, []);
-
-  useEffect(() => {
-    if (touchStart - touchEnd > 200) {
-      navigate(RECORD_PATH.ACHIEVE, { state: 'achieve' });
-    } else if (touchStart - touchEnd < -200) {
-      navigate(RECORD_PATH.PHOTO, { state: 'photo' });
-    }
-  }, [touchEnd]);
 
   useEffect(() => {
     if (scroll === 0) {
@@ -213,7 +193,7 @@ function Calender() {
 
   return (
     <div className="calender">
-      <div className="date-wrapper" ref={scrollRef} onTouchStart={touchStartFunc} onTouchEnd={touchEndFunc}>
+      <div className="date-wrapper" ref={scrollRef}>
         {datesElement}
       </div>
     </div>
