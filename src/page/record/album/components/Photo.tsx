@@ -86,7 +86,7 @@ function Photo() {
       userId,
       'CA0000',
       0,
-      6,
+      8,
       sortOption,
       (response: AxiosResponse) => {
         const { data } = response;
@@ -120,8 +120,9 @@ function Photo() {
     }
   }, [photos]);
 
+  console.log(isLoading);
   useEffect(() => {
-    if (!isLoading && pageSizeFor > 1 && photos.length >= pageSizeFor * 6) {
+    if (!isLoading && pageSizeFor > 1 && photos.length >= pageSizeFor * 8) {
       window.scroll(0, scroll);
       setPageSizeFor(1);
     }
@@ -133,7 +134,7 @@ function Photo() {
       userId,
       'CA0000',
       page,
-      pageSizeFor > 1 ? 6 * pageSizeFor : 6,
+      pageSizeFor > 1 ? 8 * pageSizeFor : 8,
       sortOption,
       (response: AxiosResponse) => {
         const { data } = response;
