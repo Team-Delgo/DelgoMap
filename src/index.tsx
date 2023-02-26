@@ -32,11 +32,9 @@ logEvent(analytics, "notification_received");
 
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
       <PersistGate loading={null} persistor={persistor}>
         <App />
       </PersistGate>
-    </React.StrictMode>
   </Provider>
 );
 

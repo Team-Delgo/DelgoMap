@@ -43,6 +43,7 @@ function Photo() {
   const dispatch = useDispatch();
   const location: any = useLocation();
   useEffect(() => {
+    console.log(123);
     mutation.mutate({
       params: {
         firebase_screen: 'Album',
@@ -50,12 +51,12 @@ function Photo() {
       },
     });
     getTotalCount();
-    if (location?.state?.from !== 'home' && pageSizeFor === 1) {
-      getPhotoDataList();
-    }
-    if (pageSizeFor > 1) {
-      getPhotoDataList();
-    }
+    // if (location?.state?.from !== 'home' && pageSizeFor === 1) {
+    //   getPhotoDataList();
+    // }
+    // if (pageSizeFor > 1) {
+    getPhotoDataList();
+    // }
     const handleScroll = () => {
       const { scrollTop, offsetHeight } = document.documentElement;
       if (window.innerHeight + scrollTop >= offsetHeight) {
@@ -68,6 +69,7 @@ function Photo() {
 
   useEffect(() => {
     if (isFetching && !isLast) {
+      console.log("here");
       getPhotoDataList();
     } else if (isLast) setFetching(true);
   }, [isFetching]);
@@ -120,10 +122,11 @@ function Photo() {
     }
   }, [photos]);
 
-  console.log(isLoading);
   useEffect(() => {
+    console.log(isLoading, pageSizeFor, photos);
     if (!isLoading && pageSizeFor > 1 && photos.length >= pageSizeFor * 8) {
       window.scroll(0, scroll);
+      console.log('scroll');
       setPageSizeFor(1);
     }
   }, [isLoading, photos]);
@@ -180,7 +183,6 @@ function Photo() {
       )},
     [photos, otherDogsCerts],
   );
-
   const photoContext = useMemo(
     () =>
       photos.map((photo) => {
