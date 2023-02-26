@@ -27,7 +27,7 @@ function PetInfo() {
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const state = useLocation().state as LocationState;
-  const { email, password, nickname, phone, isSocial, geoCode, pGeoCode } = state;
+  const { email, password, nickname, phone, isSocial, geoCode, pGeoCode, socialId } = state;
   const [image, setImage] = useState<any>();
   const [sendingImage, setSendingImage] = useState<any>([]);
   const birthRef = useRef<HTMLInputElement>(null);
@@ -170,6 +170,7 @@ function PetInfo() {
         birthday: enteredInput.birth,
         userSocial: isSocial,
         appleUniqueNo : appleCode,
+        socialId
       };
       oAuthSignup(
         requestBody,
