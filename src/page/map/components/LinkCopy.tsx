@@ -12,12 +12,12 @@ function LinkCopy() {
   const url = useSelector((state: any) => state.map.link);
 
   const buttonClickHandler = useCallback(() => {
-    navigator.clipboard.writeText(url);
-    // navigator.share({
-    //   title:'Delgo',
-    //   text:'Delgo',
-    //   url:url,
-    // })
+    // navigator.clipboard.writeText(url);
+    navigator.share({
+      title:'Delgo',
+      text:'Delgo',
+      url
+    })
     linkCopyEvent.mutate();
     dispatch(mapAction.setIsCopy());
     setTimeout(() => {

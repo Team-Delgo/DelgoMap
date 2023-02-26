@@ -411,7 +411,7 @@ function Map() {
         />
       )}
       <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
-      {isCopy && <ToastMessage message="URL이 복사되었습니다." />}
+      {/* {isCopy && <ToastMessage message="URL이 복사되었습니다." />} */}
       {selectedId.title.length > 0 && <LinkCopy />}
       {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
       {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
