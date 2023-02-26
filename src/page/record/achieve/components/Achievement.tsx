@@ -7,17 +7,22 @@ interface achievementPropsType {
   openBottomSheet: (param: achievementType) => (event: React.MouseEvent) => void;
 }
 
-function Achievement({
-  achievementList,
-  openBottomSheet,
-}: achievementPropsType) {
+function Achievement({ achievementList, openBottomSheet }: achievementPropsType) {
+  const activeAchievementList = achievementList.filter(
+    (element: achievementType) => element.isActive === true,
+  );
+
   return (
     <body className="achievement-page-body">
       <div className="achievement-page-body-achievements-title">내가 획득한 업적</div>
-      <div className="achievement-page-body-achievements-count">총 {achievementList.length}개 획득</div>
+      <div className="achievement-page-body-achievements-count">
+        총 {activeAchievementList.length}개 획득
+      </div>
       <div className="achievement-page-body-achievements-images">
         {achievementList
-          .sort((a: achievementType, b: achievementType) => (a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1))
+          .sort((a: achievementType, b: achievementType) =>
+            a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1,
+          )
           .map((achievement: achievementType) => (
             <AchievementData
               achievement={achievement}

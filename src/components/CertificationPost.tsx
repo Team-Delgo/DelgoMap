@@ -66,9 +66,6 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
     mutate: certificationLikeMutate,
   } = useMutation((data: CertificationLIkeDataType) => certificationLike(data), {
     onSuccess: () => {
-      setLikeCount(isLike ? likeCount - 1 : likeCount + 1);
-      if (isLike) inActiveLike();
-      else activeLike();
       heartEvent.mutate()
     },
     onError: (error: any, variables, context) => {
@@ -120,6 +117,10 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
       setLoginAlertIsOpen(true);
       return;
     }
+    setLikeCount(isLike ? likeCount - 1 : likeCount + 1);
+    if (isLike) inActiveLike();
+    else activeLike();
+
     certificationLikeMutate({
       userId: user?.id,
       certificationId: post?.certificationId,

@@ -31,17 +31,14 @@ function AchievementPage() {
     });
   }, []);
 
-  const { isLoading: getAchievementDataListIsLoading, data: achievementDataList } = useQuery(
-    GET_ACHIEVEMENT_DATA_LIST,
-    () => getAchievementList(user.id),
-    {
+  const { isLoading: getAchievementDataListIsLoading, data: achievementDataList } =
+    useQuery(GET_ACHIEVEMENT_DATA_LIST, () => getAchievementList(user.id), {
       cacheTime: CACHE_TIME,
       staleTime: STALE_TIME,
       onError: (error: any) => {
         useErrorHandlers(dispatch, error);
       },
-    },
-  );
+    });
 
   const openBottomSheet = useCallback(
     (achievement: achievementType) => (event: React.MouseEvent) => {
