@@ -58,7 +58,7 @@ function MyAccountPage() {
             window.localStorage.removeItem('accessToken');
             window.localStorage.removeItem('refreshToken');
             dispatch(userActions.signout());
-            navigate(SIGN_IN_PATH.MAIN);
+            navigate('/');
           }
         },
         dispatch,

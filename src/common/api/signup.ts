@@ -101,10 +101,9 @@ function getRegion(success: (data: AxiosResponse) => void, dispatch: any) {
 
 function phoneSendMessage(phone: string, success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
-    .get(`/auth/sms?isJoin=false`, {
-      params: {
-        phoneNo: phone,
-      },
+    .post(`/auth/sms`, {
+      isJoin: false,
+      phoneNo: phone
     })
     .then((data) => {
       success(data);
@@ -116,10 +115,9 @@ function phoneSendMessage(phone: string, success: (data: AxiosResponse) => void,
 
 function phoneSendMessageForFind(phone: string, success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
-    .get(`/auth/sms?isJoin=true`, {
-      params: {
-        phoneNo: phone,
-      },
+    .post(`/auth/sms`, {
+      isJoin: true,
+      phoneNo: phone,
     })
     .then((data) => {
       success(data);
