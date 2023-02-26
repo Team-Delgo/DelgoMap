@@ -15,6 +15,7 @@ interface LocationState {
   phone: string;
   email: string;
   isSocial: string;
+  socialId: string;
 }
 
 function PhoneAuth() {
@@ -28,7 +29,7 @@ function PhoneAuth() {
   const [authFailed, setAuthFailed] = useState(false);
   const authRef = useRef<any>();
   const state = useLocation().state as LocationState;
-  const { phone, email, isSocial } = state;
+  const { phone, email, isSocial, socialId } = state;
   const authIsValid = timeIsValid && authNumber.length === 4;
   const navigation = useNavigate();
 
@@ -102,7 +103,7 @@ function PhoneAuth() {
         if (code === 200) {
           if (isSocial) {
             console.log(isSocial);
-            navigation(SIGN_UP_PATH.SOCIAL.NICKNAME, { state: { phone, isSocial, email } });
+            navigation(SIGN_UP_PATH.SOCIAL.NICKNAME, { state: { phone, isSocial, email, socialId } });
           } else {
             navigation(SIGN_IN_PATH.RESETPASSWORD, { state: email });
           }

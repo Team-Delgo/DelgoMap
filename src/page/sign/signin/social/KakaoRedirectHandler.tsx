@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import  { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAccessCode } from '../../../../common/api/social';
-import { ROOT_PATH,  SIGN_UP_PATH } from '../../../../common/constants/path.const';
+import { ROOT_PATH, SIGN_UP_PATH } from '../../../../common/constants/path.const';
 import { userActions } from '../../../../redux/slice/userSlice';
 import AlertConfirm from '../../../../common/dialog/AlertConfirm';
 import AlertConfirmOne from '../../../../common/dialog/AlertConfirmOne';
@@ -19,7 +19,7 @@ declare global {
 function KakaoRedirectHandler() {
   const dispatch = useDispatch();
   const code = new URL(window.location.href).searchParams.get('code');
-  const [userData, setUserData] = useState({ phone: '', email: '' });
+  const [userData, setUserData] = useState({ phone: '', email: '', id: '' });
   const [signUp, setSignUp] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
   const navigate = useNavigate();
@@ -50,11 +50,11 @@ function KakaoRedirectHandler() {
                 nickname: data.user.name,
                 email: data.user.email,
                 phone: data.user.phoneNo,
-                isSocial:true,
+                isSocial: true,
                 registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
                 userSocial: data.user.userSocial,
                 geoCode: data.user.geoCode,
-                notify:data.user.notify,
+                notify: data.user.notify,
               },
               pet: {
                 petId: data.pet.petId,
@@ -76,7 +76,7 @@ function KakaoRedirectHandler() {
           navigate(ROOT_PATH, { replace: true });
         } else if (code === 370) {
           console.log('소셜 회원가입');
-          setUserData({ phone: data.phoneNo, email: data.email, });
+          setUserData({ phone: data.phoneNo, email: data.email, id: data.socialId });
           setSignUp(true);
         } else if (code === 380) {
           console.log('카카오 전화번호 x');
@@ -89,7 +89,9 @@ function KakaoRedirectHandler() {
           setLoginFailed(true);
         }
       },
-      () => { console.log(1); },
+      () => {
+        console.log(1);
+      },
       dispatch,
     );
   };
@@ -97,8 +99,7 @@ function KakaoRedirectHandler() {
   const sendFcmTokenHandler = (userId: number) => {
     if (OS === 'android') {
       window.BRIDGE.sendFcmToken(userId);
-    }
-    else{
+    } else {
       window.webkit.messageHandlers.sendFcmToken.postMessage(userId);
     }
   };
@@ -108,19 +109,21 @@ function KakaoRedirectHandler() {
   };
 
   const moveToSignUpPage = () => {
-    navigate(SIGN_UP_PATH.TERMS, { state: { isSocial: 'K', phone: userData.phone, email: userData.email } });
+    navigate(SIGN_UP_PATH.TERMS, { state: { isSocial: 'K', phone: userData.phone, email: userData.email, socialId: userData.id } });
   };
 
   return (
     <div>
       <Loading />
-      {signUp && <AlertConfirm
-        text="카카오로 가입된 계정이 없습니다"
-        buttonText="회원가입"
-        yesButtonHandler={moveToSignUpPage}
-        noButtonHandler={moveToPreviousPage}
-      />}
-      {loginFailed && <AlertConfirmOne text='카카오 로그인에 실패하였습니다' buttonHandler={moveToPreviousPage} />}
+      {signUp && (
+        <AlertConfirm
+          text="카카오로 가입된 계정이 없습니다"
+          buttonText="회원가입"
+          yesButtonHandler={moveToSignUpPage}
+          noButtonHandler={moveToPreviousPage}
+        />
+      )}
+      {loginFailed && <AlertConfirmOne text="카카오 로그인에 실패하였습니다" buttonHandler={moveToPreviousPage} />}
     </div>
   );
 }

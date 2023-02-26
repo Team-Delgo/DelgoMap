@@ -11,6 +11,7 @@ interface LocationState {
   isSocial: string;
   phone: string;
   email: string;
+  socialId : string;
 }
 
 interface Term {
@@ -22,7 +23,7 @@ interface Term {
 function Terms() {
   const navigation = useNavigate();
   const state = useLocation().state as LocationState;
-  const { isSocial, phone, email } = state;
+  const { isSocial, phone, email, socialId } = state;
   const [eachTermChecked, setEachTermChecked] = useState<any>({ term1: false, term2: false, term3: false });
   const [selectedId, setSelctedId] = useState(0);
   const [allChecked, setAllChecked] = useState(false);
@@ -63,7 +64,7 @@ function Terms() {
   const nextClickHandler = () => {
     setTimeout(() => {
       if (isSocial === 'K' || isSocial === 'N') {
-        navigation(SIGN_IN_PATH.PHONEAUTH, { state: { phone, isSocial, email } });
+        navigation(SIGN_IN_PATH.PHONEAUTH, { state: { phone, isSocial, email, socialId } });
       } else if (isSocial === 'A') {
         navigation(SIGN_UP_PATH.VERIFY, { state: { isSocial: 'A' } });
       } else {

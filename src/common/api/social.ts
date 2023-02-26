@@ -26,11 +26,12 @@ function oAuthSignup(
     birthday: string | undefined;
     userSocial: string;
     appleUniqueNo: string | undefined;
+    socialId:string;
   },
   success: (data: AxiosResponse) => void,
   dispatch: any,
 ) {
-  const { email, geoCode, pGeoCode, userName, phoneNo, petName, breed, birthday, userSocial, appleUniqueNo } = data;
+  const { email, geoCode, pGeoCode, userName, phoneNo, petName, breed, birthday, userSocial, appleUniqueNo, socialId } = data;
   axiosInstance
     .post(`/user/oauth `, {
       email,
@@ -42,7 +43,8 @@ function oAuthSignup(
       breed,
       birthday,
       userSocial,
-      appleUniqueNo
+      appleUniqueNo,
+      socialId
     })
     .then((data) => {
       success(data);

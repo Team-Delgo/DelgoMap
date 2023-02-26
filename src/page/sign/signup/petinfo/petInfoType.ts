@@ -6,6 +6,7 @@ export interface LocationState {
   isSocial: string;
   geoCode: number;
   pGeoCode: number;
+  socialId: string;
 }
 
 export interface Input {

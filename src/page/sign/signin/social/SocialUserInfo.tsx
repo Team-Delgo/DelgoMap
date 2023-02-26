@@ -16,6 +16,7 @@ interface LocationState {
   phone: string;
   isSocial: string;
   email: string;
+  socialId: string;
 }
 
 interface Input {
@@ -41,7 +42,7 @@ function SocialUserInfo() {
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const state = useLocation().state as LocationState;
-  const { phone, isSocial, email } = state;
+  const { phone, isSocial, email, socialId } = state;
   const [nextPage, setNextPage] = useState(false);
   const [enteredInput, setEnteredInput] = useState({ nickname: '', region: '' });
   const [validInput, setValidInput] = useState({ nickname: '', region: '' });
@@ -94,6 +95,7 @@ function SocialUserInfo() {
           isSocial,
           geoCode: region!.geoCode,
           pGeoCode: region!.pGeoCode,
+          socialId
         },
       });
     }, 200);
