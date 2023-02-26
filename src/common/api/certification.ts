@@ -4,7 +4,7 @@ import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
 async function getMungPlaceList(categoryCode: string) {
-  const { data } = await axiosInstance.get(`/mungple?categoryCode=CA0000`);
+  const { data } = await axiosInstance.get(`/mungple/category/CA0000`);
   return data;
 }
 
