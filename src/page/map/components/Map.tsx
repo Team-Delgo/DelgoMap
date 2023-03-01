@@ -117,7 +117,7 @@ function Map() {
       center: location,
       zoom: currentLocation.zoom,
       zoomControl: false,
-      minZoom:10,
+      minZoom: 10,
       logoControl: false
     };
 
@@ -412,7 +412,7 @@ function Map() {
       )}
       <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       {/* {isCopy && <ToastMessage message="URL이 복사되었습니다." />} */}
-      {selectedId.title.length > 0 && <LinkCopy />}
+      {/* {selectedId.title.length > 0 && <LinkCopy />} */}
       {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
       {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
       {detailUrl.length > 0 && <DetailPage />}
