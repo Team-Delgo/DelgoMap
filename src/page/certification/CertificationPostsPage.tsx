@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,23 +21,28 @@ import { postType } from '../../common/types/post';
 function CertificationPostsPage() {
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
-  const { scroll, pageSize } = useSelector((state: RootState) => state.persist.scroll.posts);
+  const { scroll, pageSize } = useSelector(
+    (state: RootState) => state.persist.scroll.posts,
+  );
   const dispatch = useDispatch();
   const { ref, inView } = useInView();
   const navigate = useNavigate();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
 
-
-  
-  const { data, fetchNextPage, refetch, isLoading } = useInfiniteQuery(
+  const {
+    data,
+    fetchNextPage,
+    refetch: certificationPostsFetch,
+    isLoading,
+  } = useInfiniteQuery(
     GET_ALL_CERTIFICATION_DATA_LIST,
-    ({ pageParam = 0 }) => getCertificationPostAll(pageParam, user.id, pageSize, dispatch),
+    ({ pageParam = 0 }) =>
+      getCertificationPostAll(pageParam, user.id, pageSize, dispatch),
     {
-      getNextPageParam: (lastPage: any) => (!lastPage?.last ? lastPage?.nextPage : undefined),
+      getNextPageParam: (lastPage: any) =>
+        !lastPage?.last ? lastPage?.nextPage : undefined,
     },
   );
-
-  console.log('data',data)
 
   useEffect(() => {
     mutation.mutate({
@@ -80,7 +85,11 @@ function CertificationPostsPage() {
       {data?.pages?.map((page) => (
         <>
           {page?.content?.map((post: postType) => (
-            <CertificationPost post={post} refetch={refetch} pageSize={pageSizeCount} />
+            <CertificationPost
+              post={post}
+              certificationPostsFetch={certificationPostsFetch}
+              pageSize={pageSizeCount}
+            />
           ))}
         </>
       ))}
