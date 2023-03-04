@@ -24,7 +24,7 @@ import { useErrorHandlers } from '../common/api/useErrorHandlers';
 
 interface CertificationPostPropsType {
   post: postType;
-  refetch: () => void;
+  certificationPostsFetch: () => void;
   pageSize: number;
 }
 
@@ -38,7 +38,7 @@ interface UserBlockDataType{
   blockedUserId:number
 }
 
-function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsType) {
+function CertificationPost({ post, certificationPostsFetch, pageSize }: CertificationPostPropsType) {
   const [likeCount, setLikeCount] = useState(post?.likeCount);
   const [blockedUserName, setBlockedUserName] = useState(post?.likeCount);
   const [isLike, activeLike, inActiveLike] = useActive(post?.isLike);
@@ -66,9 +66,10 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
     mutate: certificationLikeMutate,
   } = useMutation((data: CertificationLIkeDataType) => certificationLike(data), {
     onSuccess: () => {
+      certificationPostsFetch();
       heartEvent.mutate()
     },
-    onError: (error: any, variables, context) => {
+    onError: (error: any) => {
       useErrorHandlers(dispatch, error);
     },
   });
@@ -80,7 +81,7 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
         if (code === 200) {
           closeDelteBottomSheet();
           openDeletePostSuccessToast();
-          refetch();
+          certificationPostsFetch();
           setTimeout(() => {
             closeDeletePostSuccessToast();
           }, 2000);
@@ -88,7 +89,7 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
           closeDelteBottomSheet();
         }
       },
-      onError: (error: any, variables, context) => {
+      onError: (error: any) => {
         useErrorHandlers(dispatch, error);
       },
     });
@@ -101,13 +102,13 @@ function CertificationPost({ post, refetch, pageSize }: CertificationPostPropsTy
           setBlockedUserName(data?.name);
           openBlockUserSuccessToastIsOpen();
           closeBlockUserBottomSheet();
-          refetch();
+          certificationPostsFetch();
         } else {
           closeBlockUserBottomSheet();
         }
         
       },
-      onError: (error: any, variables, context) => {
+      onError: (error: any) => {
         useErrorHandlers(dispatch, error);
       },
     });
