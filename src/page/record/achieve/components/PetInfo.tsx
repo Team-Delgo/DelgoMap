@@ -23,11 +23,6 @@ function PetInfo() {
     },
   );
 
-  if (getMyProfileInfoDataIsLoading) {
-    return <Loading />;
-  }
-
-
   return (
     <header className="pet-info-container">
       <img className="pet-info-img" src={pet.image} alt="copy url" width={81} height={81} />

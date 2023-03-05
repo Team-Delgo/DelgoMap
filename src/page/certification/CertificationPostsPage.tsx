@@ -75,7 +75,7 @@ function CertificationPostsPage() {
   if (isLoading) {
     return <Loading />;
   }
-
+  
   return (
     <div className="certificationPostsPage">
       <div className="certificationPostsPage-header">
