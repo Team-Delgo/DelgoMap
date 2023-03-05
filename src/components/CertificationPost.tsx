@@ -22,6 +22,7 @@ import { weekDay } from '../common/types/week';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import { useErrorHandlers } from '../common/api/useErrorHandlers';
+import BallLoading from '../common/icons/loading.gif';
 
 interface CertificationPostPropsType {
   post: postType;
@@ -93,7 +94,7 @@ function CertificationPost({
     const observer = new IntersectionObserver(observeImg);
     mainImg.current && observer.observe(mainImg.current);
     profileImg.current && observer.observe(profileImg.current);
-  }, []);
+  }, [post]);
 
   useEffect(() => {
     setLikeCount(post?.likeCount)
