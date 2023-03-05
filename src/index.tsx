@@ -33,23 +33,6 @@ window.Kakao.init('1fc2794c1008fd96115d7f57e7f68e04');
 export const analytics = getAnalytics(app);
 logEvent(analytics, "notification_received");
 
-const version = +(localStorage.getItem('version') || "0")
-getCurrentVersion((response:AxiosResponse)=>{
-  const {versionNo} = response.data.data;
-  if(versionNo > version){
-    localStorage.setItem('version', versionNo);
-    caches.keys().then(c=>{
-      console.log(c);
-      c.map((t)=>caches.delete(t));
-    }).then(()=>{
-      window.location.reload();
-    });
-  }
-});
-
-
-
-
 root.render(
   <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

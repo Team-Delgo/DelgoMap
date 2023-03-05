@@ -11,8 +11,16 @@ function LinkCopy() {
   const dispatch = useDispatch();
   const url = useSelector((state: any) => state.map.link);
 
+  console.log(window.Kakao);
+
+  const sendScrap = () => {
+    window.Kakao.Share.sendScrap({
+      requestUrl: 'https://www.test.delgo.pet/',
+    });
+  }
+  
   const buttonClickHandler = useCallback(() => {
-    // navigator.clipboard.writeText(url);
+    sendScrap();
     navigator.share({
       title:'Delgo',
       text:'Delgo',
