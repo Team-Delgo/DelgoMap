@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import axiosInstance from './interceptors';
-// import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
 interface SignUpData {
