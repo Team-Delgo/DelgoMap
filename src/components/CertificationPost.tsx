@@ -112,8 +112,6 @@ function CertificationPost({
     (data: CertificationLIkeDataType) => certificationLike(data),
     {
       onSuccess: () => {
-        console.log(22)
-        certificationPostsFetch();
         heartEvent.mutate();
       },
       onError: (error: any) => {
