@@ -33,7 +33,7 @@ function CertificationPostsPage() {
     data,
     fetchNextPage,
     refetch: certificationPostsFetch,
-    isLoading,
+    isFetching,
   } = useInfiniteQuery(
     GET_ALL_CERTIFICATION_DATA_LIST,
     ({ pageParam = 0 }) =>
@@ -43,6 +43,8 @@ function CertificationPostsPage() {
         !lastPage?.last ? lastPage?.nextPage : undefined,
     },
   );
+
+  console.log('data',data)
 
   useEffect(() => {
     mutation.mutate({
@@ -61,7 +63,7 @@ function CertificationPostsPage() {
 
   useEffect(() => {
     window.scroll(0, scroll);
-  }, [isLoading]);
+  }, [isFetching]);
 
   useEffect(() => {
     if (inView) fetchNextPage();
@@ -72,7 +74,7 @@ function CertificationPostsPage() {
     navigate(ROOT_PATH);
   }, []);
 
-  if (isLoading) {
+  if (isFetching) {
     return <Loading />;
   }
   
