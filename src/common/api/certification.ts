@@ -66,28 +66,19 @@ async function getMungPlaceList(categoryCode: string) {
 // }
 
 async function registerGalleryCertificationPost(
-  data: {
-    userId: number;
-    categoryCode: string;
-    mungpleId: number;
-    placeName: string;
-    description: string;
-    latitude:string;
-    longitude:string;
-  },
+  formdata: FormData,
   success: (data: AxiosResponse) => void,
   dispatch: any,
 ) {
   try {
-    const result = await axiosInstance.post(`/certification`, {
-      userId: data.userId,
-      categoryCode: data.categoryCode,
-      mungpleId: data.mungpleId,
-      placeName: data.placeName,
-      description: data.description,
-      latitude: data.latitude,
-      longitude:data.longitude
-    });
+    const result = await axiosInstance.post(`/certification`,
+      formdata,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
     console.log(result);
     success(result);
   } catch (err: any) {

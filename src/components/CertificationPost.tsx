@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { certificationDelete, certificationLike } from '../common/api/certificat
 import Heart from '../common/icons/heart-empty.svg';
 import FillHeart from '../common/icons/heart.svg';
 import Comments from '../common/icons/comments.svg';
+import DogLoading from '../common/icons/dog-loading.svg';
 import { RootState } from '../redux/store';
 import { CAMERA_PATH, SIGN_IN_PATH } from '../common/constants/path.const';
 import { uploadAction } from '../redux/slice/uploadSlice';
@@ -28,24 +29,41 @@ interface CertificationPostPropsType {
   pageSize: number;
 }
 
-interface CertificationLIkeDataType{
+interface CertificationLIkeDataType {
   userId: number;
   certificationId: number;
 }
 
-interface UserBlockDataType{
-  myUserId:number;
-  blockedUserId:number
+interface UserBlockDataType {
+  myUserId: number;
+  blockedUserId: number;
 }
 
-function CertificationPost({ post, certificationPostsFetch, pageSize }: CertificationPostPropsType) {
+function CertificationPost({
+  post,
+  certificationPostsFetch,
+  pageSize,
+}: CertificationPostPropsType) {
   const [likeCount, setLikeCount] = useState(post?.likeCount);
-  const [blockedUserName, setBlockedUserName] = useState(post?.likeCount);
-  const [isLike, activeLike, inActiveLike] = useActive(post?.isLike);
-  const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDelteBottomSheet] = useActive(false);
-  const [deletePostSuccessToastIsOpen, openDeletePostSuccessToast, closeDeletePostSuccessToast] = useActive(false);
-  const [blockUserbottomSheetIsOpen, openBlockUserBottomSheet, closeBlockUserBottomSheet] = useActive(false);
-  const [blockUserSuccessToastIsOpen, openBlockUserSuccessToastIsOpen, closeBlockUserSuccessToast] = useActive(false);
+  const [blockedUserName, setBlockedUserName] = useState('');
+  const [isLike, setIsLike] = useState(post?.isLike);
+  const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDelteBottomSheet] =
+    useActive(false);
+  const [
+    deletePostSuccessToastIsOpen,
+    openDeletePostSuccessToast,
+    closeDeletePostSuccessToast,
+  ] = useActive(false);
+  const [
+    blockUserbottomSheetIsOpen,
+    openBlockUserBottomSheet,
+    closeBlockUserBottomSheet,
+  ] = useActive(false);
+  const [
+    blockUserSuccessToastIsOpen,
+    openBlockUserSuccessToastIsOpen,
+    closeBlockUserSuccessToast,
+  ] = useActive(false);
   const [loginAlertIsOpen, setLoginAlertIsOpen] = useState(false);
   const { user, isSignIn } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();
@@ -53,6 +71,31 @@ function CertificationPost({ post, certificationPostsFetch, pageSize }: Certific
   const dispatch = useDispatch();
   const heartEvent = useAnalyticsCustomLogEvent(analytics, 'cert_like');
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_view');
+  const mainImg = useRef<HTMLImageElement>(null);
+  const profileImg = useRef<HTMLImageElement>(null);
+
+  const observeImg = (
+    entries: IntersectionObserverEntry[],
+    observer: IntersectionObserver,
+  ) => {
+    entries.forEach((entry: any) => {
+      if (entry.isIntersecting) {
+        entry.target.src = entry.target.dataset.src;
+        observer.unobserve(entry.target);
+      }
+    });
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(observeImg);
+    mainImg.current && observer.observe(mainImg.current);
+    profileImg.current && observer.observe(profileImg.current);
+  }, []);
+
+  useEffect(() => {
+    setLikeCount(post?.likeCount)
+    setIsLike(post?.isLike)
+  }, [post]);
 
   useEffect(() => {
     if (blockUserSuccessToastIsOpen) {
@@ -62,17 +105,19 @@ function CertificationPost({ post, certificationPostsFetch, pageSize }: Certific
     }
   }, [blockUserSuccessToastIsOpen]);
 
-  const {
-    mutate: certificationLikeMutate,
-  } = useMutation((data: CertificationLIkeDataType) => certificationLike(data), {
-    onSuccess: () => {
-      certificationPostsFetch();
-      heartEvent.mutate()
+  const { mutate: certificationLikeMutate } = useMutation(
+    (data: CertificationLIkeDataType) => certificationLike(data),
+    {
+      onSuccess: () => {
+        console.log(22)
+        certificationPostsFetch();
+        heartEvent.mutate();
+      },
+      onError: (error: any) => {
+        useErrorHandlers(dispatch, error);
+      },
     },
-    onError: (error: any) => {
-      useErrorHandlers(dispatch, error);
-    },
-  });
+  );
 
   const { mutate: certificationDeleteMutate, isLoading: cettificationDeleteIsLoading } =
     useMutation((data: CertificationLIkeDataType) => certificationDelete(data), {
@@ -94,8 +139,9 @@ function CertificationPost({ post, certificationPostsFetch, pageSize }: Certific
       },
     });
 
-    const { mutate: userBlockMutate, isLoading: userBlockIsLoading } =
-    useMutation((data: UserBlockDataType) => blockUser(data), {
+  const { mutate: userBlockMutate, isLoading: userBlockIsLoading } = useMutation(
+    (data: UserBlockDataType) => blockUser(data),
+    {
       onSuccess: (response: AxiosResponse) => {
         const { code, data } = response.data;
         if (code === 200) {
@@ -106,12 +152,12 @@ function CertificationPost({ post, certificationPostsFetch, pageSize }: Certific
         } else {
           closeBlockUserBottomSheet();
         }
-        
       },
       onError: (error: any) => {
         useErrorHandlers(dispatch, error);
       },
-    });
+    },
+  );
 
   const handleCertificationLike = () => {
     if (!isSignIn) {
@@ -119,14 +165,14 @@ function CertificationPost({ post, certificationPostsFetch, pageSize }: Certific
       return;
     }
     setLikeCount(isLike ? likeCount - 1 : likeCount + 1);
-    if (isLike) inActiveLike();
-    else activeLike();
+    if (isLike) setIsLike(false);
+    else setIsLike(true);
 
     certificationLikeMutate({
       userId: user?.id,
       certificationId: post?.certificationId,
     });
-  }
+  };
 
   const handleCertificationDelete = () => {
     if (userBlockIsLoading) return;
@@ -134,7 +180,7 @@ function CertificationPost({ post, certificationPostsFetch, pageSize }: Certific
       userId: user?.id,
       certificationId: post?.certificationId,
     });
-  }
+  };
 
   const handleUserBlock = () => {
     if (cettificationDeleteIsLoading) return;
@@ -189,6 +235,8 @@ function CertificationPost({ post, certificationPostsFetch, pageSize }: Certific
             className="post-img-result-header-profile-img"
             src={post?.user.profile}
             alt="copy url"
+            ref={profileImg}
+            data-src={post.user.profile ? post.user.profile : DogLoading}
           />
           <div>
             <div className="post-img-result-header-profile-date">
@@ -223,7 +271,9 @@ function CertificationPost({ post, certificationPostsFetch, pageSize }: Certific
       <main className="post-img-result-main">
         <img
           className="post-img-result-main-img"
-          src={post?.photoUrl}
+          ref={mainImg}
+          data-src={post.photoUrl ? post.photoUrl : DogLoading}
+          src={DogLoading}
           width={window.innerWidth}
           alt="postImg"
         />
@@ -244,9 +294,7 @@ function CertificationPost({ post, certificationPostsFetch, pageSize }: Certific
             src={isLike ? FillHeart : Heart}
             alt="heart"
             aria-hidden="true"
-            onClick={
-              handleCertificationLike
-            }
+            onClick={handleCertificationLike}
           />
           {likeCount > 0 && (
             <div className="post-img-result-main-footer-count">{likeCount}</div>

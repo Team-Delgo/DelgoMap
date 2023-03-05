@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useSelector, useDispatch } from 'react-redux';
 import Sheet from 'react-modal-sheet';
-import imageCompression from 'browser-image-compression';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
 import {
   registerGalleryCertificationPost,
@@ -34,7 +33,7 @@ function CaptureCertificationRecord({
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [certificateErrorToastIsOpen, openCertificateErrorToast, closeCertificateErrorToast] = useActive(false);
-  const { latitude, longitude, mongPlaceId, title, tool, file, address } = useSelector(
+  const { latitude, longitude, mongPlaceId, title, file, address } = useSelector(
     (state: RootState) => state.persist.upload,
   );
   const { user } = useSelector((state: RootState) => state.persist.user);
@@ -58,69 +57,50 @@ function CaptureCertificationRecord({
     }
     onPostCertificationLoading();
 
+    const data = {
+      userId: user.id,
+      categoryCode: 'CA9999',
+      mungpleId: mongPlaceId,
+      placeName: title,
+      description: certificationPostContent,
+      latitude,
+      longitude,
+    };
+
+    formData.append('photo', file);
+
+    const json = JSON.stringify(data);
+    const blob = new Blob([json], { type: "application/json" });
+
+    formData.append('data', blob);
+
     registerGalleryCertificationPost(
-      {
-        userId: user.id,
-        categoryCode: 'CA9999',
-        mungpleId: mongPlaceId,
-        placeName: title,
-        description: certificationPostContent,
-        latitude,
-        longitude,
-      },
+      formData,
       (response: AxiosResponse) => {
         const { code, data } = response.data;
         if (code === 200) {
-          const options = {
-            maxSizeMB: 0.2,
-            maxWidthOrHeight: 1920,
-            useWebWorker: true,
-          };
-
-          formData.append('photo', file);
-          console.log('file',file)
-
-          registerGalleryCertificationImg(
-            formData,
-            data.certificationId,
-            (response: AxiosResponse) => {
-              console.log('response',response)
-              const { code } = response.data;
-              if (code === 200) {
-                dispatch(
-                  uploadAction.setContentRegistDtCertificationIdAddress({
-                    content: certificationPostContent,
-                    registDt: data.registDt,
-                    certificationId: data.certificationId,
-                    address: data.address,
-                    achievements: [],
-                  }),
-                );
-                if (data.isAchievements) {
-                  dispatch(
-                    uploadAction.setAchievements({
-                      achievements: data.achievements,
-                    }),
-                  );
-                }
-                offPostCertificationLoading();
-                moveToCaptureResultPage();
-              }
-            },
-            dispatch,
+          console.log('file', file);
+          dispatch(
+            uploadAction.setContentRegistDtCertificationIdAddress({
+              content: certificationPostContent,
+              registDt: data.registDt,
+              certificationId: data.certificationId,
+              address: data.address,
+              achievements: [],
+            }),
           );
+          moveToCaptureResultPage();
         } else if (code === 314) {
-          offPostCertificationLoading();
           setCertificateErrorToastMessage('카테고리당 하루 5번까지 인증 가능합니다');
           openCertificateErrorToast();
         } else if (code === 313) {
-          offPostCertificationLoading();
           setCertificateErrorToastMessage('6시간 이내 같은 장소에서 인증 불가능합니다');
           openCertificateErrorToast();
         }
       },
       dispatch,
     );
+    offPostCertificationLoading();
   };
 
   const handlingDataForm = (dataURI: any) => {
@@ -139,13 +119,7 @@ function CaptureCertificationRecord({
     const formData = new FormData();
     formData.append('photo', file);
 
-    console.log(formData, formData);
-
     return formData;
-  };
-
-  const moveToCapturePage = () => {
-    navigate(CAMERA_PATH.CAPTURE);
   };
 
   const moveToCaptureResultPage = () => {

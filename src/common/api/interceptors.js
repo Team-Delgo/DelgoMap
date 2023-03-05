@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
 
@@ -11,13 +12,11 @@ axiosInstance.interceptors.request.use(
     const accessToken = localStorage.getItem('accessToken') || '';
     try {
       if (config.headers !== undefined && accessToken !=='') {
-        // console.log('config',config)
-        // console.log('accessToken',accessToken)
         config.headers.authorization_access = accessToken;
       }
       return config;
     } catch (err) {
-      // console.error('err', err);
+      console.error('err', err);
     }
     return config;
   },
