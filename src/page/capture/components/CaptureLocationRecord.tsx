@@ -33,7 +33,7 @@ function CaptureLocationRecord() {
 
   const { data: mungPlaceList } = useQuery(
     GET_MUNG_PLACE_LIST,
-    () => getMungPlaceList('CA0002'),
+    () => getMungPlaceList(),
     {
       cacheTime: CACHE_TIME,
       staleTime: STALE_TIME,
