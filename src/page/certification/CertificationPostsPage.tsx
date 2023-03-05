@@ -18,6 +18,7 @@ import { scrollActions } from '../../redux/slice/scrollSlice';
 import { GET_ALL_CERTIFICATION_DATA_LIST } from '../../common/constants/queryKey.const';
 import { postType } from '../../common/types/post';
 
+
 function CertificationPostsPage() {
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
@@ -33,7 +34,7 @@ function CertificationPostsPage() {
     data,
     fetchNextPage,
     refetch: certificationPostsFetch,
-    isFetching,
+    isLoading,
   } = useInfiniteQuery(
     GET_ALL_CERTIFICATION_DATA_LIST,
     ({ pageParam = 0 }) =>
@@ -63,7 +64,7 @@ function CertificationPostsPage() {
 
   useEffect(() => {
     window.scroll(0, scroll);
-  }, [isFetching]);
+  }, [isLoading]);
 
   useEffect(() => {
     if (inView) fetchNextPage();
@@ -74,7 +75,7 @@ function CertificationPostsPage() {
     navigate(ROOT_PATH);
   }, []);
 
-  if (isFetching) {
+  if (isLoading) {
     return <Loading />;
   }
   
