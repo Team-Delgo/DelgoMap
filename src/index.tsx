@@ -39,6 +39,7 @@ getCurrentVersion((response:AxiosResponse)=>{
   if(versionNo > version){
     localStorage.setItem('version', versionNo);
     caches.keys().then(c=>{
+      console.log(c);
       c.map((t)=>caches.delete(t));
     }).then(()=>{
       window.location.reload();
