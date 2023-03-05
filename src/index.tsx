@@ -4,10 +4,13 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import ReactDOM from "react-dom/client";
+import { AxiosResponse } from "axios";
 import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App";
 import store from "./redux/store";
+import { getCurrentVersion } from "./common/api/version";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
@@ -29,6 +32,22 @@ window.Kakao.init('1fc2794c1008fd96115d7f57e7f68e04');
 
 export const analytics = getAnalytics(app);
 logEvent(analytics, "notification_received");
+
+const version = +(localStorage.getItem('version') || "0")
+getCurrentVersion((response:AxiosResponse)=>{
+  const {versionNo} = response.data.data;
+  if(versionNo > version){
+    localStorage.setItem('version', versionNo);
+    caches.keys().then(c=>{
+      c.map((t)=>caches.delete(t));
+    }).then(()=>{
+      window.location.reload();
+    });
+  }
+});
+
+
+
 
 root.render(
   <Provider store={store}>
