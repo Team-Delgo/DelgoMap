@@ -19,7 +19,14 @@ import Crop from '../../../../common/utils/Crop';
 import { RootState } from '../../../../redux/store';
 import { analytics } from '../../../../index';
 import PetType from '../pettype/PetType';
-import { LocationState, Input, IsValid, croppendAreaPixelType, BreedType, Id } from "./petInfoType";
+import {
+  LocationState,
+  Input,
+  IsValid,
+  croppendAreaPixelType,
+  BreedType,
+  Id,
+} from './petInfoType';
 
 function PetInfo() {
   const appleCode = useSelector((state: RootState) => state.persist.user.appleCode);
@@ -27,7 +34,8 @@ function PetInfo() {
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const state = useLocation().state as LocationState;
-  const { email, password, nickname, phone, isSocial, geoCode, pGeoCode, socialId } = state;
+  const { email, password, nickname, phone, isSocial, geoCode, pGeoCode, socialId } =
+    state;
   const [image, setImage] = useState<any>();
   const [sendingImage, setSendingImage] = useState<any>([]);
   const birthRef = useRef<HTMLInputElement>(null);
@@ -53,7 +61,7 @@ function PetInfo() {
   const handleImage = async (event: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     reader.onload = function () {
-      console.log('reader.result', reader.result)
+      console.log('reader.result', reader.result);
       setImage(reader.result);
     };
     const { files } = event.target;
@@ -84,7 +92,7 @@ function PetInfo() {
     const file = new File([blob], 'image.jpg');
 
     const formData = new FormData();
-    formData.append('photo', file);
+    formData.append('profile', file);
 
     return formData;
   };
@@ -110,14 +118,6 @@ function PetInfo() {
     }
     setNameFeedback(response.message);
   };
-
-  // const typeChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const { id } = event.target;
-  //   setEnteredInput((prev: Input) => {
-  //     return { ...prev, type: id };
-  //   });
-  //   requireInputCheck(Id.TYPE, id);
-  // };
 
   const inputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -145,19 +145,6 @@ function PetInfo() {
     signUpCompleteEvent.mutate();
     const formData = await handlingDataForm(sendingImage);
     let userId = 0;
-    const petInfo = {
-      name: enteredInput.name,
-      birthday: enteredInput.birth,
-      size: enteredInput.type,
-    };
-    const userInfo = {
-      userName: nickname,
-      email,
-      password,
-      phone,
-      pet: petInfo,
-    };
-    console.log(userInfo);
     if (isSocial) {
       const requestBody = {
         email,
@@ -170,10 +157,14 @@ function PetInfo() {
         birthday: enteredInput.birth,
         userSocial: isSocial,
         appleUniqueNo: appleCode,
-        socialId
+        socialId,
       };
+      const json = JSON.stringify(requestBody);
+      const blob = new Blob([json], { type: 'application/json' });
+      formData.append('data', blob);
+      formData.append('profile', sendingImage[0]);
       oAuthSignup(
-        requestBody,
+        formData,
         (response: AxiosResponse) => {
           const { code, codeMsg, data } = response.data;
           if (code === 200) {
@@ -182,8 +173,6 @@ function PetInfo() {
             localStorage.setItem('accessToken', accessToken || '');
             localStorage.setItem('refreshToken', refreshToken || '');
             userId = response.data.data.user.userId;
-            console.log(response);
-            console.log(userId);
             const { registDt } = data.user;
             dispatch(
               userActions.signin({
@@ -195,7 +184,10 @@ function PetInfo() {
                   phone: data.user.phoneNo,
                   isSocial: false,
                   geoCode: data.user.geoCode,
-                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(
+                    5,
+                    7,
+                  )}.${registDt.slice(8, 10)}`,
                   notify: data.user.notify,
                 },
                 pet: {
@@ -204,20 +196,9 @@ function PetInfo() {
                   breed: data.pet.breed,
                   breedName: data.pet.breedName,
                   name: data.pet.name,
-                  image: '',
+                  image: data.user.profile,
                 },
               }),
-            );
-            petImageUpload(
-              { formData, userId },
-              (response: AxiosResponse) => {
-                console.log(response);
-                const { code, data } = response.data;
-                if (code === 200) {
-                  dispatch(userActions.setpetprofile({ image: data.profile }));
-                }
-              },
-              dispatch,
             );
             if (device === 'mobile') {
               sendFcmTokenHandler(data.user.userId);
@@ -230,20 +211,24 @@ function PetInfo() {
         dispatch,
       );
     } else {
-      signup(
-        {
-          userName: nickname,
+      const requestBody = {
+        userName: nickname,
           email,
           password,
           phoneNo: phone,
           geoCode,
           pGeoCode,
-
           petName: enteredInput.name,
           breed: enteredInput.type.code,
           birthday: enteredInput.birth,
           userSocial: isSocial,
-        },
+      };
+      const json = JSON.stringify(requestBody);
+      const blob = new Blob([json], { type: 'application/json' });
+      formData.append('data', blob);
+      formData.append('profile', sendingImage[0]);
+      signup(
+        formData,
         (response: AxiosResponse) => {
           const { code, codeMsg, data } = response.data;
           if (code === 200) {
@@ -264,7 +249,10 @@ function PetInfo() {
                   isSocial: false,
                   geoCode: data.user.geoCode,
                   address: data.user.address,
-                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(
+                    5,
+                    7,
+                  )}.${registDt.slice(8, 10)}`,
                   notify: data.user.notify,
                 },
                 pet: {
@@ -273,26 +261,13 @@ function PetInfo() {
                   breed: data.pet.breed,
                   breedName: data.pet.breedName,
                   name: data.pet.name,
-                  image: '',
+                  image: data.user.profile,
                 },
               }),
             );
             if (device === 'mobile') {
               sendFcmTokenHandler(data.user.userId);
             }
-            formData.append('photo', sendingImage[0]);
-            petImageUpload(
-              { formData, userId },
-              (response: AxiosResponse) => {
-                console.log(response);
-                const { code, data } = response.data;
-
-                if (code === 200) {
-                  dispatch(userActions.setpetprofile({ image: data.profile }));
-                }
-              },
-              dispatch,
-            );
             navigation(SIGN_UP_PATH.COMPLETE, { state: { name: enteredInput.name } });
           } else {
             console.log(codeMsg);
@@ -306,8 +281,7 @@ function PetInfo() {
   const sendFcmTokenHandler = (userId: number) => {
     if (OS === 'android') {
       window.BRIDGE.sendFcmToken(userId);
-    }
-    else {
+    } else {
       // window.webkit.messageHandlers.sendFcmToken.postMessage(userId);
     }
   };
@@ -389,93 +363,102 @@ function PetInfo() {
 
   return (
     <div>
-      {!typeModalActive && <div className="login petinfo">
-        <div
-          aria-hidden="true"
-          className="login-back"
-          onClick={() => {
-            setTimeout(() => {
-              navigation(-1);
-            }, 200);
-          }}
-        >
-          <img src={Arrow} alt="arrow" />
-        </div>
-        <header className="login-header">대표 강아지 정보</header>
-        <div className="petinfo-image">
-          <label htmlFor="pet" className="petinfo-image-label">
-            <input
-              className="petinfo-image-input"
-              type="file"
-              accept="image/jpeg,image/gif,image/png;capture=filesystem"
-              name="image"
-              autoComplete="off"
-              id="pet"
-              onChange={handleImage}
-            />
-            {sendingImage.length === 0 && <img src={Camera} alt="camera" className="petinfo-image-icon" />}
-          </label>
-          <div className="petinfo-image-preview" style={{ backgroundImage: `url(${sendingImage})` }} />
-        </div>
-        {modalActive && (
-          <div>
-            <div aria-hidden="true" className="backdrop" onClick={closeModal} />
-            <div className="modal">
-              <BirthSelector changeBirth={chagneBirthHandler} close={closeModal} />
-            </div>
+      {!typeModalActive && (
+        <div className="login petinfo">
+          <div
+            aria-hidden="true"
+            className="login-back"
+            onClick={() => {
+              setTimeout(() => {
+                navigation(-1);
+              }, 200);
+            }}
+          >
+            <img src={Arrow} alt="arrow" />
           </div>
-        )}
+          <header className="login-header">대표 강아지 정보</header>
+          <div className="petinfo-image">
+            <label htmlFor="pet" className="petinfo-image-label">
+              <input
+                className="petinfo-image-input"
+                type="file"
+                accept="image/jpeg,image/gif,image/png;capture=filesystem"
+                name="image"
+                autoComplete="off"
+                id="pet"
+                onChange={handleImage}
+              />
+              {sendingImage.length === 0 && (
+                <img src={Camera} alt="camera" className="petinfo-image-icon" />
+              )}
+            </label>
+            <div
+              className="petinfo-image-preview"
+              style={{ backgroundImage: `url(${sendingImage})` }}
+            />
+          </div>
+          {modalActive && (
+            <div>
+              <div aria-hidden="true" className="backdrop" onClick={closeModal} />
+              <div className="modal">
+                <BirthSelector changeBirth={chagneBirthHandler} close={closeModal} />
+              </div>
+            </div>
+          )}
 
-        <div className="login-input-box">
-          <input
-            className={classNames('login-input petname', { invalid: nameFeedback.length })}
-            placeholder="강아지 이름 (2~8자)"
-            value={enteredInput.name}
-            autoComplete="off"
-            id={Id.NAME}
-            onChange={inputChangeHandler}
-          />
-          <p className="input-feedback">{nameFeedback}</p>
-        </div>
-        <div className="login-input-wrapper">
-          <input
-            className={classNames('login-input input-birth')}
-            placeholder="생일"
-            value={enteredInput.birth}
-            id={Id.BIRTH}
-            ref={birthRef}
-            onClick={openModal}
-            onFocus={openModal}
-            required
-            onChange={inputChangeHandler}
-          />
-        </div>
-        <div className="login-input-wrapper">
-          <input
-            className={classNames('login-input input-birth')}
-            placeholder="견종"
-            value={enteredInput.type.breed}
-            id={Id.TYPE}
-            onClick={openTypeModal}
-            onFocus={openTypeModal}
-            required
-            onChange={inputChangeHandler}
-          />
-        </div>
+          <div className="login-input-box">
+            <input
+              className={classNames('login-input petname', {
+                invalid: nameFeedback.length,
+              })}
+              placeholder="강아지 이름 (2~8자)"
+              value={enteredInput.name}
+              autoComplete="off"
+              id={Id.NAME}
+              onChange={inputChangeHandler}
+            />
+            <p className="input-feedback">{nameFeedback}</p>
+          </div>
+          <div className="login-input-wrapper">
+            <input
+              className={classNames('login-input input-birth')}
+              placeholder="생일"
+              value={enteredInput.birth}
+              id={Id.BIRTH}
+              ref={birthRef}
+              onClick={openModal}
+              onFocus={openModal}
+              required
+              onChange={inputChangeHandler}
+            />
+          </div>
+          <div className="login-input-wrapper">
+            <input
+              className={classNames('login-input input-birth')}
+              placeholder="견종"
+              value={enteredInput.type.breed}
+              id={Id.TYPE}
+              onClick={openTypeModal}
+              onFocus={openTypeModal}
+              required
+              onChange={inputChangeHandler}
+            />
+          </div>
 
-        <button
-          type="button"
-          disabled={!pageIsValid}
-          className={classNames('login-button', { active: pageIsValid })}
-          onClick={() => {
-            setTimeout(() => {
-              submitHandler();
-            }, 300);
-          }}
-        >
-          저장하기
-        </button>
-      </div>}
+          <button
+            type="button"
+            disabled={!pageIsValid}
+            className={classNames('login-button', { active: pageIsValid })}
+            onClick={() => {
+              setTimeout(() => {
+                submitHandler();
+              }, 300);
+            }}
+          >
+            저장하기
+          </button>
+        </div>
+      )}
       {typeModalActive && <PetType closeModal={closeTypeModal} setType={setDogType} />}
     </div>
   );

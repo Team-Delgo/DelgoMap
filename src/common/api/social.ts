@@ -15,36 +15,15 @@ function setAccessCode(code: string | null, success: (data: AxiosResponse) => vo
 }
 
 function oAuthSignup(
-  data: {
-    email: string;
-    userName: string;
-    phoneNo: string;
-    geoCode: number;
-    pGeoCode: number;
-    petName: string;
-    breed: string;
-    birthday: string | undefined;
-    userSocial: string;
-    appleUniqueNo: string | undefined;
-    socialId:string;
-  },
+  formData:FormData,
   success: (data: AxiosResponse) => void,
   dispatch: any,
 ) {
-  const { email, geoCode, pGeoCode, userName, phoneNo, petName, breed, birthday, userSocial, appleUniqueNo, socialId } = data;
   axiosInstance
-    .post(`/user/oauth `, {
-      email,
-      userName,
-      phoneNo,
-      geoCode: geoCode.toString(),
-      pGeoCode: pGeoCode.toString(),
-      petName,
-      breed,
-      birthday,
-      userSocial,
-      appleUniqueNo,
-      socialId
+    .post(`/user/oauth `, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     })
     .then((data) => {
       success(data);

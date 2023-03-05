@@ -3,19 +3,6 @@ import axiosInstance from './interceptors';
 // import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
-interface SignUpData {
-  email: string;
-  password: string;
-  userName: string;
-  phoneNo: string;
-  geoCode: number;
-  pGeoCode: number;
-  petName: string;
-  breed: string;
-  birthday: string | undefined;
-  userSocial: string;
-}
-
 function emailCheck(email: string, success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
     .get(`/auth/email/check`, {
@@ -42,32 +29,12 @@ function nicknameCheck(name: string, success: (data: AxiosResponse) => void, dis
     });
 }
 
-function signup(info: SignUpData, success: (data: AxiosResponse) => void, dispatch: any) {
-  const { userName, email, password, phoneNo, geoCode, pGeoCode, petName, breed, birthday } = info;
+function signup(formData: FormData, success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
-    .post(`/user`, {
-      // user: {
-      //   name: nickname,
-      //   email,
-      //   password,
-      //   phoneNo: phone,
-      // },
-      // pet: {
-      //   name: pet.name,
-      //   birthday: pet.birthday,
-      //   size: pet.size,
-      //   // weight: 4.3,
-      // },
-
-      userName,
-      email,
-      password,
-      geoCode,
-      pGeoCode,
-      phoneNo,
-      petName,
-      birthday,
-      breed,
+    .post(`/user`, formData,{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     })
     .then((data) => {
       success(data);
