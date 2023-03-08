@@ -1,3 +1,4 @@
+import { NavigateFunction } from 'react-router-dom';
 import { Mungple, Cert } from './maptype';
 import Cafe from '../../../common/icons/cafe-map.svg';
 import CafeSmall from '../../../common/icons/cafe-map-small.svg';
@@ -21,6 +22,7 @@ import BathCert from '../../../common/icons/bath-cert.svg';
 import BeauthCert from '../../../common/icons/beauty-cert.svg';
 import HospitalCert from '../../../common/icons/hospital-cert.svg';
 import NormalCert from '../../../common/icons/normal-cert.svg';
+import { POSTS_PATH } from '../../../common/constants/path.const';
 
 function setMarkerOptionBig(
   categoryCode: string,
@@ -235,6 +237,7 @@ function setCertMungpleMarker(
 function setOtherDogsMungple(
   otherMungpleCertList: Cert[],
   globarMap: naver.maps.Map | undefined,
+  navigate: NavigateFunction
 ) {
   return otherMungpleCertList.map((data) => {
     let icon: string;
@@ -266,7 +269,7 @@ function setOtherDogsMungple(
     };
     const marker = new naver.maps.Marker(markerOptions);
     marker.addListener('click', () => {
-      console.log('clicked!');
+      navigate(POSTS_PATH, {state: data.certificationId});
     });
     return marker;
   });

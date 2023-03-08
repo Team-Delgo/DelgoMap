@@ -10,7 +10,7 @@ import './Photo.scss';
 import UnderArrow from '../../../../common/icons/under-arrow-gray.svg';
 import { Cert } from '../../../map/components/maptype';
 import { getPhotoCount, getPhotoData } from '../../../../common/api/record';
-import { RECORD_PATH } from '../../../../common/constants/path.const';
+import { POSTS_PATH, RECORD_PATH } from '../../../../common/constants/path.const';
 import { analytics } from '../../../../index';
 import { scrollActions } from '../../../../redux/slice/scrollSlice';
 import { RootState } from '../../../../redux/store';
@@ -42,7 +42,7 @@ function Photo() {
   const [otherDogsCerts, setOtherDogsCerts] = useState<OtherDogsCert[]>([]);
   const dispatch = useDispatch();
   const location: any = useLocation();
-  
+
   useEffect(() => {
     console.log(123);
     mutation.mutate({
@@ -157,10 +157,14 @@ function Photo() {
     setIsFetched(true);
   };
 
+  const navigateToOthers = (certId:number) => {
+    navigate(POSTS_PATH, {state:certId});
+  }
+
   const noRecordContext = useMemo(
     () =>{
       const imgs = otherDogsCerts.map((o)=>{
-        return <img src={o.photo} alt="others"/>
+        return <img src={o.photo} alt="others" onClick={()=>navigateToOthers(o.certId)} aria-hidden/>
       });
       return isFetched && (
         <div className="photo-nocert">
