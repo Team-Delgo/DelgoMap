@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,11 +19,13 @@ import { GET_ALL_CERTIFICATION_DATA_LIST } from '../../common/constants/queryKey
 import { postType } from '../../common/types/post';
 
 function CertificationPostsPage() {
+  const pageFrom = (useLocation().state as any) || 'home';
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const { scroll, pageSize } = useSelector(
     (state: RootState) => state.persist.scroll.posts,
   );
+
   const dispatch = useDispatch();
   const { ref, inView } = useInView();
   const navigate = useNavigate();
