@@ -202,8 +202,9 @@ function Map() {
     } else if (!isCertVisible) {
       deleteCertList();
       deleteMungpleList();
-
-      const tempOthers1 = setOtherDogsMungple(otherMungpleCertList, globarMap);
+      
+      const tempOthers1 = setOtherDogsMungple(otherMungpleCertList, globarMap, navigate);
+      
 
       const tempList = mungpleList.map((data) => {
         let markerOptions: naver.maps.MarkerOptions;
