@@ -61,7 +61,6 @@ function PetInfo() {
   const handleImage = async (event: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     reader.onload = function () {
-      console.log('reader.result', reader.result);
       setImage(reader.result);
     };
     const { files } = event.target;
@@ -74,7 +73,6 @@ function PetInfo() {
     reader.readAsDataURL(compressedFile);
     reader.onloadend = () => {
       const base64data = reader.result;
-      console.log(compressedFile.type);
       setSendingImage(base64data);
     };
   };
@@ -297,7 +295,6 @@ function PetInfo() {
   const showCroppedImage = async () => {
     try {
       const blobFile = await getCroppedImg(image, croppedAreaPixels);
-      console.log('blobFile', blobFile);
 
       const metadata = { type: `image/jpeg` };
       const newFile = new File([blobFile as Blob], compressedFileName, metadata);

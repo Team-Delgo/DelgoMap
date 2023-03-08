@@ -42,6 +42,7 @@ function Photo() {
   const [otherDogsCerts, setOtherDogsCerts] = useState<OtherDogsCert[]>([]);
   const dispatch = useDispatch();
   const location: any = useLocation();
+  
   useEffect(() => {
     console.log(123);
     mutation.mutate({
@@ -157,9 +158,9 @@ function Photo() {
   };
 
   const noRecordContext = useMemo(
-    () => {
-      const imgs = otherDogsCerts.map((o) => {
-        return <img src={o.photo} alt="others" />
+    () =>{
+      const imgs = otherDogsCerts.map((o)=>{
+        return <img src={o.photo} alt="others"/>
       });
       return isFetched && (
         <div className="photo-nocert">
@@ -172,16 +173,15 @@ function Photo() {
             를 눌러 기록해 보세요
           </span>
           <div className="photo-others-divider" />
-          {/* <div className="photo-others-header">
+          <div className="photo-others-header">
             <h5>다른 강아지들은 뭐 할까?</h5>
             <span className="photo-others-more" aria-hidden>
               더보기
             </span>
           </div>
-          <div className="photo-others-photo">{imgs}</div> */}
+          <div className="photo-others-photo">{imgs}</div>
         </div>
-      )
-    },
+      )},
     [photos, otherDogsCerts],
   );
   const photoContext = useMemo(

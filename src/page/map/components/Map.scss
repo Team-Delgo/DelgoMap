@@ -305,12 +305,23 @@
   border-radius: 100%;
   &.big {
     animation: markerAppear 0.3s ease-out;
-    z-index: 99999;
-    width: 50px;
-    height: 59px;
+    z-index: 101;
+    width: 55px;
+    height: 63px;
+    position: relative;
+    display: flex;
+    justify-content: center;
     img {
-      width: 57px;
-      height: 62px;
+      width: 53px;
+      height: 63px;
+    }
+    .cert{
+      position: absolute;
+      top: 4px;
+      right: 5px;
+      width: 45px;
+      height: 45px;
+      border-radius: 100%;
     }
   }
 }
