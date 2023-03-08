@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
+import {
+  useAnalyticsLogEvent,
+  useAnalyticsCustomLogEvent,
+} from '@react-query-firebase/analytics';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './Map.scss';
@@ -8,12 +11,19 @@ import { getMapData } from '../../../common/api/record';
 import { Mungple, idDefault, Cert, certDefault } from './maptype';
 import PlaceCard from './PlaceCard';
 import { analytics } from '../../../index';
-import { setMarkerOptionBig, setMarkerOptionSmall, setMarkerOptionPrev, setCertOption } from './MapComponent';
+import {
+  setMarkerOptionBig,
+  setMarkerOptionSmall,
+  setMarkerOptionPrev,
+  setCertOption,
+  setCertNormalMarker,
+  setCertMungpleMarker,
+  setOtherDogsMungple,
+} from './MapComponent';
 import SearchBar from './SearchBar';
 import LinkCopy from './LinkCopy';
 import Search from '../../../common/icons/search.svg';
 import Logo from '../../../common/icons/logo.svg';
-import ToastMessage from './ToastMessage';
 import Regist from './Regist';
 import { mapAction } from '../../../redux/slice/mapSlice';
 import Feedback from './Feedback';
@@ -25,6 +35,7 @@ import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from '../../../common/constants/path.co
 import { RootState } from '../../../redux/store';
 import AlertConfirm from '../../../common/dialog/AlertConfirm';
 import CertCard from './CertCard';
+import BathCertPin from '../../../common/icons/bath-cert.svg';
 
 interface MakerItem {
   id: number;
@@ -46,7 +57,11 @@ function Map() {
   const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
   const [mungpleCertList, setMunpleCertList] = useState<Cert[]>([]);
   const [normalCertList, setNormalCertList] = useState<Cert[]>([]);
-  const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<naver.maps.Marker[]>([]);
+  const [otherMungpleCertList, setOtherMungpleCertList] = useState<Cert[]>([]);
+  const [otherNormalCertList, setOtherNormalCertList] = useState<Cert[]>([]);
+  const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<naver.maps.Marker[]>(
+    [],
+  );
   const [certMarkerList, setCertMarkerList] = useState<naver.maps.Marker[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [detailUrl, setDetailUrl] = useState('');
@@ -56,7 +71,6 @@ function Map() {
   const [registOpen, setIsRegistOpen] = useState(false);
   const viewCount = useSelector((state: any) => state.persist.viewCount);
   const initMapCenter = useSelector((state: RootState) => state.map);
-  const isCopy = useSelector((state: any) => state.map.isCopy);
   const [currentLocation, setCurrentLocation] = useState({
     lat: !initMapCenter.lat ? 37.5057018 : initMapCenter.lat,
     lng: !initMapCenter.lng ? 127.1141119 : initMapCenter.lng,
@@ -97,6 +111,8 @@ function Map() {
         setMungpleList(data.mungpleList);
         setNormalCertList(data.normalCertList);
         setMunpleCertList(data.mungpleCertList);
+        setOtherMungpleCertList(data.exposedMungpleCertList);
+        setOtherNormalCertList(data.exposedNormalCertList);
       },
       dispatch,
     );
@@ -112,13 +128,16 @@ function Map() {
     });
     getMapPageData();
     if (!mapElement.current || !naver) return;
-    const location = new window.naver.maps.LatLng(currentLocation.lat, currentLocation.lng);
+    const location = new window.naver.maps.LatLng(
+      currentLocation.lat,
+      currentLocation.lng,
+    );
     const mapOptions: naver.maps.MapOptions = {
       center: location,
       zoom: currentLocation.zoom,
       zoomControl: false,
       minZoom: 10,
-      logoControl: false
+      logoControl: false,
     };
 
     map = new naver.maps.Map(mapElement.current, mapOptions);
@@ -171,64 +190,21 @@ function Map() {
     if (userId > 0 && isCertVisible) {
       deleteMungpleList();
       deleteCertList();
-      const tempList1 = normalCertList.map((data) => {
-        const markerOptions = setCertOption(data, globarMap);
-        const marker = new naver.maps.Marker(markerOptions);
-        marker.addListener('click', () => {
-          setSelectedCert((prev) => {
-            return {
-              ...prev,
-              userId: data.userId,
-              isLike: data.isLike,
-              likeCount: data.likeCount,
-              commentCount: data.commentCount,
-              categoryCode: data.categoryCode,
-              certificationId: data.certificationId,
-              description: data.description,
-              photoUrl: data.photoUrl,
-              placeName: data.placeName,
-              registDt: data.registDt,
-            };
-          });
-        });
-        return marker;
-      });
+      const tempList1 = setCertNormalMarker(normalCertList, globarMap, setSelectedCert);
       setCertMarkerList(tempList1);
-
-      const tempList2 = mungpleCertList.map((data) => {
-        const markerOptions = {
-          position: new window.naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)),
-          map: globarMap!,
-          icon: {
-            content: [
-              `<div class="pin${currentLocation.option.zoom} mungplepin ${data.categoryCode}" style="z-index:${data.certificationId}">`,
-              `<img src=${data.photoUrl} style="z-index:${data.certificationId + 1}" alt="pin"/>`,
-              `</div>`,
-            ].join(''),
-            size: new naver.maps.Size(currentLocation.option.size, currentLocation.option.size),
-            origin: new naver.maps.Point(0, 0),
-          },
-        };
-        const marker = new naver.maps.Marker(markerOptions);
-        marker.addListener('click', () => {
-          setSelectedCert((prev) => {
-            return {
-              ...prev,
-              categoryCode: data.categoryCode,
-              certificationId: data.certificationId,
-              description: data.description,
-              photoUrl: data.photoUrl,
-              placeName: data.placeName,
-              registDt: data.registDt,
-            };
-          });
-        });
-        return marker;
-      });
+      const tempList2 = setCertMungpleMarker(
+        mungpleCertList,
+        globarMap,
+        currentLocation,
+        setSelectedCert,
+      );
       setMungpleCertMarkerList(tempList2);
     } else if (!isCertVisible) {
       deleteCertList();
       deleteMungpleList();
+
+      const tempOthers1 = setOtherDogsMungple(otherMungpleCertList, globarMap);
+
       const tempList = mungpleList.map((data) => {
         let markerOptions: naver.maps.MarkerOptions;
         markerOptions = setMarkerOptionSmall(data.categoryCode, data, globarMap);
@@ -252,7 +228,12 @@ function Map() {
               prevCategoryCode: prev.categoryCode,
             };
           });
-          markerOptions = setMarkerOptionBig(data.categoryCode, data, globarMap, selectedId.prevCategoryCode);
+          markerOptions = setMarkerOptionBig(
+            data.categoryCode,
+            data,
+            globarMap,
+            selectedId.prevCategoryCode,
+          );
           marker.setOptions(markerOptions);
         });
         return { marker, id: data.mungpleId };
@@ -280,15 +261,24 @@ function Map() {
         prevCategoryCode: prev.categoryCode,
       };
     });
-    const markerOptions = setMarkerOptionBig(data.categoryCode, data, globarMap, selectedId.prevCategoryCode);
+    const markerOptions = setMarkerOptionBig(
+      data.categoryCode,
+      data,
+      globarMap,
+      selectedId.prevCategoryCode,
+    );
     const index = markerList.findIndex((marker) => {
       return marker.id === data.mungpleId;
     });
     markerList[index].marker.setOptions(markerOptions);
-    globarMap?.morph(new naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)), 16, {
-      duration: 500,
-      easing: 'easeOutCubic',
-    });
+    globarMap?.morph(
+      new naver.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)),
+      16,
+      {
+        duration: 500,
+        easing: 'easeOutCubic',
+      },
+    );
   };
 
   useEffect(() => {
@@ -297,7 +287,11 @@ function Map() {
       const index = markerList.findIndex((e) => {
         return e.id === selectedId.prevId;
       });
-      const markerOptions = setMarkerOptionPrev(selectedId.prevCategoryCode, selectedId, globarMap);
+      const markerOptions = setMarkerOptionPrev(
+        selectedId.prevCategoryCode,
+        selectedId,
+        globarMap,
+      );
       markerList[index].marker.setOptions(markerOptions);
     }
   }, [selectedId]);
@@ -323,10 +317,16 @@ function Map() {
             prevCategoryCode: prev.categoryCode,
           };
         });
-        globarMap?.panTo(new naver.maps.LatLng(parseFloat(mungpleList[index].latitude), parseFloat(mungpleList[index].longitude)), {
-          duration: 500,
-          easing: 'easeOutCubic',
-        });
+        globarMap?.panTo(
+          new naver.maps.LatLng(
+            parseFloat(mungpleList[index].latitude),
+            parseFloat(mungpleList[index].longitude),
+          ),
+          {
+            duration: 500,
+            easing: 'easeOutCubic',
+          },
+        );
         const markerOptions = setMarkerOptionBig(
           mungpleList[index].categoryCode,
           mungpleList[index],
@@ -359,8 +359,7 @@ function Map() {
     if (isSignIn) {
       setCurrentMapPosition();
       navigate(MY_ACCOUNT_PATH.MAIN);
-    }
-    else setIsAlertOpen(true);
+    } else setIsAlertOpen(true);
   }, [globarMap]);
 
   const sendLoginPage = () => {
@@ -383,11 +382,25 @@ function Map() {
       )}
       <div className="whiteBox" />
       <img className="map-logo" src={Logo} alt="logo" />
-      <img className="map-search" src={Search} alt="search" aria-hidden="true" onClick={searchClickHander} />
-      <img className="map-mypage" src={Human} alt="mypage" aria-hidden="true" onClick={navigateMyPage} />
+      <img
+        className="map-search"
+        src={Search}
+        alt="search"
+        aria-hidden="true"
+        onClick={searchClickHander}
+      />
+      <img
+        className="map-mypage"
+        src={Human}
+        alt="mypage"
+        aria-hidden="true"
+        onClick={navigateMyPage}
+      />
       <div className="slogun">강아지 델고 동네생활</div>
       <div className="map" ref={mapElement} style={{ position: 'absolute' }} />
-      {searchIsOpen && <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />}
+      {searchIsOpen && (
+        <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />
+      )}
       {selectedId.title.length > 0 && (
         <PlaceCard
           id={selectedId.id}
@@ -413,12 +426,18 @@ function Map() {
       <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       {/* {isCopy && <ToastMessage message="URL이 복사되었습니다." />} */}
       {selectedId.title.length > 0 && <LinkCopy />}
-      {registOpen && <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />}
+      {registOpen && (
+        <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />
+      )}
       {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
       {detailUrl.length > 0 && <DetailPage />}
-      {selectedId.title.length === 0 && selectedCert.placeName.length === 0 && <FooterNavigation setCenter={setCurrentMapPosition} />}
+      {selectedId.title.length === 0 && selectedCert.placeName.length === 0 && (
+        <FooterNavigation setCenter={setCurrentMapPosition} />
+      )}
     </div>
   );
 }
 
 export default Map;
+
+
