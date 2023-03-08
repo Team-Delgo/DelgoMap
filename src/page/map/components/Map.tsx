@@ -62,6 +62,8 @@ function Map() {
   const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<naver.maps.Marker[]>(
     [],
   );
+  const [otherCertMarkerList ,setOtherCertMarkerList] = useState<naver.maps.Marker[]>([]);
+  const [otherCertMungpleMarkerList, setOtherCertMungpleMarkerList] = useState<naver.maps.Marker[]>([]);
   const [certMarkerList, setCertMarkerList] = useState<naver.maps.Marker[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [detailUrl, setDetailUrl] = useState('');
@@ -177,19 +179,17 @@ function Map() {
       marker.marker.setMap(null);
     });
   };
-  const deleteCertList = () => {
-    certMarkerList.forEach((marker) => {
+
+  const deleteMarkers = (markers:naver.maps.Marker[]) => {
+    markers.forEach((marker) => {
       marker.setMap(null);
-    });
-    mungpleCertMarkerList.forEach((marker) => {
-      marker.setMap(null);
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     if (userId > 0 && isCertVisible) {
       deleteMungpleList();
-      deleteCertList();
+      deleteMarkers(otherCertMungpleMarkerList);
       const tempList1 = setCertNormalMarker(normalCertList, globarMap, setSelectedCert);
       setCertMarkerList(tempList1);
       const tempList2 = setCertMungpleMarker(
@@ -200,12 +200,11 @@ function Map() {
       );
       setMungpleCertMarkerList(tempList2);
     } else if (!isCertVisible) {
-      deleteCertList();
-      deleteMungpleList();
+      deleteMarkers(certMarkerList);
+      deleteMarkers(mungpleCertMarkerList);
       
       const tempOthers1 = setOtherDogsMungple(otherMungpleCertList, globarMap, navigate);
-      
-
+      setOtherCertMungpleMarkerList(tempOthers1);
       const tempList = mungpleList.map((data) => {
         let markerOptions: naver.maps.MarkerOptions;
         markerOptions = setMarkerOptionSmall(data.categoryCode, data, globarMap);
