@@ -90,7 +90,7 @@
 <h2 id="4">🛒 Store link</h2>
 
 -   ### <b> <a href="https://play.google.com/store/apps/details?id=com.delgo.delgoreward" > 🔗 Android </a> </b>
--   ### <b> <a href=""> 🔗 IOS </a> </b>
+-   ### <b> <a href="https://apps.apple.com/kr/app/delgo-%EB%8D%B8%EA%B3%A0-%EC%9A%B0%EB%A6%AC-%EA%B0%95%EC%95%84%EC%A7%80%EC%99%80%EC%9D%98-%EB%8F%99%EB%84%A4-%EA%B8%B0%EB%A1%9D/id1662427735"> 🔗 IOS </a> </b>
 
 <br/>
 
