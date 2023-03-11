@@ -76,7 +76,7 @@ function CaptureResult() {
     <>
       <CaptureResultHeader />
       <CaptureResultMain />
-      <AchievementBottomSheet
+      {/* <AchievementBottomSheet
         text="업적 획득"
         achievement={achievements[0]}
         allView
@@ -89,7 +89,7 @@ function CaptureResult() {
         allView
         cancelButtonHandler={closeAchievementBottomSheet2}
         bottomSheetIsOpen={achievementBottomSheetIsOpen2}
-      />
+      /> */}
       {certificateSuccessToastIsOpen && (
         <ToastPurpleMessage message="인증에 성공하였습니다" />
       )}

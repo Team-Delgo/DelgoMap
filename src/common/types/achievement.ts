@@ -1,6 +1,6 @@
 export interface achievementType {
   achievementsId: number;
-  desc: string;
+  description: string;
   imgUrl: string;
   isActive: boolean;
   isMain: number;
