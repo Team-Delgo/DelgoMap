@@ -15,6 +15,7 @@ import ToastPurpleMessage from '../../../common/dialog/ToastPurpleMessage';
 import { analytics } from '../../../index';
 import useActive from '../../../common/hooks/useActive';
 import useInput from '../../../common/hooks/useInput';
+import BallLoading from '../../../common/utils/BallLoading';
 
 interface CaptureCertificationRecordPropsType {
   postCertificationIsLoading: boolean;
@@ -51,56 +52,64 @@ function CaptureCertificationRecord({
     }
   }, [certificateErrorToastIsOpen]);
 
+  useEffect(() => {
+    console.log('postCertificationIsLoading',postCertificationIsLoading)
+  }, [postCertificationIsLoading]);
+
   const uploadGalleryImgCertification = () => {
     if (postCertificationIsLoading) {
       return;
     }
     onPostCertificationLoading();
 
-    const data = {
-      userId: user.id,
-      categoryCode: 'CA9999',
-      mungpleId: mongPlaceId,
-      placeName: title,
-      description: certificationPostContent,
-      latitude,
-      longitude,
-    };
+    setTimeout(()=>{
+      const data = {
+        userId: user.id,
+        categoryCode: 'CA9999',
+        mungpleId: mongPlaceId,
+        placeName: title,
+        description: certificationPostContent,
+        latitude,
+        longitude,
+      };
+  
+      formData.append('photo', file);
+  
+      const json = JSON.stringify(data);
+      const blob = new Blob([json], { type: "application/json" });
+  
+      formData.append('data', blob);
+  
+      registerGalleryCertificationPost(
+        formData,
+        (response: AxiosResponse) => {
+          const { code, data } = response.data;
+          if (code === 200) {
+            console.log('file', file);
+            dispatch(
+              uploadAction.setContentRegistDtCertificationIdAddress({
+                content: certificationPostContent,
+                registDt: data.registDt,
+                certificationId: data.certificationId,
+                address: data.address,
+                achievements: [],
+              }),
+            );
+            moveToCaptureResultPage();
+          } else if (code === 314) {
+            offPostCertificationLoading();
+            setCertificateErrorToastMessage('카테고리당 하루 5번까지 인증 가능합니다');
+            openCertificateErrorToast();
+          } else if (code === 313) {
+            offPostCertificationLoading();
+            setCertificateErrorToastMessage('6시간 이내 같은 장소에서 인증 불가능합니다');
+            openCertificateErrorToast();
+          }
+        },
+        dispatch,
+      );
+    },1000)
 
-    formData.append('photo', file);
-
-    const json = JSON.stringify(data);
-    const blob = new Blob([json], { type: "application/json" });
-
-    formData.append('data', blob);
-
-    registerGalleryCertificationPost(
-      formData,
-      (response: AxiosResponse) => {
-        const { code, data } = response.data;
-        if (code === 200) {
-          console.log('file', file);
-          dispatch(
-            uploadAction.setContentRegistDtCertificationIdAddress({
-              content: certificationPostContent,
-              registDt: data.registDt,
-              certificationId: data.certificationId,
-              address: data.address,
-              achievements: [],
-            }),
-          );
-          moveToCaptureResultPage();
-        } else if (code === 314) {
-          setCertificateErrorToastMessage('카테고리당 하루 5번까지 인증 가능합니다');
-          openCertificateErrorToast();
-        } else if (code === 313) {
-          setCertificateErrorToastMessage('6시간 이내 같은 장소에서 인증 불가능합니다');
-          openCertificateErrorToast();
-        }
-      },
-      dispatch,
-    );
-    offPostCertificationLoading();
   };
 
   const handlingDataForm = (dataURI: any) => {
@@ -132,6 +141,7 @@ function CaptureCertificationRecord({
 
   return (
     <>
+      {postCertificationIsLoading && <BallLoading />}
       <Sheet
         isOpen={bottomSheetIsOpen}
         onClose={closeBottomSheet}
@@ -159,11 +169,17 @@ function CaptureCertificationRecord({
                   onChange={onChangeCertificationPostContent}
                   maxLength={200}
                 />
-                <div className="review-content-length">{certificationPostContent.length}/1000</div>
+                <div className="review-content-length">
+                  {certificationPostContent.length}/1000
+                </div>
               </body>
               <footer>
                 {certificationPostContent.length > 0 ? (
-                  <div className="writting-button-active" aria-hidden="true" onClick={uploadGalleryImgCertification}>
+                  <div
+                    className="writting-button-active"
+                    aria-hidden="true"
+                    onClick={uploadGalleryImgCertification}
+                  >
                     기록완료
                   </div>
                 ) : (
@@ -174,7 +190,9 @@ function CaptureCertificationRecord({
           </Sheet.Content>
         </Sheet.Container>
       </Sheet>
-      {certificateErrorToastIsOpen && <ToastPurpleMessage message={certificateErrorToastMessage} />}
+      {certificateErrorToastIsOpen && (
+        <ToastPurpleMessage message={certificateErrorToastMessage} />
+      )}
     </>
   );
 }
