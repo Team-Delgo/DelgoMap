@@ -23,6 +23,8 @@ function AchievementBottomSheet({ text, achievement, cancelButtonHandler, bottom
     navigate(ACHIEVEMENT_PATH);
   };
 
+  console.log('achievement',achievement)
+
   return (
     <Sheet className="confirm-bottom-sheet-container" isOpen={bottomSheetIsOpen} onClose={cancelButtonHandler} snapPoints={sheetSnapPoints}>
       <Sheet.Container style={sheetStyle}>
@@ -36,10 +38,10 @@ function AchievementBottomSheet({ text, achievement, cancelButtonHandler, bottom
               <div className="achievement-bottom-sheet-first-line-name">{achievement?.name}</div>
             </div>
             <div className="achievement-bottom-sheet-second-line">
-              <div className="achievement-bottom-sheet-second-line-text">{achievement?.desc.split('/')[0]}</div>
+              <div className="achievement-bottom-sheet-second-line-text">{achievement?.description.split('.')[0]}</div>
             </div>
             <div className="achievement-bottom-sheet-second-line">
-              <div className="achievement-bottom-sheet-second-line-text">{achievement?.desc.split('/')[1]}</div>
+              <div className="achievement-bottom-sheet-second-line-text">{achievement?.description.split('.')[1]}</div>
             </div>
             <div className="achievement-bottom-sheet-third-line" aria-hidden="true" onClick={allView ? moveToAchievementPage : undefined}>
               <img
