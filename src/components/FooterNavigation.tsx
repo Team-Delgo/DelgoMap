@@ -39,7 +39,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
 
   const moveToPostsPage = () => {
     setCenter();
-    navigate(POSTS_PATH);
+    navigate(POSTS_PATH , {state:{cert:null, from:'home'}});
   };
   const sendLoginPage = () => {
     navigate(SIGN_IN_PATH.MAIN);

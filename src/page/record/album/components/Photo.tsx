@@ -39,7 +39,7 @@ function Photo() {
   const [categoryTab, setCategoryTab] = useState('전체');
   const [sortOption, setSortOption] = useState<boolean>(true);
   const [isLast, setLast] = useState(false);
-  const [otherDogsCerts, setOtherDogsCerts] = useState<OtherDogsCert[]>([]);
+  const [otherDogsCerts, setOtherDogsCerts] = useState<Cert[]>([]);
   const dispatch = useDispatch();
   const location: any = useLocation();
 
@@ -113,10 +113,8 @@ function Photo() {
         userId,
         5,
         (response: AxiosResponse) => {
-          const temp: OtherDogsCert[] = response.data.data.map((c: any) => {
-            return { certId: c.certificationId, photo: c.photoUrl };
-          });
-          setOtherDogsCerts(temp);
+          console.log(response);
+          setOtherDogsCerts(response.data.data);
         },
         dispatch,
       );
@@ -157,14 +155,14 @@ function Photo() {
     setIsFetched(true);
   };
 
-  const navigateToOthers = (certId:number) => {
-    navigate(POSTS_PATH, {state:certId});
+  const navigateToOthers = (cert:Cert) => {
+    navigate(POSTS_PATH, {state:{cert, from:'photo'}});
   }
 
   const noRecordContext = useMemo(
     () =>{
       const imgs = otherDogsCerts.map((o)=>{
-        return <img src={o.photo} alt="others" onClick={()=>navigateToOthers(o.certId)} aria-hidden/>
+        return <img src={o.photoUrl} alt="others" onClick={()=>navigateToOthers(o)} aria-hidden/>
       });
       return isFetched && (
         <div className="photo-nocert">

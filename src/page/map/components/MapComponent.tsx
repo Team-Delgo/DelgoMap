@@ -269,7 +269,10 @@ function setOtherDogsMungple(
     };
     const marker = new naver.maps.Marker(markerOptions);
     marker.addListener('click', () => {
-      navigate(POSTS_PATH, {state: data.certificationId});
+      navigate(POSTS_PATH, {state: {
+        cert:data,
+        from:'home',
+      }});
     });
     return marker;
   });
