@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   posts: {
     scroll: 0,
-    pageSize: 3,
+    pageSize: 5,
   },
   photos: {
     scroll: 0,

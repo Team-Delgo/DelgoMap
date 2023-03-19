@@ -22,7 +22,6 @@ import { postType } from '../../common/types/post';
 function CertificationPostsPage() {
   const firstCert = (useLocation().state.cert as any) || null;
   const pageFrom = (useLocation().state.from as any) || 'home';
-  console.log(pageFrom);
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const { scroll, pageSize } = useSelector(
@@ -42,14 +41,18 @@ function CertificationPostsPage() {
   } = useInfiniteQuery(
     GET_ALL_CERTIFICATION_DATA_LIST,
     ({ pageParam = 0 }) =>
-      getCertificationPostAll(pageParam, user.id, pageSize, dispatch),
+      getCertificationPostAll(
+        pageParam,
+        user.id,
+        pageSize,
+        dispatch,
+        firstCert?.certificationId === undefined ? '' : firstCert?.certificationId,
+      ),
     {
       getNextPageParam: (lastPage: any) =>
         !lastPage?.last ? lastPage?.nextPage : undefined,
     },
   );
-
-  console.log('data',data)
 
   useEffect(() => {
     mutation.mutate({
@@ -91,6 +94,13 @@ function CertificationPostsPage() {
         <img src={PrevArrow} alt="back" aria-hidden="true" onClick={moveToHomePage} />
         <div className="certificationPostsPage-header-text">동네 강아지</div>
       </div>
+      {pageFrom !== 'home' ? (
+        <CertificationPost
+          post={firstCert}
+          certificationPostsFetch={certificationPostsFetch}
+          pageSize={pageSizeCount}
+        />
+      ) : null}
       {data?.pages?.map((page) => (
         <>
           {page?.content?.map((post: postType) => (
