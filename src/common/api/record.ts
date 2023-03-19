@@ -69,4 +69,34 @@ function getPhotoCount(userId: number, success: (data: AxiosResponse) => void, d
     });
 }
 
-export { getMapData, sendEmail, getCalendarData, getPhotoData, getPhotoCount };
+async function getRecordCertificationDate(
+  userId: number,
+  date: string,
+  success : (date:AxiosResponse)=>void
+) {
+  axiosInstance
+    .get(`/certification/date?userId=${userId}&date=${date}`)
+    .then((data) => {
+      success(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+async function getRecordCertificationId(
+  userId: number,
+  certId: number,
+  success : (date:AxiosResponse)=>void
+) {
+  axiosInstance
+    .get(`/certification?userId=${userId}&certificationId=${certId}`)
+    .then((data) => {
+      success(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export { getMapData, getRecordCertificationDate, getRecordCertificationId ,sendEmail, getCalendarData, getPhotoData, getPhotoCount };

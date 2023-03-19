@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
+import {
+  useAnalyticsLogEvent,
+  useAnalyticsCustomLogEvent,
+} from '@react-query-firebase/analytics';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useOnclickOutside from 'react-cool-onclickoutside';
 import Sheet from 'react-modal-sheet';
@@ -24,7 +27,9 @@ function Photo() {
   const navigate = useNavigate();
   const certEvent = useAnalyticsCustomLogEvent(analytics, 'album_cert');
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
-  const { pageSize, scroll } = useSelector((state: RootState) => state.persist.scroll.photos);
+  const { pageSize, scroll } = useSelector(
+    (state: RootState) => state.persist.scroll.photos,
+  );
   const ref = useOnclickOutside(() => {
     setButtonIsClicked(false);
   });
@@ -70,7 +75,7 @@ function Photo() {
 
   useEffect(() => {
     if (isFetching && !isLast) {
-      console.log("here");
+      console.log('here');
       getPhotoDataList();
     } else if (isLast) setFetching(true);
   }, [isFetching]);
@@ -155,16 +160,23 @@ function Photo() {
     setIsFetched(true);
   };
 
-  const navigateToOthers = (cert:Cert) => {
-    navigate(POSTS_PATH, {state:{cert, from:'photo'}});
-  }
+  const navigateToOthers = (cert: Cert) => {
+    navigate(POSTS_PATH, { state: { cert, from: 'photo' } });
+  };
 
-  const noRecordContext = useMemo(
-    () =>{
-      const imgs = otherDogsCerts.map((o)=>{
-        return <img src={o.photoUrl} alt="others" onClick={()=>navigateToOthers(o)} aria-hidden/>
-      });
-      return isFetched && (
+  const noRecordContext = useMemo(() => {
+    const imgs = otherDogsCerts.map((o) => {
+      return (
+        <img
+          src={o.photoUrl}
+          alt="others"
+          onClick={() => navigateToOthers(o)}
+          aria-hidden
+        />
+      );
+    });
+    return (
+      isFetched && (
         <div className="photo-nocert">
           <h4>기록이 없어요</h4>
           <span className="photo-nocert-guide">
@@ -183,16 +195,27 @@ function Photo() {
           </div>
           <div className="photo-others-photo">{imgs}</div>
         </div>
-      )},
-    [photos, otherDogsCerts],
-  );
+      )
+    );
+  }, [photos, otherDogsCerts]);
   const photoContext = useMemo(
     () =>
       photos.map((photo) => {
         const photoClickHandler = () => {
-          dispatch(scrollActions.photosScroll({ scroll: window.scrollY, pageSize: page }));
+          dispatch(
+            scrollActions.photosScroll({ scroll: window.scrollY, pageSize: page }),
+          );
           certEvent.mutate();
-          navigate('/certs', { state: { certifications: [photo], pageFrom: RECORD_PATH.PHOTO } });
+          navigate('/certs', {
+            state: {
+              info: {
+                certId: photo.certificationId,
+                userId,
+                date: photo.registDt,
+              },
+              from: RECORD_PATH.PHOTO,
+            },
+          });
         };
 
         return (
@@ -231,7 +254,9 @@ function Photo() {
         </div>
       </div>
 
-      <div className="photo-wrapper">{photos.length > 0 ? photoContext : noRecordContext}</div>
+      <div className="photo-wrapper">
+        {photos.length > 0 ? photoContext : noRecordContext}
+      </div>
       <Sheet
         className="confirm-bottom-sheet-container"
         isOpen={buttonIsClicked}
@@ -257,7 +282,9 @@ function Photo() {
               </div>
               <div className="photo-sort-option-devider" />
               <div
-                className={classNames('photo-sort-option-item', { selected: !sortOption })}
+                className={classNames('photo-sort-option-item', {
+                  selected: !sortOption,
+                })}
                 aria-hidden="true"
                 onClick={() => {
                   setSortOption(false);

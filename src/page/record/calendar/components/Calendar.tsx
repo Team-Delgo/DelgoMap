@@ -132,7 +132,18 @@ function Calender() {
               ? () => {
                   certEvent.mutate();
                   dispatch(scrollActions.calendarScroll({ scroll: window.scrollY }));
-                  navigate('/certs', { state: { certifications: certification, pageFrom: RECORD_PATH.CALENDAR } });
+                  console.log(id);
+                  navigate('/certs', {
+                    state: {
+                      info: {
+                        certId: 0,
+                        userId,
+                        date:id
+                      },
+                      from: RECORD_PATH.CALENDAR,
+                    },
+                  });
+                  // tnavigae('/certs', { state: { certifications: certification, pageFrom: RECORD_PATH.CALENDAR } });
                 }
               : undefined
           }
