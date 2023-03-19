@@ -24,7 +24,7 @@ $color-orange: #ffab6f;
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 31px;
+    top: 8px;
     left: 24px;
     img{
       width: 22px;
@@ -37,7 +37,9 @@ $color-orange: #ffab6f;
   }
   &-header {
     @include typosettings(20px, #3f3f3f);
-    margin-top: 30px;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 8px;
   }
   &-description {
     @include typosettings(14px, $color-light-grey);

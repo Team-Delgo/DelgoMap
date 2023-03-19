@@ -13,14 +13,16 @@ import CertificationPost from '../../components/CertificationPost';
 import Loading from '../../common/utils/Loading';
 import PrevArrow from '../../common/icons/prev-arrow-black.svg';
 import { analytics } from '../../index';
-import { ROOT_PATH } from '../../common/constants/path.const';
+import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import { scrollActions } from '../../redux/slice/scrollSlice';
 import { GET_ALL_CERTIFICATION_DATA_LIST } from '../../common/constants/queryKey.const';
 import { postType } from '../../common/types/post';
 
 
 function CertificationPostsPage() {
-  const pageFrom = (useLocation().state as any) || 'home';
+  const firstCert = (useLocation().state.cert as any);
+  const pageFrom = (useLocation().state.from as any) || 'home';
+  console.log(firstCert);
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const { scroll, pageSize } = useSelector(
@@ -74,7 +76,9 @@ function CertificationPostsPage() {
 
   const moveToHomePage = useCallback(() => {
     dispatch(scrollActions.scrollInit());
-    navigate(ROOT_PATH);
+    if(pageFrom === 'home')
+      navigate(ROOT_PATH);
+    else navigate(RECORD_PATH.PHOTO);
   }, []);
 
   if (isLoading) {
