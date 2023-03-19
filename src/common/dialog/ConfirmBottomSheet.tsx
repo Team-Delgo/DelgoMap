@@ -3,7 +3,7 @@ import Sheet, { SheetRef } from 'react-modal-sheet';
 import './ConfirmBottomSheet.scss';
 
 const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
-const sheetSnapPoints = [300,300,100,0]
+const sheetSnapPoints = [250, 250, 250, 250];
 
 interface confirmBottomSheetType {
   text: string;

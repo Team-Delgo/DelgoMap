@@ -8,7 +8,7 @@ import './AchievementBottomSheet.scss';
 import { achievementType } from '../types/achievement';
 
 const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
-const sheetSnapPoints = [270, 270, 270, 270];
+const sheetSnapPoints = [250, 250, 250, 250];
 
 interface achievementBottomSheetType {
   text: string;
