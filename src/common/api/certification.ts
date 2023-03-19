@@ -78,10 +78,11 @@ async function getCertificationPostAll(
   userId: number,
   pageSize: number,
   dispatch: any,
+  certificationId?: number,
 ) {
   try {
     const res = await axiosInstance.get(
-      `/certification/all?currentPage=${pageParam}&pageSize=${pageSize}&userId=${userId}`,
+      `/certification/all?currentPage=${pageParam}&pageSize=${pageSize}&userId=${userId}&certificationId=${certificationId}`,
     );
     const { content, last } = res.data.data;
     return { content, nextPage: pageParam + 1, last };
