@@ -16,6 +16,7 @@ import { analytics } from '../../../../index';
 function Calender() {
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const scroll = useSelector((state: RootState) => state.persist.scroll.calendar.scroll);
+  const userSignDate = useSelector((state: RootState) => state.persist.user.user.registDt);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(scroll);
@@ -146,14 +147,13 @@ function Calender() {
     return { datesElement, currentYear, currentMonth };
   };
 
-  const tempUserSignDate = '2022-05-01';
 
   const getMonthDiff = () => {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
 
-    const startYear = new Date(tempUserSignDate).getFullYear();
-    const startMonth = new Date(tempUserSignDate).getMonth();
+    const startYear = new Date(userSignDate).getFullYear();
+    const startMonth = new Date(userSignDate).getMonth();
 
     return (currentYear - startYear) * 12 + (currentMonth - startMonth);
   };

@@ -27,6 +27,7 @@ import {
   BreedType,
   Id,
 } from './petInfoType';
+import BallLoading from '../../../../common/utils/BallLoading';
 
 function PetInfo() {
   const appleCode = useSelector((state: RootState) => state.persist.user.appleCode);
@@ -37,6 +38,7 @@ function PetInfo() {
   const { email, password, nickname, phone, isSocial, geoCode, pGeoCode, socialId } =
     state;
   const [image, setImage] = useState<any>();
+  const [isLoading, setIsLoading] = useState(false);
   const [sendingImage, setSendingImage] = useState<any>([]);
   const birthRef = useRef<HTMLInputElement>(null);
   const [enteredInput, setEnteredInput] = useState<Input>({
@@ -141,6 +143,7 @@ function PetInfo() {
 
   const submitHandler = async () => {
     signUpCompleteEvent.mutate();
+    setIsLoading(true);
     const formData = await handlingDataForm(sendingImage);
     let userId = 0;
     if (isSocial) {
@@ -201,8 +204,10 @@ function PetInfo() {
             if (device === 'mobile') {
               sendFcmTokenHandler(data.user.userId);
             }
+            setIsLoading(false);
             navigation(SIGN_UP_PATH.COMPLETE, { state: { name: enteredInput.name } });
           } else {
+            setIsLoading(false);
             console.log(codeMsg);
           }
         },
@@ -266,8 +271,10 @@ function PetInfo() {
             if (device === 'mobile') {
               sendFcmTokenHandler(data.user.userId);
             }
+            setIsLoading(false);
             navigation(SIGN_UP_PATH.COMPLETE, { state: { name: enteredInput.name } });
           } else {
+            setIsLoading(false);
             console.log(codeMsg);
           }
         },
@@ -362,6 +369,7 @@ function PetInfo() {
     <div>
       {!typeModalActive && (
         <div className="login petinfo">
+          {isLoading && <BallLoading/>}
           <div
             aria-hidden="true"
             className="login-back"
