@@ -38,7 +38,7 @@
       font-size: 14px;
       color: #8a8a8a;
       text-align: center;
-      font-weight: 500;
+      font-weight: 400;
     }
     &-line{
       width: 100vw;
@@ -77,13 +77,14 @@
     position: absolute;
     &-item {
       padding: 10px;
+      font-size: 15px;
       margin-left: 8vw;
       color: black;
       display: flex;
       flex-direction: column;
       span{
         color: #8a8a8a;
-        font-size: .5rem;
+        font-size: 12px;
         font-weight: 400;
       }
     }

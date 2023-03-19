@@ -1,34 +1,43 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AxiosResponse } from 'axios';
 import { Cert } from '../../common/types/map';
 import RecordCertification from './RecordCertification';
 import Back from '../../common/icons/prev-arrow-black.svg';
 import './RecordCertificationPage.scss';
 import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import Loading from '../../common/utils/Loading';
-
-// export interface Certification {
-//   address: string;
-//   cerificationId: number;
-//   description: string;
-//   photoUrl: string;
-//   placeName: string;
-//   categoryCode: string;
-// }
+import { getRecordCertificationDate, getRecordCertificationId } from '../../common/api/record';
 
 interface LocationState {
-  certifications: Cert[];
-  pageFrom: string;
+  certId: number;
+  userId: number;
+  date: string;
 }
 
 function RecordCertificationPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const pageFrom = useLocation().state.from as string;
+  const certInfo = useLocation().state.info as LocationState;
+  console.log(certInfo);
+  const { certId, date, userId } = certInfo;
+  const [certifications, setCertifications] = useState<Cert[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const locationState = useLocation().state as LocationState;
-  const { certifications, pageFrom } = locationState;
+  // const { certifications, pageFrom } = locationState;
 
   useEffect(() => {
+    console.log(pageFrom);
+    if (pageFrom === RECORD_PATH.PHOTO) {
+      getRecordCertificationId(userId, certId, (response: AxiosResponse) => {
+        console.log(response);
+        setCertifications(response.data.data);
+      });
+    }else if(pageFrom === RECORD_PATH.CALENDAR){
+      getRecordCertificationDate(userId, date, (response:AxiosResponse)=>{
+        setCertifications(response.data.data);
+      })
+    }
     scrollRef.current?.scrollIntoView({ block: 'start' });
     setTimeout(() => {
       setLoading(false);
@@ -39,9 +48,9 @@ function RecordCertificationPage() {
     return <RecordCertification certification={e} />;
   });
 
-  let headerFrom:string;
-  if(pageFrom === RECORD_PATH.CALENDAR) headerFrom = 'calendar';
-  else if(pageFrom === ROOT_PATH) headerFrom = 'map';
+  let headerFrom: string;
+  if (pageFrom === RECORD_PATH.CALENDAR) headerFrom = 'calendar';
+  else if (pageFrom === ROOT_PATH) headerFrom = 'map';
   else headerFrom = 'photo';
 
   return (
@@ -56,10 +65,12 @@ function RecordCertificationPage() {
               alt="back"
               aria-hidden="true"
               onClick={() => {
-                navigate(pageFrom,{state:headerFrom});
+                navigate(pageFrom, { state: headerFrom });
               }}
             />
-            <div className="record-certs-header-date">{certifications[0].registDt.slice(0, 10)}</div>
+            <div className="record-certs-header-date">
+              {date.slice(0, 10)}
+            </div>
           </div>
           <div className="record-certs-content">{contents}</div>
         </>
