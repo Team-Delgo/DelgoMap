@@ -20,9 +20,9 @@ import { postType } from '../../common/types/post';
 
 
 function CertificationPostsPage() {
-  const firstCert = (useLocation().state.cert as any);
+  const firstCert = (useLocation().state.cert as any) || null;
   const pageFrom = (useLocation().state.from as any) || 'home';
-  console.log(firstCert);
+  console.log(pageFrom);
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const { scroll, pageSize } = useSelector(

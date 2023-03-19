@@ -270,7 +270,8 @@ function setOtherDogsMungple(
     const marker = new naver.maps.Marker(markerOptions);
     marker.addListener('click', () => {
       navigate(POSTS_PATH, {state: {
-        cert:data
+        cert:data,
+        from:'home',
       }});
     });
     return marker;
