@@ -25,7 +25,7 @@ function RecordCertificationPage() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   // const { certifications, pageFrom } = locationState;
-
+  console.log(1);
   useEffect(() => {
     console.log(pageFrom);
     if (pageFrom === RECORD_PATH.PHOTO) {
