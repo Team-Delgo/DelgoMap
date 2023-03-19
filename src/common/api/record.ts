@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { AnyAction, Dispatch } from 'redux';
 import axiosInstance from './interceptors';
+import { useErrorHandlers } from './useErrorHandlers';
 
 function getMapData(userId: number, success: (data: AxiosResponse) => void, dispatch: Dispatch<AnyAction>) {
   axiosInstance
@@ -9,7 +10,7 @@ function getMapData(userId: number, success: (data: AxiosResponse) => void, disp
       success(data);
     })
     .catch((error) => {
-      console.log(error);
+      useErrorHandlers(dispatch, error);
     });
 }
 
@@ -20,7 +21,7 @@ function getCalendarData(userId: number, success: (data: AxiosResponse) => void,
       success(data);
     })
     .catch((error) => {
-      console.log(error);
+      useErrorHandlers(dispatch, error);
     });
 }
 
@@ -33,7 +34,7 @@ function sendEmail(email: string, success: (data: AxiosResponse) => void, dispat
       success(data);
     })
     .catch((error) => {
-      console.log(error);
+      useErrorHandlers(dispatch, error);
     });
 }
 
@@ -54,7 +55,7 @@ function getPhotoData(
       success(data);
     })
     .catch((error) => {
-      console.log(error);
+      useErrorHandlers(dispatch, error);
     });
 }
 
@@ -65,7 +66,7 @@ function getPhotoCount(userId: number, success: (data: AxiosResponse) => void, d
       success(data);
     })
     .catch((error) => {
-      console.log(error);
+      useErrorHandlers(dispatch, error);
     });
 }
 
