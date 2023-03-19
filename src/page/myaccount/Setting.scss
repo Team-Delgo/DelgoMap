@@ -1,10 +1,11 @@
 .setting {
   height: 100vh;
+  overflow: hidden;
   background-color: white;
   &-header {
     text-align: center;
     position: relative;
-    margin-top: 40px;
+    margin-top: 8px;
     font-size: 18px;
     font-weight: 500;
     color: #3e382f;

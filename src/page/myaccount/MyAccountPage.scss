@@ -1,4 +1,6 @@
 .my-account-page {
+  height: 100vh;
+  overflow: hidden;
   &-back {
     position: absolute;
     left: 20px;
@@ -66,7 +68,7 @@
   &-body {
     background-color: #3f3f3f;
     padding-top: 37px;
-    height: 80vh;
+    height: 60vh;
     &-item {
       padding: 30px;
       display: flex;
