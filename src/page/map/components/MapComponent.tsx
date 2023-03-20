@@ -14,7 +14,6 @@ import Walk from '../../../common/icons/walk-map.svg';
 import WalkSmall from '../../../common/icons/walk-map-small.svg';
 import Kinder from '../../../common/icons/kinder-map.svg';
 import KinderSmall from '../../../common/icons/kinder-map-small.svg';
-
 import WalkCert from '../../../common/icons/walk-cert.svg';
 import CafeCert from '../../../common/icons/cafe-cert.svg';
 import EatCert from '../../../common/icons/eat-cert.svg';
@@ -143,8 +142,7 @@ function setCertOption(data: Cert, globarMap: naver.maps.Map | undefined) {
     icon: {
       content: [
         `<div class="pin2">`,
-        `<img src=${data.photoUrl} style="z-index:${
-          data.certificationId + 1
+        `<img src=${data.photoUrl} style="z-index:${data.certificationId + 1
         }" alt="pin"/>`,
         `</div>`,
       ].join(''),
@@ -204,8 +202,7 @@ function setCertMungpleMarker(
       icon: {
         content: [
           `<div class="pin${currentLocation.option.zoom} mungplepin ${data.categoryCode}" style="z-index:${data.certificationId}">`,
-          `<img src=${data.photoUrl} style="z-index:${
-            data.certificationId + 1
+          `<img src=${data.photoUrl} style="z-index:${data.certificationId + 1
           }" alt="pin"/>`,
           `</div>`,
         ].join(''),
@@ -269,10 +266,12 @@ function setOtherDogsMungple(
     };
     const marker = new naver.maps.Marker(markerOptions);
     marker.addListener('click', () => {
-      navigate(POSTS_PATH, {state: {
-        cert:data,
-        from:'home',
-      }});
+      navigate(POSTS_PATH, {
+        state: {
+          cert: data,
+          from: 'home',
+        }
+      });
     });
     return marker;
   });

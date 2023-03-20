@@ -15,7 +15,6 @@ import {
   setMarkerOptionBig,
   setMarkerOptionSmall,
   setMarkerOptionPrev,
-  setCertOption,
   setCertNormalMarker,
   setCertMungpleMarker,
   setOtherDogsMungple,
@@ -24,9 +23,7 @@ import SearchBar from './SearchBar';
 import LinkCopy from './LinkCopy';
 import Search from '../../../common/icons/search.svg';
 import Logo from '../../../common/icons/logo.svg';
-import Regist from './Regist';
 import { mapAction } from '../../../redux/slice/mapSlice';
-import Feedback from './Feedback';
 import DetailPage from '../../../page/DetailPage';
 import FooterNavigation from '../../../components/FooterNavigation';
 import CertToggle from './CertToggle';
@@ -35,7 +32,6 @@ import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from '../../../common/constants/path.co
 import { RootState } from '../../../redux/store';
 import AlertConfirm from '../../../common/dialog/AlertConfirm';
 import CertCard from './CertCard';
-import BathCertPin from '../../../common/icons/bath-cert.svg';
 
 interface MakerItem {
   id: number;
@@ -62,16 +58,12 @@ function Map() {
   const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<naver.maps.Marker[]>(
     [],
   );
-  const [otherCertMarkerList ,setOtherCertMarkerList] = useState<naver.maps.Marker[]>([]);
   const [otherCertMungpleMarkerList, setOtherCertMungpleMarkerList] = useState<naver.maps.Marker[]>([]);
   const [certMarkerList, setCertMarkerList] = useState<naver.maps.Marker[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [detailUrl, setDetailUrl] = useState('');
   const [linkId, setLinkId] = useState(NaN);
   const [isCertVisible, setIsCertVisible] = useState(toggleDefault);
-  const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [registOpen, setIsRegistOpen] = useState(false);
-  const viewCount = useSelector((state: any) => state.persist.viewCount);
   const initMapCenter = useSelector((state: RootState) => state.map);
   const [currentLocation, setCurrentLocation] = useState({
     lat: !initMapCenter.lat ? 37.5057018 : initMapCenter.lat,
@@ -154,33 +146,13 @@ function Map() {
     };
   }, []);
 
-  useEffect(() => {
-    if (viewCount === 2) {
-      setIsRegistOpen(true);
-    }
-  }, [viewCount]);
-
-  const feedbackOpenHandler = useCallback(() => {
-    setFeedbackOpen(true);
-  }, []);
-
-  const feedbackCloseHandler = useCallback(() => {
-    setFeedbackOpen(false);
-  }, []);
-
-  const reigstCloseHandler = useCallback(() => {
-    dispatch(mapAction.setViewCount());
-    localStorage.setItem('isRegisted', 'true');
-    setIsRegistOpen(false);
-  }, []);
-
   const deleteMungpleList = () => {
     markerList.forEach((marker) => {
       marker.marker.setMap(null);
     });
   };
 
-  const deleteMarkers = (markers:naver.maps.Marker[]) => {
+  const deleteMarkers = (markers: naver.maps.Marker[]) => {
     markers.forEach((marker) => {
       marker.setMap(null);
     })
@@ -202,7 +174,7 @@ function Map() {
     } else if (!isCertVisible) {
       deleteMarkers(certMarkerList);
       deleteMarkers(mungpleCertMarkerList);
-      
+
       const tempOthers1 = setOtherDogsMungple(otherMungpleCertList, globarMap, navigate);
       setOtherCertMungpleMarkerList(tempOthers1);
       const tempList = mungpleList.map((data) => {
@@ -352,7 +324,6 @@ function Map() {
   const onClickCertToggle = () => {
     setIsCertVisible((prev) => !prev);
     dispatch(mapAction.setCertToggle(!isCertVisible));
-    console.log(isCertVisible);
   };
 
   const navigateMyPage = useCallback(() => {
@@ -362,13 +333,9 @@ function Map() {
     } else setIsAlertOpen(true);
   }, [globarMap]);
 
-  const sendLoginPage = () => {
-    navigate(SIGN_IN_PATH.MAIN);
-  };
+  const sendLoginPage = useCallback(() => navigate(SIGN_IN_PATH.MAIN), []);
 
-  const closeAlert = () => {
-    setIsAlertOpen(false);
-  };
+  const closeAlert = useCallback(() => setIsAlertOpen(false), []);
 
   return (
     <div className="map-wrapper">
@@ -424,12 +391,7 @@ function Map() {
         />
       )}
       <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
-      {/* {isCopy && <ToastMessage message="URL이 복사되었습니다." />} */}
       {selectedId.title.length > 0 && <LinkCopy />}
-      {registOpen && (
-        <Regist feedbackOpen={feedbackOpenHandler} close={reigstCloseHandler} />
-      )}
-      {feedbackOpen && <Feedback close={feedbackCloseHandler} />}
       {detailUrl.length > 0 && <DetailPage />}
       {selectedId.title.length === 0 && selectedCert.placeName.length === 0 && (
         <FooterNavigation setCenter={setCurrentMapPosition} />
