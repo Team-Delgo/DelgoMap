@@ -46,6 +46,7 @@ function CertificationPostsPage() {
         user.id,
         pageSize,
         dispatch,
+        firstCert?.certificationId === undefined ? '' : firstCert?.certificationId,
       ),
     {
       getNextPageParam: (lastPage: any) =>
