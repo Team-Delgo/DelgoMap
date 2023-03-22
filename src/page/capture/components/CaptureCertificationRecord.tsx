@@ -53,7 +53,7 @@ function CaptureCertificationRecord({
   }, [certificateErrorToastIsOpen]);
 
   useEffect(() => {
-    console.log('postCertificationIsLoading',postCertificationIsLoading)
+    console.log('postCertificationIsLoading', postCertificationIsLoading)
   }, [postCertificationIsLoading]);
 
   const uploadGalleryImgCertification = () => {
@@ -62,7 +62,7 @@ function CaptureCertificationRecord({
     }
     onPostCertificationLoading();
 
-    setTimeout(()=>{
+    setTimeout(() => {
       const data = {
         userId: user.id,
         categoryCode: 'CA9999',
@@ -72,14 +72,14 @@ function CaptureCertificationRecord({
         latitude,
         longitude,
       };
-  
+
       formData.append('photo', file);
-  
+
       const json = JSON.stringify(data);
       const blob = new Blob([json], { type: "application/json" });
-  
+
       formData.append('data', blob);
-  
+
       registerGalleryCertificationPost(
         formData,
         (response: AxiosResponse) => {
@@ -108,7 +108,7 @@ function CaptureCertificationRecord({
         },
         dispatch,
       );
-    },1000)
+    }, 1000)
 
   };
 
@@ -167,10 +167,10 @@ function CaptureCertificationRecord({
                   className="review-content"
                   placeholder="남기고 싶은 기록을 작성해주세요"
                   onChange={onChangeCertificationPostContent}
-                  maxLength={200}
+                  maxLength={199}
                 />
                 <div className="review-content-length">
-                  {certificationPostContent.length}/1000
+                  {certificationPostContent.length}/200
                 </div>
               </body>
               <footer>
