@@ -64,12 +64,12 @@ function CertificationMap() {
     navigate(CAMERA_PATH.CERTIFICATION);
   };
 
-  const locationCard = <div className='location-card'>
+  const locationCard = <div className='location-card' aria-hidden onClick={selectManualPlace}>
     <div className='location-card-left'>
       <h4>{currentPlaceName}</h4>
       <p>{address}</p>
     </div>
-    <div className='location-card-right' aria-hidden="true" onClick={selectManualPlace}>여기로 기록<img src={RightArrow} alt="next"/></div>
+    <div className='location-card-right'>여기로 기록<img src={RightArrow} alt="next"/></div>
   </div>
 
 
