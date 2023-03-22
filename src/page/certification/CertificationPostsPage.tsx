@@ -94,7 +94,7 @@ function CertificationPostsPage() {
         <img src={PrevArrow} alt="back" aria-hidden="true" onClick={moveToHomePage} />
         <div className="certificationPostsPage-header-text">동네 강아지</div>
       </div>
-      {pageFrom !== 'home' ? (
+      {pageFrom === 'photo' ? (
         <CertificationPost
           post={firstCert}
           certificationPostsFetch={certificationPostsFetch}

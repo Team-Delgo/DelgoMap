@@ -164,6 +164,10 @@ function Photo() {
     navigate(POSTS_PATH, { state: { cert, from: 'photo' } });
   };
 
+  const navigateNotSelect = () => {
+    navigate(POSTS_PATH, { state: { cert: null, from: 'photo-not' } });
+  };
+
   const noRecordContext = useMemo(() => {
     const imgs = otherDogsCerts.map((o) => {
       return (
@@ -189,7 +193,7 @@ function Photo() {
           <div className="photo-others-divider" />
           <div className="photo-others-header">
             <h5>다른 강아지들은 뭐 할까?</h5>
-            <span className="photo-others-more" aria-hidden>
+            <span className="photo-others-more" aria-hidden onClick={navigateNotSelect}>
               더보기
             </span>
           </div>
