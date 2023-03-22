@@ -30,6 +30,8 @@ function Calender() {
     return currentYear;
   };
 
+  const tempUserSignDate = '2022-05-01';
+
   useEffect(() => {
     getCalendarData(
       userId,
@@ -163,8 +165,10 @@ function Calender() {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
 
-    const startYear = new Date(userSignDate).getFullYear();
-    const startMonth = new Date(userSignDate).getMonth();
+    const startYear = new Date(tempUserSignDate).getFullYear();
+    const startMonth = new Date(tempUserSignDate).getMonth();
+    // const startYear = new Date(userSignDate).getFullYear();
+    // const startMonth = new Date(userSignDate).getMonth();
 
     return (currentYear - startYear) * 12 + (currentMonth - startMonth);
   };
