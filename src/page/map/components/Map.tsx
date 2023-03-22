@@ -76,6 +76,8 @@ function Map() {
   let map: naver.maps.Map;
   const routerLocation = useLocation();
 
+  
+
   const clearSelectedId = useCallback(() => {
     setSelectedId((prev: any) => {
       return {
@@ -171,6 +173,7 @@ function Map() {
         setSelectedCert,
       );
       setMungpleCertMarkerList(tempList2);
+      
     } else if (!isCertVisible) {
       deleteMarkers(certMarkerList);
       deleteMarkers(mungpleCertMarkerList);
@@ -390,7 +393,7 @@ function Map() {
           setCenter={setCurrentMapPosition}
         />
       )}
-      <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
+      {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && <CertToggle onClick={onClickCertToggle} state={isCertVisible} />}
       {selectedId.title.length > 0 && <LinkCopy />}
       {detailUrl.length > 0 && <DetailPage />}
       {selectedId.title.length === 0 && selectedCert.placeName.length === 0 && (

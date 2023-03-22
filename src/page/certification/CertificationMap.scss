@@ -11,13 +11,16 @@
 
 .cert-map{
   &-header{
-    margin-top: 10px;
+    margin-top: 8px;
     width: 100vw;
     position: absolute;
     z-index: 10;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    h4{
+      margin: 0;
+    }
     &-back{
       margin-left: 22px;
     }
