@@ -25,10 +25,9 @@ function RecordCertificationPage() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   // const { certifications, pageFrom } = locationState;
-  console.log(1);
   useEffect(() => {
     console.log(pageFrom);
-    if (pageFrom === RECORD_PATH.PHOTO) {
+    if (pageFrom === RECORD_PATH.PHOTO || pageFrom === ROOT_PATH) {
       getRecordCertificationId(userId, certId, (response: AxiosResponse) => {
         console.log(response);
         setCertifications(response.data.data);

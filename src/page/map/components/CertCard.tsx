@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import './PlaceCard.scss';
 import BathSmall from '../../../common/icons/bath-map-small.svg';
 import CafeSmall from '../../../common/icons/cafe-map-small.svg';
@@ -10,6 +11,7 @@ import EatSmall from '../../../common/icons/eat-map-small.svg';
 import EtcSmall from '../../../common/icons/etc-small.svg';
 import { Cert } from '../../../common/types/map';
 import { RECORD_PATH, ROOT_PATH } from '../../../common/constants/path.const';
+import { RootState } from '../../../redux/store';
 
 function CertCard(props: {
   img: string;
@@ -21,7 +23,7 @@ function CertCard(props: {
   setCenter: ()=>void;
 }) {
   const { img, title, description, registDt, categoryCode,cert, setCenter } = props;
-  console.log(cert);
+  const userId = useSelector((state:RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
   const descriptionText = description.length > 50 ? `${description.substring(0, 50)}...` : description;
   let icon;
@@ -46,7 +48,16 @@ function CertCard(props: {
       aria-hidden="true"
       onClick={() => {
         setCenter();
-        navigate(RECORD_PATH.CERT, { state: {certifications:[cert], pageFrom:ROOT_PATH} });
+        navigate(RECORD_PATH.CERT, {
+          state: {
+            info: {
+              certId: cert.certificationId,
+              userId,
+              date: cert.registDt,
+            },
+            from: ROOT_PATH,
+          },
+        });
       }}
     >
       <img src={img} alt="cardimg" />
