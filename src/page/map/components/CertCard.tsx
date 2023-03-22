@@ -7,6 +7,7 @@ import BeautySmall from '../../../common/icons/beauty-map-small.svg';
 import WalkSmall from '../../../common/icons/walk-map-small.svg';
 import HospitalSmall from '../../../common/icons/hospital-map-small.svg';
 import EatSmall from '../../../common/icons/eat-map-small.svg';
+import EtcSmall from '../../../common/icons/etc-small.svg';
 import { Cert } from '../../../common/types/map';
 import { RECORD_PATH, ROOT_PATH } from '../../../common/constants/path.const';
 
@@ -25,17 +26,19 @@ function CertCard(props: {
   const descriptionText = description.length > 50 ? `${description.substring(0, 50)}...` : description;
   let icon;
   if (categoryCode === 'CA0001') {
-    icon = <img src={WalkSmall} alt="" />;
+    icon = <img src={WalkSmall} alt="walk" />;
   } else if (categoryCode === 'CA0002') {
-    icon = <img src={CafeSmall} alt="" />;
+    icon = <img src={CafeSmall} alt="cafe" />;
   } else if (categoryCode === 'CA0003') {
-    icon = <img src={EatSmall} alt="" />;
+    icon = <img src={EatSmall} alt="eat" />;
   } else if (categoryCode === 'CA0004') {
-    icon = <img src={BathSmall} alt="" />;
+    icon = <img src={BathSmall} alt="bath" />;
   } else if (categoryCode === 'CA0005') {
-    icon = <img src={BeautySmall} alt="" />;
+    icon = <img src={BeautySmall} alt="beauty" />;
+  } else if (categoryCode === 'CA0006'){
+    icon = <img src={HospitalSmall} alt="hospital" />;
   } else {
-    icon = <img src={HospitalSmall} alt="" />;
+    icon = <img src={EtcSmall} alt="etc" />;
   }
   return (
     <div
