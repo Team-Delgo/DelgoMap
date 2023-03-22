@@ -1,102 +1,107 @@
-@import "./CapturePage.scss";
+@import './CapturePage.scss';
 
 // .capture-certification-img{
 //     position: relative;
 //     z-index: -1;
 // }
-.review-container{
-    position: relative;
-    .review-place-name{
-        box-sizing : border-box;
-        display: block;
-        margin: auto;
-        padding: 0 20px;
-        margin-top: 20px;
-        font-size: 16px;
-        font-weight: bold;
-        width:100%;
-        height: 52px;
-        color: #232323;
-        background-color: #F2F2F2;
-        border: none;
-    }
-    .review-place-title{
-        color:#232323;
-        font-size: 16px;
-        font-weight: 500;
-    }
-    .review-place-info{
-        padding-bottom: 20px;
-        border-bottom: 1px solid #E5E5E5;
-        &-title{
-            color:#232323;
-            font-size: 16px;
-            font-weight: 500;
-        }        
-        &-address{
-            color:#8A8A8A;
-            font-size: 12px;
-            font-weight: 400; 
-        }
-    }
-    .review-place-address{
-        color:#8A8A8A;
-        font-size: 12px;
-        font-weight: 400;
-    }
-    .review-content{
-        box-sizing : border-box;
-        padding: 20px 0 0 20px;
-        margin-top: 20px;
-        font-size: 16px;
-        font-weight: bold;
-        width: 100%;
-        height: 222px;
-        color: black;
-        background-color: #F2F2F2;
-        border-radius: 5px;
-        border: none;
-        word-spacing: -5px;
-        &-length {
-            color: #828282;
-            position: absolute;
-            bottom: 12px;
-            right: 5%;
-        }
-    }
-    .review-content::placeholder{
-        color: #8A8A8A;
-    }
-}
-
-.writting-button{
-    width: 100%;
-    height: 56px;
-    background-color: #C4C4C4;
-    color:white;
-    font-weight: 500;
-    font-size: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
+.review-container {
+  position: relative;
+  .review-place-name {
+    box-sizing: border-box;
+    display: block;
+    margin: auto;
+    padding: 0 20px;
     margin-top: 20px;
-}
-
-.writting-button-active{
-    width: 100%;
-    height: 56px;
-    background-color: #3F3F3F;
-    color:white;
-    font-weight: 500;
     font-size: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
+    font-weight: bold;
+    width: 100%;
+    height: 52px;
+    color: #232323;
+    background-color: #f2f2f2;
+    border: none;
+  }
+  .review-place-title {
+    color: #232323;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .review-place-info {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    &-title {
+      color: #232323;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    &-address {
+      color: #8a8a8a;
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+  .review-place-address {
+    color: #8a8a8a;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .review-content {
+    box-sizing: border-box;
+    padding: 20px 0 0 20px;
     margin-top: 20px;
+    font-size: 16px;
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
+    width: 100%;
+    height: 222px;
+    color: black;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    border: none;
+    &::placeholder {
+      color: #8a8a8a;
+    }
+    &-length {
+      color: #8a8a8a;
+      font-weight: 400;
+      position: absolute;
+      bottom: 12px;
+      right: 5%;
+    }
+  }
+  .review-content::placeholder {
+    color: #8a8a8a;
+  }
 }
 
-textarea:focus, input:focus{
-    outline: none;
+.writting-button {
+  width: 100%;
+  height: 56px;
+  background-color: #c4c4c4;
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.writting-button-active {
+  width: 100%;
+  height: 56px;
+  background-color: #3f3f3f;
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
 }
