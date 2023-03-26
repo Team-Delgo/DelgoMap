@@ -168,7 +168,9 @@ function CaptureCertificationRecord({
                   placeholder="남기고 싶은 기록을 작성해주세요"
                   onChange={onChangeCertificationPostContent}
                   maxLength={199}
-                />
+                >
+                  {certificationPostContent}
+                  </textarea>
                 <div className="review-content-length">
                   {certificationPostContent.length}/200
                 </div>

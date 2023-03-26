@@ -149,12 +149,7 @@ function CommentsPage() {
     <>
       <div className="comments">
         <div className="comments-header">
-          <img
-            src={LeftArrow}
-            alt="back"
-            onClick={moveToPrevPage}
-            aria-hidden="true"
-          />
+          <img src={LeftArrow} alt="back" onClick={moveToPrevPage} aria-hidden="true" />
           <div className="comments-header-title">댓글</div>
         </div>
         <div className="comments-context">{context}</div>
@@ -162,17 +157,21 @@ function CommentsPage() {
           <img src={profile} alt="myprofile" />
           <textarea
             ref={textRef}
-            value={inputComment}
             onInput={handleResizeHeight}
-            // onAbort={handleResizeHeight}
             onChange={onChangeInputComment}
             placeholder="댓글 남기기..."
             className="comments-post-input"
-          />
+          >
+            {inputComment}
+          </textarea>
           <div
             aria-hidden="true"
             onClick={inputComment.length > 0 ? postCommentOnCert : undefined}
-            className={inputComment.length > 0 ? 'comments-post-button' : 'comments-post-button-disabled'}
+            className={
+              inputComment.length > 0
+                ? 'comments-post-button'
+                : 'comments-post-button-disabled'
+            }
           >
             완료
           </div>
@@ -187,7 +186,9 @@ function CommentsPage() {
         cancelButtonHandler={closeDeleteCommentBottomSheet}
         bottomSheetIsOpen={deleteCommentBottomSheetIsOpen}
       />
-      {deleteCommentSuccessToastIsOpen && <ToastPurpleMessage message="댓글이 삭제 되었습니다." />}
+      {deleteCommentSuccessToastIsOpen && (
+        <ToastPurpleMessage message="댓글이 삭제 되었습니다." />
+      )}
     </>
   );
 }
