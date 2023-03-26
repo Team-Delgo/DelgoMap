@@ -1,14 +1,22 @@
-body { 
+body {
   font-family: 'Spoqa Han Sans Neo';
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  input{
+
+  input {
     &:focus {
       outline: none;
       // outline: 1px solid blue;
     }
   }
-}
 
+  input,
+  textarea {
+    -moz-user-select: auto;
+    -webkit-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
+  }
+}
 
 
 @font-face {
