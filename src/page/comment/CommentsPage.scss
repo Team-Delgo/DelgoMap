@@ -86,7 +86,6 @@
       border: none;
       padding: 12px 0 0 10px;
       box-sizing: border-box;
-      word-spacing: -5px;
 
     }
     &-button{
@@ -101,4 +100,9 @@
       color:#8a8a8a
     }
   }
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
 }
