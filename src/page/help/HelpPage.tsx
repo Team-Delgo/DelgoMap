@@ -9,41 +9,43 @@ import './HelpPage.scss';
 
 function HelpPage() {
   const [page, setPage] = useState(1);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const scrollRef1 = useRef<HTMLDivElement | null>(null);
   const scrollRef2 = useRef<HTMLDivElement | null>(null);
   const scrollRef3 = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
-  console.log(page);
+  useEffect(() => {
+    scrollRef.current?.addEventListener('touchstart', (e: TouchEvent) => {
+      e.preventDefault();
+    });
+  }, []);
 
-  useEffect(()=>{
-    if(page===1){
-      if(scrollRef1.current){
-        console.log('end');
+  useEffect(() => {
+    if (page === 1) {
+      if (scrollRef1.current) {
         scrollRef1.current.scrollIntoView({
-          block:'start',
-          behavior:'smooth'
+          block: 'start',
+          behavior: 'smooth'
         })
       }
-    }else if(page===2){
-      if(scrollRef2.current){
-        console.log('end2');
+    } else if (page === 2) {
+      if (scrollRef2.current) {
         scrollRef2.current.scrollIntoView({
-          block:'start',
-          behavior:'smooth'
+          block: 'start',
+          behavior: 'smooth'
         })
       }
-    }else if(page===3){
-      if(scrollRef3.current){
-        console.log('end3');
+    } else if (page === 3) {
+      if (scrollRef3.current) {
         scrollRef3.current.scrollIntoView({
-          block:'start',
-          behavior:'smooth'
+          block: 'start',
+          behavior: 'smooth'
         })
       }
     }
-    
-  },[page]);
+
+  }, [page]);
 
   const buttonClickHandler = () => {
     if (page === 1 || page === 2) setPage(page + 1);
@@ -52,10 +54,15 @@ function HelpPage() {
       navigate(ROOT_PATH);
     }
   };
+
+  const barClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    setPage(+e.currentTarget.id);
+  };
+
   return (
     <div className="help">
       <div className="help-blur" />
-      <div className="help-content" >
+      <div className="help-content" ref={scrollRef}>
         <div className="help-content-item" ref={scrollRef1}>
           <div className="help-preview">
             <img src={Preview1} alt="preview" />
@@ -79,9 +86,9 @@ function HelpPage() {
         </div>
       </div>
       <div className="help-bar">
-        <div className={classNames('help-bar-item', { on: page === 1 })} />
-        <div className={classNames('help-bar-item', { on: page === 2 })} />
-        <div className={classNames('help-bar-item', { on: page === 3 })} />
+        <div aria-hidden className={classNames('help-bar-item', { on: page === 1 })} id="1" onClick={barClickHandler} />
+        <div aria-hidden className={classNames('help-bar-item', { on: page === 2 })} id="2" onClick={barClickHandler} />
+        <div aria-hidden className={classNames('help-bar-item', { on: page === 3 })} id="3" onClick={barClickHandler} />
       </div>
       <button
         type="button"
