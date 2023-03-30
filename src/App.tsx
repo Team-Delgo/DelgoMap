@@ -43,6 +43,7 @@ import CommentsPage from './page/comment/CommentsPage';
 import RecordCertificationPage from "./page/certification/RecordCertificationPage";
 import CertificationMap from "./page/certification/CertificationMap";
 import { deviceAction } from "./redux/slice/deviceSlice";
+import HelpPage from "./page/help/HelpPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -73,6 +74,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MapPage />} />
           <Route path="/:id" element={<MapPage />} />
+          <Route path="/help" element={<HelpPage/>} />
           <Route path="/detail" element={<DetailPage />} />
           <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
           <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
