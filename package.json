@@ -5,6 +5,7 @@
   "dependencies": {
     "@react-query-firebase/analytics": "^0.1.2-alpha.0",
     "@reduxjs/toolkit": "^1.9.1",
+    "@types/imagemin-webp": "^7.0.0",
     "axios": "^1.2.2",
     "browser-image-compression": "^2.0.0",
     "classnames": "^2.3.2",
