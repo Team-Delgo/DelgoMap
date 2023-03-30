@@ -277,6 +277,44 @@ function setOtherDogsMungple(
   });
 }
 
+function setOtherDogsNormal(
+  otherMungpleCertList: Cert[],
+  globarMap: naver.maps.Map | undefined,
+  navigate: NavigateFunction
+) {
+  return otherMungpleCertList.map((data) => {
+    const icon = NormalCert;
+    const markerOptions = {
+      position: new window.naver.maps.LatLng(
+        parseFloat(data.latitude),
+        parseFloat(data.longitude),
+      ),
+      map: globarMap!,
+      icon: {
+        content: [
+          `<div id=${data.mungpleId} class="mungple ${data.categoryCode} big" >`,
+          `<img src=${icon}  style="" alt="pin"/>`,
+          `<img src=${data.photoUrl} class="cert" alt="cert-image" />`,
+          `</div>`,
+        ].join(''),
+        size: new naver.maps.Size(53, 63),
+        origin: new naver.maps.Point(0, 0),
+        anchor: new naver.maps.Point(28, 63),
+      },
+    };
+    const marker = new naver.maps.Marker(markerOptions);
+    marker.addListener('click', () => {
+      navigate(POSTS_PATH, {
+        state: {
+          cert: data,
+          from: 'home',
+        }
+      });
+    });
+    return marker;
+  });
+}
+
 export {
   setMarkerOptionBig,
   setMarkerOptionSmall,
@@ -285,4 +323,5 @@ export {
   setCertNormalMarker,
   setCertMungpleMarker,
   setOtherDogsMungple,
+  setOtherDogsNormal
 };

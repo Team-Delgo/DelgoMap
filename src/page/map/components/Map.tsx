@@ -18,6 +18,7 @@ import {
   setCertNormalMarker,
   setCertMungpleMarker,
   setOtherDogsMungple,
+  setOtherDogsNormal,
 } from './MapComponent';
 import SearchBar from './SearchBar';
 import LinkCopy from './LinkCopy';
@@ -58,6 +59,7 @@ function Map() {
   const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<naver.maps.Marker[]>(
     [],
   );
+  const [otherCertNormalMarkerList, setOtherCertNormalMarkerList] = useState<naver.maps.Marker[]>([]);
   const [otherCertMungpleMarkerList, setOtherCertMungpleMarkerList] = useState<naver.maps.Marker[]>([]);
   const [certMarkerList, setCertMarkerList] = useState<naver.maps.Marker[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
@@ -76,7 +78,7 @@ function Map() {
   let map: naver.maps.Map;
   const routerLocation = useLocation();
 
-  
+
 
   const clearSelectedId = useCallback(() => {
     setSelectedId((prev: any) => {
@@ -122,6 +124,7 @@ function Map() {
         firebase_screen_class: 'MapPage',
       },
     });
+    if (!window.localStorage.getItem('visit')) navigate('/help');
     getMapPageData();
     if (!mapElement.current || !naver) return;
     const location = new window.naver.maps.LatLng(
@@ -164,6 +167,7 @@ function Map() {
     if (userId > 0 && isCertVisible) {
       deleteMungpleList();
       deleteMarkers(otherCertMungpleMarkerList);
+      deleteMarkers(otherCertNormalMarkerList);
       const tempList1 = setCertNormalMarker(normalCertList, globarMap, setSelectedCert);
       setCertMarkerList(tempList1);
       const tempList2 = setCertMungpleMarker(
@@ -173,13 +177,15 @@ function Map() {
         setSelectedCert,
       );
       setMungpleCertMarkerList(tempList2);
-      
+
     } else if (!isCertVisible) {
       deleteMarkers(certMarkerList);
       deleteMarkers(mungpleCertMarkerList);
 
       const tempOthers1 = setOtherDogsMungple(otherMungpleCertList, globarMap, navigate);
+      const tempOthers2 = setOtherDogsNormal(otherNormalCertList, globarMap, navigate);
       setOtherCertMungpleMarkerList(tempOthers1);
+      setOtherCertNormalMarkerList(tempOthers2);
       const tempList = mungpleList.map((data) => {
         let markerOptions: naver.maps.MarkerOptions;
         markerOptions = setMarkerOptionSmall(data.categoryCode, data, globarMap);
