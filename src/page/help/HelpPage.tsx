@@ -95,7 +95,7 @@ function HelpPage() {
         className="help-button"
         onClick={buttonClickHandler}
       >
-        계속
+        {page <= 2 ? '계속' : '시작하기'}
       </button>
     </div>
   );
