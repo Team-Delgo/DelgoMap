@@ -1,21 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   zoom: 0,
   lat: 0,
   lng: 0,
   selectedIcon: 0,
-  selectedArea: "송파",
-  link: "https://map.delgo.pet",
+  selectedArea: '송파',
+  link: 'https://www.delgo.pet',
   isCopy: false,
   viewCount: 0,
-  detailImgUrl: "",
-  currentPlaceName: "",
+  detailImgUrl: '',
+  currentPlaceName: '',
   certToggle: false,
 };
 
 export const mapSlice = createSlice({
-  name: "map",
+  name: 'map',
   initialState,
   reducers: {
     setCurrentPosition(state, action) {
@@ -30,27 +30,21 @@ export const mapSlice = createSlice({
       state.link = action.payload;
     },
     clearLink(state) {
-      state.link = "https://map.delgo.pet";
-    },
-    setIsCopy(state) {
-      state.isCopy = true;
-    },
-    setIsCopyFalse(state) {
-      state.isCopy = false;
+      state.link = 'https://map.delgo.pet';
     },
     setViewCount(state) {
       state.viewCount += 1;
     },
-    setDetailUrl(state, action){
+    setDetailUrl(state, action) {
       state.detailImgUrl = action.payload;
     },
-    setCurrentPlaceName(state, action){
+    setCurrentPlaceName(state, action) {
       state.currentPlaceName = action.payload;
     },
-    setCertToggle(state, action){
+    setCertToggle(state, action) {
       state.certToggle = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const mapAction = mapSlice.actions;
