@@ -6,6 +6,7 @@
 .whiteBox {
   z-index: 10000001;
   position: absolute;
+  top: 0;
   width: 100vw;
   height: 100px;
   background-color: white;
@@ -20,32 +21,32 @@
 }
 
 .map-logo {
-  position: absolute;
-  z-index: 10000001;
-  top: 28px;
-  left: 20px;
+  // position: absolute;
+  // z-index: 10000001;
+  // top: 28px;
+  // left: 20px;
 }
 .map-search {
-  position: absolute;
-  z-index: 10000001;
-  top: 28px;
-  right: 20px;
+  // position: absolute;
+  // z-index: 10000001;
+  // top: 28px;
+  // right: 20px;
 }
 
 .map-mypage {
-  position: absolute;
-  z-index: 10000001;
-  top: 28px;
-  right: 55px;
+  // position: absolute;
+  // z-index: 10000001;
+  // top: 28px;
+  // right: 55px;
 }
 
 .slogun {
-  position: absolute;
-  z-index: 10000001;
-  top: 60px;
-  left: 20px;
-  width: 160px;
-  height: 21px;
+  // position: absolute;
+  // z-index: 10000001;
+  // top: 60px;
+  // left: 20px;
+  // width: 160px;
+  // height: 21px;
   font-weight: 500;
   font-size: 14px;
 }
