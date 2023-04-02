@@ -2,10 +2,16 @@
   z-index: 5;
   overflow-y: hidden;
 }
+
 .magnifying-glass-img {
   position: absolute;
   right: 20px;
   top: 15px;
+}
+
+.bottom-sheet-container {
+  position: 'fixed';
+  bottom: 0;
 }
 
 .capture-img-record {
@@ -23,12 +29,14 @@
     flex-direction: column;
     justify-content: center;
     padding-left: 25px;
+
     &-label {
       color: #3f3f3f;
       font-size: 18px;
       font-weight: 700;
       // margin-bottom: 5px;
     }
+
     &-rechoice {
       color: #c4c4c4;
       font-size: 12px;
@@ -36,6 +44,7 @@
       padding-top: 4px;
     }
   }
+
   .writting-button {
     position: absolute;
     right: 1px;
@@ -101,10 +110,12 @@
     border: none;
     border-radius: 4px;
     color: black;
+
     &::placeholder {
       color: #8a8a8a;
     }
   }
+
   .review-place-wrapper {
     padding-top: 25px;
     display: flex;
@@ -133,18 +144,22 @@
       font-size: 12px;
       color: #8a8a8a;
     }
+
     .review-place-check {
       margin-right: 20px;
     }
+
     .review-place-map-choice {
       font-weight: 400;
       font-size: 12px;
       color: #474747;
       width: 90px;
+
       &-img {
         margin-top: 2px;
       }
     }
+
     &-second {
       display: flex;
     }
@@ -154,15 +169,18 @@
     padding-top: 25px;
     display: flex;
     justify-content: space-between;
+
     .review-place-map-choice {
       font-weight: 400;
       font-size: 12px;
       color: #474747;
       width: 90px;
+
       &-img {
         margin-top: 2px;
       }
     }
+
     &-second {
       display: flex;
     }
