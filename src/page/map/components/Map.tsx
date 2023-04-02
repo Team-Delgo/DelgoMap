@@ -59,12 +59,8 @@ function Map() {
   const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<naver.maps.Marker[]>(
     [],
   );
-  const [otherCertNormalMarkerList, setOtherCertNormalMarkerList] = useState<
-    naver.maps.Marker[]
-  >([]);
-  const [otherCertMungpleMarkerList, setOtherCertMungpleMarkerList] = useState<
-    naver.maps.Marker[]
-  >([]);
+  const [otherCertNormalMarkerList, setOtherCertNormalMarkerList] = useState<naver.maps.Marker[]>([]);
+  const [otherCertMungpleMarkerList, setOtherCertMungpleMarkerList] = useState<naver.maps.Marker[]>([]);
   const [certMarkerList, setCertMarkerList] = useState<naver.maps.Marker[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [detailUrl, setDetailUrl] = useState('');
@@ -81,6 +77,8 @@ function Map() {
   const mungpleClickEvent = useAnalyticsCustomLogEvent(analytics, 'map_mungple');
   let map: naver.maps.Map;
   const routerLocation = useLocation();
+
+
 
   const clearSelectedId = useCallback(() => {
     setSelectedId((prev: any) => {
@@ -139,6 +137,7 @@ function Map() {
       zoomControl: false,
       minZoom: 10,
       logoControl: false,
+
     };
 
     map = new naver.maps.Map(mapElement.current, mapOptions);
@@ -147,20 +146,9 @@ function Map() {
       clearSelectedId();
       setSelectedCert(certDefault);
     });
-
-    const tempDiv = document.createElement('div');
-    tempDiv.style.width="100px";
-    tempDiv.style.height="10px";
-    tempDiv.style.backgroundColor="yellow";
-    tempDiv.style.position="fixed";
-    tempDiv.style.zIndex="100000123";
-    tempDiv.style.top="10px";
-    document.body.after(tempDiv);
-
     setLinkId(parseInt(routerLocation.pathname.slice(1), 10));
     return () => {
       document.body.style.overflow = 'scroll';
-      tempDiv.remove();
     };
   }, []);
 
@@ -173,8 +161,8 @@ function Map() {
   const deleteMarkers = (markers: naver.maps.Marker[]) => {
     markers.forEach((marker) => {
       marker.setMap(null);
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     if (userId > 0 && isCertVisible) {
@@ -190,6 +178,7 @@ function Map() {
         setSelectedCert,
       );
       setMungpleCertMarkerList(tempList2);
+
     } else if (!isCertVisible) {
       deleteMarkers(certMarkerList);
       deleteMarkers(mungpleCertMarkerList);
@@ -368,25 +357,23 @@ function Map() {
           noButtonHandler={closeAlert}
         />
       )}
-      <div className="whiteBox">
-        <img className="map-logo" src={Logo} alt="logo" />
-        <img
-          className="map-search"
-          src={Search}
-          alt="search"
-          aria-hidden="true"
-          onClick={searchClickHander}
-        />
-        <img
-          className="map-mypage"
-          src={Human}
-          alt="mypage"
-          aria-hidden="true"
-          onClick={navigateMyPage}
-        />
-        <div className="slogun">강아지 델고 동네생활</div>
-      </div>
-
+      <div className="whiteBox" />
+      <img className="map-logo" src={Logo} alt="logo" />
+      <img
+        className="map-search"
+        src={Search}
+        alt="search"
+        aria-hidden="true"
+        onClick={searchClickHander}
+      />
+      <img
+        className="map-mypage"
+        src={Human}
+        alt="mypage"
+        aria-hidden="true"
+        onClick={navigateMyPage}
+      />
+      <div className="slogun">강아지 델고 동네생활</div>
       <div className="map" ref={mapElement} style={{ position: 'absolute' }} />
       {searchIsOpen && (
         <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />
@@ -413,9 +400,7 @@ function Map() {
           setCenter={setCurrentMapPosition}
         />
       )}
-      {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && (
-        <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
-      )}
+      {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && <CertToggle onClick={onClickCertToggle} state={isCertVisible} />}
       {selectedId.title.length > 0 && <LinkCopy />}
       {detailUrl.length > 0 && <DetailPage />}
       {selectedId.title.length === 0 && selectedCert.placeName.length === 0 && (
@@ -426,3 +411,5 @@ function Map() {
 }
 
 export default Map;
+
+

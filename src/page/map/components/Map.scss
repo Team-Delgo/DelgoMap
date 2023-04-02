@@ -9,44 +9,43 @@
   top: 0;
   width: 100vw;
   height: 100px;
-  background-color: white;
-  // background: linear-gradient(
-  //   to bottom,
-  //   rgba(255, 255, 255, 1) 10%,
-  //   rgba(255, 255, 255, 0.8) 40%,
-  //   rgba(255, 255, 255, 0.5),
-  //   rgba(255, 255, 255, 0.1),
-  //   transparent
-  // );
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 10%,
+    rgba(255, 255, 255, 0.8) 40%,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
 }
 
 .map-logo {
-  // position: absolute;
-  // z-index: 10000001;
-  // top: 28px;
-  // left: 20px;
+  position: absolute;
+  z-index: 10000001;
+  top: 28px;
+  left: 20px;
 }
 .map-search {
-  // position: absolute;
-  // z-index: 10000001;
-  // top: 28px;
-  // right: 20px;
+  position: absolute;
+  z-index: 10000001;
+  top: 28px;
+  right: 20px;
 }
 
 .map-mypage {
-  // position: absolute;
-  // z-index: 10000001;
-  // top: 28px;
-  // right: 55px;
+  position: absolute;
+  z-index: 10000001;
+  top: 28px;
+  right: 55px;
 }
 
 .slogun {
-  // position: absolute;
-  // z-index: 10000001;
-  // top: 60px;
-  // left: 20px;
-  // width: 160px;
-  // height: 21px;
+  position: absolute;
+  z-index: 10000001;
+  top: 60px;
+  left: 20px;
+  width: 160px;
+  height: 21px;
   font-weight: 500;
   font-size: 14px;
 }

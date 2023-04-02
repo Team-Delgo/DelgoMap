@@ -31,16 +31,14 @@ const app = initializeApp(firebaseConfig);
 const persistor = persistStore(store);
 window.Kakao.init('1fc2794c1008fd96115d7f57e7f68e04');
 
-const vconsole = new VConsole();
-
 export const analytics = getAnalytics(app);
 logEvent(analytics, "notification_received");
 
 root.render(
   <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 );
 
