@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import VConsole from "vconsole";
 import { useDispatch } from "react-redux";
 import "./App.scss";
 import { ACHIEVEMENT_PATH, APPLE_REDIRECT_HANDLE_PATH, CAMERA_PATH, CROP_PATH, KAKAO_REDIRECT_HANDLE_PATH, MY_ACCOUNT_PATH, NAVER_REDIRECT_HANDLE_PATH, POSTS_PATH, RECORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "./common/constants/path.const";
@@ -48,6 +49,9 @@ import HelpPage from "./page/help/HelpPage";
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
+
+  const vconsole = new VConsole();
+
   useEffect(() => {
     const pcDevice = 'win16|win32|win64|mac|macintel';
     if (navigator.platform) {

@@ -1,4 +1,5 @@
 import React from "react";
+import VConsole from "vconsole";
 import { initializeApp } from "firebase/app";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
@@ -26,6 +27,7 @@ const firebaseConfig = {
 
 
 const app = initializeApp(firebaseConfig);
+const vconsole = new VConsole();
 
 const persistor = persistStore(store);
 window.Kakao.init('1fc2794c1008fd96115d7f57e7f68e04');
