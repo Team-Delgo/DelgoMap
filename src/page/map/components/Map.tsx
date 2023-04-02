@@ -59,8 +59,12 @@ function Map() {
   const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<naver.maps.Marker[]>(
     [],
   );
-  const [otherCertNormalMarkerList, setOtherCertNormalMarkerList] = useState<naver.maps.Marker[]>([]);
-  const [otherCertMungpleMarkerList, setOtherCertMungpleMarkerList] = useState<naver.maps.Marker[]>([]);
+  const [otherCertNormalMarkerList, setOtherCertNormalMarkerList] = useState<
+    naver.maps.Marker[]
+  >([]);
+  const [otherCertMungpleMarkerList, setOtherCertMungpleMarkerList] = useState<
+    naver.maps.Marker[]
+  >([]);
   const [certMarkerList, setCertMarkerList] = useState<naver.maps.Marker[]>([]);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [detailUrl, setDetailUrl] = useState('');
@@ -77,8 +81,6 @@ function Map() {
   const mungpleClickEvent = useAnalyticsCustomLogEvent(analytics, 'map_mungple');
   let map: naver.maps.Map;
   const routerLocation = useLocation();
-
-
 
   const clearSelectedId = useCallback(() => {
     setSelectedId((prev: any) => {
@@ -160,8 +162,8 @@ function Map() {
   const deleteMarkers = (markers: naver.maps.Marker[]) => {
     markers.forEach((marker) => {
       marker.setMap(null);
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (userId > 0 && isCertVisible) {
@@ -177,7 +179,6 @@ function Map() {
         setSelectedCert,
       );
       setMungpleCertMarkerList(tempList2);
-
     } else if (!isCertVisible) {
       deleteMarkers(certMarkerList);
       deleteMarkers(mungpleCertMarkerList);
@@ -356,23 +357,25 @@ function Map() {
           noButtonHandler={closeAlert}
         />
       )}
-      {/* <div className="whiteBox" /> */}
-      <img className="map-logo" src={Logo} alt="logo" />
-      <img
-        className="map-search"
-        src={Search}
-        alt="search"
-        aria-hidden="true"
-        onClick={searchClickHander}
-      />
-      <img
-        className="map-mypage"
-        src={Human}
-        alt="mypage"
-        aria-hidden="true"
-        onClick={navigateMyPage}
-      />
-      <div className="slogun">강아지 델고 동네생활</div>
+      <div className="whiteBox">
+        <img className="map-logo" src={Logo} alt="logo" />
+        <img
+          className="map-search"
+          src={Search}
+          alt="search"
+          aria-hidden="true"
+          onClick={searchClickHander}
+        />
+        <img
+          className="map-mypage"
+          src={Human}
+          alt="mypage"
+          aria-hidden="true"
+          onClick={navigateMyPage}
+        />
+        <div className="slogun">강아지 델고 동네생활</div>
+      </div>
+
       <div className="map" ref={mapElement} style={{ position: 'absolute' }} />
       {searchIsOpen && (
         <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />
@@ -399,7 +402,9 @@ function Map() {
           setCenter={setCurrentMapPosition}
         />
       )}
-      {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && <CertToggle onClick={onClickCertToggle} state={isCertVisible} />}
+      {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && (
+        <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
+      )}
       {selectedId.title.length > 0 && <LinkCopy />}
       {detailUrl.length > 0 && <DetailPage />}
       {selectedId.title.length === 0 && selectedCert.placeName.length === 0 && (
@@ -410,5 +415,3 @@ function Map() {
 }
 
 export default Map;
-
-
