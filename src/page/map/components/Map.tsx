@@ -356,7 +356,7 @@ function Map() {
           noButtonHandler={closeAlert}
         />
       )}
-      <div className="whiteBox" />
+      {/* <div className="whiteBox" /> */}
       <img className="map-logo" src={Logo} alt="logo" />
       <img
         className="map-search"
