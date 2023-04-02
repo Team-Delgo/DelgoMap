@@ -152,8 +152,8 @@ function Map() {
     tempDiv.style.width="100px";
     tempDiv.style.height="10px";
     tempDiv.style.backgroundColor="yellow";
-    tempDiv.style.position="absolute";
-    tempDiv.style.zIndex="100000";
+    tempDiv.style.position="fixed";
+    tempDiv.style.zIndex="100000123";
     tempDiv.style.top="10px";
     document.body.after(tempDiv);
 
