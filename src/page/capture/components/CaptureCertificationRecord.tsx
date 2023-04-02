@@ -23,7 +23,7 @@ interface CaptureCertificationRecordPropsType {
   offPostCertificationLoading: () => void;
 }
 
-const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
+const sheetStyle = { borderRadius: '18px 18px 0px 0px'};
 
 function CaptureCertificationRecord({
   postCertificationIsLoading,
@@ -51,10 +51,6 @@ function CaptureCertificationRecord({
       }, 2000);
     }
   }, [certificateErrorToastIsOpen]);
-
-  useEffect(() => {
-    console.log('postCertificationIsLoading', postCertificationIsLoading)
-  }, [postCertificationIsLoading]);
 
   const uploadGalleryImgCertification = () => {
     if (postCertificationIsLoading) {
@@ -139,59 +135,66 @@ function CaptureCertificationRecord({
     });
   };
 
+  const screenUp = ()=>{
+    console.log('화면올리기')
+  }
+
   return (
     <>
       {postCertificationIsLoading && <BallLoading />}
-      <Sheet
-        isOpen={bottomSheetIsOpen}
-        onClose={closeBottomSheet}
-        snapPoints={[
-          window.screen.height - window.screen.width + 10,
-          window.screen.height - window.screen.width + 10,
-          window.screen.height - window.screen.width + 10,
-          window.screen.height - window.screen.width + 10,
-        ]}
-        // ref={ref}
-        disableDrag
-        className="modal-bottom-sheet"
-      >
-        <Sheet.Container style={sheetStyle}>
-          <Sheet.Content>
-            <main className="capture-img-record">
-              <body className="review-container">
-                <div className="review-place-info">
-                  <div className="review-place-info-title">{title}</div>
-                  <div className="review-place-info-address">{address}</div>
-                </div>
-                <textarea
-                  className="review-content"
-                  placeholder="남기고 싶은 기록을 작성해주세요"
-                  onChange={onChangeCertificationPostContent}
-                  maxLength={199}
-                >
-                  {certificationPostContent}
-                  </textarea>
-                <div className="review-content-length">
-                  {certificationPostContent.length}/200
-                </div>
-              </body>
-              <footer>
-                {certificationPostContent.length > 0 ? (
-                  <div
-                    className="writting-button-active"
-                    aria-hidden="true"
-                    onClick={uploadGalleryImgCertification}
-                  >
-                    기록완료
+      <div className='bottom-sheet-container'>
+        <Sheet
+          isOpen={bottomSheetIsOpen}
+          onClose={closeBottomSheet}
+          snapPoints={[
+            window.screen.height - window.screen.width + 10,
+            window.screen.height - window.screen.width + 10,
+            window.screen.height - window.screen.width + 10,
+            window.screen.height - window.screen.width + 10,
+          ]}
+          // ref={ref}
+          disableDrag
+          className="modal-bottom-sheet"
+        >
+          <Sheet.Container style={sheetStyle}>
+            <Sheet.Content>
+              <main className="capture-img-record">
+                <body className="review-container">
+                  <div className="review-place-info">
+                    <div className="review-place-info-title">{title}</div>
+                    <div className="review-place-info-address">{address}</div>
                   </div>
-                ) : (
-                  <div className="writting-button">기록완료</div>
-                )}
-              </footer>
-            </main>
-          </Sheet.Content>
-        </Sheet.Container>
-      </Sheet>
+                  <textarea
+                    className="review-content"
+                    placeholder="남기고 싶은 기록을 작성해주세요"
+                    onChange={onChangeCertificationPostContent}
+                    maxLength={199}
+                    onFocus={screenUp}
+                  >
+                    {certificationPostContent}
+                  </textarea>
+                  <div className="review-content-length">
+                    {certificationPostContent.length}/200
+                  </div>
+                </body>
+                <footer>
+                  {certificationPostContent.length > 0 ? (
+                    <div
+                      className="writting-button-active"
+                      aria-hidden="true"
+                      onClick={uploadGalleryImgCertification}
+                    >
+                      기록완료
+                    </div>
+                  ) : (
+                    <div className="writting-button">기록완료</div>
+                  )}
+                </footer>
+              </main>
+            </Sheet.Content>
+          </Sheet.Container>
+        </Sheet>
+      </div>
       {certificateErrorToastIsOpen && (
         <ToastPurpleMessage message={certificateErrorToastMessage} />
       )}
