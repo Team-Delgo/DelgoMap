@@ -155,7 +155,7 @@ function Map() {
     tempDiv.style.position="absolute";
     tempDiv.style.zIndex="100000";
     tempDiv.style.top="10px";
-    document.body.appendChild(tempDiv);
+    document.body.after(tempDiv);
 
     setLinkId(parseInt(routerLocation.pathname.slice(1), 10));
     return () => {
