@@ -147,9 +147,20 @@ function Map() {
       clearSelectedId();
       setSelectedCert(certDefault);
     });
+
+    const tempDiv = document.createElement('div');
+    tempDiv.style.width="100px";
+    tempDiv.style.height="10px";
+    tempDiv.style.backgroundColor="yellow";
+    tempDiv.style.position="absolute";
+    tempDiv.style.zIndex="100000";
+    tempDiv.style.bottom="10px";
+    document.body.appendChild(tempDiv);
+
     setLinkId(parseInt(routerLocation.pathname.slice(1), 10));
     return () => {
       document.body.style.overflow = 'scroll';
+      tempDiv.remove();
     };
   }, []);
 
