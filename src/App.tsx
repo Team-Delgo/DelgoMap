@@ -50,7 +50,6 @@ function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
 
-  const vconsole = new VConsole();
 
   useEffect(() => {
     const pcDevice = 'win16|win32|win64|mac|macintel';
