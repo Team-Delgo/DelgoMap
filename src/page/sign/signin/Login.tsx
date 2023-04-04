@@ -5,14 +5,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { userActions } from '../../../redux/slice/userSlice';
-import Arrow  from '../../../common/icons/left-arrow.svg';
+import Arrow from '../../../common/icons/left-arrow.svg';
 import ToastMessage from '../../../common/dialog/ToastMessage';
 import { login } from '../../../common/api/login';
 import './Login.scss';
 import { checkEmail, checkPasswordLogin } from '../validcheck';
 import Loading from '../../../common/utils/Loading';
 import { ROOT_PATH } from '../../../common/constants/path.const';
-import {analytics} from "../../../index";
+import { analytics } from "../../../index";
 import { RootState } from '../../../redux/store';
 
 interface Input {
@@ -42,18 +42,18 @@ function Login() {
   const dispatch = useDispatch();
   const state = useLocation().state as State;
   const { email } = state;
-  const { OS,device } = useSelector((state: RootState) => state.persist.device);
+  const { OS, device } = useSelector((state: RootState) => state.persist.device);
 
   const mutation = useAnalyticsLogEvent(analytics, "screen_view");
 
-  useEffect(()=>{
+  useEffect(() => {
     mutation.mutate({
       params: {
         firebase_screen: "SignIn-Password",
         firebase_screen_class: "SignInPasswordPage"
       }
     });
-  },[]);
+  }, []);
 
   const enterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -138,7 +138,7 @@ function Login() {
     if (OS === 'android') {
       window.BRIDGE.sendFcmToken(userId);
     }
-    else{
+    else {
       // window.webkit.messageHandlers.sendFcmToken.postMessage(userId);
     }
   };
@@ -168,7 +168,7 @@ function Login() {
       <div className="login-title-wrapper">
         <div className="login-title1">우리집 강아지도</div>
         <div className="login-title2">델고가요</div>
-        <div className="login-subtitle">동반 장소를 발견하고 저장하세요</div>
+        <div className="login-subtitle">강아지와의 활동을 기록해요</div>
       </div>
       <div className="login-input-flex">
         <div className="login-input-box">
