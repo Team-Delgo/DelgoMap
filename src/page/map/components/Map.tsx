@@ -332,8 +332,11 @@ function Map() {
   };
 
   const onClickCertToggle = () => {
-    setIsCertVisible((prev) => !prev);
-    dispatch(mapAction.setCertToggle(!isCertVisible));
+    if (!isSignIn) setIsAlertOpen(true);
+    else {
+      setIsCertVisible((prev) => !prev);
+      dispatch(mapAction.setCertToggle(!isCertVisible));
+    }
   };
 
   const navigateMyPage = useCallback(() => {

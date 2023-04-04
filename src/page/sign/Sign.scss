@@ -26,7 +26,7 @@ $color-orange: #ffab6f;
     align-items: center;
     top: 8px;
     left: 24px;
-    img{
+    img {
       width: 22px;
       height: 20px;
     }
@@ -58,7 +58,7 @@ $color-orange: #ffab6f;
     height: 56px;
     min-height: 56px;
     text-align: center;
-    border-radius: 56px;
+    border-radius: 12px;
     background-color: $color-gray-2;
     border: none;
     color: white;
@@ -90,12 +90,11 @@ $color-orange: #ffab6f;
     &.invalid {
       border: 2px solid #aa93ec;
     }
-    
   }
 }
 
-.input{
-  &-feedback{
+.input {
+  &-feedback {
     position: absolute;
     margin: 0;
     bottom: -30px;
