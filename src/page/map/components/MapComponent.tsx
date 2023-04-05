@@ -26,7 +26,7 @@ import { POSTS_PATH } from '../../../common/constants/path.const';
 function setMarkerOptionBig(
   categoryCode: string,
   data: Mungple,
-  globarMap: naver.maps.Map | undefined,
+  globarMap: kakao.maps.Map | undefined,
   prevCategoryCode: string,
 ) {
   let icon: string;
@@ -38,7 +38,7 @@ function setMarkerOptionBig(
   else if (categoryCode === 'CA0006') icon = Hospital;
   else icon = Kinder;
   const markerOptions = {
-    position: new window.naver.maps.LatLng(
+    position: new window.kakao.maps.LatLng(
       parseFloat(data.latitude),
       parseFloat(data.longitude),
     ),
@@ -49,8 +49,8 @@ function setMarkerOptionBig(
         `<img src=${icon} style="" alt="pin"/>`,
         `</div>`,
       ].join(''),
-      size: new naver.maps.Size(50, 59),
-      origin: new naver.maps.Point(0, 0),
+      size: new kakao.maps.Size(50, 59),
+      origin: new kakao.maps.Point(0, 0),
     },
   };
   return markerOptions;
@@ -59,7 +59,7 @@ function setMarkerOptionBig(
 function setMarkerOptionSmall(
   categoryCode: string,
   data: Mungple,
-  globarMap: naver.maps.Map | undefined,
+  globarMap: kakao.maps.Map | undefined,
 ) {
   let icon: string;
   console.log(categoryCode);
@@ -71,7 +71,7 @@ function setMarkerOptionSmall(
   else if (categoryCode === 'CA0006') icon = HospitalSmall;
   else icon = KinderSmall;
   const markerOptions = {
-    position: new window.naver.maps.LatLng(
+    position: new window.kakao.maps.LatLng(
       parseFloat(data.latitude),
       parseFloat(data.longitude),
     ),
@@ -82,9 +82,9 @@ function setMarkerOptionSmall(
         `<img src=${icon}  style="" alt="pin"/>`,
         `</div>`,
       ].join(''),
-      size: new naver.maps.Size(20, 20),
-      origin: new naver.maps.Point(0, 0),
-      anchor: new naver.maps.Point(10, 10),
+      size: new kakao.maps.Size(20, 20),
+      origin: new kakao.maps.Point(0, 0),
+      anchor: new kakao.maps.Point(10, 10),
     },
   };
   return markerOptions;
@@ -105,7 +105,7 @@ function setMarkerOptionPrev(
     prevLng: number;
     prevCategoryCode: string;
   },
-  globarMap: naver.maps.Map | undefined,
+  globarMap: kakao.maps.Map | undefined,
 ) {
   let icon: string;
   if (categoryCode === 'CA0001') icon = WalkSmall;
@@ -116,7 +116,7 @@ function setMarkerOptionPrev(
   else if (categoryCode === 'CA0006') icon = HospitalSmall;
   else icon = KinderSmall;
   const markerOptions = {
-    position: new window.naver.maps.LatLng(selectedId.prevLat, selectedId.prevLng),
+    position: new window.kakao.maps.LatLng(selectedId.prevLat, selectedId.prevLng),
     map: globarMap!,
     icon: {
       content: [
@@ -124,17 +124,17 @@ function setMarkerOptionPrev(
         `<img src=${icon} style="" alt="pin"/>`,
         `</div>`,
       ].join(''),
-      size: new naver.maps.Size(20, 20),
-      origin: new naver.maps.Point(0, 0),
-      anchor: new naver.maps.Point(10, 10),
+      size: new kakao.maps.Size(20, 20),
+      origin: new kakao.maps.Point(0, 0),
+      anchor: new kakao.maps.Point(10, 10),
     },
   };
   return markerOptions;
 }
 
-function setCertOption(data: Cert, globarMap: naver.maps.Map | undefined) {
+function setCertOption(data: Cert, globarMap: kakao.maps.Map | undefined) {
   return {
-    position: new window.naver.maps.LatLng(
+    position: new kakao.maps.LatLng(
       parseFloat(data.latitude),
       parseFloat(data.longitude),
     ),
@@ -146,21 +146,21 @@ function setCertOption(data: Cert, globarMap: naver.maps.Map | undefined) {
         }" alt="pin"/>`,
         `</div>`,
       ].join(''),
-      size: new naver.maps.Size(70, 70),
-      origin: new naver.maps.Point(0, 0),
+      size: new kakao.maps.Size(70, 70),
+      origin: new kakao.maps.Point(0, 0),
     },
   };
 }
 
 function setCertNormalMarker(
   normalCertList: Cert[],
-  globarMap: naver.maps.Map | undefined,
+  globarMap: kakao.maps.Map | undefined,
   setSelectedCert: React.Dispatch<React.SetStateAction<Cert>>,
 ) {
   return normalCertList.map((data) => {
     const markerOptions = setCertOption(data, globarMap);
-    const marker = new naver.maps.Marker(markerOptions);
-    marker.addListener('click', () => {
+    const marker = new kakao.maps.Marker(markerOptions);
+    kakao.maps.event.addListener(marker, 'click', () => {
       setSelectedCert((prev) => {
         return {
           ...prev,
@@ -183,7 +183,7 @@ function setCertNormalMarker(
 
 function setCertMungpleMarker(
   mungpleCertList: Cert[],
-  globarMap: naver.maps.Map | undefined,
+  globarMap: kakao.maps.Map | undefined,
   currentLocation: {
     lat: number;
     lng: number;
@@ -194,7 +194,7 @@ function setCertMungpleMarker(
 ) {
   return mungpleCertList.map((data) => {
     const markerOptions = {
-      position: new window.naver.maps.LatLng(
+      position: new window.kakao.maps.LatLng(
         parseFloat(data.latitude),
         parseFloat(data.longitude),
       ),
@@ -206,15 +206,15 @@ function setCertMungpleMarker(
           }" alt="pin"/>`,
           `</div>`,
         ].join(''),
-        size: new naver.maps.Size(
+        size: new kakao.maps.Size(
           currentLocation.option.size,
           currentLocation.option.size,
         ),
-        origin: new naver.maps.Point(0, 0),
+        origin: new kakao.maps.Point(0, 0),
       },
     };
-    const marker = new naver.maps.Marker(markerOptions);
-    marker.addListener('click', () => {
+    const marker = new kakao.maps.Marker(markerOptions);
+    kakao.maps.event.addListener(marker, 'click', () => {
       setSelectedCert((prev) => {
         return {
           ...prev,
@@ -233,7 +233,7 @@ function setCertMungpleMarker(
 
 function setOtherDogsMungple(
   otherMungpleCertList: Cert[],
-  globarMap: naver.maps.Map | undefined,
+  globarMap: kakao.maps.Map | undefined,
   navigate: NavigateFunction
 ) {
   return otherMungpleCertList.map((data) => {
@@ -247,7 +247,7 @@ function setOtherDogsMungple(
     else if (categoryCode === 'CA0006') icon = HospitalCert;
     else icon = NormalCert;
     const markerOptions = {
-      position: new window.naver.maps.LatLng(
+      position: new window.kakao.maps.LatLng(
         parseFloat(data.latitude),
         parseFloat(data.longitude),
       ),
@@ -259,13 +259,13 @@ function setOtherDogsMungple(
           `<img src=${data.photoUrl} class="cert" alt="cert-image" />`,
           `</div>`,
         ].join(''),
-        size: new naver.maps.Size(53, 63),
-        origin: new naver.maps.Point(0, 0),
-        anchor: new naver.maps.Point(28, 63),
+        size: new kakao.maps.Size(53, 63),
+        origin: new kakao.maps.Point(0, 0),
+        anchor: new kakao.maps.Point(28, 63),
       },
     };
-    const marker = new naver.maps.Marker(markerOptions);
-    marker.addListener('click', () => {
+    const marker = new kakao.maps.Marker(markerOptions);
+    kakao.maps.event.addListener(marker,'click', () => {
       navigate(POSTS_PATH, {
         state: {
           cert: data,
@@ -279,13 +279,13 @@ function setOtherDogsMungple(
 
 function setOtherDogsNormal(
   otherMungpleCertList: Cert[],
-  globarMap: naver.maps.Map | undefined,
+  globarMap: kakao.maps.Map | undefined,
   navigate: NavigateFunction
 ) {
   return otherMungpleCertList.map((data) => {
     const icon = NormalCert;
     const markerOptions = {
-      position: new window.naver.maps.LatLng(
+      position: new window.kakao.maps.LatLng(
         parseFloat(data.latitude),
         parseFloat(data.longitude),
       ),
@@ -297,13 +297,13 @@ function setOtherDogsNormal(
           `<img src=${data.photoUrl} class="cert" alt="cert-image" />`,
           `</div>`,
         ].join(''),
-        size: new naver.maps.Size(53, 63),
-        origin: new naver.maps.Point(0, 0),
-        anchor: new naver.maps.Point(28, 63),
+        size: new kakao.maps.Size(53, 63),
+        origin: new kakao.maps.Point(0, 0),
+        anchor: new kakao.maps.Point(28, 63),
       },
     };
-    const marker = new naver.maps.Marker(markerOptions);
-    marker.addListener('click', () => {
+    const marker = new kakao.maps.Marker(markerOptions);
+    kakao.maps.event.addListener(marker,'click', () => {
       navigate(POSTS_PATH, {
         state: {
           cert: data,

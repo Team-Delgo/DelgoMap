@@ -11,7 +11,7 @@ import CaptureCertificationUpatePage from "./page/capture/CaptureCertificationUp
 import CaptureLocationPage from "./page/capture/CaptureLocationPage";
 import CapturePage from "./page/capture/CapturePage";
 import DetailPage from "./page/DetailPage";
-import MapPage from "./page/map/MapPage";
+// import MapPage from "./page/map/MapPage";
 import ChangePassword from "./page/myaccount/ChangePassword";
 import ChangePasswordCheck from "./page/myaccount/ChangePasswordCheck";
 import ChangeUserInfo from "./page/myaccount/ChangeUserInfo";
@@ -45,6 +45,7 @@ import RecordCertificationPage from "./page/certification/RecordCertificationPag
 import CertificationMap from "./page/certification/CertificationMap";
 import { deviceAction } from "./redux/slice/deviceSlice";
 import HelpPage from "./page/help/HelpPage";
+import MapTest from "./page/map/components/MapTest";
 
 function App() {
   const queryClient = new QueryClient();
@@ -75,8 +76,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MapPage />} />
-          <Route path="/:id" element={<MapPage />} />
+          {/* <Route path="/" element={<MapPage />} /> */}
+          <Route path="/" element={<MapTest />} />
+          {/* <Route path="/:id" element={<MapPage />} /> */}
           <Route path="/help" element={<HelpPage/>} />
           <Route path="/detail" element={<DetailPage />} />
           <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
