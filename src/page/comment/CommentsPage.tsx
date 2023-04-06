@@ -157,13 +157,12 @@ function CommentsPage() {
           <img src={profile} alt="myprofile" />
           <textarea
             ref={textRef}
+            value={inputComment}
             onInput={handleResizeHeight}
             onChange={onChangeInputComment}
             placeholder="댓글 남기기..."
             className="comments-post-input"
-          >
-            {inputComment}
-          </textarea>
+          />
           <div
             aria-hidden="true"
             onClick={inputComment.length > 0 ? postCommentOnCert : undefined}
