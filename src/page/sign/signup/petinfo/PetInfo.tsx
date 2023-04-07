@@ -82,9 +82,10 @@ function PetInfo() {
   const handlingDataForm = async (dataURI: any) => {
     console.log(dataURI.length);
     if(dataURI.length === 0){
-      console.log(1);
+      const blob = new Blob([""], {type: 'image/jpeg',});
+      const file = new File([blob],"image.jpg")
       const formData = new FormData();
-      formData.append('profile', '');
+      formData.append('profile', file);
     return formData;
     }
     const byteString = atob(dataURI.split(',')[1]);
