@@ -1,4 +1,5 @@
 import React from "react";
+import VConsole from "vconsole";
 import { initializeApp } from "firebase/app";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
@@ -35,9 +36,9 @@ logEvent(analytics, "notification_received");
 
 root.render(
   <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 );
 

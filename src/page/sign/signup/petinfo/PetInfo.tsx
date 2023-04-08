@@ -80,6 +80,14 @@ function PetInfo() {
   };
 
   const handlingDataForm = async (dataURI: any) => {
+    console.log(dataURI.length);
+    if(dataURI.length === 0){
+      const blob = new Blob([""], {type: 'image/jpeg',});
+      const file = new File([blob],"image.jpg")
+      const formData = new FormData();
+      formData.append('profile', file);
+    return formData;
+    }
     const byteString = atob(dataURI.split(',')[1]);
     const ab = new ArrayBuffer(byteString.length);
     const ia = new Uint8Array(ab);
@@ -163,7 +171,7 @@ function PetInfo() {
       const json = JSON.stringify(requestBody);
       const blob = new Blob([json], { type: 'application/json' });
       formData.append('data', blob);
-      formData.append('profile', sendingImage[0]);
+      // formData.append('profile', sendingImage[0]);
       oAuthSignup(
         formData,
         (response: AxiosResponse) => {
@@ -229,7 +237,7 @@ function PetInfo() {
       const json = JSON.stringify(requestBody);
       const blob = new Blob([json], { type: 'application/json' });
       formData.append('data', blob);
-      formData.append('profile', sendingImage[0]);
+      // formData.append('profile', sendingImage[0]);
       signup(
         formData,
         (response: AxiosResponse) => {

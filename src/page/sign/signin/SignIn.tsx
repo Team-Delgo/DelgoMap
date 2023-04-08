@@ -8,13 +8,13 @@ import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import KakaoButton from '../../../common/icons/kakao.svg';
-import Naver  from '../../../common/icons/naver.svg';
+import Naver from '../../../common/icons/naver.svg';
 import { analytics } from '../../../index';
 import Apple from '../../../common/icons/apple.svg';
 import { ROOT_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from '../../../common/constants/path.const';
 import { KAKAO, NAVER } from '../../../common/constants/url.cosnt';
 import { checkEmail } from '../validcheck';
-import Arrow  from '../../../common/icons/left-arrow.svg';
+import Arrow from '../../../common/icons/left-arrow.svg';
 import { emailAuth } from '../../../common/api/login';
 import Loading from '../../../common/utils/Loading';
 import AppleLoginButton from './social/AppleLogin';
@@ -93,13 +93,13 @@ function SignIn() {
         <Loading />
       ) : (
         <>
-        <div aria-hidden="true" className="login-back" onClick={() => navigation(-1)}>
-        <img src={Arrow} alt="arrow" />
-      </div>
+          <div aria-hidden="true" className="login-back" onClick={() => navigation(-1)}>
+            <img src={Arrow} alt="arrow" />
+          </div>
           <div className="login-title-wrapper">
             <div className="login-title1">우리집 강아지도</div>
             <div className="login-title2">델고가요</div>
-            <div className="login-subtitle">동반 장소를 발견하고 저장하세요</div>
+            <div className="login-subtitle">강아지와의 활동을 기록해요</div>
           </div>
           <div className="login-input-flex">
             <div className="login-input-box">

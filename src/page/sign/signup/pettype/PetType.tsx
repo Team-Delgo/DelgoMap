@@ -69,7 +69,6 @@ function PetType(props: { closeModal: () => void, setType: (breed:BreedType) => 
       </div>
       <div className="pet-type-search-result-container">
         {certificationPostsDataList?.data?.map((pet: petType) => {
-          if (searchPetTypeName.length > 0) {
             if (pet.codeName.includes(searchPetTypeName)) {
               return (
                 <div className="pet-type-search-result" aria-hidden="true" onClick={selectPetType(pet)}>
@@ -88,7 +87,6 @@ function PetType(props: { closeModal: () => void, setType: (breed:BreedType) => 
                 </div>
               );
             }
-          }
         })}
       </div>
       <button
