@@ -69,6 +69,10 @@ function CaptureLocationRecord() {
     navigate(CAMERA_PATH.MAP);
   };
 
+  const screenUp = ()=>{
+    window.webkit.messageHandlers.NAME.postMessage("screenUp")
+  }
+
   const manualPlace = () => {
     return (
       <div
@@ -122,6 +126,7 @@ function CaptureLocationRecord() {
                 className="review-place-name"
                 placeholder="여기는 어디인가요?"
                 onChange={onChangePlaceName}
+                onFocus={screenUp}
               />
               {mungPlaceList?.data.map((place: MungPlaceType) => {
                 if (placeName.length > 0) {

@@ -1,45 +1,61 @@
-.comment{
+.comment {
   margin: 30px 5%;
   display: flex;
-  img{
+
+  img {
     width: 33px;
     height: 33px;
     border-radius: 4px;
   }
-  &-content{
+
+  &-content {
     width: 100%;
     margin-left: 10px;
     font-size: 14px;
     font-weight: 400;
-    word-break:break-all;
-    &-header{
+    word-break: break-all;
+
+    &-header {
       display: flex;
       justify-content: space-between;
-      &-name{
+
+      &-name {
         font-size: 14px;
         font-weight: 700;
       }
 
-      &-work{
+      &-work {
         font-size: 12px;
         font-weight: 400;
-        color: #8a8a8a; 
+        color: #8a8a8a;
         display: flex;
-        &-date{
+
+        &-date {
           padding-right: 20px;
-         }
-         &-delete{
         }
+
+        &-delete {}
       }
     }
-    &-text{
+
+    &-text {
+      font-size: 14px;
       padding-top: 8px;
     }
   }
+
+  &-reply {
+    color: #8A8A8A;
+    font-size: 12px;
+    margin-top: 2px;
+
+  }
 }
-.comments{
+
+.comments {
   padding-bottom: 100px;
-  &-header{
+
+  &-header {
     position: fixed;
     width: 100%;
     top: 0;
@@ -47,19 +63,23 @@
     padding-top: 8px;
     display: flex;
     justify-content: center;
-    img{
+
+    img {
       position: absolute;
       left: 20px;
     }
-    &-title{
+
+    &-title {
       font-size: 18px;
       font-weight: 600;
     }
   }
-  &-context{
+
+  &-context {
     margin-top: 110px;
   }
-  &-post{
+
+  &-post {
     display: flex;
     justify-content: space-around;
     // align-items: center;
@@ -72,13 +92,14 @@
     background-color: white;
     padding: 15px 0;
 
-    img{
+    img {
       width: 41px;
       height: 41px;
       border-radius: 4px;
       padding-left: 5%
     }
-    &-input{
+
+    &-input {
       width: 60%;
       height: 41px;
       background-color: #f2f2f2;
@@ -86,20 +107,52 @@
       border: none;
       padding: 12px 0 0 10px;
       box-sizing: border-box;
+    }
 
-    }
-    &-button{
+    &-button {
       font-weight: 600;
       padding-right: 5%;
       margin-top: 12px;
     }
-    &-button-disabled{
+
+    &-button-disabled {
       font-weight: 600;
       padding-right: 5%;
       margin-top: 12px;
-      color:#8a8a8a
+      color: #8a8a8a
     }
   }
+}
+
+.reply-comment {
+  &-notification {
+    position: fixed;
+    bottom: 80px;
+    background: #8A8A8A;
+    width: 100%;
+    height: 41px;
+    font-size: 14px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 30px;
+  }
+
+  &-x {
+    width: 10.5px;
+    height: 10.5px;
+    padding-right: 60px;
+  }
+}
+
+.comment-recipient{
+  position: absolute;
+  top:25px;
+  left: 95px;
+  font-weight: 500;
+  font-size: 14px;
+  color:#000000
 }
 
 textarea:focus,

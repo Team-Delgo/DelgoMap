@@ -136,7 +136,7 @@ function CaptureCertificationRecord({
   };
 
   const screenUp = ()=>{
-    console.log('화면올리기')
+    window.webkit.messageHandlers.NAME.postMessage("screenUp")
   }
 
   return (

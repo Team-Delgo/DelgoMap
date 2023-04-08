@@ -13,6 +13,7 @@ import {commentType} from '../../common/types/comment';
 import useActive from '../../common/hooks/useActive';
 import './CommentsPage.scss';
 import useInput from '../../common/hooks/useInput';
+import X from '../../common/icons/white-x.svg';
 
 interface StateType {
   certificationId: number;
@@ -21,6 +22,7 @@ interface StateType {
 
 function CommentsPage() {
   const [deleteCommentId, setDeleteCommentId] = useState(-1);
+  const [commentRecipient,setCommentRecipient] = useState('')
   const [commentList, setCommentList] = useState<commentType[]>([]);
   const [inputComment, onChangeInputComment,resetInputComment] = useInput('');
   const [deleteCommentBottomSheetIsOpen, openDeleteCommentBottomSheet, closeDeleteCommentBottomSheet] = useActive(false);
@@ -62,10 +64,9 @@ function CommentsPage() {
     postComment(
       userId,
       certificationId,
-      inputComment,
+      inputComment, 
       (response: AxiosResponse) => {
         if (response.data.code === 200) {
-          resetInputComment();
           getComments();
         }
       },
@@ -113,7 +114,6 @@ function CommentsPage() {
     navigate(-1);
   },[])
 
-
   const context = commentList.map((comment: commentType) => {
     return (
       <div className="comment">
@@ -122,7 +122,9 @@ function CommentsPage() {
           <div className="comment-content-header">
             <div className="comment-content-header-name">{comment.userName}</div>
             <div className="comment-content-header-work">
-              <div className="comment-content-header-work-date">{comment.createDt.slice(0, 10)}</div>
+              <div className="comment-content-header-work-date">
+                {comment.createDt.slice(0, 10)}
+              </div>
               <div
                 className="comment-content-header-work-delete"
                 aria-hidden="true"
@@ -133,20 +135,54 @@ function CommentsPage() {
                     ? openBottomSheet(comment.commentId)
                     : undefined
                 }
-                style={userId === posterId ? undefined : userId === comment.userId ? undefined : { visibility: 'hidden' }}
+                style={
+                  userId === posterId
+                    ? undefined
+                    : userId === comment.userId
+                    ? undefined
+                    : { visibility: 'hidden' }
+                }
               >
                 삭제
               </div>
             </div>
           </div>
           <div className="comment-content-text">{comment.content}</div>
+          {userId !== comment.userId && (
+            <div
+              className="comment-reply"
+              aria-hidden="true"
+              onClick={() => {
+                setCommentRecipient(comment.userName)
+                resetInputComment()
+              }}
+            >
+              답글달기
+            </div>
+          )}
         </div>
       </div>
     );
   });
 
+  console.log('inputComment',inputComment)
+
   return (
     <>
+      {commentRecipient !== '' && (
+        <div className="reply-comment-notification">
+          <div>{commentRecipient} 에게 답글 남기는중</div>
+          <img
+            src={X}
+            width={10.5}
+            height={10.5}
+            className="reply-comment-x"
+            alt="reply-comment-x"
+            aria-hidden="true"
+            onClick={() => setCommentRecipient('')}
+          />
+        </div>
+      )}
       <div className="comments">
         <div className="comments-header">
           <img src={LeftArrow} alt="back" onClick={moveToPrevPage} aria-hidden="true" />
@@ -156,14 +192,17 @@ function CommentsPage() {
         <div className="comments-post">
           <img src={profile} alt="myprofile" />
           <textarea
+            className="comments-post-input"
             ref={textRef}
+            defaultValue={commentRecipient}
+            value={inputComment}
             onInput={handleResizeHeight}
             onChange={onChangeInputComment}
-            placeholder="댓글 남기기..."
-            className="comments-post-input"
-          >
-            {inputComment}
-          </textarea>
+            placeholder={commentRecipient !== '' ? `` : `댓글 남기기...`}
+          />
+          {/* {commentRecipient !== '' && (
+            <div className="comment-recipient">{commentRecipient}</div>
+          )} */}
           <div
             aria-hidden="true"
             onClick={inputComment.length > 0 ? postCommentOnCert : undefined}
