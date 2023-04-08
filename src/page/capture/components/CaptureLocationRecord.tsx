@@ -70,7 +70,7 @@ function CaptureLocationRecord() {
   };
 
   const screenUp = ()=>{
-    window.webkit.messageHandlers.NAME.postMessage("")
+    window.webkit.messageHandlers.NAME.postMessage("screenUp")
   }
 
   const manualPlace = () => {
