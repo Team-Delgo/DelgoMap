@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Sheet from 'react-modal-sheet';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
 import { updateCertificationPost } from '../../../common/api/certification';
 import { RootState } from '../../../redux/store';
@@ -11,15 +10,12 @@ import useActive from '../../../common/hooks/useActive';
 import useInput from '../../../common/hooks/useInput';
 import BallLoading from '../../../common/utils/BallLoading';
 
-const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
-
 function CaptureCategoryUpdateRecord() {
   const { title, certificationId, content, address } = useSelector(
     (state: RootState) => state.persist.upload,
   );
   const { user } = useSelector((state: RootState) => state.persist.user);
   const [certificationPostContent, onChangeCertificationPostContent] = useInput(content);
-  const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [buttonDisabled, onButtonDisable, OffButtonDisable] = useActive(false);
   const [
     updateCertificationIsLoading,

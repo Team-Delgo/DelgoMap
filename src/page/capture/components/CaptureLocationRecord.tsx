@@ -3,7 +3,6 @@ import React, { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useQuery } from 'react-query';
-import Sheet from 'react-modal-sheet';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import { getMungPlaceList } from '../../../common/api/certification';
@@ -20,11 +19,8 @@ import useActive from '../../../common/hooks/useActive';
 import useInput from '../../../common/hooks/useInput';
 import { mapAction } from '../../../redux/slice/mapSlice';
 
-const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
-
 function CaptureLocationRecord() {
   const [placeName, onChangePlaceName] = useInput('');
-  const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [checkedPlaceId, setCheckedPlaceId] = useState(-1);
   const [manualChecked, onCheckManual] = useActive(false);
   const inputRef = useRef<any>();
@@ -104,20 +100,6 @@ function CaptureLocationRecord() {
   };
 
   return (
-    // <Sheet
-    //   isOpen={bottomSheetIsOpen}
-    //   onClose={closeBottomSheet}
-    //   snapPoints={[
-    //     window.screen.height - window.screen.width + 10,
-    //     window.screen.height - window.screen.width + 10,
-    //     window.screen.height - window.screen.width + 10,
-    //     window.screen.height - window.screen.width + 10,
-    //   ]}
-    //   disableDrag
-    //   className="modal-bottom-sheet"
-    // >
-    //   <Sheet.Container style={sheetStyle}>
-    //     <Sheet.Content>
     <main
       className="capture-img-record"
     >
@@ -171,9 +153,6 @@ function CaptureLocationRecord() {
         {placeName.length > 0 && manualPlace()}
       </body>
     </main>
-    //     </Sheet.Content>
-    //   </Sheet.Container>
-    // </Sheet>
   );
 }
 
