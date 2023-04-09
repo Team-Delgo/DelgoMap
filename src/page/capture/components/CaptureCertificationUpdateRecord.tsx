@@ -77,39 +77,44 @@ function CaptureCategoryUpdateRecord() {
   return (
     <>
       {updateCertificationIsLoading && <BallLoading />}
-              <main className="capture-img-record">
-                <body className="review-container">
-                  <div className="review-place-info">
-                    <div className="review-place-info-title">{title}</div>
-                    <div className="review-place-info-address">{address}</div>
-                  </div>
-                  <textarea
-                    className="review-content"
-                    placeholder="남기고 싶은 기록을 작성해주세요"
-                    onChange={onChangeCertificationPostContent}
-                    maxLength={1000}
-                    onFocus={screenUp}
-                  >
-                    {certificationPostContent}
-                  </textarea>
-                  <div className="review-content-length">
-                    {certificationPostContent.length}/1000
-                  </div>
-                </body>
-                <footer>
-                  {certificationPostContent.length > 0 ? (
-                    <div
-                      className="writting-button-active"
-                      aria-hidden="true"
-                      onClick={uploadCertificationPost}
-                    >
-                      수정완료
-                    </div>
-                  ) : (
-                    <div className="writting-button">수정완료</div>
-                  )}
-                </footer>
-              </main>
+      <main
+        className="capture-img-record"
+        style={{
+          height: `calc(100% - ${window.innerWidth}px + 20vw)`,
+        }}
+      >
+        <body className="review-container">
+          <div className="review-place-info">
+            <div className="review-place-info-title">{title}</div>
+            <div className="review-place-info-address">{address}</div>
+          </div>
+          <textarea
+            className="review-content"
+            placeholder="남기고 싶은 기록을 작성해주세요"
+            onChange={onChangeCertificationPostContent}
+            maxLength={1000}
+            onFocus={screenUp}
+          >
+            {certificationPostContent}
+          </textarea>
+          <div className="review-content-length">
+            {certificationPostContent.length}/1000
+          </div>
+        </body>
+        <footer>
+          {certificationPostContent.length > 0 ? (
+            <div
+              className="writting-button-active"
+              aria-hidden="true"
+              onClick={uploadCertificationPost}
+            >
+              수정완료
+            </div>
+          ) : (
+            <div className="writting-button">수정완료</div>
+          )}
+        </footer>
+      </main>
     </>
   );
 }

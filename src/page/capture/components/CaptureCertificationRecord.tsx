@@ -140,7 +140,12 @@ function CaptureCertificationRecord({
   return (
     <>
       {postCertificationIsLoading && <BallLoading />}
-      <main className="capture-img-record">
+      <main
+        className="capture-img-record"
+        style={{
+          height:`calc(100% - ${window.innerWidth}px + 20vw)`,
+        }}
+      >
         <body className="review-container">
           <div className="review-place-info">
             <div className="review-place-info-title">{title}</div>

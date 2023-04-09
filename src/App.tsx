@@ -9,7 +9,6 @@ import CaptureCertificationPage from "./page/capture/CaptureCertificationPage";
 import CaptureCertificationResultPage from "./page/capture/CaptureCertificationResultPage";
 import CaptureCertificationUpatePage from "./page/capture/CaptureCertificationUpatePage";
 import CaptureLocationPage from "./page/capture/CaptureLocationPage";
-import CapturePage from "./page/capture/CapturePage";
 import DetailPage from "./page/DetailPage";
 import MapPage from "./page/map/MapPage";
 import ChangePassword from "./page/myaccount/ChangePassword";
@@ -96,7 +95,6 @@ function App() {
           <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
           <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
           <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
-          <Route path={CAMERA_PATH.CAPTURE} element={<CapturePage />} />
           <Route path={CAMERA_PATH.CERTIFICATION} element={<CaptureCertificationPage />} />
           <Route path={CAMERA_PATH.LOCATION} element={<CaptureLocationPage />} />
           <Route path={CAMERA_PATH.UPDATE} element={<CaptureCertificationUpatePage />} />
