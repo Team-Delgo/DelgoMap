@@ -81,21 +81,6 @@ function CaptureCategoryUpdateRecord() {
   return (
     <>
       {updateCertificationIsLoading && <BallLoading />}
-      <div className="bottom-sheet-container">
-        <Sheet
-          isOpen={bottomSheetIsOpen}
-          onClose={closeBottomSheet}
-          snapPoints={[
-            window.screen.height - window.screen.width + 10,
-            window.screen.height - window.screen.width + 10,
-            window.screen.height - window.screen.width + 10,
-            window.screen.height - window.screen.width + 10,
-          ]}
-          disableDrag
-          className="modal-bottom-sheet"
-        >
-          <Sheet.Container style={sheetStyle}>
-            <Sheet.Content>
               <main className="capture-img-record">
                 <body className="review-container">
                   <div className="review-place-info">
@@ -129,10 +114,6 @@ function CaptureCategoryUpdateRecord() {
                   )}
                 </footer>
               </main>
-            </Sheet.Content>
-          </Sheet.Container>
-        </Sheet>
-      </div>
     </>
   );
 }
