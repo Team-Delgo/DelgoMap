@@ -87,36 +87,55 @@ function MyAccountPage() {
       <header className="my-account-page-header">
         <body className="my-account-page-header-my-pet">
           <img className="my-account-page-header-my-pet-img" src={image} alt="copy url" />
-          <div className="my-account-page-header-my-pet-profile">
+          <div
+            className="my-account-page-header-my-pet-profile"
+            aria-hidden="true"
+            onClick={() => {
+              navigate(MY_ACCOUNT_PATH.PETINFO);
+            }}
+          >
             <div className="my-account-page-header-my-pet-profile-name">
               {name}
-              <img
-                src={RightArrowGray}
-                alt="right"
-                aria-hidden="true"
-                onClick={() => {
-                  navigate(MY_ACCOUNT_PATH.PETINFO);
-                }}
-              />
+              <img src={RightArrowGray} alt="right" />
             </div>
             <div className="my-account-page-header-my-pet-profile-address">{address}</div>
-            <div className="my-account-page-header-my-pet-profile-date">기록시작 {registDt}</div>
+            <div className="my-account-page-header-my-pet-profile-date">
+              기록시작 {registDt}
+            </div>
           </div>
         </body>
       </header>
       <body className="my-account-page-body" style={neighborRankingPageBodyStyle}>
-        <div className="my-account-page-body-item" aria-hidden="true" onClick={() => { navigate(MY_ACCOUNT_PATH.USERINFO) }}>
+        <div
+          className="my-account-page-body-item"
+          aria-hidden="true"
+          onClick={() => {
+            navigate(MY_ACCOUNT_PATH.USERINFO);
+          }}
+        >
           내정보 관리
           <img src={RightArrow} alt="more" />
         </div>
-        <div className="my-account-page-body-item" aria-hidden="true" onClick={() => { navigate(MY_ACCOUNT_PATH.SETTINGS) }}>
+        <div
+          className="my-account-page-body-item"
+          aria-hidden="true"
+          onClick={() => {
+            navigate(MY_ACCOUNT_PATH.SETTINGS);
+          }}
+        >
           설정
           <img src={RightArrow} alt="more" />
         </div>
-        <div className="my-account-page-body-item" aria-hidden="true" onClick={moveToKakaoPlusFriend}>
+        <div
+          className="my-account-page-body-item"
+          aria-hidden="true"
+          onClick={moveToKakaoPlusFriend}
+        >
           <div className="my-account-page-body-item-wrapper">
             <div className="my-account-page-body-item-wrapper-title">문의</div>
-            <div className="my-account-page-body-item-wrapper-sub">카카오 플러스친구로 이동</div>
+            <div className="my-account-page-body-item-wrapper-sub">
+              카카오 플러스친구로 이동
+            </div>
           </div>
           <img src={RightArrow} alt="more" />
         </div>
@@ -131,7 +150,7 @@ function MyAccountPage() {
           <img src={RightArrow} alt="more" />
         </div>
       </body>
-      <DeleteBottomSheet 
+      <DeleteBottomSheet
         text="로그아웃 하시겠습니까?"
         description=""
         cancelText="취소"
