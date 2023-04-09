@@ -104,78 +104,76 @@ function CaptureLocationRecord() {
   };
 
   return (
-    <Sheet
-      isOpen={bottomSheetIsOpen}
-      onClose={closeBottomSheet}
-      snapPoints={[
-        window.screen.height - window.screen.width + 10,
-        window.screen.height - window.screen.width + 10,
-        window.screen.height - window.screen.width + 10,
-        window.screen.height - window.screen.width + 10,
-      ]}
-      disableDrag
-      className="modal-bottom-sheet"
+    // <Sheet
+    //   isOpen={bottomSheetIsOpen}
+    //   onClose={closeBottomSheet}
+    //   snapPoints={[
+    //     window.screen.height - window.screen.width + 10,
+    //     window.screen.height - window.screen.width + 10,
+    //     window.screen.height - window.screen.width + 10,
+    //     window.screen.height - window.screen.width + 10,
+    //   ]}
+    //   disableDrag
+    //   className="modal-bottom-sheet"
+    // >
+    //   <Sheet.Container style={sheetStyle}>
+    //     <Sheet.Content>
+    <main
+      className="capture-img-record"
     >
-      <Sheet.Container style={sheetStyle}>
-        <Sheet.Content>
-          <main className="capture-img-record">
-            <body className="review-container">
-              <input
-                type="text"
-                ref={inputRef}
-                className="review-place-name"
-                placeholder="여기는 어디인가요?"
-                onChange={onChangePlaceName}
-                onFocus={screenUp}
-              />
-              {mungPlaceList?.data.map((place: MungPlaceType) => {
-                if (placeName.length > 0) {
-                  if (place.placeName.includes(placeName)) {
-                    return (
-                      <div
-                        className="review-place-wrapper"
-                        aria-hidden="true"
-                        onClick={selectMongPlace(place)}
-                        key={place.mungpleId}
-                      >
-                        <div>
-                          <div
-                            className={
-                              checkedPlaceId === place.mungpleId
-                                ? 'review-place-wrapper-active-name'
-                                : 'review-place-wrapper-name'
-                            }
-                          >
-                            {place.placeName}
-                          </div>
-                          <div
-                            className={
-                              checkedPlaceId === place.mungpleId
-                                ? 'review-place-wrapper-active-address'
-                                : 'review-place-wrapper-address'
-                            }
-                          >
-                            {place.roadAddress}
-                          </div>
-                        </div>
-                        {checkedPlaceId === place.mungpleId ? (
-                          <img
-                            className="review-place-check"
-                            src={Check}
-                            alt="category-img"
-                          />
-                        ) : null}
-                      </div>
-                    );
-                  }
-                }
-              })}
-              {placeName.length > 0 && manualPlace()}
-            </body>
-          </main>
-        </Sheet.Content>
-      </Sheet.Container>
-    </Sheet>
+      <body className="review-container">
+        <input
+          type="text"
+          ref={inputRef}
+          className="review-place-name"
+          placeholder="여기는 어디인가요?"
+          onChange={onChangePlaceName}
+          onFocus={screenUp}
+        />
+        {mungPlaceList?.data.map((place: MungPlaceType) => {
+          if (placeName.length > 0) {
+            if (place.placeName.includes(placeName)) {
+              return (
+                <div
+                  className="review-place-wrapper"
+                  aria-hidden="true"
+                  onClick={selectMongPlace(place)}
+                  key={place.mungpleId}
+                >
+                  <div>
+                    <div
+                      className={
+                        checkedPlaceId === place.mungpleId
+                          ? 'review-place-wrapper-active-name'
+                          : 'review-place-wrapper-name'
+                      }
+                    >
+                      {place.placeName}
+                    </div>
+                    <div
+                      className={
+                        checkedPlaceId === place.mungpleId
+                          ? 'review-place-wrapper-active-address'
+                          : 'review-place-wrapper-address'
+                      }
+                    >
+                      {place.roadAddress}
+                    </div>
+                  </div>
+                  {checkedPlaceId === place.mungpleId ? (
+                    <img className="review-place-check" src={Check} alt="category-img" />
+                  ) : null}
+                </div>
+              );
+            }
+          }
+        })}
+        {placeName.length > 0 && manualPlace()}
+      </body>
+    </main>
+    //     </Sheet.Content>
+    //   </Sheet.Container>
+    // </Sheet>
   );
 }
 
