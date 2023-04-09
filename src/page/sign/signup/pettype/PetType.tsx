@@ -64,7 +64,7 @@ function PetType(props: { closeModal: () => void, setType: (breed:BreedType) => 
       </div>
       <header className="login-header">대표 강아지 정보</header>
       <div className="pet-type-search">
-        <input type="text" className="pet-type-search-name" placeholder="강아지 종류" onChange={wirtePetTypeName} />
+        <input type="text" className="pet-type-search-name" placeholder="ex) 포메라니안" onChange={wirtePetTypeName} />
         <img className="pet-type-search-magnifying-glass-img" src={MagnifyingGlass} alt="magnifying-glass-img" />
       </div>
       <div className="pet-type-search-result-container">

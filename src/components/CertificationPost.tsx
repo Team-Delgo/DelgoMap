@@ -75,6 +75,10 @@ function CertificationPost({
   const mainImg = useRef<HTMLImageElement>(null);
   const profileImg = useRef<HTMLImageElement>(null);
 
+
+
+  console.log('post',post)
+
   const observeImg = (
     entries: IntersectionObserverEntry[],
     observer: IntersectionObserver,
