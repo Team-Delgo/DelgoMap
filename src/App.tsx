@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import VConsole from "vconsole";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AxiosResponse } from "axios";
 import "./App.scss";
 import { ACHIEVEMENT_PATH, APPLE_REDIRECT_HANDLE_PATH, CAMERA_PATH, CROP_PATH, KAKAO_REDIRECT_HANDLE_PATH, MY_ACCOUNT_PATH, NAVER_REDIRECT_HANDLE_PATH, POSTS_PATH, RECORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "./common/constants/path.const";
 import CaptureCertificationPage from "./page/capture/CaptureCertificationPage";
@@ -44,11 +45,53 @@ import RecordCertificationPage from "./page/certification/RecordCertificationPag
 import CertificationMap from "./page/certification/CertificationMap";
 import { deviceAction } from "./redux/slice/deviceSlice";
 import HelpPage from "./page/help/HelpPage";
+import { RootState } from "./redux/store";
+import { userActions } from "./redux/slice/userSlice";
+import { getMyInfo } from "./common/api/myaccount";
 
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
-
+  const {isSignIn,user} = useSelector((state: RootState) => state.persist.user);
+  
+  useEffect(() => {
+    if (isSignIn) {
+      getMyInfo(
+        user.id,
+        (response: AxiosResponse) => {
+          const { code, data } = response.data;
+          if (code === 200) {
+            const { registDt } = data.user;
+            dispatch(
+              userActions.signin({
+                isSignIn: true,
+                user: {
+                  id: data.user.userId,
+                  address: data.user.address,
+                  nickname: data.user.name,
+                  email: data.user.email,
+                  phone: data.user.phoneNo,
+                  isSocial: false,
+                  geoCode: data.user.geoCode,
+                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+                  notify:data.user.notify,
+                },
+                pet: {
+                  petId: data.pet.petId,
+                  birthday: data.pet.birthday,
+                  breed: data.pet.breed,
+                  breedName: data.pet.breedName,
+                  name: data.pet.name,
+                  image: data.user.profile,
+                },
+              }),
+            );
+          }
+        },
+        dispatch,
+      );
+    }
+  }, []);
 
   useEffect(() => {
     const pcDevice = 'win16|win32|win64|mac|macintel';
