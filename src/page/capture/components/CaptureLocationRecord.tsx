@@ -98,10 +98,12 @@ function CaptureLocationRecord() {
       </div>
     );
   };
-
   return (
     <main
       className="capture-img-record"
+      style={{
+        height:`calc(100% - ${window.innerWidth}px + 20vw)`,
+      }}
     >
       <body className="review-container">
         <input
