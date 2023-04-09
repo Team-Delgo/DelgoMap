@@ -1,25 +1,11 @@
 @import './CapturePage.scss';
 
-// .capture-certification-img{
-//     position: relative;
-//     z-index: -1;
-// }
+.capture-certification-img{
+    position: relative;
+    z-index: -1;
+}
 .review-container {
   position: relative;
-  .review-place-name {
-    box-sizing: border-box;
-    display: block;
-    margin: auto;
-    padding: 0 20px;
-    margin-top: 20px;
-    font-size: 16px;
-    font-weight: bold;
-    width: 100%;
-    height: 52px;
-    color: #232323;
-    background-color: #f2f2f2;
-    border: none;
-  }
   .review-place-title {
     color: #232323;
     font-size: 16px;
@@ -74,7 +60,8 @@
 }
 
 .writting-button {
-  width: 100%;
+  width: 90vw;
+  margin: auto;
   height: 56px;
   background-color: #c4c4c4;
   color: white;
@@ -88,8 +75,9 @@
 }
 
 .writting-button-active {
-  width: 100%;
+  width: 90vw;
   height: 56px;
+  margin: auto;
   background-color: #3f3f3f;
   color: white;
   font-weight: 500;

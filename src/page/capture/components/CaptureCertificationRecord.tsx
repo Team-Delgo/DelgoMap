@@ -142,8 +142,7 @@ function CaptureCertificationRecord({
   return (
     <>
       {postCertificationIsLoading && <BallLoading />}
-      <div className='bottom-sheet-container'>
-        <Sheet
+        {/* <Sheet
           isOpen={bottomSheetIsOpen}
           onClose={closeBottomSheet}
           snapPoints={[
@@ -157,7 +156,7 @@ function CaptureCertificationRecord({
           className="modal-bottom-sheet"
         >
           <Sheet.Container style={sheetStyle}>
-            <Sheet.Content>
+            <Sheet.Content> */}
               <main className="capture-img-record">
                 <body className="review-container">
                   <div className="review-place-info">
@@ -191,10 +190,9 @@ function CaptureCertificationRecord({
                   )}
                 </footer>
               </main>
-            </Sheet.Content>
+            {/* </Sheet.Content>
           </Sheet.Container>
-        </Sheet>
-      </div>
+        </Sheet> */}
       {certificateErrorToastIsOpen && (
         <ToastPurpleMessage message={certificateErrorToastMessage} />
       )}
