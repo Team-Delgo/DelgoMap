@@ -53,7 +53,9 @@ function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
   const {isSignIn,user} = useSelector((state: RootState) => state.persist.user);
-  
+
+  const vconsole = new VConsole();
+
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
