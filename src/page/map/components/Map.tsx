@@ -33,6 +33,7 @@ import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from '../../../common/constants/path.co
 import { RootState } from '../../../redux/store';
 import AlertConfirm from '../../../common/dialog/AlertConfirm';
 import CertCard from './CertCard';
+import { clearSelectedId } from './MarkerSet';
 
 interface MakerItem {
   id: number;
@@ -78,27 +79,7 @@ function Map() {
   let map: naver.maps.Map;
   const routerLocation = useLocation();
 
-
-
-  const clearSelectedId = useCallback(() => {
-    setSelectedId((prev: any) => {
-      return {
-        img: '',
-        title: '',
-        address: '',
-        id: 0,
-        prevId: prev.id,
-        lat: 0,
-        detailUrl: '',
-        instaUrl: '',
-        lng: 0,
-        categoryCode: '0',
-        prevLat: prev.lat,
-        prevLng: prev.lng,
-        prevCategoryCode: prev.categoryCode,
-      };
-    });
-  }, [selectedId]);
+  const clearSelected = clearSelectedId(setSelectedId, selectedId);
 
   const getMapPageData = useCallback(() => {
     getMapData(
@@ -143,7 +124,7 @@ function Map() {
     map = new naver.maps.Map(mapElement.current, mapOptions);
     setGlobarMap(map);
     naver.maps.Event.addListener(map, 'click', (e) => {
-      clearSelectedId();
+      clearSelected();
       setSelectedCert(certDefault);
     });
     setLinkId(parseInt(routerLocation.pathname.slice(1), 10));
@@ -414,3 +395,5 @@ function Map() {
 }
 
 export default Map;
+
+
