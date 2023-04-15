@@ -121,6 +121,7 @@ function CertificationMap() {
       <div className="map" ref={mapElement} style={{ position: 'absolute' }} />
     </div>
   );
+  return <div/>
 }
 
 export default CertificationMap;

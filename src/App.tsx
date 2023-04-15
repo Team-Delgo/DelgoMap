@@ -11,7 +11,7 @@ import CaptureCertificationResultPage from "./page/capture/CaptureCertificationR
 import CaptureCertificationUpatePage from "./page/capture/CaptureCertificationUpatePage";
 import CaptureLocationPage from "./page/capture/CaptureLocationPage";
 import DetailPage from "./page/DetailPage";
-import MapPage from "./page/map/MapPage";
+// import MapPage from "./page/map/MapPage";
 import ChangePassword from "./page/myaccount/ChangePassword";
 import ChangePasswordCheck from "./page/myaccount/ChangePasswordCheck";
 import ChangeUserInfo from "./page/myaccount/ChangeUserInfo";
@@ -49,11 +49,13 @@ import { RootState } from "./redux/store";
 import { userActions } from "./redux/slice/userSlice";
 import { getMyInfo } from "./common/api/myaccount";
 
+import MapTest from "./page/map/components/MapTest";
+
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
-  const {isSignIn,user} = useSelector((state: RootState) => state.persist.user);
-  
+  const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
+
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
@@ -74,7 +76,7 @@ function App() {
                   isSocial: false,
                   geoCode: data.user.geoCode,
                   registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
-                  notify:data.user.notify,
+                  notify: data.user.notify,
                 },
                 pet: {
                   petId: data.pet.petId,
@@ -117,9 +119,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MapPage />} />
-          <Route path="/:id" element={<MapPage />} />
-          <Route path="/help" element={<HelpPage/>} />
+          {/* <Route path="/" element={<MapPage />} /> */}
+          <Route path="/" element={<MapTest />} />
+          {/* <Route path="/:id" element={<MapPage />} /> */}
+          <Route path="/help" element={<HelpPage />} />
           <Route path="/detail" element={<DetailPage />} />
           <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
           <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />

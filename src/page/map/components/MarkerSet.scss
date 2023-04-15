@@ -1,0 +1,22 @@
+.normalCert {
+  display: flex;
+  height: 63px;
+  justify-content: center;
+  position: relative;
+  width: 55px;
+  z-index: 9;
+}
+
+.outside-image {
+  height: 63px;
+  width: 53px;
+}
+
+.inside-image {
+  border-radius: 100%;
+  height: 45px;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 45px;
+}

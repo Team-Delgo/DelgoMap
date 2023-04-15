@@ -9,8 +9,6 @@ function LinkCopy() {
   const linkCopyEvent = useAnalyticsCustomLogEvent(analytics, "link_copy");
   const url = useSelector((state: any) => state.map.link);
 
-  console.log(window.Kakao);
-
   const sendScrap = () => {
     window.Kakao.Share.sendScrap({
       requestUrl: url,
