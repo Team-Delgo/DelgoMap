@@ -140,10 +140,7 @@ function RecordCertification(props: { certification: Cert }) {
             aria-hidden="true"
             onClick={() => {
               navigate(`/comments/${certification.certificationId}`, {
-                state: {
-                  certificationId: certification?.certificationId,
-                  posterId: certification?.userId,
-                },
+                state: { post: certification },
               });
             }}
           />

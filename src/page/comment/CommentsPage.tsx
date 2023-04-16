@@ -13,10 +13,10 @@ import {commentType} from '../../common/types/comment';
 import useActive from '../../common/hooks/useActive';
 import './CommentsPage.scss';
 import useInput from '../../common/hooks/useInput';
+import { postType } from '../../common/types/post';
 
 interface StateType {
-  certificationId: number;
-  posterId: number;
+  post:postType
 }
 
 function CommentsPage() {
@@ -27,7 +27,7 @@ function CommentsPage() {
   const [deleteCommentSuccessToastIsOpen, openDeleteCommentSuccessToast,closeDeleteCommentSuccessToast] = useActive(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const profile = useSelector((state: RootState) => state.persist.user.pet.image);
-  const { certificationId, posterId } = useLocation()?.state as StateType;
+  const { post} = useLocation()?.state as StateType;
   const textRef = useRef<any>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ function CommentsPage() {
 
   const getComments = useCallback(() => {
     getCommentList(
-      certificationId,
+      post.certificationId,
       (response: AxiosResponse) => {
         setCommentList(response.data.data);
       },
@@ -61,7 +61,7 @@ function CommentsPage() {
     resetInputComment();
     postComment(
       userId,
-      certificationId,
+      post.certificationId,
       inputComment,
       (response: AxiosResponse) => {
         if (response.data.code === 200) {
@@ -77,7 +77,7 @@ function CommentsPage() {
     deleteComment(
       userId,
       deleteCommentId,
-      certificationId,
+      post.certificationId,
       (response: AxiosResponse) => {
         if (response.data.code === 200) {
           openDeleteCommentSuccessToast();
@@ -89,7 +89,7 @@ function CommentsPage() {
       },
       dispatch,
     );
-  }, [deleteCommentId, certificationId]);
+  }, [deleteCommentId, post.certificationId]);
 
   const handleResizeHeight = useCallback(() => {
     if (textRef.current) {
@@ -126,14 +126,14 @@ function CommentsPage() {
                 className="comment-content-header-work-delete"
                 aria-hidden="true"
                 onClick={
-                  userId === posterId
+                  userId === post.userId
                     ? openBottomSheet(comment.commentId)
                     : userId === comment.userId
                     ? openBottomSheet(comment.commentId)
                     : undefined
                 }
                 style={
-                  userId === posterId
+                  userId === post.userId
                     ? undefined
                     : userId === comment.userId
                     ? undefined
@@ -168,7 +168,7 @@ function CommentsPage() {
             value={inputComment}
             onInput={handleResizeHeight}
             onChange={onChangeInputComment}
-            placeholder="댓글 남기기..."
+            placeholder={`${post.user.name}에게 댓글 남기기...`}
             className="comments-post-input"
           />
           <div
