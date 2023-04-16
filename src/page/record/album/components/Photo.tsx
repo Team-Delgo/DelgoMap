@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useQuery } from 'react-query';
 import classNames from 'classnames';
 import {
   useAnalyticsLogEvent,
@@ -44,7 +45,6 @@ function Photo() {
   const [categoryTab, setCategoryTab] = useState('전체');
   const [sortOption, setSortOption] = useState<boolean>(true);
   const [isLast, setLast] = useState(false);
-  const [otherDogsCerts, setOtherDogsCerts] = useState<Cert[]>([]);
   const dispatch = useDispatch();
   const location: any = useLocation();
 
@@ -112,19 +112,12 @@ function Photo() {
     changePhotoData();
   }, [sortOption]);
 
-  useEffect(() => {
-    if (photos.length === 0 && isFetched) {
-      getFiveOtherDogsCert(
-        userId,
-        5,
-        (response: AxiosResponse) => {
-          console.log(response);
-          setOtherDogsCerts(response.data.data);
-        },
-        dispatch,
-      );
-    }
-  }, [photos]);
+  const { data: otherDogsCerts, isLoading: otherDogsCertsLoading } =
+    useQuery(['getFiveOtherDogsCert', userId], () => getFiveOtherDogsCert(userId, 5), {
+      enabled: photos.length === 0 && isFetched,
+      staleTime: 2000,
+      cacheTime: 2000,
+    });
 
   useEffect(() => {
     console.log(isLoading, pageSizeFor, photos);
@@ -169,7 +162,7 @@ function Photo() {
   };
 
   const noRecordContext = useMemo(() => {
-    const imgs = otherDogsCerts.map((o) => {
+    const imgs = otherDogsCerts && otherDogsCerts.map((o) => {
       return (
         <img
           src={o.photoUrl}

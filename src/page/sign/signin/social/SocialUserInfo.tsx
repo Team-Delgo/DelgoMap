@@ -55,6 +55,7 @@ function SocialUserInfo() {
   const [regionList, setRegionList] = useState<regionType[]>();
   const [modalActive, setModalActive] = useState(false);
   const [region, setRegion] = useState<Region>();
+  const regionRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const nicknameRef = useRef<HTMLInputElement>(null);
   const getRegionData = async () => {
@@ -221,12 +222,15 @@ function SocialUserInfo() {
           <input
             className={classNames('login-input input-location')}
             placeholder="지역"
+            ref={regionRef}
             value={enteredInput.region}
             id={Id.REGION}
             onClick={() => {
+              regionRef.current!.blur();
               setModalActive(true);
             }}
             onFocus={() => {
+              regionRef.current!.blur();
               setModalActive(true);
             }}
             required

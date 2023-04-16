@@ -1,6 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
+import { Cert } from '../types/map';
+
+interface CertResponse {
+  data: Cert[];
+}
 
 async function getMungPlaceList() {
   const { data } = await axiosInstance.get(`/mungple/category/CA0000`);
@@ -95,20 +100,11 @@ function certificationDelete(data: { userId: number; certificationId: number }) 
   return axiosInstance.delete(`/certification/${data.userId}/${data.certificationId}`);
 }
 
-async function getFiveOtherDogsCert(
-  userId: number,
-  count: number,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  try {
-    const result = await axiosInstance.get(
-      `/certification/recent?userId=${userId}&count=${count}`,
-    );
-    success(result);
-  } catch (error: any) {
-    useErrorHandlers(dispatch, error);
-  }
+async function getFiveOtherDogsCert(userId: number, count: number) {
+  const { data } = await axiosInstance.get<CertResponse>(
+    `/certification/recent?userId=${userId}&count=${count}`,
+  );
+  return data.data;
 }
 
 export {
