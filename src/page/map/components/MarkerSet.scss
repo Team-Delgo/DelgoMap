@@ -3,20 +3,21 @@
   height: 63px;
   justify-content: center;
   position: relative;
-  width: 55px;
-  z-index: 9;
+  width: 56px;
+  z-index: 11;
 }
 
 .outside-image {
-  height: 63px;
-  width: 53px;
+  height: 62px;
+  width: 52px;
 }
 
 .inside-image {
   border-radius: 100%;
-  height: 45px;
+  height: 44px;
   position: absolute;
-  right: 4px;
   top: 4px;
-  width: 45px;
+  left: 50%;
+  transform: translateX(-49.5%);
+  width: 44px;
 }

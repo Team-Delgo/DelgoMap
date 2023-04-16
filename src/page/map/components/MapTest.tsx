@@ -18,7 +18,7 @@ import TempMarkerImageLoader, {
   setMarkerImageBig,
   setMarkerImageSmall,
   setNormalCertMarker,
-  setMungpleCertMarker
+  setOtherNormalCertMarker
 } from './MarkerSet';
 import SearchBar from './SearchBar';
 import Search from '../../../common/icons/search.svg';
@@ -27,13 +27,12 @@ import Human from '../../../common/icons/human.svg';
 import AlertConfirm from '../../../common/dialog/AlertConfirm';
 import LinkCopy from './LinkCopy';
 import CertToggle from './CertToggle';
+import CertCard from './CertCard';
 
 interface MakerItem {
   id: number;
   marker: kakao.maps.Marker;
 }
-
-
 
 function MapTest() {
   const [markerImages, setMarkerImages] = useState<MarkerImageSets>({
@@ -54,20 +53,29 @@ function MapTest() {
   const [selectedMarker, setSelectedMarker] = useState<kakao.maps.Marker>();
   const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
-  const [normalCertMarkerList, setNormalCertMarkerList] = useState<kakao.maps.CustomOverlay[]>([]);
-  const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<kakao.maps.CustomOverlay[]>([]);
+  const [normalCertMarkerList, setNormalCertMarkerList] = useState<
+    kakao.maps.CustomOverlay[]
+  >([]);
+  const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<
+    kakao.maps.CustomOverlay[]
+  >([]);
+  const [otherCertMarkerList, setOtherCertMarkerList] = useState<
+    kakao.maps.CustomOverlay[]
+  >([]);
 
   const [mungpleCertList, setMunpleCertList] = useState<Cert[]>([]);
   const [normalCertList, setNormalCertList] = useState<Cert[]>([]);
   const [otherMungpleCertList, setOtherMungpleCertList] = useState<Cert[]>([]);
   const [otherNormalCertList, setOtherNormalCertList] = useState<Cert[]>([]);
+
   const dispatch = useDispatch();
 
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const clearId = clearSelectedId(setSelectedId, selectedId);
 
-  const { data: mapDataList, isFetched } = useQuery(["getMapData", userId], () => getMapData(userId));
-
+  const { data: mapDataList, isFetched } = useQuery(['getMapData', userId], () =>
+    getMapData(userId),
+  );
 
   useEffect(() => {
     const options = {
@@ -77,7 +85,10 @@ function MapTest() {
     if (!mapElement.current) return;
     const map = new kakao.maps.Map(mapElement.current, options);
     setGlobarMap(map);
-    kakao.maps.event.addListener(map, 'click', clearId);
+    kakao.maps.event.addListener(map, 'click', () => {
+      clearId();
+      setSelectedCert(certDefault);
+    });
     const loadMarkerImages = async () => {
       const loadedImages = await MarkerImages();
       setMarkerImages(loadedImages);
@@ -93,23 +104,40 @@ function MapTest() {
 
   const deleteCertList = (certList: kakao.maps.CustomOverlay[]) => {
     certList.forEach((cert) => cert.setMap(null));
-  }
+  };
 
   useEffect(() => {
+    console.log(selectedCert);
+  }, [selectedCert]);
 
+  useEffect(() => {
     if (mapDataList) {
       if (userId > 0 && isCertVisible) {
         deleteMungpleList();
         if (globarMap && mapDataList) {
-          const normalMarkers = setNormalCertMarker(mapDataList.normalCertList, globarMap);
+          const normalMarkers = setNormalCertMarker(
+            mapDataList.normalCertList,
+            globarMap,
+            setSelectedCert,
+          );
           setNormalCertMarkerList(normalMarkers);
-          const certMarkers = setMungpleCertMarker(mapDataList.mungpleCertList, globarMap);
+          const certMarkers = setNormalCertMarker(
+            mapDataList.mungpleCertList,
+            globarMap,
+            setSelectedCert,
+          );
           setMungpleCertMarkerList(certMarkers);
         }
-      }
-      else {
+      } else {
         deleteCertList(normalCertMarkerList);
         deleteCertList(mungpleCertMarkerList);
+        if(globarMap){
+          const otherMarkers = setOtherNormalCertMarker(
+            mapDataList.exposedNormalCertList,
+            globarMap,
+          );
+          setOtherCertMarkerList(otherMarkers);
+        }
         const markers = mapDataList.mungpleList.map((m) => {
           const position = new kakao.maps.LatLng(
             parseFloat(m.latitude),
@@ -268,6 +296,17 @@ function MapTest() {
           categoryCode={selectedId.categoryCode}
           detailUrl={selectedId.detailUrl}
           instaUrl={selectedId.instaUrl}
+        />
+      )}
+      {selectedCert.placeName.length > 0 && (
+        <CertCard
+          cert={selectedCert}
+          img={selectedCert.photoUrl}
+          title={selectedCert.placeName}
+          categoryCode={selectedCert.categoryCode}
+          registDt={selectedCert.registDt}
+          description={selectedCert.description}
+          setCenter={setCurrentMapPosition}
         />
       )}
       {selectedId.title.length === 0 && selectedCert.placeName.length === 0 && (

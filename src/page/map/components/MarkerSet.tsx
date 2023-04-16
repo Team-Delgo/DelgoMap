@@ -21,7 +21,7 @@ import BeauthCert from '../../../common/icons/beauty-cert.svg';
 import HospitalCert from '../../../common/icons/hospital-cert.svg';
 import NormalCert from '../../../common/icons/normal-cert.svg';
 import { Cert } from './maptype';
-import "./MarkerSet.scss";
+import './MarkerSet.scss';
 
 async function loadImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -115,20 +115,38 @@ export function setMarkerImageSmall(categoryCode: string) {
   return images.smallImages[6];
 }
 
-export function setNormalCertMarker(certList: Cert[], map: kakao.maps.Map) {
+export function setNormalCertMarker(
+  certList: Cert[],
+  map: kakao.maps.Map,
+  setCert: React.Dispatch<React.SetStateAction<Cert>>,
+) {
   const markers = certList.map((m) => {
-    console.log(m);
     const icon = NormalCert;
-    const content = `
-      <div class"normalCert">
-      <img src="${icon}" class="outside-image" alt="pin" />
-      <img src="${m.photoUrl}" class="inside-image" alt="cert"/>
-      </div>
-    `;
+    const content = document.createElement("div");
+    content.className = "normalCert";
+    content.setAttribute("aria-hidden", "true");
+
+    const iconImg = document.createElement("img");
+    iconImg.src = icon;
+    iconImg.className = "outside-image";
+    iconImg.alt = "pin";
+
+    const insideImg = document.createElement("img");
+    insideImg.src = m.photoUrl;
+    insideImg.className = "inside-image";
+    insideImg.alt = "cert";
+
+    content.appendChild(iconImg);
+    content.appendChild(insideImg);
     const marker = new kakao.maps.CustomOverlay({
       position: new kakao.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
       content,
-      map
+      map,
+      clickable:true
+    });
+    content.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      setCert(m)
     });
     marker.setMap(map);
     return marker;
@@ -148,13 +166,48 @@ export function setMungpleCertMarker(certList: Cert[], map: kakao.maps.Map) {
     const marker = new kakao.maps.CustomOverlay({
       position: new kakao.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
       content,
-      map
+      map,
     });
     marker.setMap(map);
     return marker;
   });
   return markers;
 }
+
+export function setOtherNormalCertMarker(
+  certList: Cert[],
+  map: kakao.maps.Map
+) {
+  const markers = certList.map((m) => {
+    const icon = NormalCert;
+    const content = document.createElement("div");
+    content.className = "normalCert";
+    content.setAttribute("aria-hidden", "true");
+
+    const iconImg = document.createElement("img");
+    iconImg.src = icon;
+    iconImg.className = "outside-image";
+    iconImg.alt = "pin";
+
+    const insideImg = document.createElement("img");
+    insideImg.src = m.photoUrl;
+    insideImg.className = "inside-image";
+    insideImg.alt = "cert";
+
+    content.appendChild(iconImg);
+    content.appendChild(insideImg);
+    const marker = new kakao.maps.CustomOverlay({
+      position: new kakao.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
+      content,
+      map,
+      clickable:true
+    });
+    marker.setMap(map);
+    return marker;
+  });
+  return markers;
+}
+
 
 export function MarkerImages() {
   let imageSize = new kakao.maps.Size(50, 59);
