@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { NavigateFunction } from 'react-router-dom';
 import Cafe from '../../../common/icons/cafe-map.svg';
 import CafeSmall from '../../../common/icons/cafe-map-small.svg';
 import Bath from '../../../common/icons/bath-map.svg';
@@ -22,6 +23,7 @@ import HospitalCert from '../../../common/icons/hospital-cert.svg';
 import NormalCert from '../../../common/icons/normal-cert.svg';
 import { Cert } from './maptype';
 import './MarkerSet.scss';
+import { POSTS_PATH } from '../../../common/constants/path.const';
 
 async function loadImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -176,7 +178,8 @@ export function setMungpleCertMarker(certList: Cert[], map: kakao.maps.Map) {
 
 export function setOtherNormalCertMarker(
   certList: Cert[],
-  map: kakao.maps.Map
+  map: kakao.maps.Map,
+  navigate: NavigateFunction
 ) {
   const markers = certList.map((m) => {
     const icon = NormalCert;
@@ -196,10 +199,19 @@ export function setOtherNormalCertMarker(
 
     content.appendChild(iconImg);
     content.appendChild(insideImg);
+    content.addEventListener('click', ()=>{
+      navigate(POSTS_PATH, {
+        state:{
+          cert: m,
+          from: 'homeCert',
+        }
+      })
+    })
     const marker = new kakao.maps.CustomOverlay({
       position: new kakao.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
       content,
       map,
+      zIndex:11,
       clickable:true
     });
     marker.setMap(map);

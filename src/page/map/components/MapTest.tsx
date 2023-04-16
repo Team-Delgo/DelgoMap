@@ -135,6 +135,7 @@ function MapTest() {
           const otherMarkers = setOtherNormalCertMarker(
             mapDataList.exposedNormalCertList,
             globarMap,
+            navigate
           );
           setOtherCertMarkerList(otherMarkers);
         }
