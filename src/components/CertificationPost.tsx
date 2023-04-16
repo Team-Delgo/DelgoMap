@@ -201,7 +201,8 @@ function CertificationPost({
     commentEvent.mutate();
     dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
     navigate(`/comments/${post?.certificationId}`, {
-      state: { certificationId: post?.certificationId, posterId: post?.userId },
+      // state: { certificationId: post?.certificationId, posterId: post?.userId },
+      state: { post },
     });
   };
 
