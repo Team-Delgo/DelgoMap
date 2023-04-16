@@ -286,7 +286,7 @@ function MapTest() {
       <div className="slogun">강아지 델고 동네생활</div>
       <div className="map" ref={mapElement} />
       {searchIsOpen && (
-        <SearchBar selectId={searchSelectId} cafeList={mungpleList} close={searchClose} />
+        <SearchBar selectId={searchSelectId} cafeList={mapDataList!.mungpleList} close={searchClose} />
       )}
       {selectedId.title.length > 0 && (
         <PlaceCard
