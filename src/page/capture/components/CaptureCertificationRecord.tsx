@@ -160,7 +160,7 @@ function CaptureCertificationRecord({
             <main
               className="capture-img-record"
               style={{
-                height: `calc(100% - ${window.innerWidth}px + 20vw)`,
+                height: window.screen.height - window.screen.width + 10,
               }}
             >
               <body className="review-container">
