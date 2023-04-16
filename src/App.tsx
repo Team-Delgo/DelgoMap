@@ -54,6 +54,7 @@ import MapTest from "./page/map/components/MapTest";
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
+
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
 
   useEffect(() => {

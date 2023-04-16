@@ -3,10 +3,9 @@ import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useSelector, useDispatch } from 'react-redux';
+import Sheet from 'react-modal-sheet';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
-import {
-  registerGalleryCertificationPost,
-} from '../../../common/api/certification';
+import { registerGalleryCertificationPost } from '../../../common/api/certification';
 import { RootState } from '../../../redux/store';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import ToastPurpleMessage from '../../../common/dialog/ToastPurpleMessage';
@@ -21,11 +20,14 @@ interface CaptureCertificationRecordPropsType {
   offPostCertificationLoading: () => void;
 }
 
+const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
+
 function CaptureCertificationRecord({
   postCertificationIsLoading,
   onPostCertificationLoading,
   offPostCertificationLoading,
 }: CaptureCertificationRecordPropsType) {
+  const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [certificationPostContent, onChangeCertificationPostContent] = useInput('');
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
   const [
@@ -140,44 +142,62 @@ function CaptureCertificationRecord({
   return (
     <>
       {postCertificationIsLoading && <BallLoading />}
-      <main
-        className="capture-img-record"
-        style={{
-          height:`calc(100% - ${window.innerWidth}px + 20vw)`,
-        }}
+      <Sheet
+        isOpen={bottomSheetIsOpen}
+        onClose={closeBottomSheet}
+        snapPoints={[
+          window.screen.height - window.screen.width + 10,
+          window.screen.height - window.screen.width + 10,
+          window.screen.height - window.screen.width + 10,
+          window.screen.height - window.screen.width + 10,
+        ]}
+        // ref={ref}
+        disableDrag
+        className="modal-bottom-sheet"
       >
-        <body className="review-container">
-          <div className="review-place-info">
-            <div className="review-place-info-title">{title}</div>
-            <div className="review-place-info-address">{address}</div>
-          </div>
-          <textarea
-            className="review-content"
-            placeholder="남기고 싶은 기록을 작성해주세요"
-            onChange={onChangeCertificationPostContent}
-            maxLength={199}
-            onFocus={screenUp}
-          >
-            {certificationPostContent}
-          </textarea>
-          <div className="review-content-length">
-            {certificationPostContent.length}/200
-          </div>
-        </body>
-        <footer>
-          {certificationPostContent.length > 0 ? (
-            <div
-              className="writting-button-active"
-              aria-hidden="true"
-              onClick={uploadGalleryImgCertification}
+        <Sheet.Container style={sheetStyle}>
+          <Sheet.Content>
+            <main
+              className="capture-img-record"
+              style={{
+                height: window.screen.height - window.screen.width + 10,
+              }}
             >
-              기록완료
-            </div>
-          ) : (
-            <div className="writting-button">기록완료</div>
-          )}
-        </footer>
-      </main>
+              <body className="review-container">
+                <div className="review-place-info">
+                  <div className="review-place-info-title">{title}</div>
+                  <div className="review-place-info-address">{address}</div>
+                </div>
+                <textarea
+                  className="review-content"
+                  placeholder="남기고 싶은 기록을 작성해주세요"
+                  onChange={onChangeCertificationPostContent}
+                  maxLength={199}
+                  onFocus={screenUp}
+                >
+                  {certificationPostContent}
+                </textarea>
+                <div className="review-content-length">
+                  {certificationPostContent.length}/200
+                </div>
+              </body>
+              <footer>
+                {certificationPostContent.length > 0 ? (
+                  <div
+                    className="writting-button-active"
+                    aria-hidden="true"
+                    onClick={uploadGalleryImgCertification}
+                  >
+                    기록완료
+                  </div>
+                ) : (
+                  <div className="writting-button">기록완료</div>
+                )}
+              </footer>
+            </main>
+          </Sheet.Content>
+        </Sheet.Container>
+      </Sheet>
       {certificateErrorToastIsOpen && (
         <ToastPurpleMessage message={certificateErrorToastMessage} />
       )}
