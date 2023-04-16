@@ -16,6 +16,8 @@ body {
     -moz-user-select: auto;
     -ms-user-select: auto;
     user-select: auto;
+    -webkit-user-modify: 'read-write-plaintext-only';
+    -webkit-user-modify:  read-write-plaintext-only;
 }
 
 }

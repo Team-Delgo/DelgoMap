@@ -122,7 +122,6 @@ function CommentsPage() {
           <div className="comment-content-header">
             <div className="comment-content-header-name">{comment.userName}</div>
             <div className="comment-content-header-work">
-              <div className="comment-content-header-work-date">{comment.createDt.slice(0, 10)}</div>
               <div
                 className="comment-content-header-work-delete"
                 aria-hidden="true"
@@ -133,9 +132,18 @@ function CommentsPage() {
                     ? openBottomSheet(comment.commentId)
                     : undefined
                 }
-                style={userId === posterId ? undefined : userId === comment.userId ? undefined : { visibility: 'hidden' }}
+                style={
+                  userId === posterId
+                    ? undefined
+                    : userId === comment.userId
+                    ? undefined
+                    : { visibility: 'hidden' }
+                }
               >
                 삭제
+              </div>
+              <div className="comment-content-header-work-date">
+                {comment.createDt.slice(0, 10)}
               </div>
             </div>
           </div>
