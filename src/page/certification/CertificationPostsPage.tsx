@@ -33,6 +33,9 @@ function CertificationPostsPage() {
   const navigate = useNavigate();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
 
+  console.log('firstCert',firstCert)
+  console.log('pageFrom',pageFrom)
+
   const {
     data,
     fetchNextPage,
@@ -94,7 +97,7 @@ function CertificationPostsPage() {
         <img src={PrevArrow} alt="back" aria-hidden="true" onClick={moveToHomePage} />
         <div className="certificationPostsPage-header-text">동네 강아지</div>
       </div>
-      {pageFrom === 'photo' ? (
+      {pageFrom === 'photo' || pageFrom === 'homeCert'  ? (
         <CertificationPost
           post={firstCert}
           certificationPostsFetch={certificationPostsFetch}

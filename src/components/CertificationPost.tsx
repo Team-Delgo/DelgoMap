@@ -77,8 +77,6 @@ function CertificationPost({
 
 
 
-  console.log('post',post)
-
   const observeImg = (
     entries: IntersectionObserverEntry[],
     observer: IntersectionObserver,
@@ -237,10 +235,10 @@ function CertificationPost({
         <div className="post-img-result-header-profile">
           <img
             className="post-img-result-header-profile-img"
-            src={post?.user.profile}
+            src={post?.user?.profile}
             alt="copy url"
             ref={profileImg}
-            data-src={post.user.profile ? post.user.profile : DogLoading}
+            data-src={post.user?.profile ? post?.user?.profile : DogLoading}
           />
           <div>
             <div className="post-img-result-header-profile-date">
