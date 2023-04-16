@@ -82,7 +82,7 @@ function CertificationPostsPage() {
 
   const moveToHomePage = useCallback(() => {
     dispatch(scrollActions.scrollInit());
-    if(pageFrom === 'home')
+    if(pageFrom === 'home' || pageFrom === 'homeCert')
       navigate(ROOT_PATH);
     else navigate(RECORD_PATH.PHOTO);
   }, []);
