@@ -4,7 +4,7 @@ import { useErrorHandlers } from './useErrorHandlers';
 
 function login(data: { email: string; password: string }, success: (data: AxiosResponse) => void, dispatch: any) {
   axios
-    .post(`https://www.test.delgo.pet/login`, {
+    .post(`https://www.reward.delgo.pet/login`, {
       email: data.email,
       password: data.password,
     })
