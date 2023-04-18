@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useSelector, useDispatch } from 'react-redux';
 import Sheet from 'react-modal-sheet';
+import classnames from 'classnames';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
 import { registerGalleryCertificationPost } from '../../../common/api/certification';
 import { RootState } from '../../../redux/store';
@@ -27,6 +28,7 @@ function CaptureCertificationRecord({
   onPostCertificationLoading,
   offPostCertificationLoading,
 }: CaptureCertificationRecordPropsType) {
+  const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [certificationPostContent, onChangeCertificationPostContent] = useInput('');
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
@@ -158,7 +160,9 @@ function CaptureCertificationRecord({
         <Sheet.Container style={sheetStyle}>
           <Sheet.Content>
             <main
-              className="capture-img-record"
+              className={classnames('capture-img-record', {
+                'ios-capture-record': OS === 'ios',
+              })}
               style={{
                 height: window.screen.height - window.screen.width + 10,
               }}
