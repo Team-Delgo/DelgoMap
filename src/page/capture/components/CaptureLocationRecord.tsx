@@ -105,7 +105,64 @@ function CaptureLocationRecord() {
       </div>
     );
   };
-  return (
+  return OS === 'ios' ? (
+    <main
+      className="capture-img-record ios-capture-record"
+      style={{
+        height: window.screen.height - window.screen.width + 10,
+      }}
+    >
+      <body className="review-container">
+        <input
+          type="text"
+          ref={inputRef}
+          className="review-place-name"
+          placeholder="여기는 어디인가요?"
+          onChange={onChangePlaceName}
+          onFocus={screenUp}
+        />
+        {mungPlaceList?.data.map((place: MungPlaceType) => {
+          if (placeName.length > 0) {
+            if (place.placeName.includes(placeName)) {
+              return (
+                <div
+                  className="review-place-wrapper"
+                  aria-hidden="true"
+                  onClick={selectMongPlace(place)}
+                  key={place.mungpleId}
+                >
+                  <div>
+                    <div
+                      className={
+                        checkedPlaceId === place.mungpleId
+                          ? 'review-place-wrapper-active-name'
+                          : 'review-place-wrapper-name'
+                      }
+                    >
+                      {place.placeName}
+                    </div>
+                    <div
+                      className={
+                        checkedPlaceId === place.mungpleId
+                          ? 'review-place-wrapper-active-address'
+                          : 'review-place-wrapper-address'
+                      }
+                    >
+                      {place.roadAddress}
+                    </div>
+                  </div>
+                  {checkedPlaceId === place.mungpleId ? (
+                    <img className="review-place-check" src={Check} alt="category-img" />
+                  ) : null}
+                </div>
+              );
+            }
+          }
+        })}
+        {placeName.length > 0 && manualPlace()}
+      </body>
+    </main>
+  ) : (
     <Sheet
       isOpen={bottomSheetIsOpen}
       onClose={closeBottomSheet}
@@ -122,9 +179,7 @@ function CaptureLocationRecord() {
       <Sheet.Container style={sheetStyle}>
         <Sheet.Content>
           <main
-            className={classnames('capture-img-record', {
-              'ios-capture-record': OS === 'ios',
-            })}
+            className="capture-img-record"
             style={{
               height: window.screen.height - window.screen.width + 10,
             }}

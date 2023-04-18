@@ -3,7 +3,6 @@ import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Sheet from 'react-modal-sheet';
-import classnames from 'classnames';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
 import { updateCertificationPost } from '../../../common/api/certification';
 import { RootState } from '../../../redux/store';
@@ -83,64 +82,103 @@ function CaptureCategoryUpdateRecord() {
   return (
     <>
       {updateCertificationIsLoading && <BallLoading />}
-      <Sheet
-        isOpen={bottomSheetIsOpen}
-        onClose={closeBottomSheet}
-        snapPoints={[
-          window.screen.height - window.screen.width + 10,
-          window.screen.height - window.screen.width + 10,
-          window.screen.height - window.screen.width + 10,
-          window.screen.height - window.screen.width + 10,
-        ]}
-        // ref={ref}
-        disableDrag
-        className="modal-bottom-sheet"
-      >
-        <Sheet.Container style={sheetStyle}>
-          <Sheet.Content>
-            <main
-              className={classnames('capture-img-record', {
-                'ios-capture-record': OS === 'ios',
-              })}
-              style={{
-                height: window.screen.height - window.screen.width + 10,
-              }}
+      {OS === 'ios' ? (
+        <main
+          className="capture-img-record ios-capture-record"
+          style={{
+            height: window.screen.height - window.screen.width + 10,
+          }}
+        >
+          <body className="review-container">
+            <div className="review-place-info">
+              <div className="review-place-info-title">{title}</div>
+              <div className="review-place-info-address">{address}</div>
+            </div>
+            <textarea
+              className="review-content"
+              placeholder="남기고 싶은 기록을 작성해주세요"
+              onChange={onChangeCertificationPostContent}
+              maxLength={1000}
+              onFocus={screenUp}
             >
-              <body className="review-container">
-                <div className="review-place-info">
-                  <div className="review-place-info-title">{title}</div>
-                  <div className="review-place-info-address">{address}</div>
-                </div>
-                <textarea
-                  className="review-content"
-                  placeholder="남기고 싶은 기록을 작성해주세요"
-                  onChange={onChangeCertificationPostContent}
-                  maxLength={1000}
-                  onFocus={screenUp}
-                >
-                  {certificationPostContent}
-                </textarea>
-                <div className="review-content-length">
-                  {certificationPostContent.length}/1000
-                </div>
-              </body>
-              <footer>
-                {certificationPostContent.length > 0 ? (
-                  <div
-                    className="writting-button-active"
-                    aria-hidden="true"
-                    onClick={uploadCertificationPost}
-                  >
-                    수정완료
+              {certificationPostContent}
+            </textarea>
+            <div className="review-content-length">
+              {certificationPostContent.length}/1000
+            </div>
+          </body>
+          <footer>
+            {certificationPostContent.length > 0 ? (
+              <div
+                className="writting-button-active"
+                aria-hidden="true"
+                onClick={uploadCertificationPost}
+              >
+                수정완료
+              </div>
+            ) : (
+              <div className="writting-button">수정완료</div>
+            )}
+          </footer>
+        </main>
+      ) : (
+        <Sheet
+          isOpen={bottomSheetIsOpen}
+          onClose={closeBottomSheet}
+          snapPoints={[
+            window.screen.height - window.screen.width + 10,
+            window.screen.height - window.screen.width + 10,
+            window.screen.height - window.screen.width + 10,
+            window.screen.height - window.screen.width + 10,
+          ]}
+          // ref={ref}
+          disableDrag
+          className="modal-bottom-sheet"
+        >
+          <Sheet.Container style={sheetStyle}>
+            <Sheet.Content>
+              <main
+                className="capture-img-record"
+                style={{
+                  height: window.screen.height - window.screen.width + 10,
+                }}
+              >
+                <body className="review-container">
+                  <div className="review-place-info">
+                    <div className="review-place-info-title">{title}</div>
+                    <div className="review-place-info-address">{address}</div>
                   </div>
-                ) : (
-                  <div className="writting-button">수정완료</div>
-                )}
-              </footer>
-            </main>
-          </Sheet.Content>
-        </Sheet.Container>
-      </Sheet>
+                  <textarea
+                    className="review-content"
+                    placeholder="남기고 싶은 기록을 작성해주세요"
+                    onChange={onChangeCertificationPostContent}
+                    maxLength={1000}
+                    onFocus={screenUp}
+                  >
+                    {certificationPostContent}
+                  </textarea>
+                  <div className="review-content-length">
+                    {certificationPostContent.length}/1000
+                  </div>
+                </body>
+                <footer>
+                  {certificationPostContent.length > 0 ? (
+                    <div
+                      className="writting-button-active"
+                      aria-hidden="true"
+                      onClick={uploadCertificationPost}
+                    >
+                      수정완료
+                    </div>
+                  ) : (
+                    <div className="writting-button">수정완료</div>
+                  )}
+                </footer>
+              </main>
+            </Sheet.Content>
+          </Sheet.Container>
+        </Sheet>
+      )}
     </>
   );
 }
