@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Sheet from 'react-modal-sheet';
+import classnames from 'classnames';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
 import { updateCertificationPost } from '../../../common/api/certification';
 import { RootState } from '../../../redux/store';
@@ -14,6 +15,7 @@ import BallLoading from '../../../common/utils/BallLoading';
 const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
 
 function CaptureCategoryUpdateRecord() {
+  const { OS } = useSelector((state: RootState) => state.persist.device);
   const { title, certificationId, content, address } = useSelector(
     (state: RootState) => state.persist.upload,
   );
@@ -97,7 +99,9 @@ function CaptureCategoryUpdateRecord() {
         <Sheet.Container style={sheetStyle}>
           <Sheet.Content>
             <main
-              className="capture-img-record"
+              className={classnames('capture-img-record', {
+                'ios-capture-record': OS === 'ios',
+              })}
               style={{
                 height: window.screen.height - window.screen.width + 10,
               }}

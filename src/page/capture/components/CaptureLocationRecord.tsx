@@ -1,9 +1,10 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 import Sheet from 'react-modal-sheet';
+import classnames from 'classnames';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import { getMungPlaceList } from '../../../common/api/certification';
@@ -19,10 +20,12 @@ import { MungPlaceType } from '../../../common/types/mungPlace';
 import useActive from '../../../common/hooks/useActive';
 import useInput from '../../../common/hooks/useInput';
 import { mapAction } from '../../../redux/slice/mapSlice';
+import { RootState } from '../../../redux/store';
 
 const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
 
 function CaptureLocationRecord() {
+  const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [placeName, onChangePlaceName] = useInput('');
   const [checkedPlaceId, setCheckedPlaceId] = useState(-1);
@@ -119,7 +122,9 @@ function CaptureLocationRecord() {
       <Sheet.Container style={sheetStyle}>
         <Sheet.Content>
           <main
-            className="capture-img-record"
+            className={classnames('capture-img-record', {
+              'ios-capture-record': OS === 'ios',
+            })}
             style={{
               height: window.screen.height - window.screen.width + 10,
             }}

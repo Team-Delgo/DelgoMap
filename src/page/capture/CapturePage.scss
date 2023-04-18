@@ -15,11 +15,14 @@
     z-index: 10;
 }
 
+.ios-capture-record{
+    position:fixed;
+    bottom:0;
+    overflow-y:scroll;
+    overflow-x:hidden; 
+}
+
 .capture-img-record {
-    // position:fixed;
-    // bottom:0;
-    // overflow-y:scroll;
-    // overflow-x:hidden;
     border-radius: 18px 18px 0px 0px;
     background: #FFFFFF;
     z-index: 100;
