@@ -231,6 +231,7 @@ function MapTest() {
       return marker.id === data.mungpleId;
     });
     markerList[index].marker.setImage(image);
+    markerList[index].marker.setZIndex(20);
     globarMap?.panTo(
       new kakao.maps.LatLng(parseFloat(data.latitude), parseFloat(data.longitude)),
     );
