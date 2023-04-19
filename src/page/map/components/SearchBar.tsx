@@ -3,7 +3,8 @@ import useOnclickOutside from 'react-cool-onclickoutside';
 import { useDispatch, useSelector } from 'react-redux';
 import { Mungple } from './maptype';
 import './SearchBar.scss';
-import BackArrow from '../../../common/icons/back-arrow.svg';
+// import BackArrow from '../../../common/icons/back-arrow.svg';
+import BackArrow from '../../../components/BackArrow';
 import { searchAction } from '../../../redux/slice/searchSlice';
 import { RootState } from '../../../redux/store';
 
@@ -82,7 +83,8 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
   return (
     <div ref={ref} className="search-wrapper">
       <div className="search-header">
-        <img src={BackArrow} alt="back" aria-hidden="true" onClick={close} />
+        <BackArrow onClickHandler={close}/>
+        {/* <img src={BackArrow} alt="back" aria-hidden="true" onClick={close} /> */}
         <div className="search">
           <input
             id="search"
