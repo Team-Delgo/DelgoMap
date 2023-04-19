@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Mungple } from './maptype';
 import './SearchBar.scss';
 // import BackArrow from '../../../common/icons/back-arrow.svg';
-import BackArrow from '../../../components/BackArrow';
+import BackArrowComponent from '../../../components/BackArrowComponent';
 import { searchAction } from '../../../redux/slice/searchSlice';
 import { RootState } from '../../../redux/store';
 
@@ -83,7 +83,7 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
   return (
     <div ref={ref} className="search-wrapper">
       <div className="search-header">
-        <BackArrow onClickHandler={close}/>
+        <BackArrowComponent onClickHandler={close}/>
         {/* <img src={BackArrow} alt="back" aria-hidden="true" onClick={close} /> */}
         <div className="search">
           <input

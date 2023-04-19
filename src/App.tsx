@@ -57,7 +57,6 @@ function App() {
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
 
-  const vconsole = new VConsole();
 
   useEffect(() => {
     if (isSignIn) {

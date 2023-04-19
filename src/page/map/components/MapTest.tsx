@@ -72,6 +72,7 @@ function MapTest() {
   );
 
   useEffect(() => {
+    console.log(1);
     const options = {
       center: new kakao.maps.LatLng(initMapCenter.lat, initMapCenter.lng),
       level: 5,
@@ -324,6 +325,7 @@ function MapTest() {
           categoryCode={selectedId.categoryCode}
           detailUrl={selectedId.detailUrl}
           instaUrl={selectedId.instaUrl}
+          map={globarMap}
         />
       )}
       {selectedCert.placeName.length > 0 && (

@@ -6,21 +6,26 @@ import BackArrow from '../common/icons/back-arrow.svg';
 import './DetailPage.scss';
 import BallLoading from '../common/utils/BallLoading';
 import { analytics } from '..';
+import BackArrowComponent from '../components/BackArrowComponent';
 
 function ImageBox({ children }: PropsWithChildren<unknown>) {
-  return <div style={{
-    display: 'block',
-    width: '90%',
-    height: '100%',
-  }}>
-    {children}
-  </div>
+  return (
+    <div
+      style={{
+        display: 'block',
+        width: '90%',
+        height: '100%',
+      }}
+    >
+      {children}
+    </div>
+  );
 }
 
 function DetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [imgLoading, setImageLoading] = useState(true);
-  const mutation = useAnalyticsLogEvent(analytics, "screen_view");
+  const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const navigate = useNavigate();
   const url = useSelector((state: any) => state.map.detailImgUrl);
 
@@ -34,21 +39,19 @@ function DetailPage() {
         firebase_screen_class: 'DetailPage',
       },
     });
-  }, [])
+  }, []);
 
   return (
     <div className="detail">
       {(isLoading || imgLoading) && <BallLoading />}
+      <BackArrowComponent onClickHandler={() => navigate(-1)} />
+
       <img
-        src={BackArrow}
-        alt="back"
-        className="detail-back"
-        aria-hidden="true"
-        onClick={() => {
-          navigate(-1);
-        }}
+        className="detail-img"
+        src={url}
+        alt="url"
+        onLoad={() => setImageLoading(false)}
       />
-      <img className="detail-img" src={url} alt="url" onLoad={() => setImageLoading(false)} />
     </div>
   );
 }

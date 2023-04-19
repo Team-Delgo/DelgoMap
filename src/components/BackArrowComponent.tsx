@@ -2,7 +2,7 @@ import React from 'react';
 import BackArrowImg from '../common/icons/back-arrow.svg';
 import "./BackArrow.scss";
 
-function BackArrow(props: { onClickHandler: () => void }) {
+function BackArrowComponent(props: { onClickHandler: () => void }) {
   const { onClickHandler } = props;
   return (
     <div aria-hidden className="BackArrow" onClick={onClickHandler}>
@@ -10,4 +10,4 @@ function BackArrow(props: { onClickHandler: () => void }) {
     </div>
   );
 }
-export default BackArrow;
+export default BackArrowComponent;
