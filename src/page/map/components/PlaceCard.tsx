@@ -23,14 +23,13 @@ function PlaceCard(props: {
   title: string;
   address: string;
   categoryCode: string;
-  map: kakao.maps.Map |undefined;
+  map: kakao.maps.Map | undefined;
 }) {
   const navigate = useNavigate();
   const linkClickEvent = useAnalyticsCustomLogEvent(analytics, 'card_click');
   const dispatch = useDispatch();
   const { id, img, title, address, categoryCode, detailUrl, instaUrl, map } = props;
   const icon = useMemo(() => {
-    console.log(categoryCode);
     if (categoryCode === 'CA0001') {
       return <img src={WalkSmall} alt="" />;
     }
@@ -64,7 +63,8 @@ function PlaceCard(props: {
     linkClickEvent.mutate();
     // console.log(map!.getCenter());
     const center = map!.getCenter();
-    dispatch(mapAction.setCurrentPosition({lat:center.getLat(),lng:center.getLng(), zoom:5}))
+    const level = map!.getLevel();
+    dispatch(mapAction.setCurrentPosition({ lat: center.getLat(), lng: center.getLng(), zoom: level }))
     dispatch(mapAction.setDetailUrl(detailUrl));
     navigate(`detail`);
   }, [instaUrl]);

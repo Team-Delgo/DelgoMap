@@ -144,9 +144,9 @@ export function setNormalCertMarker(
       position: new kakao.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
       content,
       map,
-      clickable:true
+      clickable: true
     });
-    content.addEventListener("click", (e)=>{
+    content.addEventListener("click", (e) => {
       e.stopPropagation();
       setCert(m)
     });
@@ -179,7 +179,8 @@ export function setMungpleCertMarker(certList: Cert[], map: kakao.maps.Map) {
 export function setOtherNormalCertMarker(
   certList: Cert[],
   map: kakao.maps.Map,
-  navigate: NavigateFunction
+  navigate: NavigateFunction,
+  setCenter: () => void,
 ) {
   const markers = certList.map((m) => {
     const icon = NormalCert;
@@ -199,9 +200,10 @@ export function setOtherNormalCertMarker(
 
     content.appendChild(iconImg);
     content.appendChild(insideImg);
-    content.addEventListener('click', ()=>{
+    content.addEventListener('click', () => {
+      setCenter();
       navigate(POSTS_PATH, {
-        state:{
+        state: {
           cert: m,
           from: 'homeCert',
         }
@@ -211,8 +213,8 @@ export function setOtherNormalCertMarker(
       position: new kakao.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
       content,
       map,
-      zIndex:11,
-      clickable:true
+      zIndex: 11,
+      clickable: true
     });
     marker.setMap(map);
     return marker;
