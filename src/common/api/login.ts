@@ -3,7 +3,7 @@ import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
 function login(info: { email: string; password: string }) {
-  const data = axios.post(`https://www.reward.delgo.pet/login`, {
+  const data = axios.post(`https://www.test.delgo.pet/login`, {
     email: info.email,
     password: info.password,
   });
