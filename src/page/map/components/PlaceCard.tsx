@@ -34,7 +34,7 @@ function PlaceCard(props: {
     };
   }, []);
   useEffect(() => {
-    dispatch(mapAction.setLink(`https://map.delgo.pet/${id}`));
+    dispatch(mapAction.setLink(`https://reward.delgo.pet/${id}`));
   }, [id]);
   // if (categoryCode === "CA0001") {
   // icon = <img src={WalkSmall} alt="" />
