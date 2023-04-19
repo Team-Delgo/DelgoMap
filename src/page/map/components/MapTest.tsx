@@ -18,7 +18,7 @@ import TempMarkerImageLoader, {
   setMarkerImageBig,
   setMarkerImageSmall,
   setNormalCertMarker,
-  setOtherNormalCertMarker
+  setOtherNormalCertMarker,
 } from './MarkerSet';
 import SearchBar from './SearchBar';
 import Search from '../../../common/icons/search.svg';
@@ -44,6 +44,7 @@ function MapTest() {
   const toggleDefault = useSelector((state: RootState) => state.map.certToggle);
   const [isCertVisible, setIsCertVisible] = useState(toggleDefault);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isFirst, setIsFirst] = useState({ mungple: true, cert: true });
   const isSignIn = useSelector((state: RootState) => state.persist.user.isSignIn);
   const [searchIsOpen, setSearchIsOpen] = useState(false);
   const initMapCenter = useSelector((state: RootState) => state.map);
@@ -98,12 +99,23 @@ function MapTest() {
 
   const deleteMungpleList = () => {
     markerList.forEach((marker) => {
-      marker.marker.setMap(null);
+      // marker.marker.setMap(null);
+      marker.marker.setVisible(false);
     });
   };
 
+  const showMungpleList = () => {
+    markerList.forEach((marker) => {
+      marker.marker.setVisible(true);
+    });
+  };
+
+  const showCertList = (certList: kakao.maps.CustomOverlay[]) => {
+    certList.forEach((cert) => cert.setVisible(true));
+  };
+
   const deleteCertList = (certList: kakao.maps.CustomOverlay[]) => {
-    certList.forEach((cert) => cert.setMap(null));
+    certList.forEach((cert) => cert.setVisible(false));
   };
 
   useEffect(() => {
@@ -111,7 +123,7 @@ function MapTest() {
   }, [selectedCert]);
 
   useEffect(() => {
-    if (mapDataList) {
+    if (mapDataList && (isFirst.cert || isFirst.mungple)) {
       if (userId > 0 && isCertVisible) {
         deleteMungpleList();
         if (globarMap && mapDataList) {
@@ -128,14 +140,17 @@ function MapTest() {
           );
           setMungpleCertMarkerList(certMarkers);
         }
+        setIsFirst((prev) => {
+          return { ...prev, cert: false };
+        });
       } else {
         deleteCertList(normalCertMarkerList);
         deleteCertList(mungpleCertMarkerList);
-        if(globarMap){
+        if (globarMap) {
           const otherMarkers = setOtherNormalCertMarker(
             mapDataList.exposedNormalCertList,
             globarMap,
-            navigate
+            navigate,
           );
           setOtherCertMarkerList(otherMarkers);
         }
@@ -176,6 +191,20 @@ function MapTest() {
           return { marker, id: m.mungpleId };
         });
         setMarkerList(markers);
+        setIsFirst((prev) => {
+          return { ...prev, mungple: false };
+        });
+      }
+    }
+    if (!isFirst.mungple && !isFirst.cert && mapDataList) {
+      if (isCertVisible) {
+        deleteMungpleList();
+        showCertList(normalCertMarkerList);
+        showCertList(mungpleCertMarkerList);
+      } else {
+        deleteCertList(normalCertMarkerList);
+        deleteCertList(mungpleCertMarkerList);
+        showMungpleList();
       }
     }
   }, [globarMap, mapDataList, isCertVisible]);
@@ -287,7 +316,11 @@ function MapTest() {
       <div className="slogun">강아지 델고 동네생활</div>
       <div className="map" ref={mapElement} />
       {searchIsOpen && (
-        <SearchBar selectId={searchSelectId} cafeList={mapDataList!.mungpleList} close={searchClose} />
+        <SearchBar
+          selectId={searchSelectId}
+          cafeList={mapDataList!.mungpleList}
+          close={searchClose}
+        />
       )}
       {selectedId.title.length > 0 && (
         <PlaceCard

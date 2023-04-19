@@ -56,7 +56,7 @@ function PlaceCard(props: {
     };
   }, []);
   useEffect(() => {
-    dispatch(mapAction.setLink(`https://reward.delgo.pet/${id}`));
+    dispatch(mapAction.setLink(`https://www.reward.delgo.pet/${id}`));
   }, [id]);
 
   const cardClickHandler = useCallback(() => {
