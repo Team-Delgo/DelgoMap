@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
+import { useMutation } from 'react-query';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
@@ -14,6 +15,7 @@ import Loading from '../../../common/utils/Loading';
 import { ROOT_PATH } from '../../../common/constants/path.const';
 import { analytics } from "../../../index";
 import { RootState } from '../../../redux/store';
+import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
 
 interface Input {
   email: string;
@@ -57,7 +59,7 @@ function Login() {
 
   const enterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      loginFetch();
+      loginButtonHandler();
     }
   };
 
@@ -79,60 +81,57 @@ function Login() {
     });
   };
 
-  const loginFetch = () => {
-    login(
-      { email, password: enteredInput.password },
-      (response: AxiosResponse) => {
-        console.log(response);
-        const { code, data } = response.data;
-        if (code === 200) {
-          const { registDt } = data.user;
-          setIsLoading(true);
-          dispatch(
-            userActions.signin({
-              isSignIn: true,
-              user: {
-                id: data.user.userId,
-                address: data.user.address,
-                nickname: data.user.name,
-                email: data.user.email,
-                phone: data.user.phoneNo,
-                isSocial: false,
-                geoCode: data.user.geoCode,
-                registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
-                notify: data.user.notify,
-              },
-              pet: {
-                petId: data.pet.petId,
-                birthday: data.pet.birthday,
-                breed: data.pet.breed,
-                breedName: data.pet.breedName,
-                name: data.pet.name,
-                image: data.user.profile,
-              },
-            }),
-          );
+  const loginMutate = useMutation(() => login({ email, password: enteredInput.password }), {
+    onSuccess: (response: AxiosResponse) => {
+      const { code, data } = response.data;
+      if (code === 200) {
+        const { registDt } = data.user;
+        setIsLoading(true);
+        dispatch(
+          userActions.signin({
+            isSignIn: true,
+            user: {
+              id: data.user.userId,
+              address: data.user.address,
+              nickname: data.user.name,
+              email: data.user.email,
+              phone: data.user.phoneNo,
+              isSocial: false,
+              geoCode: data.user.geoCode,
+              registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+              notify: data.user.notify,
+            },
+            pet: {
+              petId: data.pet.petId,
+              birthday: data.pet.birthday,
+              breed: data.pet.breed,
+              breedName: data.pet.breedName,
+              name: data.pet.name,
+              image: data.user.profile,
+            },
+          }),
+        );
 
-          const accessToken = response.headers.authorization_access;
-          const refreshToken = response.headers.authorization_refresh;
-          localStorage.setItem('accessToken', accessToken || '');
-          localStorage.setItem('refreshToken', refreshToken || '');
-          if (device === 'mobile') {
-            sendFcmTokenHandler(data.user.userId);
-          }
-          navigation(ROOT_PATH, { replace: true });
-        } else if (code === 304) {
-          console.log(2);
-          setIsLoading(false);
-          setFeedback((prev) => {
-            return { ...prev, password: '비밀번호를 확인하세요' };
-          });
-          setLoginFailed(true);
+        const accessToken = response.headers.authorization_access;
+        const refreshToken = response.headers.authorization_refresh;
+        localStorage.setItem('accessToken', accessToken || '');
+        localStorage.setItem('refreshToken', refreshToken || '');
+        if (device === 'mobile') {
+          sendFcmTokenHandler(data.user.userId);
         }
-      },
-      dispatch,
-    );
-  };
+        navigation(ROOT_PATH, { replace: true });
+      } else if (code === 304) {
+        setIsLoading(false);
+        setFeedback((prev) => {
+          return { ...prev, password: '비밀번호를 확인하세요' };
+        });
+        setLoginFailed(true);
+      }
+    },
+    onError: (error: AxiosError) => {
+      useErrorHandlers(dispatch, error);
+    }
+  })
 
   const sendFcmTokenHandler = (userId: number) => {
     if (OS === 'android') {
@@ -144,7 +143,7 @@ function Login() {
   };
 
   const loginButtonHandler = () => {
-    loginFetch();
+    loginMutate.mutate();
   };
 
   useEffect(() => {

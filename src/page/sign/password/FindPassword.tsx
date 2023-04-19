@@ -24,18 +24,18 @@ function FindPassword() {
   };
 
   const submitEmail = () => {
-    emailAuth(email, (response: AxiosResponse) => {
+    // emailAuth(email, (response: AxiosResponse) => {
 
-      const { code, data } = response.data;
-      if (code === 200) {
-        setPhoneNumber(data);
-        setEmailIsSubmitted(true);
-      }
-      else {
-        setFeedback('회원정보를 찾을 수 없습니다.');
-        inputRef.current?.focus();
-      }
-    }, dispatch);
+    //   const { code, data } = response.data;
+    //   if (code === 200) {
+    //     setPhoneNumber(data);
+    //     setEmailIsSubmitted(true);
+    //   }
+    //   else {
+    //     setFeedback('회원정보를 찾을 수 없습니다.');
+    //     inputRef.current?.focus();
+    //   }
+    // }, dispatch);
   };
 
   const nextButtonHandler = () => {

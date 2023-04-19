@@ -123,6 +123,7 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<MapPage />} /> */}
           <Route path="/" element={<MapTest />} />
+          <Route path="/:id" element={<MapTest />} />
           {/* <Route path="/:id" element={<MapPage />} /> */}
           <Route path="/help" element={<HelpPage />} />
           <Route path="/detail" element={<DetailPage />} />
