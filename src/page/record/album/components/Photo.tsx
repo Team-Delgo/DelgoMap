@@ -49,7 +49,6 @@ function Photo() {
   const location: any = useLocation();
 
   useEffect(() => {
-    console.log(123);
     mutation.mutate({
       params: {
         firebase_screen: 'Album',

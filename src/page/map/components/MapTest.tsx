@@ -49,9 +49,7 @@ function MapTest() {
   const [searchIsOpen, setSearchIsOpen] = useState(false);
   const initMapCenter = useSelector((state: RootState) => state.map);
   const [globarMap, setGlobarMap] = useState<kakao.maps.Map>();
-  const [mungpleList, setMungpleList] = useState<Mungple[]>([]);
   const [selectedId, setSelectedId] = useState(idDefault);
-  const [selectedMarker, setSelectedMarker] = useState<kakao.maps.Marker>();
   const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [normalCertMarkerList, setNormalCertMarkerList] = useState<
@@ -63,11 +61,6 @@ function MapTest() {
   const [otherCertMarkerList, setOtherCertMarkerList] = useState<
     kakao.maps.CustomOverlay[]
   >([]);
-
-  const [mungpleCertList, setMunpleCertList] = useState<Cert[]>([]);
-  const [normalCertList, setNormalCertList] = useState<Cert[]>([]);
-  const [otherMungpleCertList, setOtherMungpleCertList] = useState<Cert[]>([]);
-  const [otherNormalCertList, setOtherNormalCertList] = useState<Cert[]>([]);
 
   const dispatch = useDispatch();
 
