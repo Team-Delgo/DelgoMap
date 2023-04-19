@@ -97,8 +97,8 @@ export function clearSelectedId(
 
 export function setMarkerImageBig(categoryCode: string) {
   const images = MarkerImages();
-  if (categoryCode === 'CA0001') return images.images[1];
-  if (categoryCode === 'CA0002') return images.images[0];
+  if (categoryCode === 'CA0001') return images.images[0];
+  if (categoryCode === 'CA0002') return images.images[1];
   if (categoryCode === 'CA0003') return images.images[2];
   if (categoryCode === 'CA0004') return images.images[3];
   if (categoryCode === 'CA0005') return images.images[4];
@@ -108,8 +108,8 @@ export function setMarkerImageBig(categoryCode: string) {
 
 export function setMarkerImageSmall(categoryCode: string) {
   const images = MarkerImages();
-  if (categoryCode === 'CA0001') return images.smallImages[1];
-  if (categoryCode === 'CA0002') return images.smallImages[0];
+  if (categoryCode === 'CA0001') return images.smallImages[0];
+  if (categoryCode === 'CA0002') return images.smallImages[1];
   if (categoryCode === 'CA0003') return images.smallImages[2];
   if (categoryCode === 'CA0004') return images.smallImages[3];
   if (categoryCode === 'CA0005') return images.smallImages[4];
@@ -227,7 +227,7 @@ export function MarkerImages() {
     offset: new kakao.maps.Point(25, 49),
   };
   const images: kakao.maps.MarkerImage[] = [];
-  [Cafe, Bath, Eat, Beauty, Hospital, Walk, Kinder].forEach((url: string) => {
+  [Walk, Cafe, Eat, Bath, Beauty, Hospital, Kinder].forEach((url: string) => {
     const image = loadImage(url);
     images.push(new kakao.maps.MarkerImage(url, imageSize, imageOptions));
   });
@@ -238,12 +238,12 @@ export function MarkerImages() {
   };
   const smallImages: kakao.maps.MarkerImage[] = [];
   [
+    WalkSmall,
     CafeSmall,
-    BathSmall,
     EatSmall,
+    BathSmall,
     BeautySmall,
     HospitalSmall,
-    WalkSmall,
     KinderSmall,
   ].forEach((url: string) => {
     const image = loadImage(url);
