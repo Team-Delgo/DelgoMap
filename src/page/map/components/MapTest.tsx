@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { AxiosResponse } from 'axios';
 import './Map.scss';
 import { getMapData } from '../../../common/api/record';
 import { RootState } from '../../../redux/store';

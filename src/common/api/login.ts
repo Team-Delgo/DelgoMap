@@ -2,34 +2,27 @@ import axios, { AxiosResponse } from 'axios';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
-function login(data: { email: string; password: string }, success: (data: AxiosResponse) => void, dispatch: any) {
-  axios
-    .post(`https://www.reward.delgo.pet/login`, {
-      email: data.email,
-      password: data.password,
-    })
-    .then((data) => {
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
+function login(info: { email: string; password: string }) {
+  const data = axios.post(`https://www.reward.delgo.pet/login`, {
+    email: info.email,
+    password: info.password,
+  });
+  return data;
 }
 
-function emailAuth(email: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axiosInstance
-    .get(`/auth/email`, {
-      params: { email },
-    })
-    .then((data) => {
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
+async function emailAuth(email: string) {
+  const data = await axiosInstance.get(`/auth/email`, {
+    params: { email },
+  });
+  return data;
 }
 
-function changePassword(email: string, password: string, success: (data: AxiosResponse) => void, dispatch: any) {
+function changePassword(
+  email: string,
+  password: string,
+  success: (data: AxiosResponse) => void,
+  dispatch: any,
+) {
   axiosInstance
     .put(`/user/password`, {
       email,
