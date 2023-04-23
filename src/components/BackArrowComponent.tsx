@@ -1,5 +1,5 @@
 import React from 'react';
-import BackArrowImg from '../common/icons/back-arrow.svg';
+import BackArrowImg from '../common/icons/prev-arrow-black.svg';
 import "./BackArrow.scss";
 
 function BackArrowComponent(props: { onClickHandler: () => void }) {

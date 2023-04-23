@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './RecordHeader.scss';
 import BackArrow from "../common/icons/prev-arrow-black.svg";
 import { ROOT_PATH } from '../common/constants/path.const';
+import PageHeader from './PageHeader';
 
 function RecordHeader() {
   let tab = (useLocation().state as any) || 'photo';
@@ -37,10 +38,11 @@ function RecordHeader() {
 
   return (
     <div className={classNames('recordHeader-wrapper', { fixed: tab === 'calendar' })}>
-      <div className='recordHeader-header'>
+      {/* <div className='recordHeader-header'>
         <img className='recordHeader-header-back' src={BackArrow} alt="back" aria-hidden="true" onClick={backButtonClickHandler}/>
         <div className="recordHeader-header-title">내 기록</div>
-      </div>
+      </div> */}
+      <PageHeader navigate={()=>navigate(ROOT_PATH)} title="내 기록" isFixed={false} isAbsolute={false} short/>
       <div className="recordHeader">
         <div
           aria-hidden="true"
