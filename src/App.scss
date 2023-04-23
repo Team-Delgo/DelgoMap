@@ -9,12 +9,15 @@ body {
     }
   }
   textarea {
+    resize: none;
     -webkit-touch-callout: auto;
     -webkit-user-select: auto;
     -khtml-user-select: auto;
     -moz-user-select: auto;
     -ms-user-select: auto;
     user-select: auto;
+    -webkit-user-modify: 'read-write-plaintext-only';
+    -webkit-user-modify:  read-write-plaintext-only;
 }
 
 }

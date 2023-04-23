@@ -2,7 +2,7 @@ import React from 'react';
 import Sheet, { SheetRef } from 'react-modal-sheet';
 import './ConfirmBottomSheet.scss';
 
-const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
+const sheetStyle = { borderRadius: '18px 18px 0px 0px', border: 'none' };
 const sheetSnapPoints = [250, 250, 250, 250];
 
 interface confirmBottomSheetType {
@@ -38,10 +38,18 @@ function ConfirmBottomSheet({
               <div className="confirm-bottom-sheet-title-sub-text">{description}</div>
             </div>
             <div className="confirm-bottom-sheet-button">
-              <div className="confirm-bottom-sheet-button-cancle" aria-hidden="true" onClick={cancelButtonHandler}>
+              <div
+                className="confirm-bottom-sheet-button-cancle"
+                aria-hidden="true"
+                onClick={cancelButtonHandler}
+              >
                 {cancelText}
               </div>
-              <div className="confirm-bottom-sheet-button-delete" aria-hidden="true" onClick={acceptButtonHandler}>
+              <div
+                className="confirm-bottom-sheet-button-delete"
+                aria-hidden="true"
+                onClick={acceptButtonHandler}
+              >
                 {acceptText}
               </div>
             </div>

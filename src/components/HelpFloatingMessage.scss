@@ -1,0 +1,50 @@
+.help-floating {
+  background: #ffffff;
+  border: 2px solid #aa93ec;
+  border-radius: 47px;
+  padding: 6px 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  font-weight: 500;
+  font-size: 14px;
+  top: -63px;
+  &.right{
+    top: 50%;
+    transform: translateY(-50%);
+    left: -270px;
+    animation: none;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%; /* 화살표가 말풍선의 바닥에 위치하도록 설정 */
+      left: 102%;
+      transform: translateY(-50%);
+      margin-left: -6px;
+      border-width: 6px 6px 6px 10px;
+      border-style: solid;
+      border-color: transparent transparent transparent #aa93ec;
+    }
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 102%; /* 화살표가 말풍선의 바닥에 위치하도록 설정 */
+    left: 50%;
+    margin-left: -6px;
+    border-width: 12px 6px 6px 6px;
+    border-style: solid;
+    border-color: #aa93ec transparent transparent transparent;
+  }
+  animation: bounce 1s infinite ease;
+}
+
+@keyframes bounce {
+  0%, 100%{
+    transform: translateY(0);
+  }
+  30%{
+    transform: translateY(-3px);
+  }
+}

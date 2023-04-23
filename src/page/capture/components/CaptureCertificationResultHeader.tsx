@@ -107,9 +107,7 @@ function CaptureResultHeader() {
             onClick={
               location?.state?.prevPrevPath === POSTS_PATH
                 ? moveToPostsPage
-                : location?.state?.prevPrevPath === RECORD_PATH.PHOTO
-                ? moveToPhotoPage
-                : moveToHomePage
+                : moveToPhotoPage
             }
           />
         </div>

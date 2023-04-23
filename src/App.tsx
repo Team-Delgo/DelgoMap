@@ -2,16 +2,16 @@ import React, { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import VConsole from "vconsole";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AxiosResponse } from "axios";
 import "./App.scss";
 import { ACHIEVEMENT_PATH, APPLE_REDIRECT_HANDLE_PATH, CAMERA_PATH, CROP_PATH, KAKAO_REDIRECT_HANDLE_PATH, MY_ACCOUNT_PATH, NAVER_REDIRECT_HANDLE_PATH, POSTS_PATH, RECORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "./common/constants/path.const";
 import CaptureCertificationPage from "./page/capture/CaptureCertificationPage";
 import CaptureCertificationResultPage from "./page/capture/CaptureCertificationResultPage";
 import CaptureCertificationUpatePage from "./page/capture/CaptureCertificationUpatePage";
 import CaptureLocationPage from "./page/capture/CaptureLocationPage";
-import CapturePage from "./page/capture/CapturePage";
 import DetailPage from "./page/DetailPage";
-import MapPage from "./page/map/MapPage";
+// import MapPage from "./page/map/MapPage";
 import ChangePassword from "./page/myaccount/ChangePassword";
 import ChangePasswordCheck from "./page/myaccount/ChangePasswordCheck";
 import ChangeUserInfo from "./page/myaccount/ChangeUserInfo";
@@ -45,11 +45,57 @@ import RecordCertificationPage from "./page/certification/RecordCertificationPag
 import CertificationMap from "./page/certification/CertificationMap";
 import { deviceAction } from "./redux/slice/deviceSlice";
 import HelpPage from "./page/help/HelpPage";
+import { RootState } from "./redux/store";
+import { userActions } from "./redux/slice/userSlice";
+import { getMyInfo } from "./common/api/myaccount";
+
+import MapTest from "./page/map/components/MapTest";
 
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
 
+  const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
+
+
+  useEffect(() => {
+    if (isSignIn) {
+      getMyInfo(
+        user.id,
+        (response: AxiosResponse) => {
+          const { code, data } = response.data;
+          if (code === 200) {
+            const { registDt } = data.user;
+            dispatch(
+              userActions.signin({
+                isSignIn: true,
+                user: {
+                  id: data.user.userId,
+                  address: data.user.address,
+                  nickname: data.user.name,
+                  email: data.user.email,
+                  phone: data.user.phoneNo,
+                  isSocial: false,
+                  geoCode: data.user.geoCode,
+                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+                  notify: data.user.notify,
+                },
+                pet: {
+                  petId: data.pet.petId,
+                  birthday: data.pet.birthday,
+                  breed: data.pet.breed,
+                  breedName: data.pet.breedName,
+                  name: data.pet.name,
+                  image: data.user.profile,
+                },
+              }),
+            );
+          }
+        },
+        dispatch,
+      );
+    }
+  }, []);
 
   useEffect(() => {
     const pcDevice = 'win16|win32|win64|mac|macintel';
@@ -75,9 +121,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MapPage />} />
-          <Route path="/:id" element={<MapPage />} />
-          <Route path="/help" element={<HelpPage/>} />
+          {/* <Route path="/" element={<MapPage />} /> */}
+          <Route path="/" element={<MapTest />} />
+          <Route path="/:id" element={<MapTest />} />
+          {/* <Route path="/:id" element={<MapPage />} /> */}
+          <Route path="/help" element={<HelpPage />} />
           <Route path="/detail" element={<DetailPage />} />
           <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
           <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
@@ -96,7 +144,6 @@ function App() {
           <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
           <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
           <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
-          <Route path={CAMERA_PATH.CAPTURE} element={<CapturePage />} />
           <Route path={CAMERA_PATH.CERTIFICATION} element={<CaptureCertificationPage />} />
           <Route path={CAMERA_PATH.LOCATION} element={<CaptureLocationPage />} />
           <Route path={CAMERA_PATH.UPDATE} element={<CaptureCertificationUpatePage />} />

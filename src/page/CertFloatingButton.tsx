@@ -1,6 +1,8 @@
+import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
 import React, {useRef} from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { analytics } from "..";
 import { CROP_PATH } from "../common/constants/path.const";
 import Plus from "../common/icons/plus.svg";
 import { uploadAction } from "../redux/slice/uploadSlice";
@@ -11,6 +13,7 @@ function CertFloatingButton() {
   const navigate = useNavigate();
   const location = useLocation();
   const fileUploadRef = useRef<HTMLInputElement>(null);
+  const clickEvent = useAnalyticsCustomLogEvent(analytics, "cert-floating-click");
 
   const openFileGallery = () => {
     if (fileUploadRef.current) {
@@ -28,6 +31,7 @@ function CertFloatingButton() {
   };
 
   const certButtonHandler = () => {
+    clickEvent.mutate();
       openFileGallery();;
   };
 

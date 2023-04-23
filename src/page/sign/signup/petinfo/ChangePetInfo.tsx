@@ -30,6 +30,8 @@ function ChangePetInfo() {
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const userEmail = useSelector((state: RootState) => state.persist.user.user.email);
   const { petId, birthday, name, breed, breedName, image: petImage } = state;
+
+  console.log('state',state)
   const [typeModalActive, setTypeModalActive] = useState(false);
   const [image, setImage] = useState<any>(petImage);
   const [sendingImage, setSendingImage] = useState<any>(petImage);

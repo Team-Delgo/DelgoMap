@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  zoom: 0,
-  lat: 0,
-  lng: 0,
+  zoom: 5,
+  lat: 37.5057018,
+  lng: 127.1141119,
   selectedIcon: 0,
   selectedArea: '송파',
   link: 'https://www.delgo.pet',

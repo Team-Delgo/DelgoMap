@@ -17,10 +17,13 @@ import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import { scrollActions } from '../../redux/slice/scrollSlice';
 import { GET_ALL_CERTIFICATION_DATA_LIST } from '../../common/constants/queryKey.const';
 import { postType } from '../../common/types/post';
+import PageHeader from '../../components/PageHeader';
 
 
 function CertificationPostsPage() {
+  
   const firstCert = (useLocation().state.cert as any) || null;
+  console.log(firstCert);
   const pageFrom = (useLocation().state.from as any) || 'home';
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
@@ -32,6 +35,9 @@ function CertificationPostsPage() {
   const { ref, inView } = useInView();
   const navigate = useNavigate();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
+
+  console.log('firstCert',firstCert)
+  console.log('pageFrom',pageFrom)
 
   const {
     data,
@@ -79,7 +85,7 @@ function CertificationPostsPage() {
 
   const moveToHomePage = useCallback(() => {
     dispatch(scrollActions.scrollInit());
-    if(pageFrom === 'home')
+    if(pageFrom === 'home' || pageFrom === 'homeCert')
       navigate(ROOT_PATH);
     else navigate(RECORD_PATH.PHOTO);
   }, []);
@@ -90,11 +96,12 @@ function CertificationPostsPage() {
   
   return (
     <div className="certificationPostsPage">
-      <div className="certificationPostsPage-header">
+      {/* <div className="certificationPostsPage-header">
         <img src={PrevArrow} alt="back" aria-hidden="true" onClick={moveToHomePage} />
         <div className="certificationPostsPage-header-text">동네 강아지</div>
-      </div>
-      {pageFrom === 'photo' ? (
+      </div> */}
+      <PageHeader title='동네 강아지' navigate={moveToHomePage} isFixed isAbsolute={false} short={false} />
+      {pageFrom === 'photo' || pageFrom === 'homeCert'  ? (
         <CertificationPost
           post={firstCert}
           certificationPostsFetch={certificationPostsFetch}

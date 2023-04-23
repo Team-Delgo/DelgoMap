@@ -13,23 +13,22 @@ import {commentType} from '../../common/types/comment';
 import useActive from '../../common/hooks/useActive';
 import './CommentsPage.scss';
 import useInput from '../../common/hooks/useInput';
-import X from '../../common/icons/white-x.svg';
+import { postType } from '../../common/types/post';
+import PageHeader from '../../components/PageHeader';
 
 interface StateType {
-  certificationId: number;
-  posterId: number;
+  post:postType
 }
 
 function CommentsPage() {
   const [deleteCommentId, setDeleteCommentId] = useState(-1);
-  const [commentRecipient,setCommentRecipient] = useState('')
   const [commentList, setCommentList] = useState<commentType[]>([]);
   const [inputComment, onChangeInputComment,resetInputComment] = useInput('');
   const [deleteCommentBottomSheetIsOpen, openDeleteCommentBottomSheet, closeDeleteCommentBottomSheet] = useActive(false);
   const [deleteCommentSuccessToastIsOpen, openDeleteCommentSuccessToast,closeDeleteCommentSuccessToast] = useActive(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const profile = useSelector((state: RootState) => state.persist.user.pet.image);
-  const { certificationId, posterId } = useLocation()?.state as StateType;
+  const { post} = useLocation()?.state as StateType;
   const textRef = useRef<any>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -50,7 +49,7 @@ function CommentsPage() {
 
   const getComments = useCallback(() => {
     getCommentList(
-      certificationId,
+      post.certificationId,
       (response: AxiosResponse) => {
         setCommentList(response.data.data);
       },
@@ -63,10 +62,11 @@ function CommentsPage() {
     resetInputComment();
     postComment(
       userId,
-      certificationId,
-      inputComment, 
+      post.certificationId,
+      inputComment,
       (response: AxiosResponse) => {
         if (response.data.code === 200) {
+          resetInputComment();
           getComments();
         }
       },
@@ -78,7 +78,7 @@ function CommentsPage() {
     deleteComment(
       userId,
       deleteCommentId,
-      certificationId,
+      post.certificationId,
       (response: AxiosResponse) => {
         if (response.data.code === 200) {
           openDeleteCommentSuccessToast();
@@ -90,7 +90,7 @@ function CommentsPage() {
       },
       dispatch,
     );
-  }, [deleteCommentId, certificationId]);
+  }, [deleteCommentId, post.certificationId]);
 
   const handleResizeHeight = useCallback(() => {
     if (textRef.current) {
@@ -114,6 +114,7 @@ function CommentsPage() {
     navigate(-1);
   },[])
 
+
   const context = commentList.map((comment: commentType) => {
     return (
       <div className="comment">
@@ -122,21 +123,18 @@ function CommentsPage() {
           <div className="comment-content-header">
             <div className="comment-content-header-name">{comment.userName}</div>
             <div className="comment-content-header-work">
-              <div className="comment-content-header-work-date">
-                {comment.createDt.slice(0, 10)}
-              </div>
               <div
                 className="comment-content-header-work-delete"
                 aria-hidden="true"
                 onClick={
-                  userId === posterId
+                  userId === post.userId
                     ? openBottomSheet(comment.commentId)
                     : userId === comment.userId
                     ? openBottomSheet(comment.commentId)
                     : undefined
                 }
                 style={
-                  userId === posterId
+                  userId === post.userId
                     ? undefined
                     : userId === comment.userId
                     ? undefined
@@ -145,65 +143,36 @@ function CommentsPage() {
               >
                 삭제
               </div>
+              <div className="comment-content-header-work-date">
+                {comment.createDt.slice(0, 10)}
+              </div>
             </div>
           </div>
           <div className="comment-content-text">{comment.content}</div>
-          {userId !== comment.userId && (
-            <div
-              className="comment-reply"
-              aria-hidden="true"
-              onClick={() => {
-                setCommentRecipient(comment.userName)
-                resetInputComment()
-              }}
-            >
-              답글달기
-            </div>
-          )}
         </div>
       </div>
     );
   });
 
-  console.log('inputComment',inputComment)
-
   return (
     <>
-      {commentRecipient !== '' && (
-        <div className="reply-comment-notification">
-          <div>{commentRecipient} 에게 답글 남기는중</div>
-          <img
-            src={X}
-            width={10.5}
-            height={10.5}
-            className="reply-comment-x"
-            alt="reply-comment-x"
-            aria-hidden="true"
-            onClick={() => setCommentRecipient('')}
-          />
-        </div>
-      )}
       <div className="comments">
-        <div className="comments-header">
+        {/* <div className="comments-header">
           <img src={LeftArrow} alt="back" onClick={moveToPrevPage} aria-hidden="true" />
           <div className="comments-header-title">댓글</div>
-        </div>
+        </div> */}
+        <PageHeader title="댓글" navigate={moveToPrevPage} />
         <div className="comments-context">{context}</div>
         <div className="comments-post">
           <img src={profile} alt="myprofile" />
           <textarea
-            className="comments-post-input"
             ref={textRef}
-            defaultValue={commentRecipient}
             value={inputComment}
             onInput={handleResizeHeight}
             onChange={onChangeInputComment}
-            placeholder={commentRecipient !== '' ? `` : `댓글 남기기...`}
-            autoCapitalize="off"
+            placeholder={`${post.user.name}에게 댓글 남기기...`}
+            className="comments-post-input"
           />
-          {/* {commentRecipient !== '' && (
-            <div className="comment-recipient">{commentRecipient}</div>
-          )} */}
           <div
             aria-hidden="true"
             onClick={inputComment.length > 0 ? postCommentOnCert : undefined}

@@ -1,7 +1,6 @@
 .comment {
   margin: 30px 5%;
   display: flex;
-
   img {
     width: 33px;
     height: 33px;
@@ -31,7 +30,7 @@
         display: flex;
 
         &-date {
-          padding-right: 20px;
+          padding-left: 20px;
         }
 
         &-delete {}
@@ -71,12 +70,12 @@
 
     &-title {
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 500;
     }
   }
 
   &-context {
-    margin-top: 110px;
+    margin-top: 80px;
   }
 
   &-post {
@@ -95,8 +94,9 @@
     img {
       width: 41px;
       height: 41px;
-      border-radius: 4px;
-      padding-left: 5%
+      border-radius: 4px 4px 4px 4px;
+      background-color: red;
+      margin-left: 5%
     }
 
     &-input {
@@ -106,6 +106,7 @@
       border-radius: 4px;
       border: none;
       padding: 12px 0 0 10px;
+      font-size: 14px;
       box-sizing: border-box;
     }
 

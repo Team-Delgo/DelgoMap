@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios';
+import { useMutation } from 'react-query';
 import classNames from 'classnames';
 import React, { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../common/api/login';
 import { MY_ACCOUNT_PATH } from '../../common/constants/path.const';
-import {RootState} from '../../redux/store'
+import { RootState } from '../../redux/store'
 import LeftArrow from '../../common/icons/left-arrow.svg';
 import "./ChangePasswordCheck.scss";
 
@@ -16,17 +17,21 @@ function ChangePasswordCheck() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const email = useSelector((state: RootState) => state.persist.user.user.email);
-  
-  const passwordCheck = () => {
-    login({ email, password: enteredInput }, (res: AxiosResponse) => {
-      const { code } = res.data;
+
+  const passwordMutate = useMutation(() => login({ email, password: enteredInput }), {
+    onSuccess: (response: AxiosResponse) => {
+      const { code } = response.data;
       if (code !== 200) {
         setInvalid(true);
         setFeedback('비밀번호가 일치하지 않습니다.');
       } else {
         navigate(MY_ACCOUNT_PATH.PASSWORDCHANGE);
       }
-    }, dispatch);
+    }
+  })
+
+  const passwordCheck = () => {
+    passwordMutate.mutate();
   };
 
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {

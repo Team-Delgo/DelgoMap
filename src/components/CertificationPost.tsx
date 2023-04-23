@@ -75,7 +75,6 @@ function CertificationPost({
   const mainImg = useRef<HTMLImageElement>(null);
   const profileImg = useRef<HTMLImageElement>(null);
 
-  console.log('post',post)
 
   const observeImg = (
     entries: IntersectionObserverEntry[],
@@ -199,7 +198,8 @@ function CertificationPost({
     commentEvent.mutate();
     dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
     navigate(`/comments/${post?.certificationId}`, {
-      state: { certificationId: post?.certificationId, posterId: post?.userId },
+      // state: { certificationId: post?.certificationId, posterId: post?.userId },
+      state: { post },
     });
   };
 

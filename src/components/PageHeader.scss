@@ -1,0 +1,23 @@
+.page-header{
+  width: 100vw;
+  position: relative;
+  padding-top: 9px;
+  height: 40px;
+  background-color: white;
+  &.isAbsolute{
+    position: absolute;
+  }
+  &.isFixed{
+    position: fixed;
+  }
+  &.short{
+    height: auto;
+  }
+  &-text{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 500;
+    font-size: 18px;
+  }
+}
