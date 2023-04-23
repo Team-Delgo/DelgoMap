@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -10,10 +10,12 @@ import Plus from '../common/icons/plus.svg';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { RootState } from '../redux/store';
 import './FooterNavigation.scss';
+import HelpFloatingMessage from './HelpFloatingMessage';
 
 function FooterNavigation(props: { setCenter: () => void }) {
   const { setCenter } = props;
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [helpShow, setHelpShow] = useState(false);
   const device = useSelector((state: RootState) => state.persist.device.OS);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
 
@@ -63,8 +65,14 @@ function FooterNavigation(props: { setCenter: () => void }) {
     } else setIsAlertOpen(true);
   };
 
+  useEffect(()=>{
+    const isFirstTime = localStorage.getItem('isFirstCert');
+    if(!isFirstTime) setHelpShow(true);
+  },[]);
+
   return (
     <div className={classNames("navigation", {ios:device==="ios"})}>
+      {helpShow && <HelpFloatingMessage text='추억을 기록해보세요' direction='bottom'/>}
       {isAlertOpen && (
         <AlertConfirm
           text="로그인이 필요한 기능입니다."

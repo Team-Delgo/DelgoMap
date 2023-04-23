@@ -14,6 +14,7 @@ import useActive from '../../common/hooks/useActive';
 import './CommentsPage.scss';
 import useInput from '../../common/hooks/useInput';
 import { postType } from '../../common/types/post';
+import PageHeader from '../../components/PageHeader';
 
 interface StateType {
   post:postType
@@ -156,10 +157,11 @@ function CommentsPage() {
   return (
     <>
       <div className="comments">
-        <div className="comments-header">
+        {/* <div className="comments-header">
           <img src={LeftArrow} alt="back" onClick={moveToPrevPage} aria-hidden="true" />
           <div className="comments-header-title">댓글</div>
-        </div>
+        </div> */}
+        <PageHeader title="댓글" navigate={moveToPrevPage} />
         <div className="comments-context">{context}</div>
         <div className="comments-post">
           <img src={profile} alt="myprofile" />

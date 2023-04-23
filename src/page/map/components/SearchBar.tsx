@@ -89,7 +89,7 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
           <input
             id="search"
             autoComplete="off"
-            placeholder="강아지 델고 갈 카페 검색"
+            placeholder="검색"
             value={enteredInput}
             onChange={inputChangeHandler}
             onClick={inputFoucs}
@@ -99,7 +99,7 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
       {isFocus && option.length > 0 && enteredInput.length > 0 && <div className="search-auto">{autoCompleteContext}</div>}
       {option.length === 0 && enteredInput.length === 0 && (
         <div className="search-empty">
-          <div className="search-empty-desc">델고에 송파의 모든 반려견 동반 카페가 있어요 검색해보세요</div>
+          <div className="search-empty-desc">반려견 동반장소를 검색해보세요</div>
           <div className="search-empty-line" />
           <div className="search-recent-tag">
             <h4>최근 검색</h4>

@@ -75,7 +75,7 @@ function MyAccountPage() {
 
   return (
     <div className="my-account-page">
-      <PageHeader navigate={()=>navigate(ROOT_PATH)} title="내 정보" isFixed={false} isAbsolute short={false}/>
+      <PageHeader navigate={()=>navigate(ROOT_PATH)} title="내 정보" isAbsolute/>
       <header className="my-account-page-header">
         <body className="my-account-page-header-my-pet">
           <img className="my-account-page-header-my-pet-img" src={image} alt="copy url" />

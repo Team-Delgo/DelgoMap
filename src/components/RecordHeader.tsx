@@ -42,7 +42,7 @@ function RecordHeader() {
         <img className='recordHeader-header-back' src={BackArrow} alt="back" aria-hidden="true" onClick={backButtonClickHandler}/>
         <div className="recordHeader-header-title">내 기록</div>
       </div> */}
-      <PageHeader navigate={()=>navigate(ROOT_PATH)} title="내 기록" isFixed={false} isAbsolute={false} short/>
+      <PageHeader navigate={()=>navigate(ROOT_PATH)} title="내 기록" short/>
       <div className="recordHeader">
         <div
           aria-hidden="true"

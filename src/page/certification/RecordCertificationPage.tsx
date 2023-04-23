@@ -8,6 +8,7 @@ import './RecordCertificationPage.scss';
 import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import Loading from '../../common/utils/Loading';
 import { getRecordCertificationDate, getRecordCertificationId } from '../../common/api/record';
+import PageHeader from '../../components/PageHeader';
 
 interface LocationState {
   certId: number;
@@ -52,25 +53,17 @@ function RecordCertificationPage() {
   else if (pageFrom === ROOT_PATH) headerFrom = 'map';
   else headerFrom = 'photo';
 
+  const navigateBack = () => {
+    navigate(pageFrom, { state: headerFrom });
+  }
+
   return (
     <div className="record-certs" ref={scrollRef}>
       {loading ? (
         <Loading />
       ) : (
         <>
-          <div className="record-certs-header">
-            <img
-              src={Back}
-              alt="back"
-              aria-hidden="true"
-              onClick={() => {
-                navigate(pageFrom, { state: headerFrom });
-              }}
-            />
-            <div className="record-certs-header-date">
-              {date.slice(0, 10)}
-            </div>
-          </div>
+          <PageHeader title={date.slice(0,10)} navigate={navigateBack} isFixed/>
           <div className="record-certs-content">{contents}</div>
         </>
       )}
