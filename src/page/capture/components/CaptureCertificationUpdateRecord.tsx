@@ -98,13 +98,13 @@ function CaptureCategoryUpdateRecord() {
               className="review-content"
               placeholder="남기고 싶은 기록을 작성해주세요"
               onChange={onChangeCertificationPostContent}
-              maxLength={1000}
+              maxLength={199}
               onFocus={screenUp}
             >
               {certificationPostContent}
             </textarea>
             <div className="review-content-length">
-              {certificationPostContent.length}/1000
+              {certificationPostContent.length}/200
             </div>
           </body>
           <footer>
