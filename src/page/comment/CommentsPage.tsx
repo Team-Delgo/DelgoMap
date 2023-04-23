@@ -199,6 +199,7 @@ function CommentsPage() {
             onInput={handleResizeHeight}
             onChange={onChangeInputComment}
             placeholder={commentRecipient !== '' ? `` : `댓글 남기기...`}
+            autoCapitalize="off"
           />
           {/* {commentRecipient !== '' && (
             <div className="comment-recipient">{commentRecipient}</div>
