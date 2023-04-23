@@ -1,12 +1,12 @@
-.navigation{
+.navigation {
   position: absolute;
-  z-index: 100;
+  z-index: 10000001;
   bottom: 0;
   width: 100vw;
-  &.android{
+  &.android {
     height: 80px;
   }
-  &.ios{
+  &.ios {
     height: 63px;
   }
   height: 80px;
@@ -15,7 +15,7 @@
   border-radius: 18px 18px 0px 0px;
   display: flex;
   justify-content: space-evenly;
-  &-plus{
+  &-plus {
     position: absolute;
     top: -9px;
     width: 65px;
@@ -27,7 +27,7 @@
     justify-content: center;
     align-items: center;
   }
-  &-button{
+  &-button {
     margin-top: 8px;
     padding: 0 40px;
     width: 110px;
@@ -37,7 +37,7 @@
     font-size: 11px;
     font-weight: 400;
     color: #212122;
-    img{
+    img {
       margin-bottom: 4px;
       width: 20px;
       height: 20px;
@@ -47,10 +47,11 @@
 }
 
 @keyframes upAnimation {
-  0%{
+  0% {
     transform: translateY(30px);
     opacity: 0;
-  }100%{
+  }
+  100% {
     transform: translateY(0);
     opacity: 1;
   }

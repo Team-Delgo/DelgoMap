@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import VConsole from "vconsole";
 import { useDispatch } from "react-redux";
 import "./App.scss";
 import { ACHIEVEMENT_PATH, APPLE_REDIRECT_HANDLE_PATH, CAMERA_PATH, CROP_PATH, KAKAO_REDIRECT_HANDLE_PATH, MY_ACCOUNT_PATH, NAVER_REDIRECT_HANDLE_PATH, POSTS_PATH, RECORD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "./common/constants/path.const";
@@ -43,10 +44,13 @@ import CommentsPage from './page/comment/CommentsPage';
 import RecordCertificationPage from "./page/certification/RecordCertificationPage";
 import CertificationMap from "./page/certification/CertificationMap";
 import { deviceAction } from "./redux/slice/deviceSlice";
+import HelpPage from "./page/help/HelpPage";
 
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
+
+
   useEffect(() => {
     const pcDevice = 'win16|win32|win64|mac|macintel';
     if (navigator.platform) {
@@ -73,6 +77,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MapPage />} />
           <Route path="/:id" element={<MapPage />} />
+          <Route path="/help" element={<HelpPage/>} />
           <Route path="/detail" element={<DetailPage />} />
           <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
           <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
