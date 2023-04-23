@@ -11,7 +11,8 @@ function LinkCopy() {
   
   const sendScrap = () => {
     console.log(url);
-    window.Kakao.Share.sendScrap({
+    window.Kakao.Share.sendCustom({
+      templateId: 92943,
       requestUrl: url,
     });
   }
