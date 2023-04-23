@@ -73,7 +73,7 @@ function MapTest() {
   useEffect(() => {
     const options = {
       center: new kakao.maps.LatLng(initMapCenter.lat, initMapCenter.lng),
-      level: 5,
+      level: initMapCenter.zoom,
     };
     if (!mapElement.current) return;
     const map = new kakao.maps.Map(mapElement.current, options);
@@ -116,10 +116,6 @@ function MapTest() {
   };
 
   useEffect(() => {
-    console.log(selectedCert);
-  }, [selectedCert]);
-
-  useEffect(() => {
     if (mapDataList && (isFirst.cert || isFirst.mungple)) {
       if (userId > 0 && isCertVisible) {
         deleteMungpleList();
@@ -148,6 +144,7 @@ function MapTest() {
             mapDataList.exposedNormalCertList,
             globarMap,
             navigate,
+            setCurrentMapPosition
           );
           setOtherCertMarkerList(otherMarkers);
         }
@@ -270,7 +267,9 @@ function MapTest() {
   };
 
   const searchSelectId = async (data: Mungple) => {
+    dispatch(mapAction.setCertToggle(false));
     setSearchIsOpen(false);
+    setIsCertVisible(false);
     setSelectedId((prev: any) => {
       return {
         img: data.photoUrl,

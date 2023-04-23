@@ -13,6 +13,7 @@ import { userActions } from '../../redux/slice/userSlice';
 import DeleteBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import {analytics} from "../../index";
 import { logOut } from '../../common/api/myaccount';
+import PageHeader from '../../components/PageHeader';
 
 
 
@@ -74,16 +75,7 @@ function MyAccountPage() {
 
   return (
     <div className="my-account-page">
-      <img
-        aria-hidden="true"
-        className="my-account-page-back"
-        src={LeftArrow}
-        alt="back"
-        onClick={() => {
-          navigate(ROOT_PATH);
-        }}
-      />
-      <div className="my-account-page-title">내 정보</div>
+      <PageHeader navigate={()=>navigate(ROOT_PATH)} title="내 정보" isFixed={false} isAbsolute short={false}/>
       <header className="my-account-page-header">
         <body className="my-account-page-header-my-pet">
           <img className="my-account-page-header-my-pet-img" src={image} alt="copy url" />
