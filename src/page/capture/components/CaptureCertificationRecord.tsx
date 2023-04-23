@@ -215,6 +215,7 @@ function CaptureCertificationRecord({
                     onChange={onChangeCertificationPostContent}
                     maxLength={199}
                     onFocus={screenUp}
+                    autoCapitalize="off"
                   >
                     {certificationPostContent}
                   </textarea>

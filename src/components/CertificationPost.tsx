@@ -76,7 +76,6 @@ function CertificationPost({
   const profileImg = useRef<HTMLImageElement>(null);
 
 
-
   const observeImg = (
     entries: IntersectionObserverEntry[],
     observer: IntersectionObserver,
@@ -238,7 +237,7 @@ function CertificationPost({
             src={post?.user?.profile}
             alt="copy url"
             ref={profileImg}
-            data-src={post.user?.profile ? post?.user?.profile : DogLoading}
+            data-src={post?.user?.profile ? post.user?.profile : DogLoading}
           />
           <div>
             <div className="post-img-result-header-profile-date">
@@ -328,13 +327,13 @@ function CertificationPost({
       />
 
       {blockUserSuccessToastIsOpen && (
-        <ToastPurpleMessage message={`${blockedUserName}님을 신고 하였습니다`} />
+        <ToastPurpleMessage message={`${blockedUserName}님을 차단 하였습니다`} />
       )}
       <DeleteBottomSheet
-        text={`${post?.user?.name} 님을 신고 하시겠어요?`}
+        text={`${post?.user?.name} 님을 차단 하시겠어요?`}
         description={`앞으로 ${post?.user?.name} 님의 게시물을 볼 수 없어요`}
         cancelText="취소"
-        acceptText="신고"
+        acceptText="차단"
         acceptButtonHandler={handleUserBlock}
         cancelButtonHandler={closeBlockUserBottomSheet}
         bottomSheetIsOpen={blockUserbottomSheetIsOpen}
