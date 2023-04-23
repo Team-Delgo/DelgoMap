@@ -25,6 +25,7 @@ const firebaseConfig = {
   measurementId: "G-H4RX9ZCL5R"
 };
 
+// const vconsole = new VConsole();
 
 const app = initializeApp(firebaseConfig);
 

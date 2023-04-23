@@ -10,6 +10,23 @@
   font-weight: 500;
   font-size: 14px;
   top: -63px;
+  &.right{
+    top: 50%;
+    transform: translateY(-50%);
+    left: -270px;
+    animation: none;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%; /* 화살표가 말풍선의 바닥에 위치하도록 설정 */
+      left: 102%;
+      transform: translateY(-50%);
+      margin-left: -6px;
+      border-width: 6px 6px 6px 10px;
+      border-style: solid;
+      border-color: transparent transparent transparent #aa93ec;
+    }
+  }
   &::after {
     content: '';
     position: absolute;

@@ -91,7 +91,7 @@ function SignIn() {
         <Loading />
       ) : (
         <>
-          <div aria-hidden="true" className="login-back" onClick={() => navigate(-1)}>
+          <div aria-hidden="true" className="login-back" onClick={() => navigate(ROOT_PATH)}>
             <img src={Arrow} alt="arrow" />
           </div>
           <div className="login-title-wrapper">
