@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
 import './SignIn.scss';
 import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
-import { AxiosResponse } from 'axios';
-import { createBrowserHistory } from 'history';
+import { AxiosError, AxiosResponse } from 'axios';
 import AppleLogin from 'react-apple-login';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
@@ -18,6 +18,7 @@ import Arrow from '../../../common/icons/left-arrow.svg';
 import { emailAuth } from '../../../common/api/login';
 import Loading from '../../../common/utils/Loading';
 import AppleLoginButton from './social/AppleLogin';
+import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
 
 declare global {
   interface Window {
@@ -32,8 +33,7 @@ function SignIn() {
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState('');
   const emailRef = useRef<HTMLInputElement>(null);
-  const navigation = useNavigate();
-  const history = createBrowserHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
@@ -46,9 +46,8 @@ function SignIn() {
         firebase_screen_class: 'SignInPage',
       },
     });
-    console.log(window.Kakao.isInitialized());
     if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')) {
-      navigation('/');
+      navigate('/');
     }
     setTimeout(() => {
       setLoading(false);
@@ -62,24 +61,23 @@ function SignIn() {
     setFeedback(response.message);
   };
 
+  const emailCheck = useMutation(() => emailAuth(email), {
+    onSuccess: (data) => {
+      if (data.data.code === 200) navigate(SIGN_IN_PATH.SIGNIN, { state: { email } });
+      else setFeedback('가입되지 않은 이메일입니다.');
+    },
+    onError: (error: AxiosError) => {
+      useErrorHandlers(dispatch, error);
+    }
+  });
+
   const buttonClickHandler = () => {
-    emailAuth(
-      email,
-      (response: AxiosResponse) => {
-        const { code } = response.data;
-        if (code === 200) {
-          navigation(SIGN_IN_PATH.SIGNIN, { state: { email } });
-        } else {
-          setFeedback('가입되지 않은 이메일입니다.');
-        }
-      },
-      dispatch,
-    );
+    emailCheck.mutate();
   };
 
   const signupButtonClick = () => {
     signUpStartEvent.mutate();
-    navigation(SIGN_UP_PATH.TERMS, { state: { isSocial: false } });
+    navigate(SIGN_UP_PATH.TERMS, { state: { isSocial: false } });
   };
 
   const kakaoIntentUrl = `intent://${KAKAO.KAKAO_AUTH_URL.replace(
@@ -93,7 +91,7 @@ function SignIn() {
         <Loading />
       ) : (
         <>
-          <div aria-hidden="true" className="login-back" onClick={() => navigation(-1)}>
+          <div aria-hidden="true" className="login-back" onClick={() => navigate(ROOT_PATH)}>
             <img src={Arrow} alt="arrow" />
           </div>
           <div className="login-title-wrapper">

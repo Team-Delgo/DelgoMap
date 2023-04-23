@@ -1,5 +1,5 @@
 .recordHeader {
-  margin-top: 9px;
+  margin-top: 32px;
   padding-bottom: 18px;
   // margin: 20px 20px 20px 20px;
   display: flex;
@@ -39,13 +39,13 @@
     }
     z-index: 9999;
 
-    img {
-      margin-left: 20px;
-      margin-top: 8px;
-      width: 21px;
-      height: 19px;
-      aspect-ratio: 119.02/26.88;
-    }
+    // img {
+    //   margin-left: 20px;
+    //   margin-top: 8px;
+    //   width: 21px;
+    //   height: 19px;
+    //   aspect-ratio: 119.02/26.88;
+    // }
   }
 
   &-item {

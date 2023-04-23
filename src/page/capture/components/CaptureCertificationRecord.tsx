@@ -5,10 +5,7 @@ import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useSelector, useDispatch } from 'react-redux';
 import Sheet from 'react-modal-sheet';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
-import {
-  registerGalleryCertificationPost,
-  registerGalleryCertificationImg,
-} from '../../../common/api/certification'
+import { registerGalleryCertificationPost } from '../../../common/api/certification';
 import { RootState } from '../../../redux/store';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import ToastPurpleMessage from '../../../common/dialog/ToastPurpleMessage';
@@ -23,17 +20,22 @@ interface CaptureCertificationRecordPropsType {
   offPostCertificationLoading: () => void;
 }
 
-const sheetStyle = { borderRadius: '18px 18px 0px 0px'};
+const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
 
 function CaptureCertificationRecord({
   postCertificationIsLoading,
   onPostCertificationLoading,
   offPostCertificationLoading,
 }: CaptureCertificationRecordPropsType) {
+  const { OS } = useSelector((state: RootState) => state.persist.device);
+  const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [certificationPostContent, onChangeCertificationPostContent] = useInput('');
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
-  const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  const [certificateErrorToastIsOpen, openCertificateErrorToast, closeCertificateErrorToast] = useActive(false);
+  const [
+    certificateErrorToastIsOpen,
+    openCertificateErrorToast,
+    closeCertificateErrorToast,
+  ] = useActive(false);
   const { latitude, longitude, mongPlaceId, title, file, address } = useSelector(
     (state: RootState) => state.persist.upload,
   );
@@ -72,7 +74,7 @@ function CaptureCertificationRecord({
       formData.append('photo', file);
 
       const json = JSON.stringify(data);
-      const blob = new Blob([json], { type: "application/json" });
+      const blob = new Blob([json], { type: 'application/json' });
 
       formData.append('data', blob);
 
@@ -104,8 +106,7 @@ function CaptureCertificationRecord({
         },
         dispatch,
       );
-    }, 1000)
-
+    }, 1000);
   };
 
   const handlingDataForm = (dataURI: any) => {
@@ -135,14 +136,53 @@ function CaptureCertificationRecord({
     });
   };
 
-  const screenUp = ()=>{
-    window.webkit.messageHandlers.NAME.postMessage("screenUp")
-  }
+  const screenUp = () => {
+    window.webkit.messageHandlers.NAME.postMessage('screenUp');
+  };
 
   return (
     <>
       {postCertificationIsLoading && <BallLoading />}
-      <div className='bottom-sheet-container'>
+      {OS === 'ios' ? (
+        <main
+          className="capture-img-record ios-capture-record"
+          style={{
+            height: window.screen.height - window.screen.width + 10,
+          }}
+        >
+          <body className="review-container">
+            <div className="review-place-info">
+              <div className="review-place-info-title">{title}</div>
+              <div className="review-place-info-address">{address}</div>
+            </div>
+            <textarea
+              className="review-content"
+              placeholder="남기고 싶은 기록을 작성해주세요"
+              onChange={onChangeCertificationPostContent}
+              maxLength={199}
+              onFocus={screenUp}
+            >
+              {certificationPostContent}
+            </textarea>
+            <div className="review-content-length">
+              {certificationPostContent.length}/200
+            </div>
+          </body>
+          <footer>
+            {certificationPostContent.length > 0 ? (
+              <div
+                className="writting-button-active"
+                aria-hidden="true"
+                onClick={uploadGalleryImgCertification}
+              >
+                기록완료
+              </div>
+            ) : (
+              <div className="writting-button">기록완료</div>
+            )}
+          </footer>
+        </main>
+      ) : (
         <Sheet
           isOpen={bottomSheetIsOpen}
           onClose={closeBottomSheet}
@@ -158,7 +198,12 @@ function CaptureCertificationRecord({
         >
           <Sheet.Container style={sheetStyle}>
             <Sheet.Content>
-              <main className="capture-img-record">
+              <main
+                className="capture-img-record"
+                style={{
+                  height: window.screen.height - window.screen.width + 10,
+                }}
+              >
                 <body className="review-container">
                   <div className="review-place-info">
                     <div className="review-place-info-title">{title}</div>
@@ -195,7 +240,7 @@ function CaptureCertificationRecord({
             </Sheet.Content>
           </Sheet.Container>
         </Sheet>
-      </div>
+      )}
       {certificateErrorToastIsOpen && (
         <ToastPurpleMessage message={certificateErrorToastMessage} />
       )}

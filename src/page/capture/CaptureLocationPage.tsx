@@ -15,6 +15,7 @@ function CaptureLocationPage() {
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
 
   useEffect(() => {
+    window.localStorage.setItem('isFirstCert', "true");
     mutation.mutate({
       params: {
         firebase_screen: 'CaptureLocation',

@@ -16,6 +16,7 @@ function CaptureCertificationPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.localStorage.setItem('isFirstCert', "true");
     mutation.mutate({
       params: {
         firebase_screen: 'CaptureCertification',

@@ -16,35 +16,34 @@ function CertificationMap() {
   const currentPlaceName = useSelector((state:RootState) => state.map.currentPlaceName);
   const initMapCenter = useSelector((state: any) => state.map);
   const [address, setAddress] = useState('');
-  const [currentMarker, setCurrentMarker] = useState<naver.maps.Marker>();
+  const [currentMarker, setCurrentMarker] = useState<kakao.maps.Marker>();
   const [pointerLocation, setPointerLocation] = useState({ lat: 0, lng: 0 });
-  const [globarMap, setGlobarMap] = useState<naver.maps.Map>();
+  const [globarMap, setGlobarMap] = useState<kakao.maps.Map>();
   const [currentLocation, setCurrentLocation] = useState({
     lat: !initMapCenter.y ? 37.5057018 : initMapCenter.y,
     lng: !initMapCenter.x ? 127.1141119 : initMapCenter.x,
     zoom: !initMapCenter.zoom ? 14 : initMapCenter.zoom,
     option: { zoom: 2, size: 70 },
   });
-  let map: naver.maps.Map;
+  let map: kakao.maps.Map;
   const dispatch = useDispatch();
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
 
-    if (!mapElement.current || !naver) return;
-    const location = new window.naver.maps.LatLng(currentLocation.lat, currentLocation.lng);
-    const mapOptions: naver.maps.MapOptions = {
+    if (!mapElement.current || !kakao) return;
+    const location = new window.kakao.maps.LatLng(currentLocation.lat, currentLocation.lng);
+    const mapOptions: kakao.maps.MapOptions = {
       center: location,
-      zoom: currentLocation.zoom,
-      zoomControl: false,
+      level: 5,
     };
 
-    map = new naver.maps.Map(mapElement.current, mapOptions);
+    map = new kakao.maps.Map(mapElement.current, mapOptions);
 
     setGlobarMap(map);
-    naver.maps.Event.addListener(map, 'click', (e: naver.maps.PointerEvent) => {
+    kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) => {
       setPointerLocation(() => {
-        return { lat: e.coord.y, lng: e.coord.x };
+        return { lat: e.latLng.getLat(), lng: e.latLng.getLng() };
       });
     });
     return () => {
@@ -78,17 +77,27 @@ function CertificationMap() {
     if (currentMarker) {
       currentMarker.setMap(null);
     }
-    const markerOption = {
-      position: new window.naver.maps.LatLng(pointerLocation),
-      map: globarMap,
-      icon: {
-        content: [`<div class="cert-map-marker" >`, `<img src=${Marker}  style="" alt="pin"/>`, `</div>`].join(''),
-        size: new naver.maps.Size(20, 20),
-        origin: new naver.maps.Point(0, 0),
-        anchor: new naver.maps.Point(17, 48),
-      },
-    };
-    const marker = new naver.maps.Marker(markerOption);
+    const position = new kakao.maps.LatLng(pointerLocation.lat, pointerLocation.lng);
+    const imageSize = new kakao.maps.Size(40,40);
+    const imageOptions = {
+      offset : new kakao.maps.Point(20,40)
+    }
+    const image = new kakao.maps.MarkerImage(Marker, imageSize, imageOptions);
+    // const markerOption = {
+    //   position: new window.naver.maps.LatLng(pointerLocation),
+    //   map: globarMap,
+    //   icon: {
+    //     content: [`<div class="cert-map-marker" >`, `<img src=${Marker}  style="" alt="pin"/>`, `</div>`].join(''),
+    //     size: new naver.maps.Size(20, 20),
+    //     origin: new naver.maps.Point(0, 0),
+    //     anchor: new naver.maps.Point(17, 48),
+    //   },
+    // };
+    const marker = new kakao.maps.Marker({
+      position,
+      image
+    });
+    if(globarMap) marker.setMap(globarMap);
     setCurrentMarker(marker);
     if (pointerLocation.lat !== 0) {
       naver.maps.Service.reverseGeocode(
@@ -121,6 +130,7 @@ function CertificationMap() {
       <div className="map" ref={mapElement} style={{ position: 'absolute' }} />
     </div>
   );
+  return <div/>
 }
 
 export default CertificationMap;

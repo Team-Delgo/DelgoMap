@@ -3,18 +3,26 @@ import { AnyAction, Dispatch } from 'redux';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 
-function getMapData(userId: number, success: (data: AxiosResponse) => void, dispatch: Dispatch<AnyAction>) {
-  axiosInstance
-    .get(`/map/${userId}`)
-    .then((data) => {
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
+export interface MapDataType {
+  data: {
+    mungpleList: any[];
+    normalCertList: any[];
+    mungpleCertList: any[];
+    exposedMungpleCertList: any[];
+    exposedNormalCertList: any[];
+  };
 }
 
-function getCalendarData(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
+async function getMapData(userId: number) {
+  const { data } = await axiosInstance.get<MapDataType>(`/map/${userId}`);
+  return data.data;
+}
+
+function getCalendarData(
+  userId: number,
+  success: (data: AxiosResponse) => void,
+  dispatch: any,
+) {
   axiosInstance
     .get(`/calendar/${userId}`)
     .then((data) => {
@@ -25,7 +33,11 @@ function getCalendarData(userId: number, success: (data: AxiosResponse) => void,
     });
 }
 
-function sendEmail(email: string, success: (data: AxiosResponse) => void, dispatch: Dispatch<AnyAction>) {
+function sendEmail(
+  email: string,
+  success: (data: AxiosResponse) => void,
+  dispatch: Dispatch<AnyAction>,
+) {
   axiosInstance
     .post(`/survey`, {
       email,
@@ -59,7 +71,11 @@ function getPhotoData(
     });
 }
 
-function getPhotoCount(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
+function getPhotoCount(
+  userId: number,
+  success: (data: AxiosResponse) => void,
+  dispatch: any,
+) {
   axiosInstance
     .get(`/certification/count/${userId}`)
     .then((data) => {
@@ -73,7 +89,7 @@ function getPhotoCount(userId: number, success: (data: AxiosResponse) => void, d
 async function getRecordCertificationDate(
   userId: number,
   date: string,
-  success : (date:AxiosResponse)=>void
+  success: (date: AxiosResponse) => void,
 ) {
   axiosInstance
     .get(`/certification/date?userId=${userId}&date=${date}`)
@@ -88,7 +104,7 @@ async function getRecordCertificationDate(
 async function getRecordCertificationId(
   userId: number,
   certId: number,
-  success : (date:AxiosResponse)=>void
+  success: (date: AxiosResponse) => void,
 ) {
   axiosInstance
     .get(`/certification?userId=${userId}&certificationId=${certId}`)
@@ -100,4 +116,12 @@ async function getRecordCertificationId(
     });
 }
 
-export { getMapData, getRecordCertificationDate, getRecordCertificationId ,sendEmail, getCalendarData, getPhotoData, getPhotoCount };
+export {
+  getMapData,
+  getRecordCertificationDate,
+  getRecordCertificationId,
+  sendEmail,
+  getCalendarData,
+  getPhotoData,
+  getPhotoCount,
+};
