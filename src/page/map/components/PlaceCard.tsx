@@ -59,7 +59,7 @@ function PlaceCard(props: {
     dispatch(mapAction.setLink(`https://www.reward.delgo.pet/${id}`));
   }, [id]);
 
-  const cardClickHandler = useCallback(() => {
+  const cardClickHandler = () => {
     linkClickEvent.mutate();
     // console.log(map!.getCenter());
     const center = map!.getCenter();
@@ -67,7 +67,7 @@ function PlaceCard(props: {
     dispatch(mapAction.setCurrentPosition({ lat: center.getLat(), lng: center.getLng(), zoom: level }))
     dispatch(mapAction.setDetailUrl(detailUrl));
     navigate(`detail`);
-  }, [instaUrl]);
+  };
 
   return (
     <div className="placecard" aria-hidden="true" onClick={cardClickHandler}>
