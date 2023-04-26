@@ -330,7 +330,7 @@ function MapTest() {
         />
       )}
       <div className="whiteBox" />
-      <img className="map-logo" src={Logo} alt="logo" />
+      <img className="map-logo" aria-hidden src={Logo} alt="logo" onClick={clearId}/>
       <img
         className="map-search"
         src={Search}
