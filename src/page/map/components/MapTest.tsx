@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './Map.scss';
 import { getMapData } from '../../../common/api/record';
 import { RootState } from '../../../redux/store';
-import { Cert, certDefault, idDefault, Mungple } from './maptype';
+import { Cert, certDefault, Mungple } from './maptype';
 import FooterNavigation from '../../../components/FooterNavigation';
 import { mapAction } from '../../../redux/slice/mapSlice';
 import Logo from '../../../common/icons/logo.svg';
@@ -13,7 +13,6 @@ import PlaceCard from './PlaceCard';
 import TempMarkerImageLoader, {
   clearSelectedId,
   MarkerImages,
-  MarkerImageSets,
   setMarkerImageBig,
   setMarkerImageSmall,
   setNormalCertMarker,
@@ -35,12 +34,9 @@ interface MakerItem {
 }
 
 function MapTest() {
-  const [markerImages, setMarkerImages] = useState<MarkerImageSets>({
-    images: [],
-    smallImages: [],
-  });
   const mapElement = useRef(null);
   const navigate = useNavigate();
+  const idDefault = useSelector((state: RootState) => state.map.selectedId);
   const toggleDefault = useSelector((state: RootState) => state.map.certToggle);
   const [isCertVisible, setIsCertVisible] = useState(toggleDefault);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -88,8 +84,7 @@ function MapTest() {
       setSelectedCert(certDefault);
     });
     const loadMarkerImages = async () => {
-      const loadedImages = await MarkerImages();
-      setMarkerImages(loadedImages);
+      const loadedImages = MarkerImages();
     };
     loadMarkerImages();
 
@@ -100,7 +95,6 @@ function MapTest() {
 
   const deleteMungpleList = () => {
     markerList.forEach((marker) => {
-      // marker.marker.setMap(null);
       marker.marker.setVisible(false);
     });
   };
@@ -117,6 +111,24 @@ function MapTest() {
 
   const deleteCertList = (certList: kakao.maps.CustomOverlay[]) => {
     certList.forEach((cert) => cert.setVisible(false));
+  };
+
+  const selectIdFunc = (prev: any, m: any) => {
+    return {
+      img: m.photoUrl,
+      title: m.placeName,
+      address: m.jibunAddress,
+      id: m.mungpleId,
+      prevId: prev.id,
+      detailUrl: m.detailUrl,
+      instaUrl: m.instaUrl,
+      lat: parseFloat(m.latitude),
+      lng: parseFloat(m.longitude),
+      categoryCode: m.categoryCode,
+      prevLat: prev.lat,
+      prevLng: prev.lng,
+      prevCategoryCode: prev.categoryCode,
+    };
   };
 
   useEffect(() => {
@@ -165,9 +177,7 @@ function MapTest() {
           );
           setOtherMungpleCertMarkerList(otherMungpleMarkers);
         }
-        console.log(markerList);
         if (globarMap && markerList.length === 0) {
-          
           const markers = mapDataList.mungpleList.map((m) => {
             const position = new kakao.maps.LatLng(
               parseFloat(m.latitude),
@@ -182,21 +192,7 @@ function MapTest() {
             marker.setMap(globarMap);
             kakao.maps.event.addListener(marker, 'click', async () => {
               setSelectedId((prev: any) => {
-                return {
-                  img: m.photoUrl,
-                  title: m.placeName,
-                  address: m.jibunAddress,
-                  id: m.mungpleId,
-                  prevId: prev.id,
-                  detailUrl: m.detailUrl,
-                  instaUrl: m.instaUrl,
-                  lat: parseFloat(m.latitude),
-                  lng: parseFloat(m.longitude),
-                  categoryCode: m.categoryCode,
-                  prevLat: prev.lat,
-                  prevLng: prev.lng,
-                  prevCategoryCode: prev.categoryCode,
-                };
+                return selectIdFunc(prev, m);
               });
               image = setMarkerImageBig(m.categoryCode);
               marker.setImage(image);
@@ -212,7 +208,6 @@ function MapTest() {
       }
     }
     if (!isFirst.mungple && !isFirst.cert && mapDataList) {
-      console.log(isFirst);
       if (isCertVisible) {
         deleteMungpleList();
         deleteCertList(otherCertMarkerList);
@@ -230,8 +225,9 @@ function MapTest() {
   }, [globarMap, mapDataList, isCertVisible]);
 
   useEffect(() => {
+    dispatch(mapAction.setSelectedId(selectedId));
     if (selectedId.prevId === selectedId.id) return;
-    if (selectedId.prevId > 0) {
+    if (selectedId.prevId > 0 && markerList.length > 0) {
       const index = markerList.findIndex((e) => {
         return e.id === selectedId.prevId;
       });
@@ -242,33 +238,25 @@ function MapTest() {
   }, [selectedId]);
 
   useEffect(() => {
-    if (linkId > 0 && mapDataList && !isFirst.mungple) {
+    if ((linkId > 0 || idDefault.id > 0) && mapDataList && !isFirst.mungple) {
       const { mungpleList } = mapDataList;
-      const index = mungpleList.findIndex((mungple) => mungple.mungpleId === linkId);
-      if (index >= 0) {
+      console.log(idDefault);
+      let index:number;
+      if(linkId > 0)
+        index = mungpleList.findIndex((mungple) => mungple.mungpleId === linkId);
+      else index = mungpleList.findIndex((mungple) => mungple.mungpleId === idDefault.id);
+        if (index >= 0) {
         setSelectedId((prev: any) => {
-          return {
-            img: mungpleList[index].photoUrl,
-            title: mungpleList[index].placeName,
-            address: mungpleList[index].jibunAddress,
-            id: mungpleList[index].mungpleId,
-            prevId: prev.id,
-            detailUrl: mungpleList[index].detailUrl,
-            instaUrl: mungpleList[index].instaUrl,
-            lat: parseFloat(mungpleList[index].latitude),
-            lng: parseFloat(mungpleList[index].longitude),
-            categoryCode: mungpleList[index].categoryCode,
-            prevLat: prev.lat,
-            prevLng: prev.lng,
-            prevCategoryCode: prev.categoryCode,
-          };
+          return selectIdFunc(prev, mungpleList[index]);
         });
-        globarMap?.panTo(
-          new kakao.maps.LatLng(
-            parseFloat(mungpleList[index].latitude),
-            parseFloat(mungpleList[index].longitude),
-          ),
-        );
+        if (linkId > 0) {
+          globarMap?.panTo(
+            new kakao.maps.LatLng(
+              parseFloat(mungpleList[index].latitude),
+              parseFloat(mungpleList[index].longitude),
+            ),
+          );
+        }
         const image = setMarkerImageBig(mungpleList[index].categoryCode);
         markerList[index].marker.setImage(image);
         markerList[index].marker.setZIndex(20);
@@ -296,21 +284,7 @@ function MapTest() {
     setSearchIsOpen(false);
     setIsCertVisible(false);
     setSelectedId((prev: any) => {
-      return {
-        img: data.photoUrl,
-        title: data.placeName,
-        address: data.jibunAddress,
-        id: data.mungpleId,
-        prevId: prev.id,
-        detailUrl: data.detailUrl,
-        instaUrl: data.instaUrl,
-        lat: parseFloat(data.latitude),
-        lng: parseFloat(data.longitude),
-        categoryCode: data.categoryCode,
-        prevLat: prev.lat,
-        prevLng: prev.lng,
-        prevCategoryCode: prev.categoryCode,
-      };
+      return selectIdFunc(prev, data);
     });
     const image = await setMarkerImageBig(data.categoryCode);
 

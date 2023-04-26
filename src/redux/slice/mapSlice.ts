@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { idDefault } from '../../page/map/components/maptype';
 
 const initialState = {
   zoom: 5,
@@ -12,6 +13,7 @@ const initialState = {
   detailImgUrl: '',
   currentPlaceName: '',
   certToggle: false,
+  selectedId: idDefault
 };
 
 export const mapSlice = createSlice({
@@ -44,6 +46,12 @@ export const mapSlice = createSlice({
     setCertToggle(state, action) {
       state.certToggle = action.payload;
     },
+    setSelectedId(state, action){
+      state.selectedId = action.payload;
+    },
+    clearSelectedId(state, action){
+      state.selectedId = idDefault;
+    }
   },
 });
 

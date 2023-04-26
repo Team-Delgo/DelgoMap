@@ -1,13 +1,15 @@
 import React, { ChangeEvent, useRef, useState } from "react";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { useDispatch } from "react-redux";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import Arrow from '../../../common/icons/left-arrow.svg';
 import "./FindPassword.scss";
 import { emailAuth } from "../../../common/api/login";
 import { SIGN_IN_PATH } from "../../../common/constants/path.const";
 import Check from "../../../common/icons/check.svg";
+import { useErrorHandlers } from "../../../common/api/useErrorHandlers";
 
 function FindPassword() {
   const [email, setEmail] = useState('');
@@ -23,19 +25,24 @@ function FindPassword() {
     setFeedback('');
   };
 
-  const submitEmail = () => {
-    // emailAuth(email, (response: AxiosResponse) => {
+  const emailCheck = useMutation(() => emailAuth(email), {
+    onSuccess: (data) => {
+      if (data.data.code === 200){
+      setPhoneNumber(data.data.data);
+      setEmailIsSubmitted(true);}
+      else {
+        setFeedback('가입되지 않은 이메일입니다.');
+        inputRef.current?.focus();
+      }
+    },
+    onError: (error: AxiosError) => {
+      useErrorHandlers(dispatch, error);
 
-    //   const { code, data } = response.data;
-    //   if (code === 200) {
-    //     setPhoneNumber(data);
-    //     setEmailIsSubmitted(true);
-    //   }
-    //   else {
-    //     setFeedback('회원정보를 찾을 수 없습니다.');
-    //     inputRef.current?.focus();
-    //   }
-    // }, dispatch);
+    },
+  });
+
+  const submitEmail = () => {
+    emailCheck.mutate();
   };
 
   const nextButtonHandler = () => {
