@@ -27,6 +27,7 @@ import AlertConfirm from '../../../common/dialog/AlertConfirm';
 import LinkCopy from './LinkCopy';
 import CertToggle from './CertToggle';
 import CertCard from './CertCard';
+import BallLoading from '../../../common/utils/BallLoading';
 
 interface MakerItem {
   id: number;
@@ -144,7 +145,11 @@ function MapTest() {
       } else {
         deleteCertList(normalCertMarkerList);
         deleteCertList(mungpleCertMarkerList);
-        if (globarMap) {
+        if (
+          globarMap &&
+          otherCertMarkerList.length === 0 &&
+          otherMungpleCertMarkerList.length === 0
+        ) {
           const otherMarkers = setOtherNormalCertMarker(
             mapDataList.exposedNormalCertList,
             globarMap,
@@ -160,49 +165,54 @@ function MapTest() {
           );
           setOtherMungpleCertMarkerList(otherMungpleMarkers);
         }
-        const markers = mapDataList.mungpleList.map((m) => {
-          const position = new kakao.maps.LatLng(
-            parseFloat(m.latitude),
-            parseFloat(m.longitude),
-          );
-          let image = setMarkerImageSmall(m.categoryCode);
-          const marker = new kakao.maps.Marker({
-            position,
-            image,
-            zIndex: 10,
-          });
-          if (globarMap) marker.setMap(globarMap);
-          kakao.maps.event.addListener(marker, 'click', async () => {
-            setSelectedId((prev: any) => {
-              return {
-                img: m.photoUrl,
-                title: m.placeName,
-                address: m.jibunAddress,
-                id: m.mungpleId,
-                prevId: prev.id,
-                detailUrl: m.detailUrl,
-                instaUrl: m.instaUrl,
-                lat: parseFloat(m.latitude),
-                lng: parseFloat(m.longitude),
-                categoryCode: m.categoryCode,
-                prevLat: prev.lat,
-                prevLng: prev.lng,
-                prevCategoryCode: prev.categoryCode,
-              };
+        console.log(markerList);
+        if (globarMap && markerList.length === 0) {
+          
+          const markers = mapDataList.mungpleList.map((m) => {
+            const position = new kakao.maps.LatLng(
+              parseFloat(m.latitude),
+              parseFloat(m.longitude),
+            );
+            let image = setMarkerImageSmall(m.categoryCode);
+            const marker = new kakao.maps.Marker({
+              position,
+              image,
+              zIndex: 10,
             });
-            image = setMarkerImageBig(m.categoryCode);
-            marker.setImage(image);
-            marker.setZIndex(20);
+            marker.setMap(globarMap);
+            kakao.maps.event.addListener(marker, 'click', async () => {
+              setSelectedId((prev: any) => {
+                return {
+                  img: m.photoUrl,
+                  title: m.placeName,
+                  address: m.jibunAddress,
+                  id: m.mungpleId,
+                  prevId: prev.id,
+                  detailUrl: m.detailUrl,
+                  instaUrl: m.instaUrl,
+                  lat: parseFloat(m.latitude),
+                  lng: parseFloat(m.longitude),
+                  categoryCode: m.categoryCode,
+                  prevLat: prev.lat,
+                  prevLng: prev.lng,
+                  prevCategoryCode: prev.categoryCode,
+                };
+              });
+              image = setMarkerImageBig(m.categoryCode);
+              marker.setImage(image);
+              marker.setZIndex(20);
+            });
+            return { marker, id: m.mungpleId };
           });
-          return { marker, id: m.mungpleId };
-        });
-        setMarkerList(markers);
-        setIsFirst((prev) => {
-          return { ...prev, mungple: false };
-        });
+          setMarkerList(markers);
+          setIsFirst((prev) => {
+            return { ...prev, mungple: false };
+          });
+        }
       }
     }
     if (!isFirst.mungple && !isFirst.cert && mapDataList) {
+      console.log(isFirst);
       if (isCertVisible) {
         deleteMungpleList();
         deleteCertList(otherCertMarkerList);
@@ -399,7 +409,8 @@ function MapTest() {
       {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
-      {selectedId.title.length > 0 && <LinkCopy setLoading={setCopyLoading}/>}
+      {selectedId.title.length > 0 && <LinkCopy setLoading={setCopyLoading} />}
+      {copyLoading && <BallLoading />}
       <TempMarkerImageLoader />
     </div>
   );
