@@ -3,7 +3,7 @@ import React from 'react';
 import BackArrowComponent from './BackArrowComponent';
 import "./PageHeader.scss";
 
-interface PageHeaderProps{
+interface PageHeaderProps {
   title: string;
   navigate: () => void;
   isFixed?: boolean;
@@ -11,7 +11,7 @@ interface PageHeaderProps{
   short?: boolean;
 }
 
-function PageHeader({title, navigate, isFixed, isAbsolute, short }:PageHeaderProps) {
+function PageHeader({ title, navigate, isFixed, isAbsolute, short }: PageHeaderProps) {
   return (
     <div className={classNames('page-header', { isFixed, isAbsolute, short })}>
       <BackArrowComponent onClickHandler={navigate} />
@@ -21,9 +21,9 @@ function PageHeader({title, navigate, isFixed, isAbsolute, short }:PageHeaderPro
 }
 
 PageHeader.defaultProps = {
-  isFixed : false,
-  isAbsolute : false,
-  short : false
+  isFixed: false,
+  isAbsolute: false,
+  short: false
 }
 
 export default PageHeader;
