@@ -51,6 +51,7 @@ function MapTest() {
   const [selectedId, setSelectedId] = useState(idDefault);
   const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
+  const [copyLoading, setCopyLoading] = useState(false);
   const [normalCertMarkerList, setNormalCertMarkerList] = useState<
     kakao.maps.CustomOverlay[]
   >([]);
@@ -398,7 +399,7 @@ function MapTest() {
       {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
-      {selectedId.title.length > 0 && <LinkCopy />}
+      {selectedId.title.length > 0 && <LinkCopy setLoading={setCopyLoading}/>}
       <TempMarkerImageLoader />
     </div>
   );

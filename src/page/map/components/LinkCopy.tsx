@@ -1,21 +1,23 @@
-import React, { useCallback } from "react";
-import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
-import { useDispatch, useSelector } from "react-redux";
-import Link from "../../../common/icons/link.svg";
-import { analytics } from "../../../index";
-import "./LinkCopy.scss";
+import React, { useCallback } from 'react';
+import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
+import { useDispatch, useSelector } from 'react-redux';
+import Link from '../../../common/icons/link.svg';
+import { analytics } from '../../../index';
+import './LinkCopy.scss';
 
-function LinkCopy() {
-  const linkCopyEvent = useAnalyticsCustomLogEvent(analytics, "link_copy");
+function LinkCopy(props: { setLoading: (loading: boolean) => void }) {
+  const { setLoading } = props;
+  const linkCopyEvent = useAnalyticsCustomLogEvent(analytics, 'link_copy');
   const url = useSelector((state: any) => state.map.link);
-  
-  const sendScrap = () => {
-    console.log(url);
-    window.Kakao.Share.sendScrap({
+
+  const sendScrap = async () => {
+    setLoading(true);
+    await window.Kakao.Share.sendScrap({
       requestUrl: url,
       templateId: 92943,
     });
-  }
+    setLoading(false);
+  };
 
   const buttonClickHandler = useCallback(() => {
     sendScrap();
