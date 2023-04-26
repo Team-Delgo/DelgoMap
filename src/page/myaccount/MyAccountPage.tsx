@@ -105,7 +105,7 @@ function MyAccountPage() {
             navigate(MY_ACCOUNT_PATH.USERINFO);
           }}
         >
-          내정보 관리
+          내 정보 관리
           <img src={RightArrow} alt="more" />
         </div>
         <div
