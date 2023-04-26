@@ -60,6 +60,9 @@ function MapTest() {
   const [otherCertMarkerList, setOtherCertMarkerList] = useState<
     kakao.maps.CustomOverlay[]
   >([]);
+  const [otherMungpleCertMarkerList, setOtherMungpleCertMarkerList] = useState<
+    kakao.maps.CustomOverlay[]
+  >([]);
   const [linkId, setLinkId] = useState(NaN);
   const dispatch = useDispatch();
 
@@ -91,7 +94,6 @@ function MapTest() {
     const parts = window.location.pathname.split('/');
     const id = parts[parts.length - 1];
     setLinkId(parseInt(id, 10));
-
   }, []);
 
   const deleteMungpleList = () => {
@@ -119,6 +121,8 @@ function MapTest() {
     if (mapDataList && (isFirst.cert || isFirst.mungple)) {
       if (userId > 0 && isCertVisible) {
         deleteMungpleList();
+        deleteCertList(otherCertMarkerList);
+        deleteCertList(otherMungpleCertMarkerList);
         if (globarMap && mapDataList) {
           const normalMarkers = setNormalCertMarker(
             mapDataList.normalCertList,
@@ -144,9 +148,16 @@ function MapTest() {
             mapDataList.exposedNormalCertList,
             globarMap,
             navigate,
-            setCurrentMapPosition
+            setCurrentMapPosition,
           );
           setOtherCertMarkerList(otherMarkers);
+          const otherMungpleMarkers = setOtherNormalCertMarker(
+            mapDataList.exposedMungpleCertList,
+            globarMap,
+            navigate,
+            setCurrentMapPosition,
+          );
+          setOtherMungpleCertMarkerList(otherMungpleMarkers);
         }
         const markers = mapDataList.mungpleList.map((m) => {
           const position = new kakao.maps.LatLng(
@@ -193,15 +204,18 @@ function MapTest() {
     if (!isFirst.mungple && !isFirst.cert && mapDataList) {
       if (isCertVisible) {
         deleteMungpleList();
+        deleteCertList(otherCertMarkerList);
+        deleteCertList(otherMungpleCertMarkerList);
         showCertList(normalCertMarkerList);
         showCertList(mungpleCertMarkerList);
       } else {
         deleteCertList(normalCertMarkerList);
         deleteCertList(mungpleCertMarkerList);
         showMungpleList();
+        showCertList(otherMungpleCertMarkerList);
+        showCertList(otherCertMarkerList);
       }
     }
-
   }, [globarMap, mapDataList, isCertVisible]);
 
   useEffect(() => {
@@ -242,7 +256,7 @@ function MapTest() {
           new kakao.maps.LatLng(
             parseFloat(mungpleList[index].latitude),
             parseFloat(mungpleList[index].longitude),
-          )
+          ),
         );
         const image = setMarkerImageBig(mungpleList[index].categoryCode);
         markerList[index].marker.setImage(image);
