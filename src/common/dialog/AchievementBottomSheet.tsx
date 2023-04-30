@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React from 'react';
 import Sheet from 'react-modal-sheet';
 import { useNavigate } from 'react-router-dom';

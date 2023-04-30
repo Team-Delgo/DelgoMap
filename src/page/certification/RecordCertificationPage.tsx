@@ -6,7 +6,7 @@ import RecordCertification from './RecordCertification';
 import Back from '../../common/icons/prev-arrow-black.svg';
 import './RecordCertificationPage.scss';
 import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
-import Loading from '../../common/utils/Loading';
+import Loading from '../../common/utils/BallLoading';
 import { getRecordCertificationDate, getRecordCertificationId } from '../../common/api/record';
 import PageHeader from '../../components/PageHeader';
 

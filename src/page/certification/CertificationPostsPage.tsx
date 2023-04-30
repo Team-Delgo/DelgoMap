@@ -1,5 +1,3 @@
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable react/jsx-no-useless-fragment */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -11,7 +9,6 @@ import './CertificationPostsPage.scss';
 import { RootState } from '../../redux/store';
 import CertificationPost from '../../components/CertificationPost';
 import DogLoading from '../../common/utils/BallLoading';
-import PrevArrow from '../../common/icons/prev-arrow-black.svg';
 import { analytics } from '../../index';
 import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import { scrollActions } from '../../redux/slice/scrollSlice';
