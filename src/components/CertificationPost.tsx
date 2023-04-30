@@ -22,7 +22,6 @@ import { weekDay } from '../common/types/week';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import { useErrorHandlers } from '../common/api/useErrorHandlers';
-import BallLoading from '../common/icons/loading.gif';
 
 interface CertificationPostPropsType {
   post: postType;
@@ -198,7 +197,6 @@ function CertificationPost({
     commentEvent.mutate();
     dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
     navigate(`/comments/${post?.certificationId}`, {
-      // state: { certificationId: post?.certificationId, posterId: post?.userId },
       state: { post },
     });
   };
@@ -237,6 +235,8 @@ function CertificationPost({
             src={post?.user?.profile}
             alt="copy url"
             ref={profileImg}
+            width={39}
+            height={39}
             data-src={post?.user?.profile ? post.user?.profile : DogLoading}
           />
           <div>
@@ -276,6 +276,7 @@ function CertificationPost({
           data-src={post.photoUrl ? post.photoUrl : DogLoading}
           src={DogLoading}
           width={window.innerWidth}
+          height={window.innerWidth}
           alt="postImg"
         />
         <header className="post-img-result-main-header">

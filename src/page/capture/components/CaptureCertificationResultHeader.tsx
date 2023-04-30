@@ -62,11 +62,6 @@ function CaptureResultHeader() {
     });
   };
 
-  const moveToHomePage = () => {
-    handleInitAchievements();
-    navigate(ROOT_PATH);
-  };
-
   const moveToPostsPage = () => {
     handleInitAchievements();
     navigate(POSTS_PATH);

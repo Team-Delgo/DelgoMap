@@ -36,9 +36,6 @@ function CertificationPostsPage() {
   const navigate = useNavigate();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
 
-  console.log('firstCert',firstCert)
-  console.log('pageFrom',pageFrom)
-
   const {
     data,
     fetchNextPage,

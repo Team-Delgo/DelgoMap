@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
@@ -13,6 +13,27 @@ function CaptureImg() {
   const { img } = useSelector((state: RootState) => state.persist.upload);
   const navigate = useNavigate();
   const location = useLocation();
+  const eventTargetRef = useRef<HTMLDivElement | null>(null);
+
+  const handleDragStart = (e: any) => {
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    const eventTarget = eventTargetRef.current;
+    if (eventTarget) {
+      eventTarget.addEventListener('mousedown', handleDragStart, { passive: false });
+      eventTarget.addEventListener('touchmove', handleDragStart, { passive: false });
+    }
+
+    return () => {
+      if (eventTarget) {
+        eventTarget.removeEventListener('mousedown', handleDragStart);
+        eventTarget.removeEventListener('touchmove', handleDragStart);
+      }
+    };
+  }, []);
+  
 
   const moveToPreviousPage = () => {
     if (location.pathname === CAMERA_PATH.CAPTURE) navigate(CROP_PATH);
@@ -32,8 +53,22 @@ function CaptureImg() {
         aria-hidden="true"
         onClick={moveToPreviousPage}
       />
-      <img src={X} className="capture-page-x" alt="capture-page-x" aria-hidden="true" onClick={openBottomSheet} />
-      <img className="captured-img" src={img} width={window.innerWidth} height={window.innerWidth} alt="caputeImg" />
+      <img
+        src={X}
+        className="capture-page-x"
+        alt="capture-page-x"
+        aria-hidden="true"
+        onClick={openBottomSheet}
+      />
+      <div ref={eventTargetRef}>
+        <img
+          className="captured-img"
+          src={img}
+          width={window.innerWidth}
+          height={window.innerWidth}
+          alt="caputeImg"
+        />
+      </div>
       <DeleteBottomSheet
         text="작성중이던 기록이 삭제됩니다"
         description="지우면 다시 볼 수 없어요"
