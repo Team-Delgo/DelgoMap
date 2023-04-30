@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 import imageCompression from 'browser-image-compression';
 
 export async function compressFormData(formData: FormData): Promise<FormData> {
