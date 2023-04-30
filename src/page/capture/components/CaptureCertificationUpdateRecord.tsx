@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useMutation } from 'react-query';
 import Sheet from 'react-modal-sheet';
 import { updateCertificationPost } from '../../../common/api/certification';
 import { CAMERA_PATH } from '../../../common/constants/path.const';
@@ -10,6 +11,12 @@ import { uploadAction } from '../../../redux/slice/uploadSlice';
 import useActive from '../../../common/hooks/useActive';
 import useInput from '../../../common/hooks/useInput';
 import BallLoading from '../../../common/utils/BallLoading';
+
+interface updateCertPostData {
+  certificationId: number;
+  description: string;
+  userId: number;
+}
 
 const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
 
@@ -31,6 +38,31 @@ function CaptureCategoryUpdateRecord() {
   const dispatch = useDispatch();
   const location: any = useLocation();
 
+  const { mutate: updateCertificationMutate } = useMutation(
+    (data: updateCertPostData) => updateCertificationPost(data),
+    {
+      onSuccess: (response: AxiosResponse) => {
+        const { code, data } = response.data;
+        if (code === 200) {
+          dispatch(
+            uploadAction.setContent({
+              content: data.description,
+              achievements: [],
+            }),
+          );
+          moveToCaptureResultPage();
+        } else {
+          offUpdateCertificationLoading();
+          OffButtonDisable();
+        }
+      },
+      onError: () => {
+        offUpdateCertificationLoading();
+        OffButtonDisable();
+      },
+    },
+  );
+
   const uploadCertificationPost = () => {
     if (buttonDisabled || updateCertificationIsLoading) {
       return;
@@ -39,29 +71,11 @@ function CaptureCategoryUpdateRecord() {
     onButtonDisable();
 
     setTimeout(() => {
-      updateCertificationPost(
-        {
-          certificationId,
-          description: certificationPostContent,
-          userId: user.id,
-        },
-        (response: AxiosResponse) => {
-          const { code, data } = response.data;
-          if (code === 200) {
-            dispatch(
-              uploadAction.setContent({
-                content: data.description,
-                achievements: [],
-              }),
-            );
-            moveToCaptureResultPage();
-          } else {
-            offUpdateCertificationLoading();
-            OffButtonDisable();
-          }
-        },
-        dispatch,
-      );
+      updateCertificationMutate({
+        certificationId,
+        description: certificationPostContent,
+        userId: user.id,
+      });
     }, 1000);
   };
 
@@ -75,9 +89,9 @@ function CaptureCategoryUpdateRecord() {
     });
   }, []);
 
-  const screenUp = () => {
+  const screenUp = useCallback(() => {
     window.webkit.messageHandlers.NAME.postMessage('screenUp');
-  };
+  }, []);
 
   return (
     <>
@@ -131,7 +145,6 @@ function CaptureCategoryUpdateRecord() {
             window.screen.height - window.screen.width + 10,
             window.screen.height - window.screen.width + 10,
           ]}
-          // ref={ref}
           disableDrag
           className="modal-bottom-sheet"
         >
