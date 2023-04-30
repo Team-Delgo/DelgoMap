@@ -12,8 +12,9 @@ import AchievementBottomSheet from '../../../../common/dialog/AchievementBottomS
 import { achievementType } from '../../../../common/types/achievement';
 import useActive from '../../../../common/hooks/useActive';
 import './AchieveContainer.scss';
-import { CACHE_TIME, GET_ACHIEVEMENT_DATA_LIST, STALE_TIME } from '../../../../common/constants/queryKey.const';
+import { CACHE_TIME, GET_ACHIEVEMENT_DATA_LIST, GET_MY_PROFILE_INFO_DATA, STALE_TIME } from '../../../../common/constants/queryKey.const';
 import { useErrorHandlers } from '../../../../common/api/useErrorHandlers';
+import { getMyProfileInfo } from '../../../../common/api/myaccount';
 
 function AchievementPage() {
   const [selectedAchievement, setSelectedAchievement] = useState<achievementType>();
@@ -30,6 +31,18 @@ function AchievementPage() {
       },
     });
   }, []);
+
+  const { isLoading: getMyProfileInfoDataIsLoading, data: myProfileInfoData } = useQuery(
+    GET_MY_PROFILE_INFO_DATA,
+    () => getMyProfileInfo(user.id),
+    {
+      cacheTime: CACHE_TIME,
+      staleTime: STALE_TIME,
+      onError: (error: any) => {
+        useErrorHandlers(dispatch, error);
+      },
+    },
+  );
 
   const { isLoading: getAchievementDataListIsLoading, data: achievementDataList } =
     useQuery(GET_ACHIEVEMENT_DATA_LIST, () => getAchievementList(user.id), {
@@ -50,13 +63,13 @@ function AchievementPage() {
     [],
   );
 
-  if (getAchievementDataListIsLoading) {
+  if (getAchievementDataListIsLoading || getMyProfileInfoDataIsLoading) {
     return <Loading />;
   }
 
   return (
     <div aria-hidden="true" onClick={achievementBottomSheetIsOpen ? closeAchievementBottomSheet : undefined}>
-      <PetInfo />
+      <PetInfo myProfileInfoData={myProfileInfoData.data}/>
       <Achievment achievementList={achievementDataList.data} openBottomSheet={openBottomSheet} />
       <AchievementBottomSheet
         text=""

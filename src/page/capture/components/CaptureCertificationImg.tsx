@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
@@ -12,6 +12,26 @@ interface CaptureCertificationImgPropsType {
 function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPropsType) {
   const img = useSelector((state: RootState) => state.persist.upload.img);
   const navigate = useNavigate();
+  const eventTargetRef = useRef<HTMLDivElement | null>(null);
+
+  const handleDragStart = (e: any) => {
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    const eventTarget = eventTargetRef.current;
+    if (eventTarget) {
+      eventTarget.addEventListener('mousedown', handleDragStart, { passive: false });
+      eventTarget.addEventListener('touchmove', handleDragStart, { passive: false });
+    }
+
+    return () => {
+      if (eventTarget) {
+        eventTarget.removeEventListener('mousedown', handleDragStart);
+        eventTarget.removeEventListener('touchmove', handleDragStart);
+      }
+    };
+  }, []);
 
   const moveToPreviousPage = () => {
     navigate(-1);
@@ -19,7 +39,15 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
 
   return (
     <>
-      <img className="capture-certification-img" src={img} width={window.innerWidth} height={window.innerWidth} alt="caputeImg" />
+      <div ref={eventTargetRef}>
+        <img
+          className="capture-certification-img"
+          src={img}
+          width={window.innerWidth}
+          height={window.innerWidth}
+          alt="caputeImg"
+        />
+      </div>
       <img
         src={PrevArrowWhite}
         className="capture-page-prev-arrow"
@@ -27,7 +55,13 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
         aria-hidden="true"
         onClick={moveToPreviousPage}
       />
-      <img src={X} className="capture-page-x" alt="capture-page-x" aria-hidden="true" onClick={openBottomSheet} />
+      <img
+        src={X}
+        className="capture-page-x"
+        alt="capture-page-x"
+        aria-hidden="true"
+        onClick={openBottomSheet}
+      />
     </>
   );
 }
