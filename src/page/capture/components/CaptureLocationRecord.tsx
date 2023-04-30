@@ -172,7 +172,6 @@ function CaptureLocationRecord() {
         window.screen.height - window.screen.width + 10,
         window.screen.height - window.screen.width + 10,
       ]}
-      // ref={ref}
       disableDrag
       className="modal-bottom-sheet"
     >

@@ -10,7 +10,7 @@ import { getCertificationPostAll } from '../../common/api/certification';
 import './CertificationPostsPage.scss';
 import { RootState } from '../../redux/store';
 import CertificationPost from '../../components/CertificationPost';
-import Loading from '../../common/utils/Loading';
+import DogLoading from '../../common/utils/BallLoading';
 import PrevArrow from '../../common/icons/prev-arrow-black.svg';
 import { analytics } from '../../index';
 import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
@@ -23,7 +23,6 @@ import PageHeader from '../../components/PageHeader';
 function CertificationPostsPage() {
   
   const firstCert = (useLocation().state.cert as any) || null;
-  console.log(firstCert);
   const pageFrom = (useLocation().state.from as any) || 'home';
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
@@ -88,15 +87,11 @@ function CertificationPostsPage() {
   }, []);
 
   if (isLoading) {
-    return <Loading />;
+    return <DogLoading />;
   }
   
   return (
     <div className="certificationPostsPage">
-      {/* <div className="certificationPostsPage-header">
-        <img src={PrevArrow} alt="back" aria-hidden="true" onClick={moveToHomePage} />
-        <div className="certificationPostsPage-header-text">동네 강아지</div>
-      </div> */}
       <PageHeader title='동네 강아지' navigate={moveToHomePage} isFixed isAbsolute={false} short={false} />
       {pageFrom === 'photo' || pageFrom === 'homeCert'  ? (
         <CertificationPost
