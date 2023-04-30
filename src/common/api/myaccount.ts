@@ -91,7 +91,7 @@ function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch
 
 async function getMyInfo(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
-    .post(`/user?userId=${userId}`)
+    .get(`/user?userId=${userId}`)
     .then((data) => {
       success(data);
     })

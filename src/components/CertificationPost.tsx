@@ -22,7 +22,6 @@ import { weekDay } from '../common/types/week';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import { useErrorHandlers } from '../common/api/useErrorHandlers';
-import BallLoading from '../common/icons/loading.gif';
 
 interface CertificationPostPropsType {
   post: postType;
@@ -75,9 +74,6 @@ function CertificationPost({
   const mainImg = useRef<HTMLImageElement>(null);
   const profileImg = useRef<HTMLImageElement>(null);
 
-
-
-  console.log('post',post)
 
   const observeImg = (
     entries: IntersectionObserverEntry[],
@@ -201,7 +197,7 @@ function CertificationPost({
     commentEvent.mutate();
     dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
     navigate(`/comments/${post?.certificationId}`, {
-      state: { certificationId: post?.certificationId, posterId: post?.userId },
+      state: { post },
     });
   };
 
@@ -236,10 +232,12 @@ function CertificationPost({
         <div className="post-img-result-header-profile">
           <img
             className="post-img-result-header-profile-img"
-            src={post?.user.profile}
+            src={post?.user?.profile}
             alt="copy url"
             ref={profileImg}
-            data-src={post.user.profile ? post.user.profile : DogLoading}
+            width={39}
+            height={39}
+            data-src={post?.user?.profile ? post.user?.profile : DogLoading}
           />
           <div>
             <div className="post-img-result-header-profile-date">
@@ -278,6 +276,7 @@ function CertificationPost({
           data-src={post.photoUrl ? post.photoUrl : DogLoading}
           src={DogLoading}
           width={window.innerWidth}
+          height={window.innerWidth}
           alt="postImg"
         />
         <header className="post-img-result-main-header">
@@ -329,13 +328,13 @@ function CertificationPost({
       />
 
       {blockUserSuccessToastIsOpen && (
-        <ToastPurpleMessage message={`${blockedUserName}님을 신고 하였습니다`} />
+        <ToastPurpleMessage message={`${blockedUserName}님을 차단 하였습니다`} />
       )}
       <DeleteBottomSheet
-        text={`${post?.user?.name} 님을 신고 하시겠어요?`}
+        text={`${post?.user?.name} 님을 차단 하시겠어요?`}
         description={`앞으로 ${post?.user?.name} 님의 게시물을 볼 수 없어요`}
         cancelText="취소"
-        acceptText="신고"
+        acceptText="차단"
         acceptButtonHandler={handleUserBlock}
         cancelButtonHandler={closeBlockUserBottomSheet}
         bottomSheetIsOpen={blockUserbottomSheetIsOpen}

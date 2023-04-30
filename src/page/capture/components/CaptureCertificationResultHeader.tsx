@@ -62,11 +62,6 @@ function CaptureResultHeader() {
     });
   };
 
-  const moveToHomePage = () => {
-    handleInitAchievements();
-    navigate(ROOT_PATH);
-  };
-
   const moveToPostsPage = () => {
     handleInitAchievements();
     navigate(POSTS_PATH);
@@ -107,9 +102,7 @@ function CaptureResultHeader() {
             onClick={
               location?.state?.prevPrevPath === POSTS_PATH
                 ? moveToPostsPage
-                : location?.state?.prevPrevPath === RECORD_PATH.PHOTO
-                ? moveToPhotoPage
-                : moveToHomePage
+                : moveToPhotoPage
             }
           />
         </div>

@@ -29,6 +29,7 @@ function PhoneAuth() {
   const [authFailed, setAuthFailed] = useState(false);
   const authRef = useRef<any>();
   const state = useLocation().state as LocationState;
+  console.log(state);
   const { phone, email, isSocial, socialId } = state;
   const authIsValid = timeIsValid && authNumber.length === 4;
   const navigation = useNavigate();

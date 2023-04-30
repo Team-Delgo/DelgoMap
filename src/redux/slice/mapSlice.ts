@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { idDefault } from '../../page/map/components/maptype';
 
 const initialState = {
-  zoom: 0,
-  lat: 0,
-  lng: 0,
+  zoom: 6,
+  lat: 37.5057018,
+  lng: 127.1141119,
   selectedIcon: 0,
   selectedArea: '송파',
   link: 'https://www.delgo.pet',
@@ -12,6 +13,7 @@ const initialState = {
   detailImgUrl: '',
   currentPlaceName: '',
   certToggle: false,
+  selectedId: idDefault,
 };
 
 export const mapSlice = createSlice({
@@ -43,6 +45,12 @@ export const mapSlice = createSlice({
     },
     setCertToggle(state, action) {
       state.certToggle = action.payload;
+    },
+    setSelectedId(state, action) {
+      state.selectedId = action.payload;
+    },
+    clearSelectedId(state, action) {
+      state.selectedId = idDefault;
     },
   },
 });

@@ -1,14 +1,34 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import WhiteX from '../../../common/icons/white-x.svg';
-import { CAMERA_PATH, } from '../../../common/constants/path.const';
+import { CAMERA_PATH } from '../../../common/constants/path.const';
 
 function CaptureCertificationUpdateImg() {
   const img = useSelector((state: RootState) => state.persist.upload.img);
   const navigate = useNavigate();
-  const location: any = useLocation()
+  const location: any = useLocation();
+  const eventTargetRef = useRef<HTMLDivElement | null>(null);
+
+  const handleDragStart = (e: any) => {
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    const eventTarget = eventTargetRef.current;
+    if (eventTarget) {
+      eventTarget.addEventListener('mousedown', handleDragStart, { passive: false });
+      eventTarget.addEventListener('touchmove', handleDragStart, { passive: false });
+    }
+
+    return () => {
+      if (eventTarget) {
+        eventTarget.removeEventListener('mousedown', handleDragStart);
+        eventTarget.removeEventListener('touchmove', handleDragStart);
+      }
+    };
+  }, []);
 
   const moveToPreviousPage = () => {
     if (location?.state?.prevPath === CAMERA_PATH.RESULT) {
@@ -26,7 +46,15 @@ function CaptureCertificationUpdateImg() {
 
   return (
     <>
-      <img className="capture-update-img" src={img} width={window.innerWidth} height={window.innerWidth} alt="caputeImg" />
+      <div ref={eventTargetRef}>
+        <img
+          className="capture-update-img"
+          src={img}
+          width={window.innerWidth}
+          height={window.innerWidth}
+          alt="caputeImg"
+        />
+      </div>
       <img
         src={WhiteX}
         className="capture-category-update-page-prev-arrow"

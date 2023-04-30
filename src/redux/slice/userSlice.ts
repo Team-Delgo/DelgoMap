@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isSignIn: false,
-  appleCode:'',
+  appleCode: '',
   user: {
     id: 0,
     address: '',
@@ -13,9 +13,9 @@ const initialState = {
     geoCode: 0,
     pGeoCode: 0,
     registDt: '',
-    notify: true
+    notify: true,
   },
-  pet: { name: '', petId: 0, birthday: '', breed: '', breedName:'', image: '' },
+  pet: { name: '', petId: 0, birthday: '', breed: '', breedName: '', image: '' },
 };
 
 const userSlice = createSlice({
@@ -25,7 +25,9 @@ const userSlice = createSlice({
     signin(state, action) {
       return {
         isSignIn: true,
-        appleCode:'',
+        appleCode: '',
+        firstCert: true,
+        firstToggle: true,
         user: action.payload.user,
         pet: action.payload.pet,
       };
@@ -35,9 +37,7 @@ const userSlice = createSlice({
     },
     setpetprofile(state, action) {
       return {
-        isSignIn: state.isSignIn,
-        appleCode:'',
-        user: state.user,
+        ...state,
         pet: {
           ...state.pet,
           image: action.payload.image,
@@ -46,9 +46,7 @@ const userSlice = createSlice({
     },
     changepetinfo(state, action) {
       return {
-        isSignIn: state.isSignIn,
-        appleCode:'',
-        user: state.user,
+        ...state,
         pet: {
           name: action.payload.name,
           birthday: action.payload.birth,
@@ -59,45 +57,41 @@ const userSlice = createSlice({
         },
       };
     },
-    changeGeoCode(state, action){
+    changeGeoCode(state, action) {
       return {
-        isSignIn: state.isSignIn,
-        appleCode:'',
+        ...state,
         user: {
           ...state.user,
           address: action.payload.address,
           geoCode: action.payload.geoCode,
           pGeoCode: action.payload.pGeoCode,
         },
-        pet: state.pet
-      }
+      };
     },
-    changeNickName(state, action){
+    changeNickName(state, action) {
       return {
-        isSignIn: state.isSignIn,
-        appleCode:'',
+        ...state,
         user: {
           ...state.user,
-          nickname: action.payload.name
+          nickname: action.payload.name,
         },
-        pet: state.pet
-      }
+      };
     },
-    changeNotification(state, action){
+    changeNotification(state, action) {
       return {
         ...state,
         user: {
           ...state.user,
-          notify: action.payload.notify
-        }
-      }
+          notify: action.payload.notify,
+        },
+      };
     },
-    setAppleCode(state, action){
+    setAppleCode(state, action) {
       return {
         ...state,
-        appleCode: action.payload
-      }
-    }
+        appleCode: action.payload,
+      };
+    },
   },
 });
 
