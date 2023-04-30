@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AxiosResponse } from 'axios';
+import { useMutation } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +13,8 @@ import ToastPurpleMessage from '../../../common/dialog/ToastPurpleMessage';
 import { analytics } from '../../../index';
 import useActive from '../../../common/hooks/useActive';
 import useInput from '../../../common/hooks/useInput';
-import BallLoading from '../../../common/utils/BallLoading';
+import DogLoading from '../../../common/utils/BallLoading';
+import { compressFormData } from '../../../common/utils/compressFormData';
 
 interface CaptureCertificationRecordPropsType {
   postCertificationIsLoading: boolean;
@@ -54,95 +56,84 @@ function CaptureCertificationRecord({
     }
   }, [certificateErrorToastIsOpen]);
 
-  const uploadGalleryImgCertification = () => {
+  const registerMutation = useMutation(
+    (formData: FormData) => registerGalleryCertificationPost(formData),
+    {
+      onMutate: () => {
+        onPostCertificationLoading();
+      },
+      onSuccess: (response: AxiosResponse) => {
+        const { code, data } = response.data;
+        if (code === 200) {
+          console.log('file', file);
+          dispatch(
+            uploadAction.setContentRegistDtCertificationIdAddress({
+              content: certificationPostContent,
+              registDt: data.registDt,
+              certificationId: data.certificationId,
+              address: data.address,
+              achievements: [],
+            }),
+          );
+          moveToCaptureResultPage();
+        } else if (code === 314) {
+          offPostCertificationLoading();
+          setCertificateErrorToastMessage('카테고리당 하루 5번까지 인증 가능합니다');
+          openCertificateErrorToast();
+        } else if (code === 313) {
+          offPostCertificationLoading();
+          setCertificateErrorToastMessage('6시간 이내 같은 장소에서 인증 불가능합니다');
+          openCertificateErrorToast();
+        }
+      },
+      onError: (error: any) => {
+        console.error(error);
+      },
+    },
+  );
+
+  const uploadGalleryImgCertification = async () => {
     if (postCertificationIsLoading) {
       return;
     }
-    onPostCertificationLoading();
 
-    setTimeout(() => {
-      const data = {
-        userId: user.id,
-        categoryCode: 'CA9999',
-        mungpleId: mongPlaceId,
-        placeName: title,
-        description: certificationPostContent,
-        latitude,
-        longitude,
-      };
+    const data = {
+      userId: user.id,
+      categoryCode: 'CA9999',
+      mungpleId: mongPlaceId,
+      placeName: title,
+      description: certificationPostContent,
+      latitude,
+      longitude,
+    };
 
-      formData.append('photo', file);
-
-      const json = JSON.stringify(data);
-      const blob = new Blob([json], { type: 'application/json' });
-
-      formData.append('data', blob);
-
-      registerGalleryCertificationPost(
-        formData,
-        (response: AxiosResponse) => {
-          const { code, data } = response.data;
-          if (code === 200) {
-            console.log('file', file);
-            dispatch(
-              uploadAction.setContentRegistDtCertificationIdAddress({
-                content: certificationPostContent,
-                registDt: data.registDt,
-                certificationId: data.certificationId,
-                address: data.address,
-                achievements: [],
-              }),
-            );
-            moveToCaptureResultPage();
-          } else if (code === 314) {
-            offPostCertificationLoading();
-            setCertificateErrorToastMessage('카테고리당 하루 5번까지 인증 가능합니다');
-            openCertificateErrorToast();
-          } else if (code === 313) {
-            offPostCertificationLoading();
-            setCertificateErrorToastMessage('6시간 이내 같은 장소에서 인증 불가능합니다');
-            openCertificateErrorToast();
-          }
-        },
-        dispatch,
-      );
-    }, 1000);
-  };
-
-  const handlingDataForm = (dataURI: any) => {
-    const byteString = atob(dataURI.split(',')[1]);
-
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i += 1) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([ia], {
-      type: 'image/jpeg',
-    });
-    const file = new File([blob], 'image.jpg');
-
-    const formData = new FormData();
     formData.append('photo', file);
 
-    return formData;
+    const json = JSON.stringify(data);
+    const blob = new Blob([json], { type: 'application/json' });
+
+    formData.append('data', blob);
+
+    const compressedFormData = await compressFormData(formData);
+
+    registerMutation.mutate(compressedFormData);
   };
 
-  const moveToCaptureResultPage = () => {
+  const moveToCaptureResultPage = useCallback(() => {
     navigate(CAMERA_PATH.RESULT, {
       state: {
         prevPath: location?.pathname,
       },
     });
-  };
+  },[])
 
-  const screenUp = () => {
+  const screenUp = useCallback(() => {
     window.webkit.messageHandlers.NAME.postMessage('screenUp');
-  };
+  },[])
 
   return (
     <>
-      {postCertificationIsLoading && <BallLoading />}
+      {postCertificationIsLoading && <DogLoading />}
       {OS === 'ios' ? (
         <main
           className="capture-img-record ios-capture-record"
