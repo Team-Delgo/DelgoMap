@@ -152,7 +152,10 @@
 }
 
 .like-animation-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
-    top:15%;
+    top:0px;
     width: 100%;
 }

@@ -303,7 +303,7 @@ function CertificationPost({
           
         />
         {LikeAnimationLoading && (
-          <div className="like-animation-wrapper">
+          <div className="like-animation-wrapper" style={{height:window.innerWidth}}>
             <LikeAnimation isLike={isLike}/>
           </div>
         )}
