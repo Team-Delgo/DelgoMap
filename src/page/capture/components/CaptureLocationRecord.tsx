@@ -116,10 +116,11 @@ function CaptureLocationRecord() {
           type="text"
           ref={inputRef}
           className="review-place-name"
-          placeholder="여기는 어디인가요?"
+          placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
           onChange={onChangePlaceName}
           onFocus={screenUp}
         />
+        {placeName.length > 0 && manualPlace()}
         {mungPlaceList?.data.map((place: MungPlaceType) => {
           if (placeName.length > 0) {
             if (place.placeName.includes(placeName)) {
@@ -158,7 +159,6 @@ function CaptureLocationRecord() {
             }
           }
         })}
-        {placeName.length > 0 && manualPlace()}
       </body>
     </main>
   ) : (
