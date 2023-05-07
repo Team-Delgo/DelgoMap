@@ -1,6 +1,9 @@
 .link{
   position: absolute;
-  bottom: 133px;
+  bottom: 80px;
+  &.isMungple{
+    bottom: 133px;
+  }
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;

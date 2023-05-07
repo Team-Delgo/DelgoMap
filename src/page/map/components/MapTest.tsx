@@ -259,6 +259,7 @@ function MapTest() {
                 return selectIdFunc(prev, m);
               });
               setIsSelected(true);
+              setPointerLocation({lat:0, lng:0});
               image = setMarkerImageBig(m.categoryCode);
               marker.setImage(image);
               marker.setZIndex(20);
@@ -448,7 +449,8 @@ function MapTest() {
       {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
-      {selectedId.title.length > 0 && <LinkCopy setLoading={setCopyLoading} />}
+      {selectedId.title.length > 0 && <LinkCopy isMungple setLoading={setCopyLoading} />}
+      {(isSelected && selectedId.title.length === 0) && <LinkCopy isMungple={false} setLoading={setCopyLoading} />}
       {copyLoading && <BallLoading />}
       <TempMarkerImageLoader />
     </div>
