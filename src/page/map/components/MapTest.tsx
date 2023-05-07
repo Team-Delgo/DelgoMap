@@ -27,6 +27,7 @@ import LinkCopy from './LinkCopy';
 import CertToggle from './CertToggle';
 import CertCard from './CertCard';
 import BallLoading from '../../../common/utils/BallLoading';
+import Marker from '../../../common/icons/cert-map-marker.svg';
 
 interface MakerItem {
   id: number;
@@ -49,6 +50,10 @@ function MapTest() {
   const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [copyLoading, setCopyLoading] = useState(false);
+  const [currentMarker, setCurrentMarker] = useState<kakao.maps.Marker>();
+  const [address, setAddress] = useState('');
+  const [isSelected, setIsSelected] = useState(false);
+  const [pointerLocation, setPointerLocation] = useState({ lat: 0, lng: 0 });
   const [normalCertMarkerList, setNormalCertMarkerList] = useState<
     kakao.maps.CustomOverlay[]
   >([]);
@@ -79,9 +84,23 @@ function MapTest() {
     if (!mapElement.current) return;
     const map = new kakao.maps.Map(mapElement.current, options);
     setGlobarMap(map);
-    kakao.maps.event.addListener(map, 'click', () => {
-      clearId();
-      setSelectedCert(certDefault);
+    kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) => {
+      console.log(isSelected);
+
+      setIsSelected(prevIsSelected => {
+        if (prevIsSelected) {
+          setPointerLocation(() => {
+            return { lat: 0, lng: 0 };
+          });
+          clearId();
+          setSelectedCert(certDefault);
+        } else {
+          setPointerLocation(() => {
+            return { lat: e.latLng.getLat(), lng: e.latLng.getLng() };
+          });
+        }
+        return !prevIsSelected;
+      });
     });
     const loadMarkerImages = async () => {
       const loadedImages = MarkerImages();
@@ -92,6 +111,51 @@ function MapTest() {
     const id = parts[parts.length - 1];
     setLinkId(parseInt(id, 10));
   }, []);
+
+  useEffect(() => {
+    if (currentMarker) {
+      currentMarker.setMap(null);
+    }
+    const position = new kakao.maps.LatLng(pointerLocation.lat, pointerLocation.lng);
+    const imageSize = new kakao.maps.Size(40,40);
+    const imageOptions = {
+      offset : new kakao.maps.Point(20,40)
+    }
+    const image = new kakao.maps.MarkerImage(Marker, imageSize, imageOptions);
+    // const markerOption = {
+    //   position: new window.naver.maps.LatLng(pointerLocation),
+    //   map: globarMap,
+    //   icon: {
+    //     content: [`<div class="cert-map-marker" >`, `<img src=${Marker}  style="" alt="pin"/>`, `</div>`].join(''),
+    //     size: new naver.maps.Size(20, 20),
+    //     origin: new naver.maps.Point(0, 0),
+    //     anchor: new naver.maps.Point(17, 48),
+    //   },
+    // };
+    const marker = new kakao.maps.Marker({
+      position,
+      image
+    });
+    if(globarMap) marker.setMap(globarMap);
+    setCurrentMarker(marker);
+    if (pointerLocation.lat !== 0) {
+      naver.maps.Service.reverseGeocode(
+        {
+          coords: new naver.maps.LatLng(pointerLocation.lat, pointerLocation.lng),
+        },
+        function (status, response) {
+          if (status !== naver.maps.Service.Status.OK) {
+            return alert('Something wrong!');
+          }
+
+          const result = response.v2;
+          setAddress(result.address.jibunAddress);
+        },
+      );
+    }
+  }, [pointerLocation]);
+
+  console.log(pointerLocation);
 
   const deleteMungpleList = () => {
     markerList.forEach((marker) => {
@@ -194,6 +258,8 @@ function MapTest() {
               setSelectedId((prev: any) => {
                 return selectIdFunc(prev, m);
               });
+              setIsSelected(true);
+              setPointerLocation({lat:0, lng:0});
               image = setMarkerImageBig(m.categoryCode);
               marker.setImage(image);
               marker.setZIndex(20);
@@ -241,11 +307,11 @@ function MapTest() {
     if ((linkId > 0 || idDefault.id > 0) && mapDataList && !isFirst.mungple) {
       const { mungpleList } = mapDataList;
       console.log(idDefault);
-      let index:number;
-      if(linkId > 0)
+      let index: number;
+      if (linkId > 0)
         index = mungpleList.findIndex((mungple) => mungple.mungpleId === linkId);
       else index = mungpleList.findIndex((mungple) => mungple.mungpleId === idDefault.id);
-        if (index >= 0) {
+      if (index >= 0) {
         setSelectedId((prev: any) => {
           return selectIdFunc(prev, mungpleList[index]);
         });
@@ -330,7 +396,7 @@ function MapTest() {
         />
       )}
       <div className="whiteBox" />
-      <img className="map-logo" aria-hidden src={Logo} alt="logo" onClick={clearId}/>
+      <img className="map-logo" aria-hidden src={Logo} alt="logo" onClick={clearId} />
       <img
         className="map-search"
         src={Search}
@@ -383,7 +449,8 @@ function MapTest() {
       {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
-      {selectedId.title.length > 0 && <LinkCopy setLoading={setCopyLoading} />}
+      {selectedId.title.length > 0 && <LinkCopy isMungple setLoading={setCopyLoading} />}
+      {(isSelected && selectedId.title.length === 0) && <LinkCopy isMungple={false} setLoading={setCopyLoading} />}
       {copyLoading && <BallLoading />}
       <TempMarkerImageLoader />
     </div>
