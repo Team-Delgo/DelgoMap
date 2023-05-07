@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import classNames from 'classnames';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from '../../../common/icons/dogfoot.svg';
@@ -6,8 +7,8 @@ import { analytics } from '../../../index';
 import './LinkCopy.scss';
 import { RootState } from '../../../redux/store';
 
-function LinkCopy(props: { setLoading: (loading: boolean) => void }) {
-  const { setLoading } = props;
+function LinkCopy(props: { setLoading: (loading: boolean) => void, isMungple:boolean }) {
+  const { setLoading, isMungple } = props;
   const linkCopyEvent = useAnalyticsCustomLogEvent(analytics, 'link_copy');
   const url = useSelector((state: any) => state.map.link);
   const dogName = useSelector((state:RootState) => state.persist.user.pet.name);
@@ -27,7 +28,7 @@ function LinkCopy(props: { setLoading: (loading: boolean) => void }) {
   };
 
   return (
-    <div className="link" aria-hidden="true" onClick={buttonClickHandler}>
+    <div className={classNames("link",{isMungple})} aria-hidden="true" onClick={buttonClickHandler}>
       <img src={Link} alt="link" />
       <div className="link-text">이곳에{` ${dogName}`} 발자국 남기기</div>
     </div>
