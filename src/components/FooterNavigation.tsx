@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { CROP_PATH, RECORD_PATH, SIGN_IN_PATH, POSTS_PATH } from '../common/constants/path.const';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import DogFoot from '../common/icons/dogfoot.svg';
@@ -11,7 +12,6 @@ import { uploadAction } from '../redux/slice/uploadSlice';
 import { RootState } from '../redux/store';
 import './FooterNavigation.scss';
 import HelpFloatingMessage from './HelpFloatingMessage';
-import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { analytics } from '..';
 
 function FooterNavigation(props: { setCenter: () => void }) {
