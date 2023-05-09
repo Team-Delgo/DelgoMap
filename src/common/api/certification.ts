@@ -1,6 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
+import { Cert } from '../types/map';
+
+interface CertResponse {
+  data: Cert[];
+}
 
 async function getMungPlaceList() {
   const { data } = await axiosInstance.get(`/mungple/category/CA0000`);
@@ -11,22 +16,12 @@ function certificationLike(data: { userId: number; certificationId: number }) {
   return axiosInstance.post(`/certification/like/${data.userId}/${data.certificationId}`);
 }
 
-async function registerGalleryCertificationPost(
-  formdata: FormData,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  try {
-    const result = await axiosInstance.post(`/certification`, formdata, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log(result);
-    success(result);
-  } catch (err: any) {
-    useErrorHandlers(dispatch, err);
-  }
+function registerGalleryCertificationPost(formdata: FormData) {
+  return axiosInstance.post(`/certification`, formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 }
 
 async function registerGalleryCertificationImg(
@@ -51,26 +46,16 @@ async function registerGalleryCertificationImg(
   }
 }
 
-async function updateCertificationPost(
-  data: {
-    certificationId: number;
-    description: string;
-    userId: number;
-  },
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  try {
-    const result = await axiosInstance.put(`/certification`, {
-      certificationId: data.certificationId,
-      description: data.description,
-      userId: data.userId,
-    });
-    console.log(result);
-    success(result);
-  } catch (err: any) {
-    useErrorHandlers(dispatch, err);
-  }
+ function updateCertificationPost(data: {
+  certificationId: number;
+  description: string;
+  userId: number;
+}) {
+  return axiosInstance.put(`/certification`, {
+    certificationId: data.certificationId,
+    description: data.description,
+    userId: data.userId,
+  });
 }
 
 async function getCertificationPostAll(
@@ -78,10 +63,11 @@ async function getCertificationPostAll(
   userId: number,
   pageSize: number,
   dispatch: any,
+  certificationId?: number,
 ) {
   try {
     const res = await axiosInstance.get(
-      `/certification/all?currentPage=${pageParam}&pageSize=${pageSize}&userId=${userId}`,
+      `/certification/all?currentPage=${pageParam}&pageSize=${pageSize}&userId=${userId}&certificationId=${certificationId}`,
     );
     const { content, last } = res.data.data;
     return { content, nextPage: pageParam + 1, last };
@@ -94,23 +80,12 @@ function certificationDelete(data: { userId: number; certificationId: number }) 
   return axiosInstance.delete(`/certification/${data.userId}/${data.certificationId}`);
 }
 
-async function getFiveOtherDogsCert(
-  userId: number,
-  count: number,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  try {
-    const result = await axiosInstance.get(
-      `/certification/recent?userId=${userId}&count=${count}`,
-    );
-    success(result);
-  } catch (error: any) {
-    useErrorHandlers(dispatch, error);
-  }
+async function getFiveOtherDogsCert(userId: number, count: number) {
+  const { data } = await axiosInstance.get<CertResponse>(
+    `/certification/recent?userId=${userId}&count=${count}`,
+  );
+  return data.data;
 }
-
-
 
 export {
   getMungPlaceList,
