@@ -241,11 +241,11 @@ function MapTest() {
     if ((linkId > 0 || idDefault.id > 0) && mapDataList && !isFirst.mungple) {
       const { mungpleList } = mapDataList;
       console.log(idDefault);
-      let index:number;
-      if(linkId > 0)
+      let index: number;
+      if (linkId > 0)
         index = mungpleList.findIndex((mungple) => mungple.mungpleId === linkId);
       else index = mungpleList.findIndex((mungple) => mungple.mungpleId === idDefault.id);
-        if (index >= 0) {
+      if (index >= 0) {
         setSelectedId((prev: any) => {
           return selectIdFunc(prev, mungpleList[index]);
         });
@@ -330,7 +330,7 @@ function MapTest() {
         />
       )}
       <div className="whiteBox" />
-      <img className="map-logo" aria-hidden src={Logo} alt="logo" onClick={clearId}/>
+      <img className="map-logo" aria-hidden src={Logo} alt="logo" onClick={clearId} />
       <img
         className="map-search"
         src={Search}

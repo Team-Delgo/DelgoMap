@@ -16,13 +16,13 @@ import { getCurrentVersion } from "./common/api/version";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAw18Fs8u3NsOxaco9L6OyHyICYb6HyDCs",
-  authDomain: "delgomap-c4ca0.firebaseapp.com",
-  projectId: "delgomap-c4ca0",
-  storageBucket: "delgomap-c4ca0.appspot.com",
-  messagingSenderId: "751246508342",
-  appId: "1:751246508342:web:71f9041c5703d6ae6db397",
-  measurementId: "G-H4RX9ZCL5R"
+  apiKey: process.env.REACT_APP_FIREBASE_API,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGE,
+  appId: process.env.REACT_APP_FIREBASE_APPID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT
 };
 
 // const vconsole = new VConsole();
