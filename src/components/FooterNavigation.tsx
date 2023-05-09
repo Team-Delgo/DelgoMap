@@ -11,6 +11,8 @@ import { uploadAction } from '../redux/slice/uploadSlice';
 import { RootState } from '../redux/store';
 import './FooterNavigation.scss';
 import HelpFloatingMessage from './HelpFloatingMessage';
+import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
+import { analytics } from '..';
 
 function FooterNavigation(props: { setCenter: () => void }) {
   const { setCenter } = props;
@@ -19,6 +21,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
   const device = useSelector((state: RootState) => state.persist.device.OS);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
 
+  const clickEvent = useAnalyticsCustomLogEvent(analytics, "cert-button-click");
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -59,6 +62,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
   };
 
   const certButtonHandler = () => {
+    clickEvent.mutate();
     if (userId) {
       setCenter();
       openFileGallery();
