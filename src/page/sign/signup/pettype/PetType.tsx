@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable array-callback-return */
 import classNames from 'classnames';
 import React, { useCallback, useState } from 'react';
 import { useQuery } from 'react-query';

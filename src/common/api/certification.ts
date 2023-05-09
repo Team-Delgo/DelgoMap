@@ -16,22 +16,12 @@ function certificationLike(data: { userId: number; certificationId: number }) {
   return axiosInstance.post(`/certification/like/${data.userId}/${data.certificationId}`);
 }
 
-async function registerGalleryCertificationPost(
-  formdata: FormData,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  try {
-    const result = await axiosInstance.post(`/certification`, formdata, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log(result);
-    success(result);
-  } catch (err: any) {
-    useErrorHandlers(dispatch, err);
-  }
+function registerGalleryCertificationPost(formdata: FormData) {
+  return axiosInstance.post(`/certification`, formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 }
 
 async function registerGalleryCertificationImg(
@@ -56,26 +46,16 @@ async function registerGalleryCertificationImg(
   }
 }
 
-async function updateCertificationPost(
-  data: {
-    certificationId: number;
-    description: string;
-    userId: number;
-  },
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  try {
-    const result = await axiosInstance.put(`/certification`, {
-      certificationId: data.certificationId,
-      description: data.description,
-      userId: data.userId,
-    });
-    console.log(result);
-    success(result);
-  } catch (err: any) {
-    useErrorHandlers(dispatch, err);
-  }
+ function updateCertificationPost(data: {
+  certificationId: number;
+  description: string;
+  userId: number;
+}) {
+  return axiosInstance.put(`/certification`, {
+    certificationId: data.certificationId,
+    description: data.description,
+    userId: data.userId,
+  });
 }
 
 async function getCertificationPostAll(

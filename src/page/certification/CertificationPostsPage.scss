@@ -86,6 +86,7 @@
 
     &-main {
         margin: 0 5%;
+        position: relative;
         &-img{
             width: 100%;
             border-radius: 4px;
@@ -148,4 +149,13 @@
               }
         }
     }
+}
+
+.like-animation-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;
+    width: 100%;
 }

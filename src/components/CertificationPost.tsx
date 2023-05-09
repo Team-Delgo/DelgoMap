@@ -22,7 +22,7 @@ import { weekDay } from '../common/types/week';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import { useErrorHandlers } from '../common/api/useErrorHandlers';
-import BallLoading from '../common/icons/loading.gif';
+import LikeAnimation from '../common/utils/LikeAnimation';
 
 interface CertificationPostPropsType {
   post: postType;
@@ -45,6 +45,8 @@ function CertificationPost({
   certificationPostsFetch,
   pageSize,
 }: CertificationPostPropsType) {
+  const [clickCount, setClickCount] = useState(0);
+  const [LikeAnimationLoading,setLikeAnimationLoading] = useState(false)
   const [likeCount, setLikeCount] = useState(post?.likeCount);
   const [blockedUserName, setBlockedUserName] = useState('');
   const [isLike, setIsLike] = useState(post?.isLike);
@@ -74,7 +76,7 @@ function CertificationPost({
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_view');
   const mainImg = useRef<HTMLImageElement>(null);
   const profileImg = useRef<HTMLImageElement>(null);
-
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const observeImg = (
     entries: IntersectionObserverEntry[],
@@ -107,17 +109,15 @@ function CertificationPost({
     }
   }, [blockUserSuccessToastIsOpen]);
 
-  const { mutate: certificationLikeMutate } = useMutation(
-    (data: CertificationLIkeDataType) => certificationLike(data),
-    {
+  const { mutate: certificationLikeMutate, isLoading: isLoadingCertificationLike } =
+    useMutation((data: CertificationLIkeDataType) => certificationLike(data), {
       onSuccess: () => {
         heartEvent.mutate();
       },
       onError: (error: any) => {
         useErrorHandlers(dispatch, error);
       },
-    },
-  );
+    });
 
   const { mutate: certificationDeleteMutate, isLoading: cettificationDeleteIsLoading } =
     useMutation((data: CertificationLIkeDataType) => certificationDelete(data), {
@@ -198,7 +198,6 @@ function CertificationPost({
     commentEvent.mutate();
     dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
     navigate(`/comments/${post?.certificationId}`, {
-      // state: { certificationId: post?.certificationId, posterId: post?.userId },
       state: { post },
     });
   };
@@ -228,6 +227,25 @@ function CertificationPost({
     navigate(SIGN_IN_PATH.MAIN);
   };
 
+  const handleDoubleClick = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current); 
+    }
+    setClickCount((prevCount: number) => {
+      const newCount = prevCount + 1;
+      if (newCount === 2) {
+        setLikeAnimationLoading(true);
+        handleCertificationLike();
+
+        timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
+        setTimeout(() => setLikeAnimationLoading(false), 500);
+      } else {
+        timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
+      }
+      return newCount;
+    })
+  };
+
   return (
     <>
       <header className="post-img-result-header">
@@ -237,6 +255,8 @@ function CertificationPost({
             src={post?.user?.profile}
             alt="copy url"
             ref={profileImg}
+            width={39}
+            height={39}
             data-src={post?.user?.profile ? post.user?.profile : DogLoading}
           />
           <div>
@@ -276,8 +296,17 @@ function CertificationPost({
           data-src={post.photoUrl ? post.photoUrl : DogLoading}
           src={DogLoading}
           width={window.innerWidth}
+          height={window.innerWidth}
           alt="postImg"
+          aria-hidden="true"
+          onClick={handleDoubleClick}
+          
         />
+        {LikeAnimationLoading && (
+          <div className="like-animation-wrapper" style={{height:window.innerWidth}}>
+            <LikeAnimation isLike={isLike}/>
+          </div>
+        )}
         <header className="post-img-result-main-header">
           <div className="post-img-result-main-header-place">
             <div className="post-img-result-main-header-place-name">

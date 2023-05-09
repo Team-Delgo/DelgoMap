@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-param-reassign */
 import axios from 'axios';
 
 const axiosInstance = axios.create({

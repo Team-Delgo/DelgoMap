@@ -1,5 +1,3 @@
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable react/jsx-no-useless-fragment */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -10,8 +8,7 @@ import { getCertificationPostAll } from '../../common/api/certification';
 import './CertificationPostsPage.scss';
 import { RootState } from '../../redux/store';
 import CertificationPost from '../../components/CertificationPost';
-import Loading from '../../common/utils/Loading';
-import PrevArrow from '../../common/icons/prev-arrow-black.svg';
+import DogLoading from '../../common/utils/BallLoading';
 import { analytics } from '../../index';
 import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import { scrollActions } from '../../redux/slice/scrollSlice';
@@ -23,7 +20,6 @@ import PageHeader from '../../components/PageHeader';
 function CertificationPostsPage() {
   
   const firstCert = (useLocation().state.cert as any) || null;
-  console.log(firstCert);
   const pageFrom = (useLocation().state.from as any) || 'home';
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
@@ -35,9 +31,6 @@ function CertificationPostsPage() {
   const { ref, inView } = useInView();
   const navigate = useNavigate();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
-
-  console.log('firstCert',firstCert)
-  console.log('pageFrom',pageFrom)
 
   const {
     data,
@@ -91,15 +84,11 @@ function CertificationPostsPage() {
   }, []);
 
   if (isLoading) {
-    return <Loading />;
+    return <DogLoading />;
   }
   
   return (
     <div className="certificationPostsPage">
-      {/* <div className="certificationPostsPage-header">
-        <img src={PrevArrow} alt="back" aria-hidden="true" onClick={moveToHomePage} />
-        <div className="certificationPostsPage-header-text">동네 강아지</div>
-      </div> */}
       <PageHeader title='동네 강아지' navigate={moveToHomePage} isFixed isAbsolute={false} short={false} />
       {pageFrom === 'photo' || pageFrom === 'homeCert'  ? (
         <CertificationPost

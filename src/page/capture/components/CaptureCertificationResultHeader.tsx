@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -60,11 +59,6 @@ function CaptureResultHeader() {
         prevPath: location.pathname,
       },
     });
-  };
-
-  const moveToHomePage = () => {
-    handleInitAchievements();
-    navigate(ROOT_PATH);
   };
 
   const moveToPostsPage = () => {

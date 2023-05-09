@@ -157,10 +157,6 @@ function CommentsPage() {
   return (
     <>
       <div className="comments">
-        {/* <div className="comments-header">
-          <img src={LeftArrow} alt="back" onClick={moveToPrevPage} aria-hidden="true" />
-          <div className="comments-header-title">댓글</div>
-        </div> */}
         <PageHeader title="댓글" navigate={moveToPrevPage} />
         <div className="comments-context">{context}</div>
         <div className="comments-post">
