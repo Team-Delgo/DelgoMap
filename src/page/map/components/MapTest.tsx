@@ -76,6 +76,8 @@ function MapTest() {
     getMapData(userId),
   );
 
+  console.log(mapDataList);
+  
   useEffect(() => { // 지도에 temp 마커 찍기
     const options = {
       center: new kakao.maps.LatLng(initMapCenter.lat, initMapCenter.lng),
