@@ -1,5 +1,6 @@
 .record-cert{
-  padding: 20px;
+  position: relative;
+  margin: 20px;
   &-edit{
     display: flex;
     justify-content: flex-end;
@@ -65,4 +66,13 @@
       margin-left: 9px;
     }
   }
+}
+
+.like-animation-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top:0px;
+  width: 100%;
 }
