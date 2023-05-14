@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import VConsole from 'vconsole';
+import Hammer from 'hammerjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import './App.scss';
@@ -62,13 +63,14 @@ import { userActions } from './redux/slice/userSlice';
 import { getMyInfo } from './common/api/myaccount';
 
 import MapTest from './page/map/components/MapTest';
+import RouterWrapper from './RouterWrapper';
 
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
-  
+
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
@@ -122,6 +124,7 @@ function App() {
     }
   }, []);
 
+
   useEffect(() => {
     const varUA = navigator.userAgent.toLowerCase();
     if (varUA.indexOf('android') > -1) {
@@ -138,6 +141,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <RouterWrapper>
           <Routes>
             {/* <Route path="/" element={<MapPage />} /> */}
             <Route path="/" element={<MapTest />} />
@@ -194,6 +198,7 @@ function App() {
             <Route path={APPLE_REDIRECT_HANDLE_PATH} element={<AppleRedirectHandler />} />
             <Route path={NAVER_REDIRECT_HANDLE_PATH} element={<NaverRedirectHandler />} />
           </Routes>
+        </RouterWrapper>
       </BrowserRouter>
     </QueryClientProvider>
   );
