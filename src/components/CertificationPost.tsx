@@ -252,25 +252,25 @@ function CertificationPost({
         <div className="post-img-result-header-profile">
           <img
             className="post-img-result-header-profile-img"
-            src={post?.user?.profile}
+            src={post?.userProfile}
             alt="copy url"
             ref={profileImg}
             width={39}
             height={39}
-            data-src={post?.user?.profile ? post.user?.profile : DogLoading}
+            data-src={post?.userProfile ? post.userProfile : DogLoading}
           />
           <div>
             <div className="post-img-result-header-profile-date">
               {' '}
-              {post?.registDt.substring(0, 10)}&nbsp;
-              {weekDay[post?.registDt.substring(17, post?.registDt.length)]}
+              {post?.createdDate.substring(0, 10)}&nbsp;
+              {weekDay[post?.createdDate.substring(17, post?.createdDate.length)]}
               &nbsp;&nbsp;
-              {post?.registDt.substring(11, 16)}
+              {post?.createdDate.substring(11, 16)}
             </div>
-            <div className="post-img-result-header-profile-name">{post?.user?.name}</div>
+            <div className="post-img-result-header-profile-name">{post?.userName}</div>
           </div>
         </div>
-        {isSignIn === false ? null : user.id !== post?.user.userId ? (
+        {isSignIn === false ? null : user.id !== post?.userId ? (
           <div
             className="post-img-result-header-report"
             aria-hidden="true"
@@ -359,8 +359,8 @@ function CertificationPost({
         <ToastPurpleMessage message={`${blockedUserName}님을 차단 하였습니다`} />
       )}
       <DeleteBottomSheet
-        text={`${post?.user?.name} 님을 차단 하시겠어요?`}
-        description={`앞으로 ${post?.user?.name} 님의 게시물을 볼 수 없어요`}
+        text={`${post?.userName} 님을 차단 하시겠어요?`}
+        description={`앞으로 ${post?.userName} 님의 게시물을 볼 수 없어요`}
         cancelText="취소"
         acceptText="차단"
         acceptButtonHandler={handleUserBlock}
