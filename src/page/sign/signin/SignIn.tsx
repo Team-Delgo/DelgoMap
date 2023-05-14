@@ -16,7 +16,7 @@ import { KAKAO, NAVER } from '../../../common/constants/url.cosnt';
 import { checkEmail } from '../validcheck';
 import Arrow from '../../../common/icons/left-arrow.svg';
 import { emailAuth } from '../../../common/api/login';
-import Loading from '../../../common/utils/Loading';
+import Loading from '../../../common/utils/BallLoading';
 import AppleLoginButton from './social/AppleLogin';
 import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
 

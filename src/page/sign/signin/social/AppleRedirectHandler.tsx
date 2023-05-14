@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { appleSendToken } from '../../../../common/api/social';
-import Loading from '../../../../common/utils/Loading';
+import Loading from '../../../../common/utils/BallLoading';
 import AlertConfirm from '../../../../common/dialog/AlertConfirm';
 import { SIGN_UP_PATH } from '../../../../common/constants/path.const';
 import AlertConfirmOne from '../../../../common/dialog/AlertConfirmOne';

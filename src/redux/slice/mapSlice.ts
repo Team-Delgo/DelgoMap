@@ -52,6 +52,13 @@ export const mapSlice = createSlice({
     clearSelectedId(state, action) {
       state.selectedId = idDefault;
     },
+    setMapCustomPosition(state, action) {
+      state.selectedId = {
+        ...idDefault,
+        lat: action.payload.lat,
+        lng: action.payload.lng,
+      };
+    },
   },
 });
 

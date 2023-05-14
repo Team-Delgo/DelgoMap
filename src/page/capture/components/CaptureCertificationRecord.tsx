@@ -64,6 +64,7 @@ function CaptureCertificationRecord({
       },
       onSuccess: (response: AxiosResponse) => {
         const { code, data } = response.data;
+        console.log('response',response)
         if (code === 200) {
           console.log('file', file);
           dispatch(
@@ -107,6 +108,7 @@ function CaptureCertificationRecord({
       longitude,
     };
 
+    console.log('data',data)
     formData.append('photo', file);
 
     const json = JSON.stringify(data);

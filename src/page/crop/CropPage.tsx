@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CAMERA_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import Crop from '../../common/utils/Crop';
 import getCroppedImg from '../../common/utils/CropHandle';
@@ -13,6 +13,9 @@ function CropPage() {
   const { prevImg, prevImgName } = useSelector((state: RootState) => state.persist.upload);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log('location',location)
 
   const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -38,7 +41,13 @@ function CropPage() {
   }, []);
 
   const moveToNextPage = useCallback(() => {
-    navigate(CAMERA_PATH.LOCATION);
+    console.log('location.state.prevPath',location.state.prevPath)
+    if(location.state.prevPath==="homeMap"){
+      navigate(CAMERA_PATH.CERTIFICATION);
+    }
+    else{
+      navigate(CAMERA_PATH.LOCATION);
+    }
   }, []);
 
   return <Crop img={prevImg} cancleImgCrop={moveToPrevPage} showCroppedImage={showCroppedImage} onCropComplete={onCropComplete} />;

@@ -143,6 +143,15 @@ const uploadSlice = createSlice({
         ...state,
         achievements: [],
       };
+    },
+    setHomeCert(state,action) {
+      return {
+        ...initialState,
+        prevImg:action.payload.prevImg,
+        prevImgName:action.payload.prevImgName,
+        latitude: action.payload.latitude,
+        longitude: action.payload.longitude,
+      };
     }
   },
 });
