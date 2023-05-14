@@ -50,6 +50,9 @@ function LinkCopy(props: { setLoading: (loading: boolean) => void; isMungple: bo
           prevImgName: galleryImgName,
           latitude:  selectedMungple.lat,
           longitude: selectedMungple.lng,
+          mongPlaceId: selectedMungple.id,
+          title: selectedMungple.title,
+          address:selectedMungple.address
         }),
       );
       navigate(CROP_PATH, { state: { prevPath: 'homeMap' } });

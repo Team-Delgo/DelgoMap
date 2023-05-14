@@ -133,6 +133,8 @@ function CaptureCertificationRecord({
     window.webkit.messageHandlers.NAME.postMessage('screenUp');
   },[])
 
+  console.log('address',address)
+
   return (
     <>
       {postCertificationIsLoading && <DogLoading />}
