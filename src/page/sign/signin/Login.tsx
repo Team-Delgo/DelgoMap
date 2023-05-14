@@ -85,29 +85,29 @@ function Login() {
     onSuccess: (response: AxiosResponse) => {
       const { code, data } = response.data;
       if (code === 200) {
-        const { registDt } = data.user;
+        const { registDt } = data;
         setIsLoading(true);
         dispatch(
           userActions.signin({
             isSignIn: true,
             user: {
-              id: data.user.userId,
-              address: data.user.address,
-              nickname: data.user.name,
-              email: data.user.email,
-              phone: data.user.phoneNo,
+              id: data.userId,
+              address: data.address,
+              nickname: data.name,
+              email: data.email,
+              phone: data.phoneNo,
               isSocial: false,
-              geoCode: data.user.geoCode,
+              geoCode: data.geoCode,
               registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
-              notify: data.user.notify,
+              notify: data.notify,
             },
             pet: {
-              petId: data.pet.petId,
-              birthday: data.pet.birthday,
-              breed: data.pet.breed,
-              breedName: data.pet.breedName,
-              name: data.pet.name,
-              image: data.user.profile,
+              petId: data.petId,
+              birthday: data.birthday,
+              breed: data.breed,
+              breedName: data.breedName,
+              name: data.petName,
+              image: data.profile,
             },
           }),
         );
