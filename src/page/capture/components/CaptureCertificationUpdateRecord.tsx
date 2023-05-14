@@ -42,6 +42,7 @@ function CaptureCategoryUpdateRecord() {
     (data: updateCertPostData) => updateCertificationPost(data),
     {
       onSuccess: (response: AxiosResponse) => {
+        console.log('response',response)
         const { code, data } = response.data;
         if (code === 200) {
           dispatch(
