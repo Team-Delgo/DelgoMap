@@ -153,6 +153,7 @@ function MapTest() {
         },
       );
     }
+    dispatch(mapAction.setMapCustomPosition(pointerLocation));
   }, [pointerLocation]);
 
   console.log(pointerLocation);

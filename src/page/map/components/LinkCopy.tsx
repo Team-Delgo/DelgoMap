@@ -49,8 +49,8 @@ function LinkCopy(props: { setLoading: (loading: boolean) => void; isMungple: bo
         uploadAction.setHomeCert({
           prevImg: galleryImg,
           prevImgName: galleryImgName,
-          // latitude:  ,
-          // longitude: ,
+          latitude:  selectedMungple.lat,
+          longitude: selectedMungple.lng,
         }),
       );
       navigate(CROP_PATH, { state: { prevPath: location.pathname } });
