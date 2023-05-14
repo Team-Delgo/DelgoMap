@@ -76,7 +76,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
 
   return (
     <div className={classNames("navigation", {ios:device==="ios"})}>
-      {(helpShow && selectedId) && <HelpFloatingMessage text='추억을 기록해보세요' direction='bottom'/>}
+      {(helpShow && selectedId > 0) && <HelpFloatingMessage text='추억을 기록해보세요' direction='bottom'/>}
       {isAlertOpen && (
         <AlertConfirm
           text="로그인이 필요한 기능입니다."
