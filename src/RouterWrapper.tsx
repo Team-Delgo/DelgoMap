@@ -13,7 +13,7 @@ function RouterWrapper({children}:Props){
   const [hammertime, setHammertime] = useState<HammerManager | null>(null);
 
   // Define pages where you want to disable swipe
-  const disableSwipePages = ['/'];
+  const disableSwipePages = ['/','/photo','/calendar','achieve'];
 
   useEffect(() => {
     if (swipeArea.current) {
@@ -25,9 +25,9 @@ function RouterWrapper({children}:Props){
   useEffect(() => {
     if (hammertime) {
       if (disableSwipePages.includes(location.pathname)) {
-        hammertime.off('swipeleft');
+        hammertime.off('swiperight');
       } else {
-        hammertime.on('swipeleft', function (e) {
+        hammertime.on('swiperight', function (e) {
           navigate(-1);
         });
       }
@@ -36,7 +36,7 @@ function RouterWrapper({children}:Props){
     // Cleanup function
     return () => {
       if (hammertime) {
-        hammertime.off('swipeleft');
+        hammertime.off('swiperight');
       }
     };
   }, [navigate, location, hammertime]);
