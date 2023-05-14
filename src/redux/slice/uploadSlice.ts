@@ -151,6 +151,9 @@ const uploadSlice = createSlice({
         prevImgName:action.payload.prevImgName,
         latitude: action.payload.latitude,
         longitude: action.payload.longitude,
+        mongPlaceId: action.payload.mongPlaceId,
+        title: action.payload.title,
+        address:action.payload.address
       };
     }
   },
