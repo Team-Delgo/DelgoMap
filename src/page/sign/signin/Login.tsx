@@ -11,7 +11,7 @@ import ToastMessage from '../../../common/dialog/ToastMessage';
 import { login } from '../../../common/api/login';
 import './Login.scss';
 import { checkEmail, checkPasswordLogin } from '../validcheck';
-import Loading from '../../../common/utils/Loading';
+import Loading from '../../../common/utils/BallLoading';
 import { ROOT_PATH } from '../../../common/constants/path.const';
 import { analytics } from "../../../index";
 import { RootState } from '../../../redux/store';

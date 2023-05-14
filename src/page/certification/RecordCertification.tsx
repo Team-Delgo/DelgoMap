@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
@@ -19,6 +19,7 @@ import { RootState } from '../../redux/store';
 import DeleteBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import { categoryCode2 } from '../../common/types/category';
 import useActive from '../../common/hooks/useActive';
+import LikeAnimation from '../../common/utils/LikeAnimation';
 
 interface CertificationLIkeDataType {
   userId: number;
@@ -28,12 +29,15 @@ interface CertificationLIkeDataType {
 function RecordCertification(props: { certification: Cert }) {
   const { certification } = props;
   const dispatch = useDispatch();
+  const [clickCount, setClickCount] = useState(0);
+  const [LikeAnimationLoading,setLikeAnimationLoading] = useState(false)
   const [selfHeart, setSelfHeart] = useState(certification.isLike);
   const [count, setCount] = useState(certification.likeCount);
   const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDeleteBottomSheet] =
     useActive(false);
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.persist.user);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const { mutate: certificationLikeMutate } = useMutation(
     (data: CertificationLIkeDataType) => certificationLike(data),
@@ -94,6 +98,29 @@ function RecordCertification(props: { certification: Cert }) {
     });
   }, []);
 
+
+  const handleDoubleClick = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current); 
+    }
+    setClickCount((prevCount: number) => {
+      const newCount = prevCount + 1;
+      if (newCount === 2) {
+        setLikeAnimationLoading(true);
+        certificationLikeMutate({
+          userId: certification.userId,
+          certificationId: certification.certificationId,
+        })
+
+        timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
+        setTimeout(() => setLikeAnimationLoading(false), 500);
+      } else {
+        timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
+      }
+      return newCount;
+    })
+  };
+
   return (
     <>
       <div className="record-cert">
@@ -110,7 +137,14 @@ function RecordCertification(props: { certification: Cert }) {
           className="record-cert-img"
           src={certification.photoUrl}
           alt={certification.placeName}
+          aria-hidden="true"
+          onClick={handleDoubleClick}
         />
+        {LikeAnimationLoading && (
+          <div className="like-animation-wrapper" style={{ height: window.innerWidth }}>
+            <LikeAnimation isLike={selfHeart} />
+          </div>
+        )}
         <div className="record-cert-main">
           <div className="record-cert-main-text">
             <div className="record-cert-main-text-title">{certification.placeName}</div>

@@ -7,7 +7,7 @@ import { ROOT_PATH, SIGN_UP_PATH } from '../../../../common/constants/path.const
 import { userActions } from '../../../../redux/slice/userSlice';
 import AlertConfirm from '../../../../common/dialog/AlertConfirm';
 import AlertConfirmOne from '../../../../common/dialog/AlertConfirmOne';
-import Loading from '../../../../common/utils/Loading';
+import Loading from '../../../../common/utils/BallLoading';
 import { RootState } from '../../../../redux/store';
 
 declare global {
