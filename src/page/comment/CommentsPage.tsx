@@ -166,7 +166,7 @@ function CommentsPage() {
             value={inputComment}
             onInput={handleResizeHeight}
             onChange={onChangeInputComment}
-            placeholder={`${post.user.name}에게 댓글 남기기...`}
+            placeholder={`${post?.userName}에게 댓글 남기기...`}
             className="comments-post-input"
           />
           <div
