@@ -76,7 +76,7 @@ function MapTest() {
     getMapData(userId),
   );
 
-  useEffect(() => {
+  useEffect(() => { // 지도에 temp 마커 찍기
     const options = {
       center: new kakao.maps.LatLng(initMapCenter.lat, initMapCenter.lng),
       level: initMapCenter.zoom,
@@ -88,13 +88,13 @@ function MapTest() {
       console.log(isSelected);
 
       setIsSelected(prevIsSelected => {
-        if (prevIsSelected) {
+        if (prevIsSelected) { // 이미 찍힌 곳이 있다면 clear
           setPointerLocation(() => {
             return { lat: 0, lng: 0 };
           });
           clearId();
           setSelectedCert(certDefault);
-        } else {
+        } else { // 현재 찍힌 곳의 위도 경도를 pointerLocation에 저장
           setPointerLocation(() => {
             return { lat: e.latLng.getLat(), lng: e.latLng.getLng() };
           });
@@ -114,7 +114,7 @@ function MapTest() {
 
   useEffect(() => {
     if (currentMarker) {
-      currentMarker.setMap(null);
+      currentMarker.setMap(null); // 현재 지도에 찍힌 temp 마커 삭제
     }
     const position = new kakao.maps.LatLng(pointerLocation.lat, pointerLocation.lng);
     const imageSize = new kakao.maps.Size(40,40);
@@ -122,16 +122,6 @@ function MapTest() {
       offset : new kakao.maps.Point(20,40)
     }
     const image = new kakao.maps.MarkerImage(Marker, imageSize, imageOptions);
-    // const markerOption = {
-    //   position: new window.naver.maps.LatLng(pointerLocation),
-    //   map: globarMap,
-    //   icon: {
-    //     content: [`<div class="cert-map-marker" >`, `<img src=${Marker}  style="" alt="pin"/>`, `</div>`].join(''),
-    //     size: new naver.maps.Size(20, 20),
-    //     origin: new naver.maps.Point(0, 0),
-    //     anchor: new naver.maps.Point(17, 48),
-    //   },
-    // };
     const marker = new kakao.maps.Marker({
       position,
       image
@@ -153,6 +143,7 @@ function MapTest() {
         },
       );
     }
+    dispatch(mapAction.setMapCustomPosition(pointerLocation));
   }, [pointerLocation]);
 
   console.log(pointerLocation);

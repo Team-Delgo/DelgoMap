@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,6 @@ function LinkCopy(props: { setLoading: (loading: boolean) => void; isMungple: bo
   const fileUploadRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const openFileGallery = () => {
     if (fileUploadRef.current) {
@@ -49,11 +48,14 @@ function LinkCopy(props: { setLoading: (loading: boolean) => void; isMungple: bo
         uploadAction.setHomeCert({
           prevImg: galleryImg,
           prevImgName: galleryImgName,
-          // latitude:  ,
-          // longitude: ,
+          latitude:  selectedMungple.lat,
+          longitude: selectedMungple.lng,
+          mongPlaceId: selectedMungple.id,
+          title: selectedMungple.title,
+          address:selectedMungple.address
         }),
       );
-      navigate(CROP_PATH, { state: { prevPath: location.pathname } });
+      navigate(CROP_PATH, { state: { prevPath: 'homeMap' } });
     }
   };
 
