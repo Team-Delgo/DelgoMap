@@ -20,7 +20,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
   const [helpShow, setHelpShow] = useState(false);
   const device = useSelector((state: RootState) => state.persist.device.OS);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
-
+  const selectedId = useSelector((state:RootState) => state.map.selectedId.id);
   const clickEvent = useAnalyticsCustomLogEvent(analytics, "cert-button-click");
   const navigate = useNavigate();
   const location = useLocation();
@@ -76,7 +76,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
 
   return (
     <div className={classNames("navigation", {ios:device==="ios"})}>
-      {helpShow && <HelpFloatingMessage text='추억을 기록해보세요' direction='bottom'/>}
+      {(helpShow && selectedId) && <HelpFloatingMessage text='추억을 기록해보세요' direction='bottom'/>}
       {isAlertOpen && (
         <AlertConfirm
           text="로그인이 필요한 기능입니다."
