@@ -77,7 +77,7 @@ function MapTest() {
   );
 
   console.log(mapDataList);
-  
+
   useEffect(() => { // 지도에 temp 마커 찍기
     const options = {
       center: new kakao.maps.LatLng(initMapCenter.lat, initMapCenter.lng),
@@ -119,16 +119,16 @@ function MapTest() {
       currentMarker.setMap(null); // 현재 지도에 찍힌 temp 마커 삭제
     }
     const position = new kakao.maps.LatLng(pointerLocation.lat, pointerLocation.lng);
-    const imageSize = new kakao.maps.Size(40,40);
+    const imageSize = new kakao.maps.Size(40, 40);
     const imageOptions = {
-      offset : new kakao.maps.Point(20,40)
+      offset: new kakao.maps.Point(20, 40)
     }
     const image = new kakao.maps.MarkerImage(Marker, imageSize, imageOptions);
     const marker = new kakao.maps.Marker({
       position,
       image
     });
-    if(globarMap) marker.setMap(globarMap);
+    if (globarMap) marker.setMap(globarMap);
     setCurrentMarker(marker);
     if (pointerLocation.lat !== 0) {
       naver.maps.Service.reverseGeocode(
@@ -252,7 +252,7 @@ function MapTest() {
                 return selectIdFunc(prev, m);
               });
               setIsSelected(true);
-              setPointerLocation({lat:0, lng:0});
+              setPointerLocation({ lat: 0, lng: 0 });
               image = setMarkerImageBig(m.categoryCode);
               marker.setImage(image);
               marker.setZIndex(20);
@@ -442,8 +442,8 @@ function MapTest() {
       {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
-      {selectedId.title.length > 0 && <LinkCopy isMungple setLoading={setCopyLoading} />}
-      {(isSelected && selectedId.title.length === 0) && <LinkCopy isMungple={false} setLoading={setCopyLoading} />}
+      {selectedId.title.length > 0 && <LinkCopy isMungple setLoading={setCopyLoading} redirect={setIsAlertOpen} />}
+      {(isSelected && selectedId.title.length === 0) && <LinkCopy isMungple={false} setLoading={setCopyLoading} redirect={setIsAlertOpen} />}
       {copyLoading && <BallLoading />}
       <TempMarkerImageLoader />
     </div>

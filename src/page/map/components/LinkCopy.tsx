@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,8 +11,9 @@ import { uploadAction } from '../../../redux/slice/uploadSlice';
 import { CROP_PATH } from '../../../common/constants/path.const';
 
 
-function LinkCopy(props: { setLoading: (loading: boolean) => void; isMungple: boolean }) {
-  const { setLoading, isMungple } = props;
+function LinkCopy(props: { redirect: (signin: boolean) => void, setLoading: (loading: boolean) => void; isMungple: boolean }) {
+  const { setLoading, isMungple, redirect } = props;
+  const isSignIn = useSelector((state: RootState) => state.persist.user.isSignIn);
   const linkCopyEvent = useAnalyticsCustomLogEvent(analytics, 'link_copy');
   const url = useSelector((state: RootState) => state.map.link);
   const dogName = useSelector((state: RootState) => state.persist.user.pet.name);
@@ -22,8 +23,12 @@ function LinkCopy(props: { setLoading: (loading: boolean) => void; isMungple: bo
   const navigate = useNavigate();
 
   const openFileGallery = () => {
-    if (fileUploadRef.current) {
-      fileUploadRef.current.click();
+    if (isSignIn) {
+      if (fileUploadRef.current) {
+        fileUploadRef.current.click();
+      }
+    } else {
+      redirect(true);
     }
   };
 
@@ -48,11 +53,11 @@ function LinkCopy(props: { setLoading: (loading: boolean) => void; isMungple: bo
         uploadAction.setHomeCert({
           prevImg: galleryImg,
           prevImgName: galleryImgName,
-          latitude:  selectedMungple.lat,
+          latitude: selectedMungple.lat,
           longitude: selectedMungple.lng,
           mongPlaceId: selectedMungple.id,
           title: selectedMungple.title,
-          address:selectedMungple.address
+          address: selectedMungple.address
         }),
       );
       navigate(CROP_PATH, { state: { prevPath: 'homeMap' } });
