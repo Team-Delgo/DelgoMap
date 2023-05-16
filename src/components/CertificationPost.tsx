@@ -235,6 +235,7 @@ function CertificationPost({
       const newCount = prevCount + 1;
       if (newCount === 2) {
         setLikeAnimationLoading(true);
+        console.log(1)
         handleCertificationLike();
 
         timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
