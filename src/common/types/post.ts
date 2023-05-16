@@ -2,7 +2,7 @@ export interface postType {
   address: string;
   certificationId: number;
   commentCount: number;
-  createdDate: string;
+  registDt: string;
   description: string;
   isLike: boolean;
   likeCount: number;
