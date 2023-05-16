@@ -4,9 +4,29 @@ import { RootState } from '../../../../redux/store';
 import { UserProfile } from '../../../../common/types/user';
 
 interface myProfileInfoDataType {
-  mungpleCount: number;
+  address: string;
+  birthday: string;
+  breedName: string;
+  ca0001Count: number;
+  ca0002Count: number;
+  ca0003Count: number;
+  ca0004Count: number;
+  ca0005Count: number;
+  ca0006Count: number;
+  ca0007Count: number;
+  ca9999Count: number;
+  email: string;
+  isNotify: true;
+  petId: number;
+  petName: string;
+  phoneNo: string;
+  profile: string;
+  registDt: string;
   totalCount: number;
-  user: UserProfile;
+  totalCountByMungple: number;
+  userId: number;
+  userName: string;
+  userSocial: string;
 }
 
 interface petInfoPropsType {
@@ -31,13 +51,14 @@ function PetInfo({ myProfileInfoData }: petInfoPropsType) {
         <div>
           <div className="pet-history-info-first-line">내 포인트</div>
           <div className="pet-history-info-second-line">
-            {myProfileInfoData?.user?.point?.accumulatedPoint}
+            {/* {myProfileInfoData?.user?.point?.accumulatedPoint} */}
+            0
           </div>
         </div>
         <div>
           <div className="pet-history-info-first-line">멍플기록</div>
           <div className="pet-history-info-second-line">
-            {myProfileInfoData?.mungpleCount}
+            {myProfileInfoData?.totalCountByMungple}
           </div>
         </div>
         <div>

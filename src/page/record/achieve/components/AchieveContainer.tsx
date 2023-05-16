@@ -97,6 +97,8 @@ function AchievementPage() {
   //   return <DogLoading />;
   // }
 
+  console.log('myProfileInfoData',myProfileInfoData)
+
   return (
     <div
       aria-hidden="true"
