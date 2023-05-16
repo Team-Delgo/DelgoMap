@@ -262,7 +262,7 @@ function CertificationPost({
           <div>
             <div className="post-img-result-header-profile-date">
               {' '}
-              {post?.registDt.substring(0, 10)}&nbsp;
+              {post?.registDt?.substring(0, 10)}&nbsp;
               {weekDay[post?.registDt.substring(17, post?.registDt.length)]}
               &nbsp;&nbsp;
               {post?.registDt.substring(11, 16)}
