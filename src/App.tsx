@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import VConsole from 'vconsole';
+import Hammer from 'hammerjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import './App.scss';
@@ -62,13 +64,14 @@ import { userActions } from './redux/slice/userSlice';
 import { getMyInfo } from './common/api/myaccount';
 
 import MapTest from './page/map/components/MapTest';
+import RouterWrapper from './RouterWrapper';
 
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
-  
+
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
@@ -137,64 +140,77 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-          <Routes>
-            {/* <Route path="/" element={<MapPage />} /> */}
-            <Route path="/" element={<MapTest />} />
-            <Route path="/:id" element={<MapTest />} />
-            {/* <Route path="/:id" element={<MapPage />} /> */}
-            <Route path="/help" element={<HelpPage />} />
-            <Route path="/detail" element={<DetailPage />} />
-            <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
-            <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
-            <Route path={SIGN_IN_PATH.FINDPASSWORD} element={<FindPassword />} />
-            <Route path={SIGN_IN_PATH.PHONEAUTH} element={<PhoneAuth />} />
-            <Route path={SIGN_IN_PATH.RESETPASSWORD} element={<ResetPassword />} />
-            <Route path={SIGN_UP_PATH.TERMS} element={<Terms />} />
-            <Route path={SIGN_UP_PATH.VERIFY} element={<VerifyPhone />} />
-            <Route path={SIGN_UP_PATH.USER_INFO} element={<UserInfo />} />
-            <Route path={SIGN_UP_PATH.SOCIAL.NICKNAME} element={<SocialUserInfo />} />
-            <Route path={SIGN_UP_PATH.USER_PET_INFO} element={<PetInfo />} />
-            <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
-            <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
-            <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
-            <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
-            <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
-            <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
-            <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
-            <Route
-              path={CAMERA_PATH.CERTIFICATION}
-              element={<CaptureCertificationPage />}
-            />
-            <Route path={CAMERA_PATH.LOCATION} element={<CaptureLocationPage />} />
-            <Route
-              path={CAMERA_PATH.UPDATE}
-              element={<CaptureCertificationUpatePage />}
-            />
-            <Route
-              path={CAMERA_PATH.RESULT}
-              element={<CaptureCertificationResultPage />}
-            />
-            <Route path={CAMERA_PATH.MAP} element={<CertificationMap />} />
-            <Route path={CROP_PATH} element={<CropPage />} />
-            <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
-            <Route path={POSTS_PATH} element={<PostsPage />} />
-            <Route path={MY_ACCOUNT_PATH.MAIN} element={<MyAccountPage />} />
-            <Route path={MY_ACCOUNT_PATH.PETINFO} element={<ChangePetInfo />} />
-            <Route path={MY_ACCOUNT_PATH.SETTINGS} element={<Setting />} />
-            <Route path={MY_ACCOUNT_PATH.USERINFO} element={<ChangeUserInfo />} />
-            <Route
-              path={MY_ACCOUNT_PATH.PASSWORDCHECK}
-              element={<ChangePasswordCheck />}
-            />
-            <Route path={MY_ACCOUNT_PATH.PASSWORDCHANGE} element={<ChangePassword />} />
-            <Route path={MY_ACCOUNT_PATH.TERM1} element={<ServiceTerm id={1} />} />
-            <Route path={MY_ACCOUNT_PATH.TERM2} element={<ServiceTerm id={2} />} />
-            <Route path={KAKAO_REDIRECT_HANDLE_PATH} element={<KakaoRedirectHandler />} />
-            <Route path={APPLE_REDIRECT_HANDLE_PATH} element={<AppleRedirectHandler />} />
-            <Route path={NAVER_REDIRECT_HANDLE_PATH} element={<NaverRedirectHandler />} />
-          </Routes>
-      </BrowserRouter>
+      <AnimatePresence>
+        <BrowserRouter>
+          <RouterWrapper>
+            <Routes>
+              {/* <Route path="/" element={<MapPage />} /> */}
+              <Route path="/" element={<MapTest />} />
+              <Route path="/:id" element={<MapTest />} />
+              {/* <Route path="/:id" element={<MapPage />} /> */}
+              <Route path="/help" element={<HelpPage />} />
+              <Route path="/detail" element={<DetailPage />} />
+              <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
+              <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
+              <Route path={SIGN_IN_PATH.FINDPASSWORD} element={<FindPassword />} />
+              <Route path={SIGN_IN_PATH.PHONEAUTH} element={<PhoneAuth />} />
+              <Route path={SIGN_IN_PATH.RESETPASSWORD} element={<ResetPassword />} />
+              <Route path={SIGN_UP_PATH.TERMS} element={<Terms />} />
+              <Route path={SIGN_UP_PATH.VERIFY} element={<VerifyPhone />} />
+              <Route path={SIGN_UP_PATH.USER_INFO} element={<UserInfo />} />
+              <Route path={SIGN_UP_PATH.SOCIAL.NICKNAME} element={<SocialUserInfo />} />
+              <Route path={SIGN_UP_PATH.USER_PET_INFO} element={<PetInfo />} />
+              <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
+              <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
+              <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
+              <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
+              <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
+              <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
+              <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
+              <Route
+                path={CAMERA_PATH.CERTIFICATION}
+                element={<CaptureCertificationPage />}
+              />
+              <Route path={CAMERA_PATH.LOCATION} element={<CaptureLocationPage />} />
+              <Route
+                path={CAMERA_PATH.UPDATE}
+                element={<CaptureCertificationUpatePage />}
+              />
+              <Route
+                path={CAMERA_PATH.RESULT}
+                element={<CaptureCertificationResultPage />}
+              />
+              <Route path={CAMERA_PATH.MAP} element={<CertificationMap />} />
+              <Route path={CROP_PATH} element={<CropPage />} />
+              <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
+              <Route path={POSTS_PATH} element={<PostsPage />} />
+              <Route path={MY_ACCOUNT_PATH.MAIN} element={<MyAccountPage />} />
+              <Route path={MY_ACCOUNT_PATH.PETINFO} element={<ChangePetInfo />} />
+              <Route path={MY_ACCOUNT_PATH.SETTINGS} element={<Setting />} />
+              <Route path={MY_ACCOUNT_PATH.USERINFO} element={<ChangeUserInfo />} />
+              <Route
+                path={MY_ACCOUNT_PATH.PASSWORDCHECK}
+                element={<ChangePasswordCheck />}
+              />
+              <Route path={MY_ACCOUNT_PATH.PASSWORDCHANGE} element={<ChangePassword />} />
+              <Route path={MY_ACCOUNT_PATH.TERM1} element={<ServiceTerm id={1} />} />
+              <Route path={MY_ACCOUNT_PATH.TERM2} element={<ServiceTerm id={2} />} />
+              <Route
+                path={KAKAO_REDIRECT_HANDLE_PATH}
+                element={<KakaoRedirectHandler />}
+              />
+              <Route
+                path={APPLE_REDIRECT_HANDLE_PATH}
+                element={<AppleRedirectHandler />}
+              />
+              <Route
+                path={NAVER_REDIRECT_HANDLE_PATH}
+                element={<NaverRedirectHandler />}
+              />
+            </Routes>
+          </RouterWrapper>
+        </BrowserRouter>
+      </AnimatePresence>
     </QueryClientProvider>
   );
 }

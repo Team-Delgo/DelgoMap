@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { useQuery } from 'react-query';
+import { motion } from 'framer-motion';
 import classNames from 'classnames';
 import {
   useAnalyticsLogEvent,
@@ -47,8 +48,14 @@ function Photo() {
   const [isLast, setLast] = useState(false);
   const dispatch = useDispatch();
   const location: any = useLocation();
+  const swipeArea = useRef<HTMLDivElement>(null);
+  const [hammertime, setHammertime] = useState<HammerManager | null>(null);
 
   useEffect(() => {
+    if (swipeArea.current) {
+      const hammerInstance = new Hammer(swipeArea.current);
+      setHammertime(hammerInstance);
+    }
     mutation.mutate({
       params: {
         firebase_screen: 'Album',
@@ -69,8 +76,27 @@ function Photo() {
       }
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
+  useEffect(() => {
+    if (hammertime) {
+      hammertime.on('swiperight', function (e) {
+        navigate('/');
+      });
+      hammertime.on('swipeleft', function (e) {
+        navigate('/calendar', { state: 'calendar' });
+      });
+    }
+    return () => {
+      if (hammertime) {
+        hammertime.off('swipeleft');
+        hammertime.off('swiperight');
+      }
+    };
+  }, [hammertime]);
 
   useEffect(() => {
     if (isFetching && !isLast) {
@@ -111,12 +137,15 @@ function Photo() {
     changePhotoData();
   }, [sortOption]);
 
-  const { data: otherDogsCerts, isLoading: otherDogsCertsLoading } =
-    useQuery(['getFiveOtherDogsCert', userId], () => getFiveOtherDogsCert(userId, 5), {
+  const { data: otherDogsCerts, isLoading: otherDogsCertsLoading } = useQuery(
+    ['getFiveOtherDogsCert', userId],
+    () => getFiveOtherDogsCert(userId, 5),
+    {
       enabled: photos.length === 0 && isFetched,
       staleTime: 2000,
       cacheTime: 2000,
-    });
+    },
+  );
 
   useEffect(() => {
     console.log(isLoading, pageSizeFor, photos);
@@ -161,16 +190,18 @@ function Photo() {
   };
 
   const noRecordContext = useMemo(() => {
-    const imgs = otherDogsCerts && otherDogsCerts.map((o) => {
-      return (
-        <img
-          src={o.photoUrl}
-          alt="others"
-          onClick={() => navigateToOthers(o)}
-          aria-hidden
-        />
-      );
-    });
+    const imgs =
+      otherDogsCerts &&
+      otherDogsCerts.map((o) => {
+        return (
+          <img
+            src={o.photoUrl}
+            alt="others"
+            onClick={() => navigateToOthers(o)}
+            aria-hidden
+          />
+        );
+      });
     return (
       isFetched && (
         <div className="photo-nocert">
@@ -233,68 +264,76 @@ function Photo() {
   }
 
   return (
-    <div className="photo">
-      <div className="photo-history">
-        <div className="photo-history-title">{certCount}장의 사진</div>
-        <div className="photo-history-select">
-          <div
-            className="photo-history-select-sort"
-            aria-hidden="true"
-            onClick={() => {
-              setButtonIsClicked(!buttonIsClicked);
-            }}
-          >
-            {sortOption ? '최신순' : '오래된순'}
-            <img src={UnderArrow} alt="arrow" />
+    <motion.div
+      initial={{ opacity: 1, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 1, x: -100 }}
+    >
+      <div className="photo" ref={swipeArea}>
+        <div className="photo-history">
+          <div className="photo-history-title">{certCount}장의 사진</div>
+          <div className="photo-history-select">
+            <div
+              className="photo-history-select-sort"
+              aria-hidden="true"
+              onClick={() => {
+                setButtonIsClicked(!buttonIsClicked);
+              }}
+            >
+              {sortOption ? '최신순' : '오래된순'}
+              <img src={UnderArrow} alt="arrow" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="photo-wrapper">
-        {photos.length > 0 ? photoContext : noRecordContext}
-      </div>
-      <Sheet
-        className="confirm-bottom-sheet-container"
-        isOpen={buttonIsClicked}
-        disableDrag
-        onClose={() => {
-          setButtonIsClicked(false);
-        }}
-        snapPoints={[160, 160, 160, 160]}
-      >
-        <Sheet.Container>
-          <Sheet.Content>
-            <div className="photo-sort-option" ref={ref}>
-              <div
-                className={classNames('photo-sort-option-item', { selected: sortOption })}
-                aria-hidden="true"
-                onClick={() => {
-                  setSortOption(true);
+        <div className="photo-wrapper">
+          {photos.length > 0 ? photoContext : noRecordContext}
+        </div>
+        <Sheet
+          className="confirm-bottom-sheet-container"
+          isOpen={buttonIsClicked}
+          disableDrag
+          onClose={() => {
+            setButtonIsClicked(false);
+          }}
+          snapPoints={[160, 160, 160, 160]}
+        >
+          <Sheet.Container>
+            <Sheet.Content>
+              <div className="photo-sort-option" ref={ref}>
+                <div
+                  className={classNames('photo-sort-option-item', {
+                    selected: sortOption,
+                  })}
+                  aria-hidden="true"
+                  onClick={() => {
+                    setSortOption(true);
 
-                  setButtonIsClicked(false);
-                }}
-              >
-                최신순
+                    setButtonIsClicked(false);
+                  }}
+                >
+                  최신순
+                </div>
+                <div className="photo-sort-option-devider" />
+                <div
+                  className={classNames('photo-sort-option-item', {
+                    selected: !sortOption,
+                  })}
+                  aria-hidden="true"
+                  onClick={() => {
+                    setSortOption(false);
+                    setButtonIsClicked(false);
+                  }}
+                >
+                  오래된순
+                </div>
               </div>
-              <div className="photo-sort-option-devider" />
-              <div
-                className={classNames('photo-sort-option-item', {
-                  selected: !sortOption,
-                })}
-                aria-hidden="true"
-                onClick={() => {
-                  setSortOption(false);
-                  setButtonIsClicked(false);
-                }}
-              >
-                오래된순
-              </div>
-            </div>
-          </Sheet.Content>
-        </Sheet.Container>
-        <Sheet.Backdrop />
-      </Sheet>
-    </div>
+            </Sheet.Content>
+          </Sheet.Container>
+          <Sheet.Backdrop />
+        </Sheet>
+      </div>
+    </motion.div>
   );
 }
 
