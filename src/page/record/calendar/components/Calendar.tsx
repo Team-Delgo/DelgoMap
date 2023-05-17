@@ -54,10 +54,7 @@ function Calender() {
 
   useEffect(() => {
     if (scroll === 0) {
-      setTimeout(()=>{
-
         scrollRef.current?.scrollIntoView({ block: 'end' });
-      },100)
     } else {
       window.scroll(0, scrollY);
     }
