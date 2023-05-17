@@ -160,7 +160,7 @@ function Login() {
 
   return (
     <div className="login-signin">
-      {isLoading && <Loading />}
+      {/* {isLoading && <Loading />} */}
       <div aria-hidden="true" className="login-back" onClick={() => navigation(-1)}>
         <img src={Arrow} alt="arrow" />
       </div>
