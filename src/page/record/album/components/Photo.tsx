@@ -265,9 +265,10 @@ function Photo() {
 
   return (
     <motion.div
-      initial={{ opacity: 1, x: 100 }}
+      initial={{ opacity: 1, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 1, x: -100 }}
+      exit={{ opacity: 1, x: -50 }}
+      transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
     >
       <div className="photo" ref={swipeArea}>
         <div className="photo-history">

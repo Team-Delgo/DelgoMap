@@ -232,9 +232,10 @@ function Calender() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 100 }}
+      initial={{ opacity: 0, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -100 }}
+      exit={{ opacity: 0, x: -50 }}
+      transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
     >
       <div className="calender" ref={swipeArea}>
         <div className="date-wrapper" ref={scrollRef}>
