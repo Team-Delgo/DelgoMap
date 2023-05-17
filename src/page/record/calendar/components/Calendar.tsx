@@ -54,7 +54,10 @@ function Calender() {
 
   useEffect(() => {
     if (scroll === 0) {
-      scrollRef.current?.scrollIntoView({ block: 'end' });
+      setTimeout(()=>{
+
+        scrollRef.current?.scrollIntoView({ block: 'end' });
+      },100)
     } else {
       window.scroll(0, scrollY);
     }
@@ -71,8 +74,7 @@ function Calender() {
     }
     return () => {
       if (hammertime) {
-        hammertime.off('swipeleft');
-        hammertime.off('swiperight');
+        hammertime.destroy();
       }
     };
   }, [hammertime]);
@@ -234,7 +236,7 @@ function Calender() {
     <motion.div
       initial={{ opacity: 0, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -50 }}
+      // exit={{ opacity: 0, x: -50 }}
       transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
     >
       <div className="calender" ref={swipeArea}>
