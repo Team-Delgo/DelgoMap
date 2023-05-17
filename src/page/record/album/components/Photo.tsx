@@ -92,8 +92,7 @@ function Photo() {
     }
     return () => {
       if (hammertime) {
-        hammertime.off('swipeleft');
-        hammertime.off('swiperight');
+        hammertime.destroy()
       }
     };
   }, [hammertime]);
@@ -267,7 +266,7 @@ function Photo() {
     <motion.div
       initial={{ opacity: 1, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 1, x: -50 }}
+      // exit={{ opacity: 1, x: -50 }}
       transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
     >
       <div className="photo" ref={swipeArea}>
