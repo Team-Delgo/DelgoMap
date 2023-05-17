@@ -35,8 +35,10 @@ function Calender() {
     return currentYear;
   };
 
-  const tempUserSignDate = '2022-05-01';
+  
 
+  const tempUserSignDate = '2022-05-01';
+  
   useEffect(() => {
     if (swipeArea.current) {
       const hammerInstance = new Hammer(swipeArea.current);
