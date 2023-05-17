@@ -87,7 +87,6 @@ function MapTest() {
     const map = new kakao.maps.Map(mapElement.current, options);
     setGlobarMap(map);
     kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) => {
-      console.log(isSelected);
 
       setIsSelected(prevIsSelected => {
         if (prevIsSelected) { // 이미 찍힌 곳이 있다면 clear
@@ -100,6 +99,7 @@ function MapTest() {
           setPointerLocation(() => {
             return { lat: e.latLng.getLat(), lng: e.latLng.getLng() };
           });
+          setSelectedCert(certDefault);
         }
         return !prevIsSelected;
       });
@@ -148,7 +148,15 @@ function MapTest() {
     dispatch(mapAction.setMapCustomPosition(pointerLocation));
   }, [pointerLocation]);
 
-  console.log(pointerLocation);
+  useEffect(()=>{
+    if(selectedCert.userId !== 0){
+      setPointerLocation(() => {
+        return { lat: 0, lng: 0 };
+      });
+      setIsSelected(false);
+      clearId();
+    }
+  },[selectedCert]);
 
   const deleteMungpleList = () => {
     markerList.forEach((marker) => {
@@ -378,6 +386,7 @@ function MapTest() {
     }
   };
 
+  console.log(isSelected, selectedId);
   return (
     <div className="map-wrapper">
       {isAlertOpen && (
@@ -425,7 +434,7 @@ function MapTest() {
           map={globarMap}
         />
       )}
-      {selectedCert.placeName.length > 0 && (
+      {selectedCert.userId > 0 && (
         <CertCard
           cert={selectedCert}
           img={selectedCert.photoUrl}
@@ -436,10 +445,10 @@ function MapTest() {
           setCenter={setCurrentMapPosition}
         />
       )}
-      {selectedId.title.length === 0 && selectedCert.placeName.length === 0 && (
+      {selectedId.title.length === 0 && selectedCert.userId === 0 && (
         <FooterNavigation setCenter={setCurrentMapPosition} />
       )}
-      {!(selectedId.title.length > 0 || selectedCert.placeName.length > 0) && (
+      {!(selectedId.title.length > 0 || selectedCert.userId > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
       {selectedId.title.length > 0 && <LinkCopy isMungple setLoading={setCopyLoading} redirect={setIsAlertOpen} />}

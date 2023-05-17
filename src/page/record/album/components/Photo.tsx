@@ -97,6 +97,7 @@ function Photo() {
     };
   }, [hammertime]);
 
+
   useEffect(() => {
     if (isFetching && !isLast) {
       console.log('here');
