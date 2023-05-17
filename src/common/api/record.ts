@@ -61,7 +61,7 @@ function getPhotoData(
 ) {
   axiosInstance
     .get(
-      `/certification/category?categoryCode=${categoryCode}&userId=${userId}&currentPage=${currentPage}&pageSize=${pageSize}&isDesc=${isDesc}`,
+      `/certification/category?categoryCode=${categoryCode}&userId=${userId}&page=${currentPage}&size=${pageSize}&isDesc=${isDesc}`,
     )
     .then((data) => {
       success(data);
