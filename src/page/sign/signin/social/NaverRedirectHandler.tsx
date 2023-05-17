@@ -65,7 +65,7 @@ function NaverRedirectHandler() {
           localStorage.setItem('accessToken', accessToken || '');
           localStorage.setItem('refreshToken', refreshToken || '');
           if (device === 'mobile') {
-            sendFcmTokenHandler(data.user.userId);
+            sendFcmTokenHandler(data.userId);
           }
           navigate(ROOT_PATH, { replace: true });
         } else if (code === 370) {
