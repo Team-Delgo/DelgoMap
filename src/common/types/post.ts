@@ -1,24 +1,16 @@
 export interface postType {
   address: string;
-  categoryCode: string;
   certificationId: number;
   commentCount: number;
+  registDt: string;
   description: string;
-  geoCode: string;
-  isAchievements: boolean;
   isLike: boolean;
-  isLive: boolean;
-  isPhotoChecked: boolean;
-  latitude: string;
   likeCount: number;
-  longitude: string;
-  mungpleId: number;
-  pgeoCode: string;
   photoUrl: string;
   placeName: string;
-  registDt: string;
   userId: number;
-  user: userType;
+  userName: string;
+  userProfile: string;
 }
 
 export interface userType {

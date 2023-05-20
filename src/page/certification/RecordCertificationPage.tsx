@@ -63,7 +63,7 @@ function RecordCertificationPage() {
         <Loading />
       ) : (
         <>
-          <PageHeader title={date.slice(0,10)} navigate={navigateBack} isFixed/>
+          <PageHeader title={date?.slice(0,10)} navigate={navigateBack} isFixed/>
           <div className="record-certs-content">{contents}</div>
         </>
       )}

@@ -33,30 +33,30 @@ function NaverRedirectHandler() {
         console.log(response);
         const { code, data } = response.data;
         if (code === 200) {
-          const { registDt } = data.user;
+          const { registDt } = data;
           console.log('로그인 성공');
           dispatch(
             userActions.signin({
               isSignIn: true,
               user: {
-                id: data.user.userId,
-                address: data.user.address,
-                nickname: data.user.name,
-                email: data.user.email,
-                phone: data.user.phoneNo,
+                id: data.userId,
+                address: data.address,
+                nickname: data.name,
+                email: data.email,
+                phone: data.phoneNo,
                 isSocial:true,
                 registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
-                userSocial: data.user.userSocial,
-                geoCode: data.user.geoCode,
-                notify:data.user.notify,
+                userSocial: data.userSocial,
+                geoCode: data.geoCode,
+                notify:data.notify,
               },
               pet: {
-                petId: data.pet.petId,
-                birthday: data.pet.birthday,
-                breed: data.pet.breed,
-                breedName: data.pet.breedName,
-                name: data.pet.name,
-                image: data.user.profile,
+                petId: data.petId,
+                birthday: data.birthday,
+                breed: data.breed,
+                breedName: data.breedName,
+                name: data.petName,
+                image: data.profile,
               },
             }),
           );
@@ -65,7 +65,7 @@ function NaverRedirectHandler() {
           localStorage.setItem('accessToken', accessToken || '');
           localStorage.setItem('refreshToken', refreshToken || '');
           if (device === 'mobile') {
-            sendFcmTokenHandler(data.user.userId);
+            sendFcmTokenHandler(data.userId);
           }
           navigate(ROOT_PATH, { replace: true });
         } else if (code === 370) {

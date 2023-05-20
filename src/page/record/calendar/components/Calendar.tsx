@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import classNames from 'classnames';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useNavigate } from 'react-router-dom';
@@ -16,13 +17,17 @@ import { analytics } from '../../../../index';
 function Calender() {
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const scroll = useSelector((state: RootState) => state.persist.scroll.calendar.scroll);
-  const userSignDate = useSelector((state: RootState) => state.persist.user.user.registDt);
+  const userSignDate = useSelector(
+    (state: RootState) => state.persist.user.user.registDt,
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(scroll);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [dateList, setDateList] = useState<DateType[]>([]);
   const certEvent = useAnalyticsCustomLogEvent(analytics, 'calendar_cert');
+  const swipeArea = useRef<HTMLDivElement>(null);
+  const [hammertime, setHammertime] = useState<HammerManager | null>(null);
   const getNextYear = (currentMonth: number, currentYear: number, add: number) => {
     if (currentMonth + add > 12) {
       return currentYear + 1;
@@ -30,9 +35,15 @@ function Calender() {
     return currentYear;
   };
 
-  const tempUserSignDate = '2022-05-01';
+  
 
+  const tempUserSignDate = '2022-05-01';
+  
   useEffect(() => {
+    if (swipeArea.current) {
+      const hammerInstance = new Hammer(swipeArea.current);
+      setHammertime(hammerInstance);
+    }
     getCalendarData(
       userId,
       (response: AxiosResponse) => {
@@ -45,11 +56,27 @@ function Calender() {
 
   useEffect(() => {
     if (scroll === 0) {
-      scrollRef.current?.scrollIntoView({ block: 'end' });
+        scrollRef.current?.scrollIntoView({ block: 'end' });
     } else {
       window.scroll(0, scrollY);
     }
   }, [dateList]);
+
+  useEffect(() => {
+    if (hammertime) {
+      hammertime.on('swiperight', function (e) {
+        navigate('/photo', {state: 'photo'});
+      });
+      hammertime.on('swipeleft', function (e) {
+        navigate('/achieve', { state: 'achieve' });
+      });
+    }
+    return () => {
+      if (hammertime) {
+        hammertime.destroy();
+      }
+    };
+  }, [hammertime]);
 
   const getDateContext = (prev: number) => {
     const date = new Date();
@@ -107,7 +134,9 @@ function Calender() {
         rdate = `0${date}`;
       }
       const condition = i >= firstDateIndex && i <= lastDateIndex;
-      const id = condition ? `${currentYear}-${currentMonth}-${rdate}` : `f${currentYear}-${currentMonth}-${rdate}`;
+      const id = condition
+        ? `${currentYear}-${currentMonth}-${rdate}`
+        : `f${currentYear}-${currentMonth}-${rdate}`;
 
       let achieve = false;
       let isCertificated = false;
@@ -140,7 +169,7 @@ function Calender() {
                       info: {
                         certId: 0,
                         userId,
-                        date:id
+                        date: id,
                       },
                       from: RECORD_PATH.CALENDAR,
                     },
@@ -159,7 +188,6 @@ function Calender() {
 
     return { datesElement, currentYear, currentMonth };
   };
-
 
   const getMonthDiff = () => {
     const currentYear = new Date().getFullYear();
@@ -196,10 +224,7 @@ function Calender() {
     );
     return (
       <div key={`${element.currentYear}.${element.currentMonth}`}>
-        <div
-          className="current-month"
-          
-        >{`${element.currentYear}.${element.currentMonth}`}</div>
+        <div className="current-month">{`${element.currentYear}.${element.currentMonth}`}</div>
         {weekDay}
         <div className="date">{element.datesElement}</div>
       </div>
@@ -207,11 +232,18 @@ function Calender() {
   });
 
   return (
-    <div className="calender">
-      <div className="date-wrapper" ref={scrollRef}>
-        {datesElement}
+    <motion.div
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      // exit={{ opacity: 0, x: -50 }}
+      transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
+    >
+      <div className="calender" ref={swipeArea}>
+        <div className="date-wrapper" ref={scrollRef}>
+          {datesElement}
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

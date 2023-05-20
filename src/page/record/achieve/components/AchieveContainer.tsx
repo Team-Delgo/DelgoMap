@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
+import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
+import { motion } from 'framer-motion';
 import { getAchievementList } from '../../../../common/api/achievement';
 import { RootState } from '../../../../redux/store';
 import PetInfo from './PetInfo';
@@ -29,10 +31,18 @@ function AchievementPage() {
     closeAchievementBottomSheet,
   ] = useActive(false);
   const { user } = useSelector((state: RootState) => state.persist.user);
+  console.log(user.id);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
+  const swipeArea = useRef<HTMLDivElement>(null);
+  const [hammertime, setHammertime] = useState<HammerManager | null>(null);
 
   useEffect(() => {
+    if (swipeArea.current) {
+      const hammerInstance = new Hammer(swipeArea.current);
+      setHammertime(hammerInstance);
+    }
     mutation.mutate({
       params: {
         firebase_screen: 'Achievement',
@@ -62,6 +72,19 @@ function AchievementPage() {
       },
     });
 
+  useEffect(() => {
+    if (hammertime) {
+      hammertime.on('swiperight', function (e) {
+        navigate('/calendar', { state: 'calendar' });
+      });
+    }
+    return () => {
+      if (hammertime) {
+        hammertime.destroy();
+      }
+    };
+  }, [hammertime]);
+
   const openBottomSheet = useCallback(
     (achievement: achievementType) => (event: React.MouseEvent) => {
       setSelectedAchievement(achievement);
@@ -72,28 +95,40 @@ function AchievementPage() {
     [],
   );
 
-  if (getAchievementDataListIsLoading || getMyProfileInfoDataIsLoading) {
-    return <DogLoading />;
-  }
+  // if (getAchievementDataListIsLoading || getMyProfileInfoDataIsLoading) {
+  //   return <DogLoading />;
+  // }
+
+  console.log('myProfileInfoData', myProfileInfoData);
 
   return (
-    <div
-      aria-hidden="true"
-      onClick={achievementBottomSheetIsOpen ? closeAchievementBottomSheet : undefined}
+    <motion.div
+      initial={{ opacity: 1, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 1, x: -50 }}
+      transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
     >
-      <PetInfo myProfileInfoData={myProfileInfoData.data} />
-      <Achievment
-        achievementList={achievementDataList.data}
-        openBottomSheet={openBottomSheet}
-      />
-      <AchievementBottomSheet
-        text=""
-        allView={false}
-        achievement={selectedAchievement}
-        cancelButtonHandler={closeAchievementBottomSheet}
-        bottomSheetIsOpen={achievementBottomSheetIsOpen}
-      />
-    </div>
+      <div
+        aria-hidden="true"
+        ref={swipeArea}
+        onClick={achievementBottomSheetIsOpen ? closeAchievementBottomSheet : undefined}
+      >
+        {myProfileInfoData && <PetInfo myProfileInfoData={myProfileInfoData.data} />}
+        {achievementDataList && (
+          <Achievment
+            achievementList={achievementDataList.data}
+            openBottomSheet={openBottomSheet}
+          />
+        )}
+        <AchievementBottomSheet
+          text=""
+          allView={false}
+          achievement={selectedAchievement}
+          cancelButtonHandler={closeAchievementBottomSheet}
+          bottomSheetIsOpen={achievementBottomSheetIsOpen}
+        />
+      </div>
+    </motion.div>
   );
 }
 

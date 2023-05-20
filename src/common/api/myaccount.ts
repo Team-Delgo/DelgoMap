@@ -107,6 +107,7 @@ async function getMyPoint(userId: number) {
 
 async function getMyProfileInfo(userId: number) {
   const { data } = await axiosInstance.get(`/account?userId=${userId}`);
+  console.log(data);
   return data;
 }
 
