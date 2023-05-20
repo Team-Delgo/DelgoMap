@@ -105,7 +105,7 @@ function AchievementPage() {
       ref={swipeArea}
       onClick={achievementBottomSheetIsOpen ? closeAchievementBottomSheet : undefined}
     >
-      <PetInfo myProfileInfoData={myProfileInfoData.data} />
+      <PetInfo myProfileInfoData={myProfileInfoData?.data} />
       <Achievment
         achievementList={achievementDataList.data}
         openBottomSheet={openBottomSheet}
