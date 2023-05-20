@@ -117,7 +117,7 @@ function Login() {
         localStorage.setItem('accessToken', accessToken || '');
         localStorage.setItem('refreshToken', refreshToken || '');
         if (device === 'mobile') {
-          sendFcmTokenHandler(data.user.userId);
+          sendFcmTokenHandler(data.userId);
         }
         navigation(ROOT_PATH, { replace: true });
       } else if (code === 304) {
@@ -160,7 +160,7 @@ function Login() {
 
   return (
     <div className="login-signin">
-      {isLoading && <Loading />}
+      {/* {isLoading && <Loading />} */}
       <div aria-hidden="true" className="login-back" onClick={() => navigation(-1)}>
         <img src={Arrow} alt="arrow" />
       </div>

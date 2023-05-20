@@ -149,6 +149,7 @@ export function setNormalCertMarker(
     });
     content.addEventListener("click", (e) => {
       e.stopPropagation();
+      console.log(e);
       setCert(m)
     });
     marker.setMap(map);
