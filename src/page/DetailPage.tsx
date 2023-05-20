@@ -43,7 +43,7 @@ function DetailPage() {
 
   return (
     <div className="detail">
-      {(isLoading || imgLoading) && <BallLoading />}
+      {(true) && <BallLoading />}
       <BackArrowComponent isFixed onClickHandler={() => navigate(-1)} />
 
       <img

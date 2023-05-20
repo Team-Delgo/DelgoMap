@@ -118,7 +118,7 @@ function CommentsPage() {
   const context = commentList.map((comment: commentType) => {
     return (
       <div className="comment">
-        <img src={comment.profile} alt="profile" />
+        <img src={comment.userProfile} alt="profile" />
         <div className="comment-content">
           <div className="comment-content-header">
             <div className="comment-content-header-name">{comment.userName}</div>
@@ -144,7 +144,7 @@ function CommentsPage() {
                 삭제
               </div>
               <div className="comment-content-header-work-date">
-                {comment.createDt.slice(0, 10)}
+                {comment.registDt.slice(0, 10)}
               </div>
             </div>
           </div>
