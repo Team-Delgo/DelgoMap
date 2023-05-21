@@ -59,9 +59,10 @@ function getPhotoData(
   success: (data: AxiosResponse) => void,
   dispatch: any,
 ) {
+  const sortOrder = isDesc ? 'desc' : 'asc'; // isDesc 값에 따라 정렬 순서를 결정합니다.
   axiosInstance
     .get(
-      `/certification/category?categoryCode=${categoryCode}&userId=${userId}&page=${currentPage}&size=${pageSize}&isDesc=${isDesc}`,
+      `/certification/category?categoryCode=${categoryCode}&userId=${userId}&page=${currentPage}&size=${pageSize}&sort=registDt,${sortOrder}`,
     )
     .then((data) => {
       success(data);
