@@ -181,31 +181,28 @@ function PetInfo() {
             const refreshToken = response.headers.authorization_refresh;
             localStorage.setItem('accessToken', accessToken || '');
             localStorage.setItem('refreshToken', refreshToken || '');
-            userId = response.data.data.user.userId;
-            const { registDt } = data.user;
+            userId = response.data.data.userId;
+            const { registDt } = data;
             dispatch(
               userActions.signin({
                 user: {
-                  id: data.user.userId,
-                  address: data.user.address,
-                  nickname: data.user.name,
-                  email: data.user.email,
-                  phone: data.user.phoneNo,
+                  id: data.userId,
+                  address: data.address,
+                  nickname: data.name,
+                  email: data.email,
+                  phone: data.phoneNo,
                   isSocial: false,
-                  geoCode: data.user.geoCode,
-                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(
-                    5,
-                    7,
-                  )}.${registDt.slice(8, 10)}`,
-                  notify: data.user.notify,
+                  geoCode: data.geoCode,
+                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+                  notify: data.isNotify,
                 },
                 pet: {
-                  petId: data.pet.petId,
-                  birthday: data.pet.birthday,
-                  breed: data.pet.breed,
-                  breedName: data.pet.breedName,
-                  name: data.pet.name,
-                  image: data.user.profile,
+                  petId: data.petId,
+                  birthday: data.birthday,
+                  breed: data.breed,
+                  breedName: data.breedName,
+                  name: data.petName,
+                  image: data.profile,
                 },
               }),
             );
@@ -243,36 +240,33 @@ function PetInfo() {
         (response: AxiosResponse) => {
           const { code, codeMsg, data } = response.data;
           if (code === 200) {
-            const { registDt } = data.user;
+            const { registDt } = data;
             const accessToken = response.headers.authorization_access;
             const refreshToken = response.headers.authorization_refresh;
             localStorage.setItem('accessToken', accessToken || '');
             localStorage.setItem('refreshToken', refreshToken || '');
-            userId = response.data.data.user.userId;
+            userId = response.data.data.userId;
             dispatch(
               userActions.signin({
                 isSignIn: true,
                 user: {
-                  id: data.user.userId,
-                  nickname: data.user.name,
-                  email: data.user.email,
-                  phone: data.user.phoneNo,
+                  id: data.userId,
+                  address: data.address,
+                  nickname: data.name,
+                  email: data.email,
+                  phone: data.phoneNo,
                   isSocial: false,
-                  geoCode: data.user.geoCode,
-                  address: data.user.address,
-                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(
-                    5,
-                    7,
-                  )}.${registDt.slice(8, 10)}`,
-                  notify: data.user.notify,
+                  geoCode: data.geoCode,
+                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+                  notify: data.isNotify,
                 },
                 pet: {
-                  petId: data.pet.petId,
-                  birthday: data.pet.birthday,
-                  breed: data.pet.breed,
-                  breedName: data.pet.breedName,
-                  name: data.pet.name,
-                  image: data.user.profile,
+                  petId: data.petId,
+                  birthday: data.birthday,
+                  breed: data.breed,
+                  breedName: data.breedName,
+                  name: data.petName,
+                  image: data.profile,
                 },
               }),
             );
