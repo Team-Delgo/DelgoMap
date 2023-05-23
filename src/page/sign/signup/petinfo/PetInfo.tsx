@@ -207,7 +207,7 @@ function PetInfo() {
               }),
             );
             if (device === 'mobile') {
-              sendFcmTokenHandler(data.user.userId);
+              sendFcmTokenHandler(data.userId);
             }
             setIsLoading(false);
             navigation(SIGN_UP_PATH.COMPLETE, { state: { name: enteredInput.name } });
@@ -271,7 +271,7 @@ function PetInfo() {
               }),
             );
             if (device === 'mobile') {
-              sendFcmTokenHandler(data.user.userId);
+              sendFcmTokenHandler(data.userId);
             }
             setIsLoading(false);
             navigation(SIGN_UP_PATH.COMPLETE, { state: { name: enteredInput.name } });
