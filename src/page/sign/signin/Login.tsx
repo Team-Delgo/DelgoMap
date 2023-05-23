@@ -99,7 +99,7 @@ function Login() {
               isSocial: false,
               geoCode: data.geoCode,
               registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
-              notify: data.notify,
+              notify: data.isNotify,
             },
             pet: {
               petId: data.petId,
