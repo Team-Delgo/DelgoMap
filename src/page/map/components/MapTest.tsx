@@ -182,7 +182,7 @@ function MapTest() {
     return {
       img: m.photoUrl,
       title: m.placeName,
-      address: m.jibunAddress,
+      address: m.address,
       id: m.mungpleId,
       prevId: prev.id,
       detailUrl: m.detailUrl,

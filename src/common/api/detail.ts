@@ -19,28 +19,27 @@ interface DetailPageResponse {
   categoryCode: string;
   placeName: string;
   placeNameEn: string;
-  roadAddress: string;
-  jibunAddress: string;
-  geoCode: string;
-  latitude: string;
-  longitude: string;
-  photoUrl: string;
-  detailUrl: string;
+  address: string;
+  photoUrls: string[];
+  phoneNo:string;
   businessHour: BusinessHours;
   residentDogName: string;
-  representSite: string;
+  residentDogPhoto:string;
+  instaId: string;
   representMenuTitle: string;
   acceptSize: { S: string; M: string; L: string };
-  representMenuPhotoUrl: string[];
-  parkingLimit: number;
+  representMenuPhotoUrls: string[];
+  isParking:boolean;
+  parkingInfo:string;
   editorNoteUrl: string;
   copyLink: string;
-  pgeoCode: string;
+  certCount:number;
+  enterDesc:string;
 }
 
 export async function getDetailPageData(mungpleId: number) {
   const { data } = await axiosInstance.get<APIResponse<DetailPageResponse>>(
     `/mungple/detail?mungpleId=${mungpleId}`,
   );
-  return data;
+  return data.data;
 }
