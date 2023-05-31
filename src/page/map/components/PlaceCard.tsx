@@ -66,7 +66,7 @@ function PlaceCard(props: {
     const level = map!.getLevel();
     dispatch(mapAction.setCurrentPosition({ lat: center.getLat(), lng: center.getLng(), zoom: level }))
     dispatch(mapAction.setDetailUrl(detailUrl));
-    navigate(`detail`);
+    navigate(`detail/${id}`);
   };
 
   return (

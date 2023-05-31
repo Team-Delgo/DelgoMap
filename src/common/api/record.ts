@@ -2,19 +2,18 @@ import axios, { AxiosResponse } from 'axios';
 import { AnyAction, Dispatch } from 'redux';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
+import { APIResponse } from '../types/api';
 
-export interface MapDataType {
-  data: {
-    mungpleList: any[];
-    normalCertList: any[];
-    mungpleCertList: any[];
-    exposedMungpleCertList: any[];
-    exposedNormalCertList: any[];
-  };
+export interface MapData {
+  mungpleList: any[];
+  normalCertList: any[];
+  mungpleCertList: any[];
+  exposedMungpleCertList: any[];
+  exposedNormalCertList: any[];
 }
 
 async function getMapData(userId: number) {
-  const { data } = await axiosInstance.get<MapDataType>(`/map/${userId}`);
+  const { data } = await axiosInstance.get<APIResponse<MapData>>(`/map/${userId}`);
   return data.data;
 }
 

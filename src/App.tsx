@@ -147,7 +147,7 @@ function App() {
               <Route path="/:id" element={<MapTest />} />
               {/* <Route path="/:id" element={<MapPage />} /> */}
               <Route path="/help" element={<HelpPage />} />
-              <Route path="/detail" element={<DetailPage />} />
+              <Route path="/detail/:id" element={<DetailPage />} />
               <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
               <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
               <Route path={SIGN_IN_PATH.FINDPASSWORD} element={<FindPassword />} />
