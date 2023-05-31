@@ -1,7 +1,25 @@
 import classNames from 'classnames';
 import React from 'react';
 
-function DetailInfo() {
+interface Props {
+  residentDog: string;
+  instagram: string;
+  representMenu: string;
+  menuImages: string[];
+  acceptSize: { S: string, M: string, L: string };
+  parkingLimit: number;
+  editorNoteUrl: string | null;
+}
+
+function DetailInfo({
+  residentDog,
+  instagram,
+  representMenu,
+  menuImages,
+  acceptSize,
+  parkingLimit,
+  editorNoteUrl
+}: Props) {
   return (
     <div className="detail-info">
       <div className="detail-info-dog">
@@ -45,11 +63,11 @@ function DetailInfo() {
         </div>
       </div>
       <div className='detail-info-doglist'>
-        <div className={classNames('detail-info-doglist-dog',{disable:false})}>소형견</div>
+        <div className={classNames('detail-info-doglist-dog', { disable: false })}>소형견</div>
         <div className='detail-info-doglist-dot' />
-        <div className={classNames('detail-info-doglist-dog',{disable:false})}>중형견</div>
+        <div className={classNames('detail-info-doglist-dog', { disable: false })}>중형견</div>
         <div className='detail-info-doglist-dot' />
-        <div className={classNames('detail-info-doglist-dog',{disable:true})}>대형견</div>
+        <div className={classNames('detail-info-doglist-dog', { disable: true })}>대형견</div>
       </div>
       <div className="detail-info-div" />
       <div className="detail-info-item">

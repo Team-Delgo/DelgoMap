@@ -5,20 +5,46 @@ import Phone from "../../../common/icons/phone.svg";
 import Upload from "../../../common/icons/upload.svg";
 import Clock from "../../../common/icons/clock.svg";
 
-function DetailHeader() {
+interface Props {
+  placeName: string;
+  address: string;
+  dogFootCount: number;
+  heartCount: number;
+  phoneNumber: string;
+  openingHours: OpeningHours;
+}
+
+interface OpeningHours {
+  mon: string;
+  tue: string;
+  wed: string;
+  thu: string;
+  fri: string;
+  sat: string;
+  sun: string;
+  lastOrder: string;
+}
+
+function DetailHeader({
+  placeName,
+  address,
+  dogFootCount,
+  heartCount,
+  phoneNumber,
+  openingHours }: Props) {
   return (
     <div className="detail-header">
       <div className="detail-header-title">
-        <h2>스톤앤워터</h2>
+        <h2>{placeName}</h2>
         <div className="detail-header-heart">
           <img src={DogFoot} alt="foot" />
-          <span>22</span>
-          <div className='detail-header-dot'/>
+          <span>{dogFootCount}</span>
+          <div className='detail-header-dot' />
           <img src={Heart} alt="heart" />
-          <span>14</span>
+          <span>{heartCount}</span>
         </div>
       </div>
-      <div className="detail-header-address">서울시 송파구 오금동 11-11 202호</div>
+      <div className="detail-header-address">{address}</div>
       <div className="detail-header-interaction">
         <div className="detail-header-interaction-button">
           <img src={Phone} alt="phone" />
