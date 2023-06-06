@@ -3,6 +3,14 @@
   // z-index: 15;
   overflow: scroll !important;
   background-color: #ededed;
+  &-review{
+    background-color: white;
+  }
+  &-editor{
+    &-image{
+      width: 100vw;
+    }
+  }
   &-back {
     position: fixed;
     top: 20px;
@@ -229,6 +237,13 @@
           width: 47px;
           height: 47px;
           border-radius: 100%;
+        }
+        &.none{
+          width: 47px;
+          height: 47px;
+          border-radius: 100%;
+          background-image: url('../../common/icons/dog.svg');
+          background-size: cover;
         }
       }
     }
