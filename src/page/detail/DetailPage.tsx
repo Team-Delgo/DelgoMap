@@ -13,19 +13,23 @@ import DetailInfo from './components/DetailInfo';
 import { getDetailPageData } from '../../common/api/detail';
 import DetailImageSlider from './components/DetailImageSlider';
 import FullScreenImageSlider from './components/FullScreenImageSlider';
+import EditorNote from './components/EditorNote';
+import DetailReview from './components/review/DetailReview';
 
 function DetailPage() {
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const navigate = useNavigate();
   const [imageNumber, setImageNumber] = useState(1);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
   const url = useSelector((state: any) => state.map.detailImgUrl);
   const splitUrl = window.location.href.split('/');
   const detailPageId = parseInt(splitUrl[splitUrl.length - 1], 10);
-  const { data, isLoading, isError, error } = useQuery(
-    ['getDetailPageData', detailPageId],
-    () => getDetailPageData(detailPageId),
+  
+  const { data, isLoading, isSuccess } = useQuery(['getDetailPageData', detailPageId], () =>
+    getDetailPageData(detailPageId),
   );
+
   console.log(data);
 
   useEffect(() => {
@@ -41,27 +45,40 @@ function DetailPage() {
 
   const imageArray = [...data.photoUrls, ...data.representMenuPhotoUrls];
 
+  const placeFullScreenHandler = (index: number) => {
+    setImageNumber(index);
+    setIsFullScreenSliderOpen(true);
+  };
+
+  const menuFullScreenHandler = (index: number) => {
+    setImageNumber(data.photoUrls.length + index);
+    setIsFullScreenSliderOpen(true);
+  };
+
   if (isFullScreenSliderOpen)
     return (
       <FullScreenImageSlider
         close={() => setIsFullScreenSliderOpen(false)}
         images={imageArray}
-        index={0}
+        index={imageNumber}
         placeName={data.placeName}
       />
     );
+  console.log(isEditorOpen);
+  if (isEditorOpen)
+    return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
 
   return (
     <div className="detail">
       <DetailImageSlider
-        openFullSlider={() => setIsFullScreenSliderOpen(true)}
+        openFullSlider={placeFullScreenHandler}
         images={data.photoUrls}
       />
       <DetailHeader
         placeName={data.placeName}
         address={data.address}
         dogFootCount={data.certCount}
-        heartCount={14}
+        heartCount={data.recommendCount}
         phoneNumber={data.phoneNo}
         openingHours={data.businessHour}
       />
@@ -72,11 +89,14 @@ function DetailPage() {
         representMenu={data.representMenuTitle}
         menuImages={data.representMenuPhotoUrls}
         acceptSize={data.acceptSize}
-        isParking={data.isParking}
+        parkingLimit={data.parkingLimit}
         enterDsc={data.enterDesc}
         parkingInfo={data.parkingInfo}
         editorNoteUrl={data.editorNoteUrl}
+        openEditor={() => setIsEditorOpen(true)}
+        openFullSlider={menuFullScreenHandler}
       />
+      <DetailReview mungpleId={data.mungpleId}/>
     </div>
   );
 }

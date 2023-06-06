@@ -5,7 +5,7 @@ import 'swiper/css/pagination';
 
 interface Props {
   images: string[];
-  openFullSlider: ()=>void;
+  openFullSlider: (index:number)=>void;
 }
 
 function DetailImageSlider({ images, openFullSlider }: Props) {
@@ -14,10 +14,10 @@ function DetailImageSlider({ images, openFullSlider }: Props) {
   return (
     <div className="detail-img">
       <Swiper onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
-        {images.map((image) => {
+        {images.map((image, index) => {
           return (
             <SwiperSlide>
-              <img src={image} alt="placeimage" aria-hidden onClick={openFullSlider}/>
+              <img src={image} alt="placeimage" aria-hidden onClick={()=>openFullSlider(index)}/>
             </SwiperSlide>
           );
         })}

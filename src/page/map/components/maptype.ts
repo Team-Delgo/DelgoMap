@@ -16,6 +16,7 @@ export interface Cert {
   placeName: string;
   registDt: string;
   userId: number;
+  userName:string;
 }
 export const certDefault: Cert = {
   categoryCode: '',
@@ -35,6 +36,7 @@ export const certDefault: Cert = {
   placeName: '',
   registDt: '',
   userId: 0,
+  userName:''
 };
 
 export const idDefault = {
