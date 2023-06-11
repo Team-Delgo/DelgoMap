@@ -67,7 +67,7 @@ const uploadSlice = createSlice({
     },
     setPrevImg(state, action) {
       return {
-        ...initialState,
+        ...state,
         prevImg:action.payload.prevImg,
         prevImgName:action.payload.prevImgName
 
@@ -138,9 +138,9 @@ const uploadSlice = createSlice({
         address: action.payload.address
       };
     },
-    initAchievements(state) {
+    initAchievements() {
       return {
-        ...state,
+        ...initialState,
         achievements: [],
       };
     },

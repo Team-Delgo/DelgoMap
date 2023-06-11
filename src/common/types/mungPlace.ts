@@ -8,6 +8,6 @@ export interface MungPlaceType {
     p_geoCode: string;
     placeName: string;
     registDt: string;
-    roadAddress: string;
+    address: string;
   }
   
