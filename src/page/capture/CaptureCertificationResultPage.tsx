@@ -34,18 +34,18 @@ function CaptureResult() {
   ] = useActive(false);
 
   
-  const { achievements } = useSelector((state: RootState) => state.persist.upload);
+  // const { achievements } = useSelector((state: RootState) => state.persist.upload);
   const location: any = useLocation();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
 
-  useEffect(() => {
-    if (achievements.length === 1) {
-      openAchievementBottomSheet1();
-    } else if (achievements.length === 2) {
-      openAchievementBottomSheet1();
-      openAchievementBottomSheet2();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (achievements.length === 1) {
+  //     openAchievementBottomSheet1();
+  //   } else if (achievements.length === 2) {
+  //     openAchievementBottomSheet1();
+  //     openAchievementBottomSheet2();
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (location?.state?.prevPath?.includes('update')) {

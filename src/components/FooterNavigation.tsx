@@ -23,24 +23,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
   const selectedId = useSelector((state:RootState) => state.map.selectedId.id);
   const clickEvent = useAnalyticsCustomLogEvent(analytics, "cert-button-click");
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
-  const fileUploadRef = useRef<HTMLInputElement>(null);
-
-  const openFileGallery = () => {
-    if (fileUploadRef.current) {
-      fileUploadRef.current.click();
-    }
-  };
-
-  const setPevImg = (event: { target: HTMLInputElement }) => {
-    if (event.target.files) {
-      const galleryImg = URL.createObjectURL(event.target.files[0]);
-      const galleryImgName = event.target.files[0].name;
-      dispatch(uploadAction.setPrevImg({ prevImg: galleryImg, prevImgName: galleryImgName }));
-      navigate(CROP_PATH, { state: { prevPath: location.pathname } });
-    }
-  };
 
   const moveToPostsPage = () => {
     setCenter();
@@ -67,7 +50,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
       // setCenter();
       // openFileGallery();
       dispatch(uploadAction.initAchievements());
-      navigate(CAMERA_PATH.LOCATION)
+      navigate(CAMERA_PATH.CERTIFICATION)
     } else setIsAlertOpen(true);
   };
 
