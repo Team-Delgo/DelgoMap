@@ -53,7 +53,6 @@ function CaptureResultHeader() {
   };
 
   const moveToUpdatePage = () => {
-    handleInitAchievements();
     navigate(CAMERA_PATH.UPDATE, {
       state: {
         prevPath: location.pathname,

@@ -46,7 +46,8 @@ function LinkCopy(props: { redirect: (signin: boolean) => void, setLoading: (loa
         longitude: selectedMungple.lng,
         mongPlaceId: selectedMungple.id,
         title: selectedMungple.title,
-        address: selectedMungple.address
+        address: selectedMungple.address,
+        categoryCode:selectedMungple.categoryCode
       }),
     );
     navigate(CAMERA_PATH.CERTIFICATION, { state: { prevPath: 'homeMap' } });
