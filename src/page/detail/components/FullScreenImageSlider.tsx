@@ -21,7 +21,7 @@ function FullScreenImageSlider({ images, index, placeName, close }: Props) {
       </div>
       <div className='detail-full-header-number'>{imageNumber + 1} / {images.length}</div>
       <div className="detail-full-image">
-        <Swiper initialSlide={index} onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
+        <Swiper slidesPerView="auto" centeredSlides initialSlide={index} onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
           {images.map((image) => {
             return (
               <SwiperSlide>
