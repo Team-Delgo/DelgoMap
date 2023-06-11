@@ -8,13 +8,13 @@ import './DetailPage.scss';
 import BallLoading from '../../common/utils/BallLoading';
 import { analytics } from '../..';
 import DetailHeader from './components/DetailHeader';
-import BackArrowComponent from '../../components/BackArrowComponent';
 import DetailInfo from './components/DetailInfo';
 import { getDetailPageData } from '../../common/api/detail';
 import DetailImageSlider from './components/DetailImageSlider';
 import FullScreenImageSlider from './components/FullScreenImageSlider';
 import EditorNote from './components/EditorNote';
 import DetailReview from './components/review/DetailReview';
+import BackArrowComponent from '../../components/BackArrowComponent';
 
 function DetailPage() {
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
@@ -29,6 +29,10 @@ function DetailPage() {
   const { data, isLoading, isSuccess } = useQuery(['getDetailPageData', detailPageId], () =>
     getDetailPageData(detailPageId),
   );
+
+  const navigateToHome = () => {
+    navigate('/');
+  };
 
   console.log(data);
 
@@ -70,6 +74,7 @@ function DetailPage() {
 
   return (
     <div className="detail">
+      <BackArrowComponent onClickHandler={navigateToHome} white />
       <DetailImageSlider
         openFullSlider={placeFullScreenHandler}
         images={data.photoUrls}
