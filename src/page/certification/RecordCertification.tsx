@@ -82,6 +82,7 @@ function RecordCertification(props: { certification: Cert }) {
   }, []);
 
   const moveToUpdatePage = useCallback(() => {
+    console.log('certification',certification)
     dispatch(
       uploadAction.setCertificationUpdate({
         img: certification?.photoUrl,
@@ -89,6 +90,7 @@ function RecordCertification(props: { certification: Cert }) {
         title: certification?.placeName,
         certificationId: certification?.certificationId,
         content: certification?.description,
+        address: certification?.address
       }),
     );
     navigate(CAMERA_PATH.UPDATE, {

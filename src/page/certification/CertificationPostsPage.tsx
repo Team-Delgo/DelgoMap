@@ -19,8 +19,8 @@ import PageHeader from '../../components/PageHeader';
 
 function CertificationPostsPage() {
   
-  const firstCert = (useLocation().state.cert as any) || null;
-  const pageFrom = (useLocation().state.from as any) || 'home';
+  const firstCert = (useLocation()?.state?.cert as any) || null;
+  const pageFrom = (useLocation()?.state?.from as any) || 'home';
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const { scroll, pageSize } = useSelector(
