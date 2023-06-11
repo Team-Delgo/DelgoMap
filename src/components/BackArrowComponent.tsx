@@ -1,23 +1,30 @@
 import classNames from 'classnames';
 import React from 'react';
 import BackArrowImg from '../common/icons/prev-arrow-black.svg';
-import "./BackArrow.scss";
+import './BackArrow.scss';
+import BackArrowWhite from '../common/icons/prev-arrow-white.svg';
 
-interface BackArrowProps{
+interface BackArrowProps {
   onClickHandler: () => void;
-  isFixed?:boolean;
+  isFixed?: boolean;
+  white?: boolean;
 }
 
-function BackArrowComponent({onClickHandler, isFixed} : BackArrowProps) {
+function BackArrowComponent({ onClickHandler, isFixed, white }: BackArrowProps) {
   return (
-    <div aria-hidden className={classNames("BackArrow",{isFixed})} onClick={onClickHandler}>
-      <img src={BackArrowImg} alt="back" />
+    <div
+      aria-hidden
+      className={classNames('BackArrow', { isFixed })}
+      onClick={onClickHandler}
+    >
+      <img src={white ? BackArrowWhite : BackArrowImg} alt="back" />
     </div>
   );
 }
 
 BackArrowComponent.defaultProps = {
-  isFixed : false
-}
+  isFixed: false,
+  white: false,
+};
 
 export default BackArrowComponent;

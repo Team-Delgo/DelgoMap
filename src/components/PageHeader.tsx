@@ -14,7 +14,7 @@ interface PageHeaderProps {
 function PageHeader({ title, navigate, isFixed, isAbsolute, short }: PageHeaderProps) {
   return (
     <div className={classNames('page-header', { isFixed, isAbsolute, short })}>
-      <BackArrowComponent onClickHandler={navigate} />
+      <BackArrowComponent onClickHandler={navigate}/>
       <div className="page-header-text">{title}</div>
     </div>
   );

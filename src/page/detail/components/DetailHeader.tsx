@@ -34,6 +34,8 @@ interface OpeningHours {
   SAT: string;
   SUN: string;
   LAST_ORDER: string;
+  BREAK_TIME: string;
+  HOLIDAY: string;
 }
 
 function DetailHeader({
@@ -59,10 +61,10 @@ function DetailHeader({
       </div>
       <div className="detail-header-address">{address}</div>
       <div className="detail-header-interaction">
-        <div className="detail-header-interaction-button">
+        <a href={`tel:${phoneNumber}`} className="detail-header-interaction-button">
           <img src={Phone} alt="phone" />
           전화
-        </div>
+        </a>
         <div className="detail-header-interaction-div" />
         <div className="detail-header-interaction-button">
           <img src={Upload} alt="upload" />
@@ -111,17 +113,25 @@ function DetailHeader({
           </div>
           <div className="detail-header-info">
             <div className="detail-header-info-item">라스트 오더</div>
-            <div className="detail-header-info-value">21:40</div>
+            <div className="detail-header-info-value">{openingHours.LAST_ORDER}</div>
             <div className="detail-header-info-item">브레이크 타임</div>
-            <div className="detail-header-info-value">평일 15:00~16:00</div>
+            <div className="detail-header-info-value">
+              {openingHours.BREAK_TIME.length > 0 ? openingHours.BREAK_TIME : '없음'}
+            </div>
             <div className="detail-header-info-item">휴무</div>
-            <div className="detail-header-info-value">둘째, 넷째 일요일</div>
+            <div className="detail-header-info-value">
+              {openingHours.HOLIDAY.length > 0 ? openingHours.HOLIDAY : '없음'}
+            </div>
           </div>
         </div>
       )}
       {isInfoOpen && (
         <div className="detail-header-close">
-          <div className='detail-header-close-button' aria-hidden onClick={() => setIsInfoOpen(false)}>
+          <div
+            className="detail-header-close-button"
+            aria-hidden
+            onClick={() => setIsInfoOpen(false)}
+          >
             닫기 <img src={Arrow} alt="arrow" />
           </div>
         </div>
