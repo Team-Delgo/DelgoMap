@@ -1,9 +1,8 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import BackArrow from '../common/icons/back-arrow.svg';
+import {  useNavigate } from 'react-router-dom';
 import './DetailPage.scss';
 import BallLoading from '../../common/utils/BallLoading';
 import { analytics } from '../..';
@@ -25,16 +24,13 @@ function DetailPage() {
   const url = useSelector((state: any) => state.map.detailImgUrl);
   const splitUrl = window.location.href.split('/');
   const detailPageId = parseInt(splitUrl[splitUrl.length - 1], 10);
-  
-  const { data, isLoading, isSuccess } = useQuery(['getDetailPageData', detailPageId], () =>
-    getDetailPageData(detailPageId),
+
+  const { data, isLoading } = useQuery(
+    ['getDetailPageData', detailPageId],
+    () => getDetailPageData(detailPageId),
   );
 
-  const navigateToHome = () => {
-    navigate('/');
-  };
-
-  console.log(data);
+  const navigateToHome = () => navigate('/');
 
   useEffect(() => {
     mutation.mutate({
@@ -68,7 +64,7 @@ function DetailPage() {
         placeName={data.placeName}
       />
     );
-  console.log(isEditorOpen);
+
   if (isEditorOpen)
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
 
@@ -101,7 +97,11 @@ function DetailPage() {
         openEditor={() => setIsEditorOpen(true)}
         openFullSlider={menuFullScreenHandler}
       />
-      <DetailReview mungpleId={data.mungpleId}/>
+      <DetailReview
+        mungpleId={data.mungpleId}
+        visited={data.certCount}
+        heart={data.recommendCount}
+      />
     </div>
   );
 }
