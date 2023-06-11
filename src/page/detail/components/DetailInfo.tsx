@@ -4,6 +4,7 @@ import RightArrow from '../../../common/icons/right-arrow-gray.svg';
 import UnderArrow from '../../../common/icons/under-arrow-gray.svg';
 import UpArrow from '../../../common/icons/up-arrow-gray.svg';
 import Dog from '../../../common/icons/dog.svg';
+import DetailDogAcceptable from './DetailDogAcceptable';
 
 interface Props {
   residentDog: string | null;
@@ -17,7 +18,7 @@ interface Props {
   enterDsc: string;
   editorNoteUrl: string | null;
   openEditor: () => void;
-  openFullSlider: (index:number) => void;
+  openFullSlider: (index: number) => void;
 }
 
 function DetailInfo({
@@ -32,9 +33,10 @@ function DetailInfo({
   parkingInfo,
   editorNoteUrl,
   openEditor,
-  openFullSlider
+  openFullSlider,
 }: Props) {
   const [isDogInfoOpen, setIsDogInfoOpen] = useState(false);
+  console.log(acceptSize);
 
   return (
     <div className="detail-info">
@@ -55,7 +57,12 @@ function DetailInfo({
               <div className="detail-info-dog-profile-name-name">{residentDog}</div>
             </div>
           </div>
-          <a href={`https://instagram.com/${instagram.slice(1)}`} className="detail-info-dog-instagram">{instagram}</a>
+          <a
+            href={`https://instagram.com/${instagram.slice(1)}`}
+            className="detail-info-dog-instagram"
+          >
+            {instagram}
+          </a>
         </div>
       )}
       <div className="detail-info-item">
@@ -65,42 +72,25 @@ function DetailInfo({
         <div className="detail-info-item-second">{representMenu}</div>
       </div>
       <div className="detail-info-image">
-        <img aria-hidden src={menuImages[0]} onClick={()=>openFullSlider(0)} alt="" />
-        <img aria-hidden src={menuImages[1]} onClick={()=>openFullSlider(1)} alt="" />
-        <img aria-hidden src={menuImages[2]} onClick={()=>openFullSlider(2)} alt="" />
+        <img aria-hidden src={menuImages[0]} onClick={() => openFullSlider(0)} alt="" />
+        <img aria-hidden src={menuImages[1]} onClick={() => openFullSlider(1)} alt="" />
+        <img aria-hidden src={menuImages[2]} onClick={() => openFullSlider(2)} alt="" />
       </div>
       <div className="detail-info-div" />
       <div className="detail-info-item">
         <div className="detail-info-item-first">강아지 동반 안내</div>
         <div
-          className="detail-info-item-second"
+          className="detail-info-item-second type"
           aria-hidden
           onClick={() => setIsDogInfoOpen(!isDogInfoOpen)}
         >
-          {!isDogInfoOpen ? (
-            <>
-              자세히 보기
-              <img src={UnderArrow} alt="under-arrow" />
-            </>
-          ) : (
-            <>
-              접기 <img src={UpArrow} alt="up-arrow" />
-            </>
-          )}
+          {!isDogInfoOpen ? '자세히 보기' : '접기'}
         </div>
       </div>
       <div className="detail-info-doglist">
-        <div className={classNames('detail-info-doglist-dog', { disable: false })}>
-          소형견
-        </div>
-        <div className="detail-info-doglist-dot" />
-        <div className={classNames('detail-info-doglist-dog', { disable: false })}>
-          중형견
-        </div>
-        <div className="detail-info-doglist-dot" />
-        <div className={classNames('detail-info-doglist-dog', { disable: true })}>
-          대형견
-        </div>
+        <DetailDogAcceptable type="소형견" allow={acceptSize.S} />
+        <DetailDogAcceptable type="중형견" allow={acceptSize.M} />
+        <DetailDogAcceptable type="대형견" allow={acceptSize.L} />
       </div>
       {isDogInfoOpen && <div className="detail-info-enterDesc">{enterDsc}</div>}
       <div className="detail-info-div" />
@@ -113,7 +103,12 @@ function DetailInfo({
         <div className="detail-info-item">
           <div className="detail-info-item-first">인스타그램</div>
           <div className="detail-info-item-second">
-            <a href={`https://instagram.com/${instagram.slice(1)}`} className="detail-info-dog-instagram">{instagram}</a>
+            <a
+              href={`https://instagram.com/${instagram.slice(1)}`}
+              className="detail-info-dog-instagram"
+            >
+              {instagram}
+            </a>
           </div>
         </div>
       )}

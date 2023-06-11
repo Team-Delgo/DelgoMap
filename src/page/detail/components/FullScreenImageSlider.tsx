@@ -19,6 +19,7 @@ function FullScreenImageSlider({ images, index, placeName, close }: Props) {
         {placeName}
         <img src={Exit} alt="exit" aria-hidden onClick={close} />
       </div>
+      <div className='detail-full-header-number'>{imageNumber + 1} / {images.length}</div>
       <div className="detail-full-image">
         <Swiper initialSlide={index} onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
           {images.map((image) => {

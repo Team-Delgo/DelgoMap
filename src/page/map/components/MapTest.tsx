@@ -307,7 +307,6 @@ function MapTest() {
   useEffect(() => {
     if ((linkId > 0 || idDefault.id > 0) && mapDataList && !isFirst.mungple) {
       const { mungpleList } = mapDataList;
-      console.log(idDefault);
       let index: number;
       if (linkId > 0)
         index = mungpleList.findIndex((mungple) => mungple.mungpleId === linkId);
@@ -386,7 +385,6 @@ function MapTest() {
     }
   };
 
-  console.log(isSelected, selectedId);
   return (
     <div className="map-wrapper">
       {isAlertOpen && (
