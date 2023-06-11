@@ -15,7 +15,8 @@ interface initialStateType {
   tool: string,
   file: string,
   address: string,
-  achievements:Array<AchievementType>
+  achievements:Array<AchievementType>,
+  isHideAddress:boolean
 }
 interface AchievementType {
   achievementsId: number;
@@ -54,6 +55,7 @@ const initialState: initialStateType = {
   file: '',
   address: '',
   achievements: [],
+  isHideAddress:false
 };
 
 const uploadSlice = createSlice({
@@ -154,6 +156,12 @@ const uploadSlice = createSlice({
         mongPlaceId: action.payload.mongPlaceId,
         title: action.payload.title,
         address:action.payload.address
+      };
+    },
+    setHideAddress(state,action) {
+      return {
+        ...state,
+        isHideAddress:action.payload.isHideAddress
       };
     }
   },
