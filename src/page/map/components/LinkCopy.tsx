@@ -8,7 +8,7 @@ import { analytics } from '../../../index';
 import './LinkCopy.scss';
 import { RootState } from '../../../redux/store';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
-import { CROP_PATH } from '../../../common/constants/path.const';
+import { CAMERA_PATH, CROP_PATH } from '../../../common/constants/path.const';
 
 
 function LinkCopy(props: { redirect: (signin: boolean) => void, setLoading: (loading: boolean) => void; isMungple: boolean }) {
@@ -21,16 +21,6 @@ function LinkCopy(props: { redirect: (signin: boolean) => void, setLoading: (loa
   const fileUploadRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const openFileGallery = () => {
-    if (isSignIn) {
-      if (fileUploadRef.current) {
-        fileUploadRef.current.click();
-      }
-    } else {
-      redirect(true);
-    }
-  };
 
   const sendScrap = async () => {
     setLoading(true);
@@ -45,23 +35,21 @@ function LinkCopy(props: { redirect: (signin: boolean) => void, setLoading: (loa
     console.log(selectedMungple);
   };
 
-  const setCertLocation = (event: { target: HTMLInputElement }) => {
-    if (event.target.files) {
-      const galleryImg = URL.createObjectURL(event.target.files[0]);
-      const galleryImgName = event.target.files[0].name;
-      dispatch(
-        uploadAction.setHomeCert({
-          prevImg: galleryImg,
-          prevImgName: galleryImgName,
-          latitude: selectedMungple.lat,
-          longitude: selectedMungple.lng,
-          mongPlaceId: selectedMungple.id,
-          title: selectedMungple.title,
-          address: selectedMungple.address
-        }),
-      );
-      navigate(CROP_PATH, { state: { prevPath: 'homeMap' } });
-    }
+  const setCertLocation = () => {
+    console.log('selectedMungple',selectedMungple)
+    
+    dispatch(
+      uploadAction.setHomeCert({
+        // prevImg: galleryImg,
+        // prevImgName: galleryImgName,
+        latitude: selectedMungple.lat,
+        longitude: selectedMungple.lng,
+        mongPlaceId: selectedMungple.id,
+        title: selectedMungple.title,
+        address: selectedMungple.address
+      }),
+    );
+    navigate(CAMERA_PATH.CERTIFICATION, { state: { prevPath: 'homeMap' } });
   };
 
   return (
@@ -71,16 +59,9 @@ function LinkCopy(props: { redirect: (signin: boolean) => void, setLoading: (loa
       onClick={buttonClickHandler}
     >
       <img src={Link} alt="link" />
-      <div className="link-text" aria-hidden="true" onClick={openFileGallery}>
+      <div className="link-text" aria-hidden="true" onClick={setCertLocation}>
         이곳에{` ${dogName}`} 발자국 남기기
       </div>
-      <input
-        type="file"
-        accept="image/jpeg,image/gif,image/png,image/jpg;capture=filesystem"
-        ref={fileUploadRef}
-        onChange={setCertLocation}
-        style={{ display: 'none' }}
-      />
     </div>
   );
 }

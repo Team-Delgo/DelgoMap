@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useState, useEffect, useCallback } from 'react';
 import { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
@@ -34,11 +37,16 @@ function CaptureCertificationRecord({
   const [certificationPostContent, onChangeCertificationPostContent] = useInput('');
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
   const [
-    certificateErrorToastIsOpen,
+    errorToastIsOpen,
     openCertificateErrorToast,
     closeCertificateErrorToast,
   ] = useActive(false);
-  const { latitude, longitude, mongPlaceId, title, file, address } = useSelector(
+  // const [
+  //   imgUploadToastIsOpen,
+  //   openImgUploadErrorToast,
+  //   closeImgUploadErrorToast,
+  // ] = useActive(false);
+  const { latitude, longitude, mongPlaceId, title, file, address,content,isHideAddress } = useSelector(
     (state: RootState) => state.persist.upload,
   );
   const { user } = useSelector((state: RootState) => state.persist.user);
@@ -47,14 +55,25 @@ function CaptureCertificationRecord({
   const formData = new FormData();
   const location = useLocation();
   const certCompleteEvent = useAnalyticsCustomLogEvent(analytics, 'cert_end');
+  // const [isHideAddress, hideAddress, showAddress] = useActive(false);
+
+
+  console.log('title',title)
+  console.log('address',address)
+  console.log('isHideAddress',isHideAddress)
 
   useEffect(() => {
-    if (certificateErrorToastIsOpen) {
+    if (errorToastIsOpen) {
       setTimeout(() => {
         closeCertificateErrorToast();
       }, 2000);
     }
-  }, [certificateErrorToastIsOpen]);
+    // if (imgUploadToastIsOpen) {
+    //   setTimeout(() => {
+    //     closeImgUploadErrorToast();
+    //   }, 2000);
+    // }
+  }, [errorToastIsOpen]);
 
   const registerMutation = useMutation(
     (formData: FormData) => registerGalleryCertificationPost(formData),
@@ -66,7 +85,6 @@ function CaptureCertificationRecord({
         const { code, data } = response.data;
         console.log('response',response)
         if (code === 200) {
-          console.log('file', file);
           dispatch(
             uploadAction.setContentRegistDtCertificationIdAddress({
               content: certificationPostContent,
@@ -97,13 +115,28 @@ function CaptureCertificationRecord({
     if (postCertificationIsLoading) {
       return;
     }
+    if(file===""){
+      setCertificateErrorToastMessage('이미지를 업로드해 주세요');
+      openCertificateErrorToast()
+      return;
+    }
+    if (address === '') {
+      setCertificateErrorToastMessage('장소를 입력해 주세요');
+      openCertificateErrorToast();
+      return;
+    }
+    if (content.length < 15) {
+      setCertificateErrorToastMessage('최소 15자 이상 입력해 주세요');
+      openCertificateErrorToast();
+      return;
+    }
 
     const data = {
       userId: user.id,
       categoryCode: 'CA9999',
       mungpleId: mongPlaceId,
       placeName: title,
-      description: certificationPostContent,
+      description: content,
       latitude,
       longitude,
     };
@@ -147,24 +180,69 @@ function CaptureCertificationRecord({
         >
           <body className="review-container">
             <div className="review-place-info">
-              <div className="review-place-info-title">{title}</div>
-              <div className="review-place-info-address">{address}</div>
+              <div className="review-place-info-title">
+                {address !== '' ? address : '기록 남길 주소'}
+              </div>
+              <input
+                className="review-place-info-search-input"
+                placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
+                onFocus={() => navigate(CAMERA_PATH.LOCATION)}
+                value={title !== '' ? title : undefined}
+              />
+              {/* <div className="review-place-info-address">{address}</div> */}
             </div>
+
+            <div className="review-place-address-hide">
+              <div style={{ display: 'flex' }}>
+                <input
+                  className="review-place-address-hide-button"
+                  type="checkbox"
+                  checked={isHideAddress}
+                  onClick={()=> dispatch(uploadAction.setHideAddress({
+                    isHideAddress:!isHideAddress
+                  }))}
+                />
+                <div
+                  className="review-place-address-hide-label"
+                  onClick={()=> dispatch(uploadAction.setHideAddress({
+                    isHideAddress:!isHideAddress
+                  }))}
+                >
+                  주소 나만보기
+                </div>
+              </div>
+              {isHideAddress && (
+                <div className="review-place-address-hide-box">
+                  다른 사용자에게는 장소이름만 보여요
+                </div>
+              )}
+            </div>
+
+            <div className="review-guidance-text">
+              이곳에 대해 남기고 싶은 기록이 있나요?
+            </div>
+
             <textarea
               className="review-content"
-              placeholder="남기고 싶은 기록을 작성해주세요"
-              onChange={onChangeCertificationPostContent}
+              placeholder="🐶강아지 친구들이 참고할 내용을 적어주면 좋아요"
+              onChange={(e) =>
+                dispatch(
+                  uploadAction.setContent({
+                    content: e.target.value,
+                  }),
+                )
+              }
               maxLength={199}
               onFocus={screenUp}
             >
-              {certificationPostContent}
+              {content}
             </textarea>
             <div className="review-content-length">
-              {certificationPostContent.length}/200
+              {content.length}/200
             </div>
           </body>
           <footer>
-            {certificationPostContent.length > 0 ? (
+            {content.length > 0 ? (
               <div
                 className="writting-button-active"
                 aria-hidden="true"
@@ -236,9 +314,12 @@ function CaptureCertificationRecord({
           </Sheet.Container>
         </Sheet>
       )}
-      {certificateErrorToastIsOpen && (
+      {errorToastIsOpen && (
         <ToastPurpleMessage message={certificateErrorToastMessage} />
       )}
+      {/* {imgUploadToastIsOpen && (
+        <ToastPurpleMessage message={certificateErrorToastMessage} />
+      )} */}
     </>
   );
 }

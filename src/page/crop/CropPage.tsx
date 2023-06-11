@@ -15,7 +15,6 @@ function CropPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log('location',location)
 
   const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -37,16 +36,16 @@ function CropPage() {
   };
 
   const moveToPrevPage = useCallback(() => {
-    navigate(ROOT_PATH);
+    navigate(-1);
   }, []);
 
   const moveToNextPage = useCallback(() => {
-    console.log('location.state.prevPath',location.state.prevPath)
-    if(location.state.prevPath==="homeMap"){
+    if (location?.state?.prevPath === 'homeMap') {
       navigate(CAMERA_PATH.CERTIFICATION);
-    }
-    else{
+    } else if (location?.state?.prevPath === '/camera/captureImg/location') {
       navigate(CAMERA_PATH.LOCATION);
+    } else {
+      navigate(CAMERA_PATH.CERTIFICATION);
     }
   }, []);
 
