@@ -6,6 +6,7 @@ import { getDetailPageReviews } from '../../../../common/api/detail';
 import { RootState } from '../../../../redux/store';
 import { postType } from '../../../../common/types/post';
 import CertificationPost from '../../../../components/CertificationPost';
+import DetailReviewHeader from './DetailReviewHeader';
 
 interface Props {
   mungpleId: number;
@@ -35,6 +36,7 @@ function DetailReview({ mungpleId }: Props) {
 
   return (
     <div className="detail-review">
+      <DetailReviewHeader />
       {data?.pages?.map((page) => (
         <>
           {page?.content?.map((post: postType) => (

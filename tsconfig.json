@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["kakao.maps.d.ts", "@types/navermaps"],
+    "types": ["kakao.maps.d.ts", "@types/navermaps", "jest"],
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

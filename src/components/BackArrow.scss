@@ -1,6 +1,7 @@
 .BackArrow {
   position: absolute;
   display: flex;
+  z-index: 10;
   top: 0px;
   left: 10px;
   width: 40px;
