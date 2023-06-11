@@ -39,6 +39,9 @@ function CaptureLocationRecord() {
     {
       cacheTime: CACHE_TIME,
       staleTime: STALE_TIME,
+      onSuccess(data) {
+        console.log('data',data)
+      },
       onError: (error: any) => {
         useErrorHandlers(dispatch, error);
       },
@@ -47,10 +50,11 @@ function CaptureLocationRecord() {
 
   const selectMongPlace = useCallback(
     (place: MungPlaceType) => (event: React.MouseEvent) => {
-      const { mungpleId, placeName, jibunAddress } = place;
+      console.log('place',place)
+      const { mungpleId, placeName, address } = place;
       setCheckedPlaceId(mungpleId);
       dispatch(
-        uploadAction.setMongPlace({ mungpleId, placeName, address: jibunAddress }),
+        uploadAction.setMongPlace({ mungpleId, placeName, address }),
       );
       setTimeout(() => {
         navigate(CAMERA_PATH.CERTIFICATION);
@@ -72,7 +76,7 @@ function CaptureLocationRecord() {
   };
 
   const screenUp = () => {
-    window.webkit.messageHandlers.NAME.postMessage('screenUp');
+    // window.webkit?.messageHandlers?.NAME.postMessage('screenUp');
   };
 
   const manualPlace = () => {
@@ -148,7 +152,7 @@ function CaptureLocationRecord() {
                           : 'review-place-wrapper-address'
                       }
                     >
-                      {place.roadAddress}
+                      {place.address}
                     </div>
                   </div>
                   {checkedPlaceId === place.mungpleId ? (
@@ -218,7 +222,7 @@ function CaptureLocationRecord() {
                                 : 'review-place-wrapper-address'
                             }
                           >
-                            {place.roadAddress}
+                            {place.address}
                           </div>
                         </div>
                         {checkedPlaceId === place.mungpleId ? (

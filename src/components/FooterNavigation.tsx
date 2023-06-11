@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
-import { CROP_PATH, RECORD_PATH, SIGN_IN_PATH, POSTS_PATH } from '../common/constants/path.const';
+import { CROP_PATH, RECORD_PATH, SIGN_IN_PATH, POSTS_PATH, CAMERA_PATH } from '../common/constants/path.const';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import DogFoot from '../common/icons/dogfoot.svg';
 import Home from "../common/icons/home.svg";
@@ -64,8 +64,10 @@ function FooterNavigation(props: { setCenter: () => void }) {
   const certButtonHandler = () => {
     clickEvent.mutate();
     if (userId) {
-      setCenter();
-      openFileGallery();
+      // setCenter();
+      // openFileGallery();
+      dispatch(uploadAction.initAchievements());
+      navigate(CAMERA_PATH.LOCATION)
     } else setIsAlertOpen(true);
   };
 
@@ -95,13 +97,6 @@ function FooterNavigation(props: { setCenter: () => void }) {
       <div className="navigation-button" aria-hidden="true" onClick={recordButtonHandler}>
         <img src={DogFoot} alt="foot" />내 기록
       </div>
-      <input
-        type="file"
-        accept="image/jpeg,image/gif,image/png,image/jpg;capture=filesystem"
-        ref={fileUploadRef}
-        onChange={setPevImg}
-        style={{ display: 'none' }}
-      />
     </div>
   );
 }

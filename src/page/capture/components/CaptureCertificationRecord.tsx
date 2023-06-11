@@ -38,6 +38,11 @@ function CaptureCertificationRecord({
     openCertificateErrorToast,
     closeCertificateErrorToast,
   ] = useActive(false);
+  const [
+    imgUploadToastIsOpen,
+    openImgUploadErrorToast,
+    closeImgUploadErrorToast,
+  ] = useActive(false);
   const { latitude, longitude, mongPlaceId, title, file, address } = useSelector(
     (state: RootState) => state.persist.upload,
   );
@@ -48,13 +53,22 @@ function CaptureCertificationRecord({
   const location = useLocation();
   const certCompleteEvent = useAnalyticsCustomLogEvent(analytics, 'cert_end');
 
+
+  console.log('title',title)
+  console.log('address',address)
+
   useEffect(() => {
     if (certificateErrorToastIsOpen) {
       setTimeout(() => {
         closeCertificateErrorToast();
       }, 2000);
     }
-  }, [certificateErrorToastIsOpen]);
+    if (imgUploadToastIsOpen) {
+      setTimeout(() => {
+        closeImgUploadErrorToast();
+      }, 2000);
+    }
+  }, [certificateErrorToastIsOpen,imgUploadToastIsOpen]);
 
   const registerMutation = useMutation(
     (formData: FormData) => registerGalleryCertificationPost(formData),
@@ -66,7 +80,6 @@ function CaptureCertificationRecord({
         const { code, data } = response.data;
         console.log('response',response)
         if (code === 200) {
-          console.log('file', file);
           dispatch(
             uploadAction.setContentRegistDtCertificationIdAddress({
               content: certificationPostContent,
@@ -96,6 +109,10 @@ function CaptureCertificationRecord({
   const uploadGalleryImgCertification = async () => {
     if (postCertificationIsLoading) {
       return;
+    }
+    if(file===""){
+      setCertificateErrorToastMessage('이미지를 업로드 해주세요');
+      openImgUploadErrorToast()
     }
 
     const data = {
@@ -237,6 +254,9 @@ function CaptureCertificationRecord({
         </Sheet>
       )}
       {certificateErrorToastIsOpen && (
+        <ToastPurpleMessage message={certificateErrorToastMessage} />
+      )}
+      {imgUploadToastIsOpen && (
         <ToastPurpleMessage message={certificateErrorToastMessage} />
       )}
     </>
