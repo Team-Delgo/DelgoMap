@@ -9,6 +9,7 @@ import { Cert, certDefault, Mungple } from './maptype';
 import FooterNavigation from '../../../components/FooterNavigation';
 import { mapAction } from '../../../redux/slice/mapSlice';
 import Logo from '../../../common/icons/logo.svg';
+import Categroy from './Category';
 import PlaceCard from './PlaceCard';
 import TempMarkerImageLoader, {
   clearSelectedId,
@@ -31,6 +32,7 @@ import Marker from '../../../common/icons/cert-map-marker.svg';
 
 interface MakerItem {
   id: number;
+  category: string;
   marker: kakao.maps.Marker;
 }
 
@@ -53,6 +55,7 @@ function MapTest() {
   const [currentMarker, setCurrentMarker] = useState<kakao.maps.Marker>();
   const [address, setAddress] = useState('');
   const [isSelected, setIsSelected] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [pointerLocation, setPointerLocation] = useState({ lat: 0, lng: 0 });
   const [normalCertMarkerList, setNormalCertMarkerList] = useState<
     kakao.maps.CustomOverlay[]
@@ -75,8 +78,6 @@ function MapTest() {
   const { data: mapDataList, isFetched } = useQuery(['getMapData', userId], () =>
     getMapData(userId),
   );
-
-  console.log(mapDataList);
 
   useEffect(() => {
     // 지도에 temp 마커 찍기
@@ -169,7 +170,9 @@ function MapTest() {
 
   const showMungpleList = () => {
     markerList.forEach((marker) => {
-      marker.marker.setVisible(true);
+      if (selectedCategory === '' || marker.category === selectedCategory)
+        marker.marker.setVisible(true);
+      else marker.marker.setVisible(false);
     });
   };
 
@@ -245,7 +248,15 @@ function MapTest() {
           );
           setOtherMungpleCertMarkerList(otherMungpleMarkers);
         }
-        if (globarMap && markerList.length === 0) {
+
+        if (globarMap) {
+          deleteMungpleList();
+          // if (selectedCategory !== '') {
+          //   filteredMungpleList = mapDataList.mungpleList.filter(
+          //     (m) => m.categoryCode === selectedCategory,
+          //   );
+          // }
+          // console.log(filteredMungpleList);
           const markers = mapDataList.mungpleList.map((m) => {
             const position = new kakao.maps.LatLng(
               parseFloat(m.latitude),
@@ -268,7 +279,7 @@ function MapTest() {
               marker.setImage(image);
               marker.setZIndex(20);
             });
-            return { marker, id: m.mungpleId };
+            return { marker, id: m.mungpleId, category: m.categoryCode };
           });
           setMarkerList(markers);
           setIsFirst((prev) => {
@@ -293,6 +304,21 @@ function MapTest() {
       }
     }
   }, [globarMap, mapDataList, isCertVisible]);
+
+  useEffect(() => {
+    if (globarMap && mapDataList) {
+      showMungpleList();
+    }
+  }, [selectedCategory]);
+  // useEffect(()=>{
+  //   if(markerList && !isCertVisible){
+  //     markerList.forEach((marker) => {
+  //       marker.category()
+  //       marker.marker.setVisible(true);
+
+  //     });
+  //   }
+  // },[isCertVisible, markerList, selectedCategory])
 
   useEffect(() => {
     dispatch(mapAction.setSelectedId(selectedId));
@@ -387,6 +413,10 @@ function MapTest() {
       dispatch(mapAction.setCertToggle(!isCertVisible));
     }
   };
+  const categoryHandler = (selectedValue: string) => {
+    console.log('Selected value:', selectedValue);
+    setSelectedCategory(selectedValue);
+  };
 
   return (
     <div className="map-wrapper">
@@ -415,6 +445,7 @@ function MapTest() {
         onClick={navigateMyPage}
       />
       <div className="slogun">강아지 델고 동네생활</div>
+      <Categroy onClick={categoryHandler} />
       <div className="map" ref={mapElement} />
       {searchIsOpen && (
         <SearchBar

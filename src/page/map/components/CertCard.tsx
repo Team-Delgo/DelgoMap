@@ -20,12 +20,13 @@ function CertCard(props: {
   categoryCode: string;
   registDt: string;
   cert: Cert;
-  setCenter: ()=>void;
+  setCenter: () => void;
 }) {
-  const { img, title, description, registDt, categoryCode,cert, setCenter } = props;
-  const userId = useSelector((state:RootState) => state.persist.user.user.id);
+  const { img, title, description, registDt, categoryCode, cert, setCenter } = props;
+  const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
-  const descriptionText = description.length > 50 ? `${description.substring(0, 50)}...` : description;
+  const descriptionText =
+    description.length > 50 ? `${description.substring(0, 50)}...` : description;
   let icon;
   if (categoryCode === 'CA0001') {
     icon = <img src={WalkSmall} alt="walk" />;
@@ -37,7 +38,7 @@ function CertCard(props: {
     icon = <img src={BathSmall} alt="bath" />;
   } else if (categoryCode === 'CA0005') {
     icon = <img src={BeautySmall} alt="beauty" />;
-  } else if (categoryCode === 'CA0006'){
+  } else if (categoryCode === 'CA0006') {
     icon = <img src={HospitalSmall} alt="hospital" />;
   } else {
     icon = <img src={EtcSmall} alt="etc" />;
