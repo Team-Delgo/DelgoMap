@@ -14,6 +14,13 @@
     color: #000000;
     margin: 30px 0 9px 0;
   }
+  .review-place-info-title-wrapper{
+    display: flex;
+    align-items: center;
+    img{
+      margin-right: 9px;
+    }
+  }
 
 
   .review-place-title {
@@ -60,6 +67,7 @@
         justify-content: space-between;
           align-items: center;
           margin-top: 20px;
+          position: relative;
         
           &-button {
             width: 19px;
@@ -106,7 +114,20 @@
             font-size: 12px;
             line-height: 150%;
             color: #FFFFFF;
+
+            &-arrow {
+                position: absolute;
+                top:5px;
+                left: -15px;
+                width: 0;
+                height: 0;
+                border-left: 6px solid transparent;
+                border-right: 12px solid #7A5CCF;
+                border-top: 6px solid transparent;
+                border-bottom: 6px solid transparent;
+              }
           }
+
         }
         }
   .review-content {
@@ -121,6 +142,7 @@
     border-radius: 5px;
     border: none;
     resize: none;
+    word-spacing: -3px;
     &::placeholder {
       color: #8a8a8a;
     }

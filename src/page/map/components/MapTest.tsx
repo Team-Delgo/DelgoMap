@@ -79,8 +79,6 @@ function MapTest() {
     getMapData(userId),
   );
 
-  // console.log(mapDataList);
-  // console.log(selectedCategory);
   useEffect(() => {
     // 지도에 temp 마커 찍기
     const options = {
@@ -147,6 +145,7 @@ function MapTest() {
 
           const result = response.v2;
           setAddress(result.address.jibunAddress);
+          dispatch(mapAction.setSelectedIdAddress(result.address.jibunAddress));
         },
       );
     }
@@ -337,7 +336,6 @@ function MapTest() {
   useEffect(() => {
     if ((linkId > 0 || idDefault.id > 0) && mapDataList && !isFirst.mungple) {
       const { mungpleList } = mapDataList;
-      console.log(idDefault);
       let index: number;
       if (linkId > 0)
         index = mungpleList.findIndex((mungple) => mungple.mungpleId === linkId);
@@ -420,7 +418,6 @@ function MapTest() {
     setSelectedCategory(selectedValue);
   };
 
-  console.log(isSelected, selectedId);
   return (
     <div className="map-wrapper">
       {isAlertOpen && (
@@ -480,10 +477,11 @@ function MapTest() {
           setCenter={setCurrentMapPosition}
         />
       )}
-      {selectedId.title.length === 0 && selectedCert.userId === 0 && (
+      
+      {!isSelected && selectedId.title.length === 0 && selectedCert.userId === 0 && (
         <FooterNavigation setCenter={setCurrentMapPosition} />
       )}
-      {!(selectedId.title.length > 0 || selectedCert.userId > 0) && (
+      {!isSelected && !(selectedId.title.length > 0 || selectedCert.userId > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
       {selectedId.title.length > 0 && (
