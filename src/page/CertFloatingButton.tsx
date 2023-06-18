@@ -1,9 +1,9 @@
 import { useAnalyticsCustomLogEvent } from "@react-query-firebase/analytics";
-import React, {useRef} from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { analytics } from "..";
-import { CROP_PATH } from "../common/constants/path.const";
+import { CAMERA_PATH } from "../common/constants/path.const";
 import Plus from "../common/icons/plus.svg";
 import { uploadAction } from "../redux/slice/uploadSlice";
 import "./CertFloatingButton.scss";
@@ -11,40 +11,18 @@ import "./CertFloatingButton.scss";
 function CertFloatingButton() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const fileUploadRef = useRef<HTMLInputElement>(null);
   const clickEvent = useAnalyticsCustomLogEvent(analytics, "cert-floating-click");
 
-  const openFileGallery = () => {
-    if (fileUploadRef.current) {
-      fileUploadRef.current.click();
-    }
-  };
-
-  const setPevImg = (event: { target: HTMLInputElement }) => {
-    if (event.target.files) {
-      const galleryImg = URL.createObjectURL(event.target.files[0]);
-      const galleryImgName = event.target.files[0].name;
-      dispatch(uploadAction.setPrevImg({ prevImg: galleryImg, prevImgName: galleryImgName }));
-      navigate(CROP_PATH, { state: { prevPath: location.pathname } });
-    }
-  };
 
   const certButtonHandler = () => {
     clickEvent.mutate();
-      openFileGallery();;
+    dispatch(uploadAction.initAchievements());
+    navigate(CAMERA_PATH.CERTIFICATION)
   };
 
   return (
     <div className="cert-floating-button" aria-hidden onClick={certButtonHandler}>
       <img src={Plus} alt="floating-button" />
-      <input
-        type="file"
-        accept="image/jpeg,image/gif,image/png,image/jpg;capture=filesystem"
-        ref={fileUploadRef}
-        onChange={setPevImg}
-        style={{ display: 'none' }}
-      />
     </div>
   );
 }

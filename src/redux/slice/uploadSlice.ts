@@ -166,6 +166,12 @@ const uploadSlice = createSlice({
         ...state,
         isHideAddress:action.payload.isHideAddress
       };
+    },
+    setTitle(state,action) {
+      return {
+        ...state,
+        title: action.payload.title,
+      };
     }
   },
 });

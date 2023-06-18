@@ -36,8 +36,10 @@ function LinkCopy(props: { redirect: (signin: boolean) => void, setLoading: (loa
   };
 
   const setCertLocation = () => {
-    console.log('selectedMungple',selectedMungple)
-    
+    console.log('selectedMungple', selectedMungple);
+
+    const isMungple = selectedMungple?.title !== '';
+
     dispatch(
       uploadAction.setHomeCert({
         // prevImg: galleryImg,
@@ -47,10 +49,12 @@ function LinkCopy(props: { redirect: (signin: boolean) => void, setLoading: (loa
         mongPlaceId: selectedMungple.id,
         title: selectedMungple.title,
         address: selectedMungple.address,
-        categoryCode:selectedMungple.categoryCode
+        categoryCode: selectedMungple.categoryCode,
       }),
     );
-    navigate(CAMERA_PATH.CERTIFICATION, { state: { prevPath: 'homeMap' } });
+    navigate(CAMERA_PATH.CERTIFICATION, {
+      state: { prevPath: isMungple ? 'homeMungple' : 'homeMap' },
+    });
   };
 
   return (

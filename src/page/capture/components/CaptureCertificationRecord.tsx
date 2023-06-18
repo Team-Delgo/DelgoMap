@@ -66,10 +66,10 @@ function CaptureCertificationRecord({
   const formData = new FormData();
   const location = useLocation();
   const certCompleteEvent = useAnalyticsCustomLogEvent(analytics, 'cert_end');
-  // const [isHideAddress, hideAddress, showAddress] = useActive(false);
+  const prevPath = location?.state?.prevPath
   let icon = FootPrintSmall;
 
-  console.log('categoryCode', categoryCode);
+
 
   if (categoryCode === 'CA0001') icon = WalkSmall;
   else if (categoryCode === 'CA0002') icon = CafeSmall;
@@ -79,12 +79,14 @@ function CaptureCertificationRecord({
   else if (categoryCode === 'CA0006') icon = HospitalSmall;
   else if (categoryCode === 'CA0007') icon = KinderSmall;
 
+  console.log('prevPath',prevPath)
 
 
 
-  console.log('title',title)
-  console.log('address',address)
-  console.log('isHideAddress',isHideAddress)
+
+  // console.log('title',title)
+  // console.log('address',address)
+  // console.log('isHideAddress',isHideAddress)
 
   useEffect(() => {
     if (errorToastIsOpen) {
@@ -109,15 +111,15 @@ function CaptureCertificationRecord({
         const { code, data } = response.data;
         console.log('response',response)
         if (code === 200) {
-          dispatch(
-            uploadAction.setContentRegistDtCertificationIdAddress({
-              content: certificationPostContent,
-              registDt: data.registDt,
-              certificationId: data.certificationId,
-              address: data.address,
-              achievements: [],
-            }),
-          );
+          // dispatch(
+          //   uploadAction.setContentRegistDtCertificationIdAddress({
+          //     // content: certificationPostContent,
+          //     registDt: data.registDt,
+          //     certificationId: data.certificationId,
+          //     address: data.address,
+          //     achievements: [],
+          //   }),
+          // );
           moveToCaptureResultPage();
         } else if (code === 314) {
           offPostCertificationLoading();
@@ -190,7 +192,6 @@ function CaptureCertificationRecord({
     window.webkit.messageHandlers.NAME.postMessage('screenUp');
   },[])
 
-  console.log('address',address)
 
   return (
     <>
@@ -213,7 +214,17 @@ function CaptureCertificationRecord({
               <input
                 className="review-place-info-search-input"
                 placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
-                onFocus={() => navigate(CAMERA_PATH.LOCATION)}
+                onChange={
+                  prevPath === 'homeMap'
+                    ? (e) => dispatch(uploadAction.setTitle({ title: e.target.value }))
+                    : undefined
+                }
+                onFocus={
+                  prevPath === undefined
+                    ? () => navigate(CAMERA_PATH.LOCATION)
+                    : undefined
+                }
+                disabled={prevPath === 'homeMungple' && true}
                 value={title !== '' ? title : undefined}
               />
               {/* <div className="review-place-info-address">{address}</div> */}
@@ -248,7 +259,7 @@ function CaptureCertificationRecord({
                 </div>
               </div>
               {isHideAddress && (
-                <div style={{position:'relative'}}>
+                <div style={{ position: 'relative' }}>
                   <div className="review-place-address-hide-box">
                     다른 사용자에게는 장소이름만 보여요
                   </div>
@@ -325,7 +336,18 @@ function CaptureCertificationRecord({
                     <input
                       className="review-place-info-search-input"
                       placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
-                      onFocus={() => navigate(CAMERA_PATH.LOCATION)}
+                      onChange={
+                        prevPath === 'homeMap'
+                          ? (e) =>
+                              dispatch(uploadAction.setTitle({ title: e.target.value }))
+                          : undefined
+                      }
+                      onFocus={
+                        prevPath === undefined
+                          ? () => navigate(CAMERA_PATH.LOCATION)
+                          : undefined
+                      }
+                      disabled={prevPath === 'homeMungple' && true}
                       value={title !== '' ? title : undefined}
                     />
                     {/* <div className="review-place-info-address">{address}</div> */}
@@ -359,8 +381,11 @@ function CaptureCertificationRecord({
                       </div>
                     </div>
                     {isHideAddress && (
-                      <div className="review-place-address-hide-box">
-                        다른 사용자에게는 장소이름만 보여요
+                      <div style={{ position: 'relative' }}>
+                        <div className="review-place-address-hide-box">
+                          다른 사용자에게는 장소이름만 보여요
+                        </div>
+                        <div className="review-place-address-hide-box-arrow" />
                       </div>
                     )}
                   </div>
