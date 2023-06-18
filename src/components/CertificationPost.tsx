@@ -323,6 +323,8 @@ function CertificationPost({
           <img
             className="post-img-result-main-footer-heart"
             src={isLike ? FillHeart : Heart}
+            width={20}
+            height={20}
             alt="heart"
             aria-hidden="true"
             onClick={handleCertificationLike}
