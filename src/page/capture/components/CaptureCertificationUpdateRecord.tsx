@@ -207,9 +207,12 @@ function CaptureCategoryUpdateRecord() {
                 </div>
               </div>
               {isHideAddress && (
+                <div style={{ position: 'relative' }}>
                 <div className="review-place-address-hide-box">
                   다른 사용자에게는 장소이름만 보여요
                 </div>
+                <div className="review-place-address-hide-box-arrow" />
+              </div>
               )}
             </div>
 
@@ -315,9 +318,12 @@ function CaptureCategoryUpdateRecord() {
                 </div>
               </div>
               {isHideAddress && (
+                <div style={{ position: 'relative' }}>
                 <div className="review-place-address-hide-box">
                   다른 사용자에게는 장소이름만 보여요
                 </div>
+                <div className="review-place-address-hide-box-arrow" />
+              </div>
               )}
             </div>
 
