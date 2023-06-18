@@ -67,7 +67,7 @@ function DetailPage() {
 
   if (isEditorOpen)
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
-
+  console.log(data.enterDesc);
   return (
     <div className="detail">
       <BackArrowComponent onClickHandler={navigateToHome} white />

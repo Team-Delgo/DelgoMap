@@ -78,7 +78,8 @@ function MapTest() {
 
   console.log(mapDataList);
 
-  useEffect(() => { // 지도에 temp 마커 찍기
+  useEffect(() => {
+    // 지도에 temp 마커 찍기
     const options = {
       center: new kakao.maps.LatLng(initMapCenter.lat, initMapCenter.lng),
       level: initMapCenter.zoom,
@@ -87,15 +88,16 @@ function MapTest() {
     const map = new kakao.maps.Map(mapElement.current, options);
     setGlobarMap(map);
     kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) => {
-
-      setIsSelected(prevIsSelected => {
-        if (prevIsSelected) { // 이미 찍힌 곳이 있다면 clear
+      setIsSelected((prevIsSelected) => {
+        if (prevIsSelected) {
+          // 이미 찍힌 곳이 있다면 clear
           setPointerLocation(() => {
             return { lat: 0, lng: 0 };
           });
           clearId();
           setSelectedCert(certDefault);
-        } else { // 현재 찍힌 곳의 위도 경도를 pointerLocation에 저장
+        } else {
+          // 현재 찍힌 곳의 위도 경도를 pointerLocation에 저장
           setPointerLocation(() => {
             return { lat: e.latLng.getLat(), lng: e.latLng.getLng() };
           });
@@ -121,12 +123,12 @@ function MapTest() {
     const position = new kakao.maps.LatLng(pointerLocation.lat, pointerLocation.lng);
     const imageSize = new kakao.maps.Size(40, 40);
     const imageOptions = {
-      offset: new kakao.maps.Point(20, 40)
-    }
+      offset: new kakao.maps.Point(20, 40),
+    };
     const image = new kakao.maps.MarkerImage(Marker, imageSize, imageOptions);
     const marker = new kakao.maps.Marker({
       position,
-      image
+      image,
     });
     if (globarMap) marker.setMap(globarMap);
     setCurrentMarker(marker);
@@ -142,21 +144,22 @@ function MapTest() {
 
           const result = response.v2;
           setAddress(result.address.jibunAddress);
+          dispatch(mapAction.setSelectedIdAddress(result.address.jibunAddress));
         },
       );
     }
     dispatch(mapAction.setMapCustomPosition(pointerLocation));
   }, [pointerLocation]);
 
-  useEffect(()=>{
-    if(selectedCert.userId !== 0){
+  useEffect(() => {
+    if (selectedCert.userId !== 0) {
       setPointerLocation(() => {
         return { lat: 0, lng: 0 };
       });
       setIsSelected(false);
       clearId();
     }
-  },[selectedCert]);
+  }, [selectedCert]);
 
   const deleteMungpleList = () => {
     markerList.forEach((marker) => {
@@ -449,8 +452,16 @@ function MapTest() {
       {!(selectedId.title.length > 0 || selectedCert.userId > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
-      {selectedId.title.length > 0 && <LinkCopy isMungple setLoading={setCopyLoading} redirect={setIsAlertOpen} />}
-      {(isSelected && selectedId.title.length === 0) && <LinkCopy isMungple={false} setLoading={setCopyLoading} redirect={setIsAlertOpen} />}
+      {selectedId.title.length > 0 && (
+        <LinkCopy isMungple setLoading={setCopyLoading} redirect={setIsAlertOpen} />
+      )}
+      {isSelected && selectedId.title.length === 0 && (
+        <LinkCopy
+          isMungple={false}
+          setLoading={setCopyLoading}
+          redirect={setIsAlertOpen}
+        />
+      )}
       {copyLoading && <BallLoading />}
       <TempMarkerImageLoader />
     </div>

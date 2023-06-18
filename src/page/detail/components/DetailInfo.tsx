@@ -96,7 +96,7 @@ function DetailInfo({
       <div className="detail-info-div" />
       <div className="detail-info-item">
         <div className="detail-info-item-first">주차공간</div>
-        <div className="detail-info-item-second">있음</div>
+        <div className="detail-info-item-second type">있음</div>
       </div>
       {!residentDog && <div className="detail-info-div" />}
       {!residentDog && (
