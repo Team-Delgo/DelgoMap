@@ -59,6 +59,8 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
     navigate(-1);
   };
 
+  // height: window.screen.height - window.screen.width + 10,
+
   return (
     <>
       <div ref={eventTargetRef}>
@@ -67,8 +69,8 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
             className="capture-certification-void-img"
             style={{
               width: window.innerWidth,
-              height: window.innerWidth,
-            }}
+              height: window.innerWidth-10,
+            }}  
           >
             <div className="capture-certification-img-addition-btn" onClick={openFileGallery} aria-hidden>
               <img src={Camera} alt="camera-icon" />
