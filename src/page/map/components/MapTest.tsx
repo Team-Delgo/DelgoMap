@@ -446,10 +446,11 @@ function MapTest() {
           setCenter={setCurrentMapPosition}
         />
       )}
-      {selectedId.title.length === 0 && selectedCert.userId === 0 && (
+      
+      {!isSelected && selectedId.title.length === 0 && selectedCert.userId === 0 && (
         <FooterNavigation setCenter={setCurrentMapPosition} />
       )}
-      {!(selectedId.title.length > 0 || selectedCert.userId > 0) && (
+      {!isSelected && !(selectedId.title.length > 0 || selectedCert.userId > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
       {selectedId.title.length > 0 && (
