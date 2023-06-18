@@ -9,6 +9,7 @@ import { Cert, certDefault, Mungple } from './maptype';
 import FooterNavigation from '../../../components/FooterNavigation';
 import { mapAction } from '../../../redux/slice/mapSlice';
 import Logo from '../../../common/icons/logo.svg';
+import Categroy from './Category';
 import PlaceCard from './PlaceCard';
 import TempMarkerImageLoader, {
   clearSelectedId,
@@ -31,6 +32,7 @@ import Marker from '../../../common/icons/cert-map-marker.svg';
 
 interface MakerItem {
   id: number;
+  category: string;
   marker: kakao.maps.Marker;
 }
 
@@ -53,6 +55,7 @@ function MapTest() {
   const [currentMarker, setCurrentMarker] = useState<kakao.maps.Marker>();
   const [address, setAddress] = useState('');
   const [isSelected, setIsSelected] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [pointerLocation, setPointerLocation] = useState({ lat: 0, lng: 0 });
   const [normalCertMarkerList, setNormalCertMarkerList] = useState<
     kakao.maps.CustomOverlay[]
@@ -76,9 +79,10 @@ function MapTest() {
     getMapData(userId),
   );
 
-  console.log(mapDataList);
-
-  useEffect(() => { // 지도에 temp 마커 찍기
+  // console.log(mapDataList);
+  // console.log(selectedCategory);
+  useEffect(() => {
+    // 지도에 temp 마커 찍기
     const options = {
       center: new kakao.maps.LatLng(initMapCenter.lat, initMapCenter.lng),
       level: initMapCenter.zoom,
@@ -87,15 +91,16 @@ function MapTest() {
     const map = new kakao.maps.Map(mapElement.current, options);
     setGlobarMap(map);
     kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) => {
-
-      setIsSelected(prevIsSelected => {
-        if (prevIsSelected) { // 이미 찍힌 곳이 있다면 clear
+      setIsSelected((prevIsSelected) => {
+        if (prevIsSelected) {
+          // 이미 찍힌 곳이 있다면 clear
           setPointerLocation(() => {
             return { lat: 0, lng: 0 };
           });
           clearId();
           setSelectedCert(certDefault);
-        } else { // 현재 찍힌 곳의 위도 경도를 pointerLocation에 저장
+        } else {
+          // 현재 찍힌 곳의 위도 경도를 pointerLocation에 저장
           setPointerLocation(() => {
             return { lat: e.latLng.getLat(), lng: e.latLng.getLng() };
           });
@@ -121,12 +126,12 @@ function MapTest() {
     const position = new kakao.maps.LatLng(pointerLocation.lat, pointerLocation.lng);
     const imageSize = new kakao.maps.Size(40, 40);
     const imageOptions = {
-      offset: new kakao.maps.Point(20, 40)
-    }
+      offset: new kakao.maps.Point(20, 40),
+    };
     const image = new kakao.maps.MarkerImage(Marker, imageSize, imageOptions);
     const marker = new kakao.maps.Marker({
       position,
-      image
+      image,
     });
     if (globarMap) marker.setMap(globarMap);
     setCurrentMarker(marker);
@@ -148,15 +153,15 @@ function MapTest() {
     dispatch(mapAction.setMapCustomPosition(pointerLocation));
   }, [pointerLocation]);
 
-  useEffect(()=>{
-    if(selectedCert.userId !== 0){
+  useEffect(() => {
+    if (selectedCert.userId !== 0) {
       setPointerLocation(() => {
         return { lat: 0, lng: 0 };
       });
       setIsSelected(false);
       clearId();
     }
-  },[selectedCert]);
+  }, [selectedCert]);
 
   const deleteMungpleList = () => {
     markerList.forEach((marker) => {
@@ -166,7 +171,9 @@ function MapTest() {
 
   const showMungpleList = () => {
     markerList.forEach((marker) => {
-      marker.marker.setVisible(true);
+      if (selectedCategory === '' || marker.category === selectedCategory)
+        marker.marker.setVisible(true);
+      else marker.marker.setVisible(false);
     });
   };
 
@@ -242,7 +249,15 @@ function MapTest() {
           );
           setOtherMungpleCertMarkerList(otherMungpleMarkers);
         }
-        if (globarMap && markerList.length === 0) {
+
+        if (globarMap) {
+          deleteMungpleList();
+          // if (selectedCategory !== '') {
+          //   filteredMungpleList = mapDataList.mungpleList.filter(
+          //     (m) => m.categoryCode === selectedCategory,
+          //   );
+          // }
+          // console.log(filteredMungpleList);
           const markers = mapDataList.mungpleList.map((m) => {
             const position = new kakao.maps.LatLng(
               parseFloat(m.latitude),
@@ -265,7 +280,7 @@ function MapTest() {
               marker.setImage(image);
               marker.setZIndex(20);
             });
-            return { marker, id: m.mungpleId };
+            return { marker, id: m.mungpleId, category: m.categoryCode };
           });
           setMarkerList(markers);
           setIsFirst((prev) => {
@@ -290,6 +305,21 @@ function MapTest() {
       }
     }
   }, [globarMap, mapDataList, isCertVisible]);
+
+  useEffect(() => {
+    if (globarMap && mapDataList) {
+      showMungpleList();
+    }
+  }, [selectedCategory]);
+  // useEffect(()=>{
+  //   if(markerList && !isCertVisible){
+  //     markerList.forEach((marker) => {
+  //       marker.category()
+  //       marker.marker.setVisible(true);
+
+  //     });
+  //   }
+  // },[isCertVisible, markerList, selectedCategory])
 
   useEffect(() => {
     dispatch(mapAction.setSelectedId(selectedId));
@@ -385,6 +415,10 @@ function MapTest() {
       dispatch(mapAction.setCertToggle(!isCertVisible));
     }
   };
+  const categoryHandler = (selectedValue: string) => {
+    console.log('Selected value:', selectedValue);
+    setSelectedCategory(selectedValue);
+  };
 
   console.log(isSelected, selectedId);
   return (
@@ -414,6 +448,7 @@ function MapTest() {
         onClick={navigateMyPage}
       />
       <div className="slogun">강아지 델고 동네생활</div>
+      <Categroy onClick={categoryHandler} />
       <div className="map" ref={mapElement} />
       {searchIsOpen && (
         <SearchBar
@@ -451,8 +486,16 @@ function MapTest() {
       {!(selectedId.title.length > 0 || selectedCert.userId > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
-      {selectedId.title.length > 0 && <LinkCopy isMungple setLoading={setCopyLoading} redirect={setIsAlertOpen} />}
-      {(isSelected && selectedId.title.length === 0) && <LinkCopy isMungple={false} setLoading={setCopyLoading} redirect={setIsAlertOpen} />}
+      {selectedId.title.length > 0 && (
+        <LinkCopy isMungple setLoading={setCopyLoading} redirect={setIsAlertOpen} />
+      )}
+      {isSelected && selectedId.title.length === 0 && (
+        <LinkCopy
+          isMungple={false}
+          setLoading={setCopyLoading}
+          redirect={setIsAlertOpen}
+        />
+      )}
       {copyLoading && <BallLoading />}
       <TempMarkerImageLoader />
     </div>
