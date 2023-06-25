@@ -24,7 +24,7 @@ import CaptureCertificationPage from './page/capture/CaptureCertificationPage';
 import CaptureCertificationResultPage from './page/capture/CaptureCertificationResultPage';
 import CaptureCertificationUpatePage from './page/capture/CaptureCertificationUpatePage';
 import CaptureLocationPage from './page/capture/CaptureLocationPage';
-import DetailPage from './page/detail/DetailPage';
+import DetailPage from './page/detail/CafeDetailPage';
 // import MapPage from "./page/map/MapPage";
 import ChangePassword from './page/myaccount/ChangePassword';
 import ChangePasswordCheck from './page/myaccount/ChangePasswordCheck';
@@ -72,7 +72,6 @@ function App() {
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
 
-
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
@@ -92,7 +91,10 @@ function App() {
                   phone: data.phoneNo,
                   isSocial: false,
                   geoCode: data.geoCode,
-                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(
+                    5,
+                    7,
+                  )}.${registDt.slice(8, 10)}`,
                   notify: data.isNotify,
                 },
                 pet: {

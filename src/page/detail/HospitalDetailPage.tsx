@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import BackArrow from '../common/icons/back-arrow.svg';
-import './DetailPage.scss';
+import './HospitalDetailPage.scss';
 import BallLoading from '../../common/utils/BallLoading';
 import { analytics } from '../..';
 import DetailHeader from './components/DetailHeader';
@@ -25,15 +25,15 @@ function DetailPage() {
   const url = useSelector((state: any) => state.map.detailImgUrl);
   const splitUrl = window.location.href.split('/');
   const detailPageId = parseInt(splitUrl[splitUrl.length - 1], 10);
-  
-  const { data, isLoading, isSuccess } = useQuery(['getDetailPageData', detailPageId], () =>
-    getDetailPageData(detailPageId),
+
+  const { data, isLoading, isSuccess } = useQuery(
+    ['getDetailPageData', detailPageId],
+    () => getDetailPageData(detailPageId),
   );
 
   const navigateToHome = () => {
     navigate('/');
   };
-
   console.log(data);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ function DetailPage() {
         openEditor={() => setIsEditorOpen(true)}
         openFullSlider={menuFullScreenHandler}
       />
-      <DetailReview mungpleId={data.mungpleId}/>
+      <DetailReview mungpleId={data.mungpleId} />
     </div>
   );
 }
