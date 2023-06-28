@@ -64,9 +64,17 @@ function PlaceCard(props: {
     // console.log(map!.getCenter());
     const center = map!.getCenter();
     const level = map!.getLevel();
-    dispatch(mapAction.setCurrentPosition({ lat: center.getLat(), lng: center.getLng(), zoom: level }))
+    dispatch(
+      mapAction.setCurrentPosition({
+        lat: center.getLat(),
+        lng: center.getLng(),
+        zoom: level,
+      }),
+    );
     dispatch(mapAction.setDetailUrl(detailUrl));
-    navigate(`detail/${id}`);
+    if (categoryCode !== 'CA0002') {
+      navigate(`detail/temp/${id}`);
+    } else navigate(`detail/${id}`);
   };
 
   return (

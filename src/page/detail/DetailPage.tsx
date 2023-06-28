@@ -42,7 +42,6 @@ function DetailPage() {
   }, []);
 
   if (data === undefined || isLoading) return <BallLoading />;
-
   const imageArray = [...data.photoUrls, ...data.representMenuPhotoUrls];
 
   const placeFullScreenHandler = (index: number) => {
