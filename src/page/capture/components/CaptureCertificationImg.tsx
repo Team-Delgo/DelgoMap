@@ -61,6 +61,9 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
 
   // height: window.screen.height - window.screen.width + 10,
 
+
+
+
   return (
     <>
       <div ref={eventTargetRef}>
@@ -69,12 +72,18 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
             className="capture-certification-void-img"
             style={{
               width: window.innerWidth,
-              height: window.innerWidth-10,
-            }}  
+              height: window.innerWidth - 10,
+            }}
           >
-            <div className="capture-certification-img-addition-btn" onClick={openFileGallery} aria-hidden>
-              <img src={Camera} alt="camera-icon" />
-              <div>사진 추가</div>
+            <div style={{height: window.screen.width -10 ,display:'flex',alignItems:'center'}}>
+              <div
+                className="capture-certification-img-addition-btn"
+                onClick={openFileGallery}
+                aria-hidden
+              >
+                <img src={Camera} alt="camera-icon" />
+                <div>사진 추가</div>
+              </div>
             </div>
           </div>
         ) : (
@@ -101,7 +110,7 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
         aria-hidden="true"
         onClick={openBottomSheet}
       />
-            <input
+      <input
         type="file"
         accept="image/jpeg,image/gif,image/png,image/jpg;capture=filesystem"
         ref={fileUploadRef}
