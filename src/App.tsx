@@ -24,7 +24,7 @@ import CaptureCertificationPage from './page/capture/CaptureCertificationPage';
 import CaptureCertificationResultPage from './page/capture/CaptureCertificationResultPage';
 import CaptureCertificationUpatePage from './page/capture/CaptureCertificationUpatePage';
 import CaptureLocationPage from './page/capture/CaptureLocationPage';
-import DetailPage from './page/detail/CafeDetailPage';
+import DetailPage from './page/detail/DetailPage';
 // import MapPage from "./page/map/MapPage";
 import ChangePassword from './page/myaccount/ChangePassword';
 import ChangePasswordCheck from './page/myaccount/ChangePasswordCheck';

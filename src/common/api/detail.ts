@@ -52,7 +52,6 @@ export async function getDetailPageData(mungpleId: number) {
   const { data } = await axiosInstance.get<APIResponse<DetailPageResponse>>(
     `/mungple/detail?mungpleId=${mungpleId}`,
   );
-  console.log(data);
   return data.data;
 }
 

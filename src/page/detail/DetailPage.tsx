@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import BackArrow from '../common/icons/back-arrow.svg';
-import './HospitalDetailPage.scss';
+import './DetailPage.scss';
 import BallLoading from '../../common/utils/BallLoading';
 import { analytics } from '../..';
 import DetailHeader from './components/DetailHeader';
@@ -34,6 +34,7 @@ function DetailPage() {
   const navigateToHome = () => {
     navigate('/');
   };
+
   console.log(data);
 
   useEffect(() => {
@@ -86,6 +87,7 @@ function DetailPage() {
         heartCount={data.recommendCount}
         phoneNumber={data.phoneNo}
         openingHours={data.businessHour}
+        categoryCode={data.categoryCode}
       />
       <DetailInfo
         residentDog={data.residentDogName}
@@ -100,6 +102,7 @@ function DetailPage() {
         editorNoteUrl={data.editorNoteUrl}
         openEditor={() => setIsEditorOpen(true)}
         openFullSlider={menuFullScreenHandler}
+        categoryCode={data.categoryCode}
       />
       <DetailReview mungpleId={data.mungpleId} />
     </div>

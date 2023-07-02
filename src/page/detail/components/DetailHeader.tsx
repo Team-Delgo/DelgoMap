@@ -7,6 +7,7 @@ import Clock from '../../../common/icons/clock.svg';
 import Arrow from '../../../common/icons/up-arrow.svg';
 
 interface Props {
+  categoryCode: string;
   placeName: string;
   address: string;
   dogFootCount: number;
@@ -45,6 +46,7 @@ function DetailHeader({
   heartCount,
   phoneNumber,
   openingHours,
+  categoryCode,
 }: Props) {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   return (
@@ -82,7 +84,7 @@ function DetailHeader({
           className="detail-header-interaction-button"
         >
           <img src={Clock} alt="time" />
-          영업시간
+          {categoryCode === 'CA0005' ? '운영시간' : '영업시간'}
         </div>
       </div>
       {isInfoOpen && <div className="detail-header-infodiv" />}

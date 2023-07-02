@@ -6,6 +6,7 @@ import UpArrow from '../../../common/icons/up-arrow-gray.svg';
 import Dog from '../../../common/icons/dog.svg';
 
 interface Props {
+  categoryCode: string;
   residentDog: string | null;
   residentDogPhoto: string | null;
   instagram: string;
@@ -17,10 +18,11 @@ interface Props {
   enterDsc: string;
   editorNoteUrl: string | null;
   openEditor: () => void;
-  openFullSlider: (index:number) => void;
+  openFullSlider: (index: number) => void;
 }
 
 function DetailInfo({
+  categoryCode,
   residentDog,
   residentDogPhoto,
   instagram,
@@ -32,10 +34,9 @@ function DetailInfo({
   parkingInfo,
   editorNoteUrl,
   openEditor,
-  openFullSlider
+  openFullSlider,
 }: Props) {
   const [isDogInfoOpen, setIsDogInfoOpen] = useState(false);
-
   return (
     <div className="detail-info">
       {residentDog && (
@@ -55,19 +56,28 @@ function DetailInfo({
               <div className="detail-info-dog-profile-name-name">{residentDog}</div>
             </div>
           </div>
-          <a href={`https://instagram.com/${instagram.slice(1)}`} className="detail-info-dog-instagram">{instagram}</a>
+          <a
+            href={`https://instagram.com/${instagram.slice(1)}`}
+            className="detail-info-dog-instagram"
+          >
+            {instagram}
+          </a>
         </div>
       )}
       <div className="detail-info-item">
         <div className="detail-info-item-first">
-          {representMenu ? '강아지 대표 메뉴' : '메뉴 이미지'}
+          {representMenu
+            ? '강아지 대표 메뉴'
+            : categoryCode === 'CA0005' || 'CA0006'
+            ? '가격표 이미지'
+            : '메뉴 이미지'}
         </div>
         <div className="detail-info-item-second">{representMenu}</div>
       </div>
       <div className="detail-info-image">
-        <img aria-hidden src={menuImages[0]} onClick={()=>openFullSlider(0)} alt="" />
-        <img aria-hidden src={menuImages[1]} onClick={()=>openFullSlider(1)} alt="" />
-        <img aria-hidden src={menuImages[2]} onClick={()=>openFullSlider(2)} alt="" />
+        <img aria-hidden src={menuImages[0]} onClick={() => openFullSlider(0)} alt="" />
+        <img aria-hidden src={menuImages[1]} onClick={() => openFullSlider(1)} alt="" />
+        <img aria-hidden src={menuImages[2]} onClick={() => openFullSlider(2)} alt="" />
       </div>
       <div className="detail-info-div" />
       <div className="detail-info-item">
@@ -113,7 +123,12 @@ function DetailInfo({
         <div className="detail-info-item">
           <div className="detail-info-item-first">인스타그램</div>
           <div className="detail-info-item-second">
-            <a href={`https://instagram.com/${instagram.slice(1)}`} className="detail-info-dog-instagram">{instagram}</a>
+            <a
+              href={`https://instagram.com/${instagram.slice(1)}`}
+              className="detail-info-dog-instagram"
+            >
+              {instagram}
+            </a>
           </div>
         </div>
       )}
