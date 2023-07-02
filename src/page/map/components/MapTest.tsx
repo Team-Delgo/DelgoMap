@@ -311,15 +311,6 @@ function MapTest() {
       showMungpleList();
     }
   }, [selectedCategory]);
-  // useEffect(()=>{
-  //   if(markerList && !isCertVisible){
-  //     markerList.forEach((marker) => {
-  //       marker.category()
-  //       marker.marker.setVisible(true);
-
-  //     });
-  //   }
-  // },[isCertVisible, markerList, selectedCategory])
 
   useEffect(() => {
     dispatch(mapAction.setSelectedId(selectedId));
@@ -415,12 +406,14 @@ function MapTest() {
     }
   };
   const categoryHandler = (selectedValue: string) => {
-    console.log('Selected value:', selectedValue);
     setSelectedCategory(selectedValue);
   };
 
+  console.log(selectedCategory);
+
   const moveKakaoMapCurrentLocation = (lat: number, lng: number) => {
     globarMap?.panTo(new kakao.maps.LatLng(lat, lng));
+    setTimeout(() => globarMap?.setLevel(5), 200);
   };
 
   return (
@@ -450,7 +443,9 @@ function MapTest() {
         onClick={navigateMyPage}
       />
       <div className="slogun">강아지 델고 동네생활</div>
-      <Categroy onClick={categoryHandler} />
+      {!isCertVisible && (
+        <Categroy selectedCategory={selectedCategory} onClick={categoryHandler} />
+      )}
       <div className="map" ref={mapElement} />
       {searchIsOpen && (
         <SearchBar

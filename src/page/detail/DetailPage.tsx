@@ -89,7 +89,7 @@ function DetailPage() {
         representMenu={data.representMenuTitle}
         menuImages={data.representMenuPhotoUrls}
         acceptSize={data.acceptSize}
-        parkingLimit={data.parkingLimit}
+        isParking={data.isParking}
         enterDsc={data.enterDesc}
         parkingInfo={data.parkingInfo}
         editorNoteUrl={data.editorNoteUrl}
