@@ -35,7 +35,7 @@ interface CaptureCertificationRecordPropsType {
 
 const sheetStyle = {
   borderRadius: '18px 18px 0px 0px',
-  height: window.screen.height - window.screen.width + 10,
+  height: window.innerHeight - window.innerWidth - 10  
 };
 
 function CaptureCertificationRecord({
@@ -193,6 +193,10 @@ function CaptureCertificationRecord({
   },[])
 
 
+  console.log('window.innerHeight-window.innerWidth',window.innerHeight-window.innerWidth)
+  console.log('width: window.innerHeight',window.innerHeight)
+  console.log('width: window.innerWidth',window.innerWidth)
+
   return (
     <>
       {postCertificationIsLoading && <DogLoading />}
@@ -200,7 +204,7 @@ function CaptureCertificationRecord({
         <main
           className="capture-img-record ios-capture-record"
           style={{
-            height: window.screen.height - window.screen.width + 10,
+            height: window.innerHeight - window.innerWidth - 10,
           }}
         >
           <body className="review-container">
@@ -308,10 +312,10 @@ function CaptureCertificationRecord({
           isOpen={bottomSheetIsOpen}
           onClose={closeBottomSheet}
           snapPoints={[
-            window.screen.height - window.screen.width + 10,
-            window.screen.height - window.screen.width + 10,
-            window.screen.height - window.screen.width + 10,
-            window.screen.height - window.screen.width + 10,
+            window.innerHeight - window.innerWidth - 10,
+            window.innerHeight - window.innerWidth - 10,
+            window.innerHeight - window.innerWidth - 10,
+            window.innerHeight - window.innerWidth - 10,
           ]}
           // ref={ref}
           disableDrag
@@ -322,7 +326,7 @@ function CaptureCertificationRecord({
               <main
                 className="capture-img-record ios-capture-record"
                 style={{
-                  height: window.screen.height - window.screen.width + 10,
+                  height: window.innerHeight - window.innerWidth - 10,
                 }}
               >
                 <body className="review-container">
