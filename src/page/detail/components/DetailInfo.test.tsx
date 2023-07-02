@@ -12,7 +12,7 @@ describe('DetailInfo Component with ResidentDog', () => {
     menuImages: ["url/to/image1", "url/to/image2", "url/to/image3"],
     enterDsc: "Entrance Description",
     acceptSize: { S: "ACCEPT", M: "OUTDOOR", L: "DENY" },
-    parkingLimit: 3,
+    isParking: true,
     parkingInfo: "Available",
     editorNoteUrl: "url/to/editor",
     openEditor: jest.fn(),

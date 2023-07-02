@@ -13,7 +13,7 @@ interface Props {
   representMenu: string | null;
   menuImages: string[];
   acceptSize: { S: string; M: string; L: string };
-  parkingLimit: number;
+  isParking: boolean;
   parkingInfo: string;
   enterDsc: string;
   editorNoteUrl: string | null;
@@ -29,7 +29,7 @@ function DetailInfo({
   menuImages,
   enterDsc,
   acceptSize,
-  parkingLimit,
+  isParking,
   parkingInfo,
   editorNoteUrl,
   openEditor,
@@ -96,8 +96,11 @@ function DetailInfo({
       <div className="detail-info-div" />
       <div className="detail-info-item">
         <div className="detail-info-item-first">주차공간</div>
-        <div className="detail-info-item-second type">있음</div>
+        <div className="detail-info-item-second type">{isParking ? '있음' : '없음'}</div>
       </div>
+      {parkingInfo && (
+        <div className="detail-info-enterDesc">{parkingInfo}</div>
+      )}
       {!residentDog && <div className="detail-info-div" />}
       {!residentDog && (
         <div className="detail-info-item">
