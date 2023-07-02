@@ -331,6 +331,32 @@
   background-color: #c9c5c5;
 }
 
+.user-location{
+  position: absolute;
+  z-index: 100;
+  right: 20px;
+  bottom: 90px;
+  background-color: white;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+  &-wrapper{
+  }
+  img {
+    width: 20px;
+    height: 20px;
+  }
+  &.off {
+    img {
+      opacity: 0.3;
+    }
+  }
+}
+
 @keyframes markerAppear {
   0% {
     transform: translateY(-10px);
@@ -341,3 +367,4 @@
     opacity: 1;
   }
 }
+

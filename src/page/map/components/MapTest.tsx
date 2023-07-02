@@ -29,6 +29,7 @@ import CertToggle from './CertToggle';
 import CertCard from './CertCard';
 import BallLoading from '../../../common/utils/BallLoading';
 import Marker from '../../../common/icons/cert-map-marker.svg';
+import UserLocation from './UserLocation';
 
 interface MakerItem {
   id: number;
@@ -418,6 +419,10 @@ function MapTest() {
     setSelectedCategory(selectedValue);
   };
 
+  const moveKakaoMapCurrentLocation = (lat: number, lng: number) => {
+    globarMap?.panTo(new kakao.maps.LatLng(lat, lng));
+  };
+
   return (
     <div className="map-wrapper">
       {isAlertOpen && (
@@ -477,7 +482,9 @@ function MapTest() {
           setCenter={setCurrentMapPosition}
         />
       )}
-      
+      {!isSelected && !(selectedId.title.length > 0 || selectedCert.userId > 0) && (
+        <UserLocation move={moveKakaoMapCurrentLocation} />
+      )}
       {!isSelected && selectedId.title.length === 0 && selectedCert.userId === 0 && (
         <FooterNavigation setCenter={setCurrentMapPosition} />
       )}

@@ -3,18 +3,14 @@
   display: flex;
   overflow-x: scroll;
   width: 100vw;
-  left: 5px;
   top: 92px;
 
   &List {
     display: flex;
     flex-shrink: 0;
-    justify-content: center;
     align-items: center;
     padding: 4px 10px 4px 4px;
     margin-right: 8px;
-    width: 66px;
-    height: 26px;
     background: #ffffff;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
     border-radius: 25px;
@@ -26,20 +22,21 @@
     text-align: center;
     color: #3d3d3d;
     z-index: 10;
-    &:nth-child(1).active {
-      border: 1.5px solid #8e6947;
+    &:nth-child(1) {
+      margin-left: 18px;
+      &.active {
+        border: 1.5px solid #8e6947;
+      }
     }
     /** 식당, 산책 뺐을 때 임시*/
 
     &:nth-child(2) {
-      width: 103px;
       &.active {
         border: 1.5px solid #d66615;
       }
     }
 
     &:nth-child(3) {
-      width: 92px;
       &.active {
         border: 1.5px solid #df3390;
       }
