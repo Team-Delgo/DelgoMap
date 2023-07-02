@@ -232,6 +232,7 @@
     background-color: white;
     border-radius: 12px;
     &-enterDesc{
+      white-space: pre-line;
       line-height: 150%;
       margin-top: 20px;
       font-size: 14px;
@@ -376,4 +377,9 @@
       }
     }
   }
+}
+
+.slide-image{
+  max-height: 80vh;
+  overflow: hidden;
 }

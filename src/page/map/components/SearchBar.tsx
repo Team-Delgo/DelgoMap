@@ -3,7 +3,6 @@ import useOnclickOutside from 'react-cool-onclickoutside';
 import { useDispatch, useSelector } from 'react-redux';
 import { Mungple } from './maptype';
 import './SearchBar.scss';
-// import BackArrow from '../../../common/icons/back-arrow.svg';
 import BackArrowComponent from '../../../components/BackArrowComponent';
 import { searchAction } from '../../../redux/slice/searchSlice';
 import { RootState } from '../../../redux/store';
@@ -31,7 +30,7 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
         autoComplete = cafeList.filter((cafe) => {
           return (
             cafe.placeName.includes(e.target.value) ||
-            cafe.jibunAddress.includes(e.target.value) ||
+            cafe.address.includes(e.target.value) ||
             cafe.placeNameEn?.includes(e.target.value)
           );
         });
@@ -56,7 +55,7 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
         return (
           <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler} key={cafe.placeName}>
             {cafe.placeName}
-            <span>{cafe.roadAddress}</span>
+            <span>{cafe.address}</span>
           </div>
         );
       }),
@@ -73,7 +72,7 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
         return (
           <div className="search-auto-item" aria-hidden="true" onClick={onClickHandler} key={cafe.placeName}>
             {cafe.placeName}
-            <span>{cafe.roadAddress}</span>
+            <span>{cafe.address}</span>
           </div>
         );
       }),
