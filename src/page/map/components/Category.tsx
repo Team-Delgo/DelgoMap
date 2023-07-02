@@ -12,6 +12,8 @@ interface Props {
   onClick: (selectedValue: string) => void;
 }
 
+console.log('test');
+
 const categoryList = [
   { code: 'CA0002', name: '카페', icon: cafeIcon },
   // { code: 'CA0003', name: '식당', icon: eatIcon },
