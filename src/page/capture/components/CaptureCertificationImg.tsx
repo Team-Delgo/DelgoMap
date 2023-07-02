@@ -72,10 +72,18 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
             className="capture-certification-void-img"
             style={{
               width: window.innerWidth,
-              height: window.innerWidth - 10,
+              height: window.innerWidth,
             }}
           >
-            <div style={{height: window.screen.width -10 ,display:'flex',alignItems:'center'}}>
+            <div
+              style={{
+                height: window.innerWidth - 21,
+                display: 'flex',
+                alignItems: 'center',
+                position: 'absolute',
+                top: 0,
+              }}
+            >
               <div
                 className="capture-certification-img-addition-btn"
                 onClick={openFileGallery}
