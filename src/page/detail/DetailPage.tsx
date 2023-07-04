@@ -47,9 +47,12 @@ function DetailPage() {
   }, []);
 
   if (data === undefined || isLoading) return <BallLoading />;
-
-  const imageArray = [...data.photoUrls, ...data.representMenuPhotoUrls];
-
+  let imageArray: string[] = [];
+  if (data.categoryCode === 'CA0002' || data.categoryCode === 'CA0003') {
+    imageArray = [...data.photoUrls, ...data.representMenuPhotoUrls];
+  } else if (data.isPriceTag) {
+    imageArray = [...data.photoUrls, ...data.priceTagPhotoUrls];
+  }
   const placeFullScreenHandler = (index: number) => {
     setImageNumber(index);
     setIsFullScreenSliderOpen(true);
@@ -93,8 +96,13 @@ function DetailPage() {
         residentDog={data.residentDogName}
         residentDogPhoto={data.residentDogPhoto}
         instagram={data.instaId}
+        isPriceTag={data.isPriceTag}
         representMenu={data.representMenuTitle}
-        menuImages={data.representMenuPhotoUrls}
+        menuImages={
+          data.categoryCode === 'CA0005' || data.categoryCode === 'CA0006'
+            ? data.priceTagPhotoUrls
+            : data.representMenuPhotoUrls
+        }
         acceptSize={data.acceptSize}
         parkingLimit={data.parkingLimit}
         enterDsc={data.enterDesc}

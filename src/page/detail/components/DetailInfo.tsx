@@ -12,6 +12,7 @@ interface Props {
   instagram: string;
   representMenu: string | null;
   menuImages: string[];
+  isPriceTag: boolean;
   acceptSize: { S: string; M: string; L: string };
   parkingLimit: number;
   parkingInfo: string;
@@ -33,10 +34,12 @@ function DetailInfo({
   parkingLimit,
   parkingInfo,
   editorNoteUrl,
+  isPriceTag,
   openEditor,
   openFullSlider,
 }: Props) {
   const [isDogInfoOpen, setIsDogInfoOpen] = useState(false);
+  console.log(menuImages);
   return (
     <div className="detail-info">
       {residentDog && (
@@ -64,22 +67,40 @@ function DetailInfo({
           </a>
         </div>
       )}
-      <div className="detail-info-item">
-        <div className="detail-info-item-first">
-          {representMenu
-            ? '강아지 대표 메뉴'
-            : categoryCode === 'CA0005' || 'CA0006'
-            ? '가격표 이미지'
-            : '메뉴 이미지'}
+      {menuImages && (
+        <div className="detail-info-item">
+          <div className="detail-info-item-first">
+            {representMenu
+              ? '강아지 대표 메뉴'
+              : categoryCode === 'CA0005' || 'CA0006'
+              ? '가격표 이미지'
+              : '메뉴 이미지'}
+          </div>
+          <div className="detail-info-item-second">{representMenu}</div>
         </div>
-        <div className="detail-info-item-second">{representMenu}</div>
-      </div>
-      <div className="detail-info-image">
-        <img aria-hidden src={menuImages[0]} onClick={() => openFullSlider(0)} alt="" />
-        <img aria-hidden src={menuImages[1]} onClick={() => openFullSlider(1)} alt="" />
-        <img aria-hidden src={menuImages[2]} onClick={() => openFullSlider(2)} alt="" />
-      </div>
-      <div className="detail-info-div" />
+      )}
+      {menuImages && menuImages.length >= 1 && (
+        <div className="detail-info-image">
+          <img aria-hidden src={menuImages[0]} onClick={() => openFullSlider(0)} alt="" />
+          {menuImages.length >= 2 && (
+            <img
+              aria-hidden
+              src={menuImages[1]}
+              onClick={() => openFullSlider(1)}
+              alt=""
+            />
+          )}
+          {menuImages.length >= 3 && (
+            <img
+              aria-hidden
+              src={menuImages[2]}
+              onClick={() => openFullSlider(2)}
+              alt=""
+            />
+          )}
+        </div>
+      )}
+      {menuImages && <div className="detail-info-div" />}
       <div className="detail-info-item">
         <div className="detail-info-item-first">강아지 동반 안내</div>
         <div

@@ -30,6 +30,8 @@ interface DetailPageResponse {
   residentDogPhoto: string | null;
   instaId: string;
   representMenuTitle: string | null;
+  isPriceTag: boolean;
+  priceTagPhotoUrls: string[];
   acceptSize: { S: string; M: string; L: string };
   representMenuPhotoUrls: string[];
   parkingLimit: number;
