@@ -4,6 +4,7 @@
   padding-top: 9px;
   height: 40px;
   background-color: white;
+  z-index: 2147483647;
   &.isAbsolute {
     position: absolute;
   }

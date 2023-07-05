@@ -20,6 +20,12 @@ export const mapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
+    setSelectedIdAddress(state, action){
+      state.selectedId = {
+        ...state.selectedId,
+        address: action.payload
+      }
+    },
     setCurrentPosition(state, action) {
       state.lat = action.payload.lat;
       state.lng = action.payload.lng;

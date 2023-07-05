@@ -49,6 +49,12 @@ function DetailHeader({
   categoryCode,
 }: Props) {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const sendScrap = async () => {
+    await window.kakao.Share.sendScrap({
+      requestUrl: 'http://go.delgo.pet/',
+      templateId: 92943,
+    })
+  }
   return (
     <div className="detail-header">
       <div className="detail-header-title">
@@ -68,7 +74,7 @@ function DetailHeader({
           전화
         </a>
         <div className="detail-header-interaction-div" />
-        <div className="detail-header-interaction-button">
+        <div className="detail-header-interaction-button" onClick={sendScrap} aria-hidden>
           <img src={Upload} alt="upload" />
           공유
         </div>

@@ -58,7 +58,7 @@ export const idDefault = {
 export interface Mungple {
   categoryCode: string;
   geoCode: string;
-  jibunAddress: string;
+  address: string;
   latitude: string;
   longitude: string;
   instaUrl: string;
@@ -68,7 +68,6 @@ export interface Mungple {
   placeName: string;
   placeNameEn: string | null;
   registDt: string;
-  roadAddress: string;
   photoUrl: string;
 }
 

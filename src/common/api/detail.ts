@@ -34,7 +34,7 @@ interface DetailPageResponse {
   priceTagPhotoUrls: string[];
   acceptSize: { S: string; M: string; L: string };
   representMenuPhotoUrls: string[];
-  parkingLimit: number;
+  isParking: boolean;
   parkingInfo: string;
   recommendCount: number;
   editorNoteUrl: string;

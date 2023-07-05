@@ -4,6 +4,7 @@ import RightArrow from '../../../common/icons/right-arrow-gray.svg';
 import UnderArrow from '../../../common/icons/under-arrow-gray.svg';
 import UpArrow from '../../../common/icons/up-arrow-gray.svg';
 import Dog from '../../../common/icons/dog.svg';
+import DetailDogAcceptable from './DetailDogAcceptable';
 
 interface Props {
   categoryCode: string;
@@ -14,7 +15,7 @@ interface Props {
   menuImages: string[];
   isPriceTag: boolean;
   acceptSize: { S: string; M: string; L: string };
-  parkingLimit: number;
+  isParking: boolean;
   parkingInfo: string;
   enterDsc: string;
   editorNoteUrl: string | null;
@@ -31,15 +32,15 @@ function DetailInfo({
   menuImages,
   enterDsc,
   acceptSize,
-  parkingLimit,
+  isPriceTag,
+  isParking,
   parkingInfo,
   editorNoteUrl,
-  isPriceTag,
   openEditor,
   openFullSlider,
 }: Props) {
   const [isDogInfoOpen, setIsDogInfoOpen] = useState(false);
-  console.log(menuImages);
+  console.log(acceptSize);
   return (
     <div className="detail-info">
       {residentDog && (
@@ -137,8 +138,11 @@ function DetailInfo({
       <div className="detail-info-div" />
       <div className="detail-info-item">
         <div className="detail-info-item-first">주차공간</div>
-        <div className="detail-info-item-second">있음</div>
+        <div className="detail-info-item-second type">{isParking ? '있음' : '없음'}</div>
       </div>
+      {parkingInfo && (
+        <div className="detail-info-enterDesc">{parkingInfo}</div>
+      )}
       {!residentDog && <div className="detail-info-div" />}
       {!residentDog && (
         <div className="detail-info-item">

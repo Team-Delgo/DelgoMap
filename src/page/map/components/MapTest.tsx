@@ -29,6 +29,7 @@ import CertToggle from './CertToggle';
 import CertCard from './CertCard';
 import BallLoading from '../../../common/utils/BallLoading';
 import Marker from '../../../common/icons/cert-map-marker.svg';
+import UserLocation from './UserLocation';
 
 interface MakerItem {
   id: number;
@@ -79,8 +80,6 @@ function MapTest() {
     getMapData(userId),
   );
 
-  // console.log(mapDataList);
-  // console.log(selectedCategory);
   useEffect(() => {
     // 지도에 temp 마커 찍기
     const options = {
@@ -147,6 +146,7 @@ function MapTest() {
 
           const result = response.v2;
           setAddress(result.address.jibunAddress);
+          dispatch(mapAction.setSelectedIdAddress(result.address.jibunAddress));
         },
       );
     }
@@ -311,16 +311,6 @@ function MapTest() {
       showMungpleList();
     }
   }, [selectedCategory]);
-  // useEffect(()=>{
-  //   if(markerList && !isCertVisible){
-  //     markerList.forEach((marker) => {
-  //       marker.category()
-  //       marker.marker.setVisible(true);
-
-  //     });
-  //   }
-  // },[isCertVisible, markerList, selectedCategory])
-
   useEffect(() => {
     dispatch(mapAction.setSelectedId(selectedId));
     if (selectedId.prevId === selectedId.id) return;
@@ -337,7 +327,6 @@ function MapTest() {
   useEffect(() => {
     if ((linkId > 0 || idDefault.id > 0) && mapDataList && !isFirst.mungple) {
       const { mungpleList } = mapDataList;
-      console.log(idDefault);
       let index: number;
       if (linkId > 0)
         index = mungpleList.findIndex((mungple) => mungple.mungpleId === linkId);
@@ -416,11 +405,16 @@ function MapTest() {
     }
   };
   const categoryHandler = (selectedValue: string) => {
-    console.log('Selected value:', selectedValue);
     setSelectedCategory(selectedValue);
   };
 
-  console.log(isSelected, selectedId);
+  console.log(selectedCategory);
+
+  const moveKakaoMapCurrentLocation = (lat: number, lng: number) => {
+    globarMap?.panTo(new kakao.maps.LatLng(lat, lng));
+    setTimeout(() => globarMap?.setLevel(5), 200);
+  };
+
   return (
     <div className="map-wrapper">
       {isAlertOpen && (
@@ -448,7 +442,9 @@ function MapTest() {
         onClick={navigateMyPage}
       />
       <div className="slogun">강아지 델고 동네생활</div>
-      <Categroy onClick={categoryHandler} />
+      {!isCertVisible && (
+        <Categroy selectedCategory={selectedCategory} onClick={categoryHandler} />
+      )}
       <div className="map" ref={mapElement} />
       {searchIsOpen && (
         <SearchBar
@@ -480,10 +476,13 @@ function MapTest() {
           setCenter={setCurrentMapPosition}
         />
       )}
-      {selectedId.title.length === 0 && selectedCert.userId === 0 && (
+      {!isSelected && !(selectedId.title.length > 0 || selectedCert.userId > 0) && (
+        <UserLocation move={moveKakaoMapCurrentLocation} />
+      )}
+      {!isSelected && selectedId.title.length === 0 && selectedCert.userId === 0 && (
         <FooterNavigation setCenter={setCurrentMapPosition} />
       )}
-      {!(selectedId.title.length > 0 || selectedCert.userId > 0) && (
+      {!isSelected && !(selectedId.title.length > 0 || selectedCert.userId > 0) && (
         <CertToggle onClick={onClickCertToggle} state={isCertVisible} />
       )}
       {selectedId.title.length > 0 && (
