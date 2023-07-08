@@ -27,18 +27,17 @@ function DetailReview({ mungpleId, visited, heart }: Props) {
     ['getDetailPageReviews', mungpleId],
     ({ pageParam = 0 }) => getDetailPageReviews(pageParam, user.id, mungpleId, 4),
     {
-      getNextPageParam: (lastPage) =>
-        lastPage.last ? undefined : lastPage.number + 1,
+      getNextPageParam: (lastPage) => (lastPage.last ? undefined : lastPage.number + 1),
     },
   );
 
-  useEffect(()=>{
-    if(inView) fetchNextPage();
-  },[inView]);
+  useEffect(() => {
+    if (inView) fetchNextPage();
+  }, [inView]);
 
   return (
-    <div className="detail-review">
-      <DetailReviewHeader visited={visited} heart={heart}/>
+    <div className="transfrom -translate-y-[15px] bg-white">
+      <DetailReviewHeader visited={visited} heart={heart} />
       {data?.pages?.map((page) => (
         <>
           {page?.content?.map((post: postType) => (
