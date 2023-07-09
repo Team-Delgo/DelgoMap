@@ -89,7 +89,7 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
                 onClick={openFileGallery}
                 aria-hidden
               >
-                <img src={Camera} alt="camera-icon" />
+                <img src={Camera} alt="camera-icon" width={14} height={14} />
                 <div>사진 추가</div>
               </div>
             </div>

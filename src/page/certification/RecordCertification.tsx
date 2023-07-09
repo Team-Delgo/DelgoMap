@@ -26,7 +26,7 @@ interface CertificationLIkeDataType {
   certificationId: number;
 }
 
-function RecordCertification(props: { certification: Cert }) {
+function RecordCertification(props: { certification: any }) {
   const { certification } = props;
   const dispatch = useDispatch();
   const [clickCount, setClickCount] = useState(0);
@@ -38,6 +38,8 @@ function RecordCertification(props: { certification: Cert }) {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.persist.user);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  console.log('certification',certification)
 
   const { mutate: certificationLikeMutate } = useMutation(
     (data: CertificationLIkeDataType) => certificationLike(data),
@@ -90,7 +92,8 @@ function RecordCertification(props: { certification: Cert }) {
         title: certification?.placeName,
         certificationId: certification?.certificationId,
         content: certification?.description,
-        address: certification?.address
+        address: certification?.address,
+        isHideAddress:certification?.isHideAddress
       }),
     );
     navigate(CAMERA_PATH.UPDATE, {
