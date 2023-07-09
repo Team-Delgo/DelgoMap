@@ -106,6 +106,7 @@ const uploadSlice = createSlice({
         address:action.payload.address,
         latitude: action.payload.latitude,
         longitude: action.payload.longitude,
+        mongPlaceId:action.payload.mongPlaceId
 
       };
     },
@@ -139,7 +140,8 @@ const uploadSlice = createSlice({
         title: action.payload.title,
         certificationId: action.payload.certificationId,
         content: action.payload.content,
-        address: action.payload.address
+        address: action.payload.address,
+        isHideAddress:action.payload.isHideAddress
       };
     },
     initAchievements() {

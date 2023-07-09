@@ -21,7 +21,7 @@ import useInput from '../../../common/hooks/useInput';
 import { mapAction } from '../../../redux/slice/mapSlice';
 import { RootState } from '../../../redux/store';
 
-const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
+const sheetStyle = { borderRadius: '18px 18px 0px 0px',  height: window.innerHeight - window.innerWidth - 10   };
 
 function CaptureLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
@@ -112,7 +112,7 @@ function CaptureLocationRecord() {
     <main
       className="capture-img-record ios-capture-record"
       style={{
-        height: window.screen.height - window.screen.width + 10,
+        height: window.innerHeight - window.innerWidth - 10,
       }}
     >
       <body className="review-container">
@@ -170,10 +170,10 @@ function CaptureLocationRecord() {
       isOpen={bottomSheetIsOpen}
       onClose={closeBottomSheet}
       snapPoints={[
-        window.screen.height - window.screen.width + 10,
-        window.screen.height - window.screen.width + 10,
-        window.screen.height - window.screen.width + 10,
-        window.screen.height - window.screen.width + 10,
+        window.innerHeight - window.innerWidth - 10,
+        window.innerHeight - window.innerWidth - 10,
+        window.innerHeight - window.innerWidth - 10,
+        window.innerHeight - window.innerWidth - 10,
       ]}
       disableDrag
       className="modal-bottom-sheet"
@@ -183,7 +183,7 @@ function CaptureLocationRecord() {
           <main
             className="capture-img-record"
             style={{
-              height: window.screen.height - window.screen.width + 10,
+              height: window.innerHeight - window.innerWidth - 10,
             }}
           >
             <body className="review-container">
