@@ -326,28 +326,34 @@ function CertificationPost({
         </header>
         <body className="post-img-result-main-body">{post?.description}</body>
         <footer className="post-img-result-main-footer">
-          <img
-            className="post-img-result-main-footer-heart"
-            src={isLike ? FillHeart : Heart}
-            width={20}
-            height={20}
-            alt="heart"
-            aria-hidden="true"
-            onClick={handleCertificationLike}
-          />
-          {likeCount > 0 && (
-            <div className="post-img-result-main-footer-count">{likeCount}</div>
-          )}
+          <div className="post-img-result-main-footer-heart-wrapper">
+            <img
+              className="post-img-result-main-footer-heart"
+              src={isLike ? FillHeart : Heart}
+              width={22}
+              height={22}
+              alt="heart"
+              aria-hidden="true"
+              onClick={handleCertificationLike}
+            />
+            {likeCount > 0 && (
+              <div className="post-img-result-main-footer-count">{likeCount}</div>
+            )}
+          </div>
+          <div className="post-img-result-main-footer-comments-wrapper">
           <img
             className="post-img-result-main-footer-comments"
             src={Comments}
             alt="comments"
+            width={22}
+            height={22}
             aria-hidden="true"
             onClick={moveToCommentPage}
           />
           {post?.commentCount > 0 && (
             <div className="post-img-result-main-footer-count">{post?.commentCount}</div>
           )}
+          </div>
         </footer>
       </main>
       <div className="border-line" />
