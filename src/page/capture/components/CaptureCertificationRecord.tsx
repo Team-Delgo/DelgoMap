@@ -412,7 +412,7 @@ function CaptureCertificationRecord({
 
                   <textarea
                     className="review-content"
-                    placeholder="🐶강아지 친구들이 참고할 내용을 적어주면 좋아요"
+                    placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
                     onChange={(e) =>
                       dispatch(
                         uploadAction.setContent({

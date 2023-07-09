@@ -21,7 +21,7 @@ import useInput from '../../../common/hooks/useInput';
 import { mapAction } from '../../../redux/slice/mapSlice';
 import { RootState } from '../../../redux/store';
 
-const sheetStyle = { borderRadius: '18px 18px 0px 0px',  height: window.innerHeight - window.innerWidth - 10   };
+
 
 function CaptureLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
@@ -32,6 +32,9 @@ function CaptureLocationRecord() {
   const inputRef = useRef<any>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const initialHeight = useRef(window.innerHeight);
+
+  const sheetStyle = { borderRadius: '18px 18px 0px 0px',  height: initialHeight.current- window.innerWidth - 10   };
 
   const { data: mungPlaceList } = useQuery(
     GET_MUNG_PLACE_LIST,
@@ -112,7 +115,7 @@ function CaptureLocationRecord() {
     <main
       className="capture-img-record ios-capture-record"
       style={{
-        height: window.innerHeight - window.innerWidth - 10,
+        height: initialHeight.current- window.innerWidth - 10 ,
       }}
     >
       <body className="review-container">
@@ -170,10 +173,10 @@ function CaptureLocationRecord() {
       isOpen={bottomSheetIsOpen}
       onClose={closeBottomSheet}
       snapPoints={[
-        window.innerHeight - window.innerWidth - 10,
-        window.innerHeight - window.innerWidth - 10,
-        window.innerHeight - window.innerWidth - 10,
-        window.innerHeight - window.innerWidth - 10,
+        initialHeight.current- window.innerWidth - 10 ,
+        initialHeight.current- window.innerWidth - 10 ,
+        initialHeight.current- window.innerWidth - 10 ,
+        initialHeight.current- window.innerWidth - 10 ,
       ]}
       disableDrag
       className="modal-bottom-sheet"
@@ -183,7 +186,7 @@ function CaptureLocationRecord() {
           <main
             className="capture-img-record"
             style={{
-              height: window.innerHeight - window.innerWidth - 10,
+              height:         initialHeight.current- window.innerWidth - 10 ,
             }}
           >
             <body className="review-container">
