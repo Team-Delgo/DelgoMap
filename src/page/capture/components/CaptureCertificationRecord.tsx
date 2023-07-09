@@ -87,7 +87,7 @@ function CaptureCertificationRecord({
 
   const sheetStyle = {
     borderRadius: '18px 18px 0px 0px',
-    height: initialHeight.current  
+    height: initialHeight.current  - window.innerWidth - 10 
   };
   // console.log('title',title)
   // console.log('address',address)
@@ -212,7 +212,7 @@ function CaptureCertificationRecord({
         <main
           className="capture-img-record ios-capture-record"
           style={{
-            height: initialHeight.current
+            height: initialHeight.current- window.innerWidth - 10 
           }}
         >
           <body className="review-container">
@@ -322,10 +322,10 @@ function CaptureCertificationRecord({
           isOpen={bottomSheetIsOpen}
           onClose={closeBottomSheet}
           snapPoints={[
-            initialHeight.current,
-            initialHeight.current,
-            initialHeight.current,
-            initialHeight.current
+            initialHeight.current- window.innerWidth - 10 ,
+            initialHeight.current- window.innerWidth - 10 ,
+            initialHeight.current- window.innerWidth - 10 ,
+            initialHeight.current- window.innerWidth - 10 
           ]}
           // ref={ref}
           disableDrag
