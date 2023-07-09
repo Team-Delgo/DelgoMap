@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback,useRef } from 'react';
 import { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -33,10 +33,6 @@ interface CaptureCertificationRecordPropsType {
   offPostCertificationLoading: () => void;
 }
 
-const sheetStyle = {
-  borderRadius: '18px 18px 0px 0px',
-  height: window.innerHeight - window.innerWidth - 10  
-};
 
 function CaptureCertificationRecord({
   postCertificationIsLoading,
@@ -46,6 +42,7 @@ function CaptureCertificationRecord({
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [isAddressHide, setIsAddressHide] = useActive(false);
+  const initialHeight = useRef(window.innerHeight);
 
   // const [certificationPostContent, onChangeCertificationPostContent] = useInput('');
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
@@ -71,6 +68,8 @@ function CaptureCertificationRecord({
   const prevPath = location?.state?.prevPath
   let icon = FootPrintSmall;
 
+  // const uploadHeight = useMemo(window.innerHeight - window.innerWidth - 10);
+
 
 
   if (categoryCode === 'CA0001') icon = WalkSmall;
@@ -83,10 +82,13 @@ function CaptureCertificationRecord({
 
   console.log('prevPath',prevPath)
   console.log('mongPlaceId',mongPlaceId)
+  console.log('initialHeight',initialHeight.current)
 
 
-
-
+  const sheetStyle = {
+    borderRadius: '18px 18px 0px 0px',
+    height: initialHeight.current  
+  };
   // console.log('title',title)
   // console.log('address',address)
   // console.log('isHideAddress',isHideAddress)
@@ -210,7 +212,7 @@ function CaptureCertificationRecord({
         <main
           className="capture-img-record ios-capture-record"
           style={{
-            height: window.innerHeight - window.innerWidth - 10,
+            height: initialHeight.current
           }}
         >
           <body className="review-container">
@@ -320,10 +322,10 @@ function CaptureCertificationRecord({
           isOpen={bottomSheetIsOpen}
           onClose={closeBottomSheet}
           snapPoints={[
-            window.innerHeight - window.innerWidth - 10,
-            window.innerHeight - window.innerWidth - 10,
-            window.innerHeight - window.innerWidth - 10,
-            window.innerHeight - window.innerWidth - 10,
+            initialHeight.current,
+            initialHeight.current,
+            initialHeight.current,
+            initialHeight.current
           ]}
           // ref={ref}
           disableDrag
@@ -334,7 +336,7 @@ function CaptureCertificationRecord({
               <main
                 className="capture-img-record ios-capture-record"
                 style={{
-                  height: window.innerHeight - window.innerWidth - 10,
+                  height: initialHeight.current,
                 }}
               >
                 <body className="review-container">

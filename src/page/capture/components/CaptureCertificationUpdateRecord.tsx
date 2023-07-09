@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -28,7 +28,6 @@ interface updateCertPostData {
   isHideAddress:boolean;
 }
 
-const sheetStyle = { borderRadius: '18px 18px 0px 0px',  height: window.innerHeight - window.innerWidth - 10   };
 
 function CaptureCategoryUpdateRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
@@ -59,6 +58,8 @@ function CaptureCategoryUpdateRecord() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location: any = useLocation();
+  const initialHeight = useRef(window.innerHeight);
+  const sheetStyle = { borderRadius: '18px 18px 0px 0px',  height: initialHeight.current  };
 
   let icon = FootPrintSmall;
 
@@ -162,7 +163,7 @@ function CaptureCategoryUpdateRecord() {
         <main
           className="capture-img-record ios-capture-record"
           style={{
-            height: window.innerHeight - window.innerWidth - 10,
+            height: initialHeight.current,
           }}
         >
           <body className="review-container">
@@ -260,10 +261,10 @@ function CaptureCategoryUpdateRecord() {
           isOpen={bottomSheetIsOpen}
           onClose={closeBottomSheet}
           snapPoints={[
-            window.innerHeight - window.innerWidth - 10,
-            window.innerHeight - window.innerWidth - 10,
-            window.innerHeight - window.innerWidth - 10,
-            window.innerHeight - window.innerWidth - 10,
+            initialHeight.current,
+            initialHeight.current,
+            initialHeight.current,
+            initialHeight.current,
           ]}
           disableDrag
           className="modal-bottom-sheet"
@@ -273,7 +274,7 @@ function CaptureCategoryUpdateRecord() {
             <main
           className="capture-img-record ios-capture-record"
           style={{
-            height: window.innerHeight - window.innerWidth - 10,
+            height: initialHeight.current,
           }}
         >
           <body className="review-container">
