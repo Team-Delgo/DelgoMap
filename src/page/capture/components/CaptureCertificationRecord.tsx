@@ -336,7 +336,7 @@ function CaptureCertificationRecord({
               <main
                 className="capture-img-record ios-capture-record"
                 style={{
-                  height: initialHeight.current,
+                  height: initialHeight.current- window.innerWidth - 10,
                 }}
               >
                 <body className="review-container">
