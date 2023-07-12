@@ -2,14 +2,12 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
-import CaptureResultHeader from './components/CaptureCertificationResultHeader';
-import CaptureResultMain from './components/CaptureCertificationResultMain';
+import UploadResultHeader from './components/UploadCertificationResultHeader';
+import UploadResultMain from './components/UploadCertificationResultMain';
 import { analytics } from '../../index';
 import ToastPurpleMessage from '../../common/dialog/ToastPurpleMessage';
-import { RootState } from '../../redux/store';
-import AchievementBottomSheet from '../../common/dialog/AchievementBottomSheet';
 import useActive from '../../common/hooks/useActive';
-import './CaptureCertificationResultPage.scss';
+import './UploadCertificationResultPage.scss';
 
 function CaptureResult() {
   const [
@@ -21,16 +19,6 @@ function CaptureResult() {
     certificateUpdateSuccessToastIsOpen,
     onCertificateUpdateSuccessToast,
     offCertificateUpdateSuccessToast,
-  ] = useActive(false);
-  const [
-    achievementBottomSheetIsOpen1,
-    openAchievementBottomSheet1,
-    closeAchievementBottomSheet1,
-  ] = useActive(false);
-  const [
-    achievementBottomSheetIsOpen2,
-    openAchievementBottomSheet2,
-    closeAchievementBottomSheet2,
   ] = useActive(false);
 
   
@@ -74,8 +62,8 @@ function CaptureResult() {
 
   return (
     <>
-      <CaptureResultHeader />
-      <CaptureResultMain />
+      <UploadResultHeader />
+      <UploadResultMain />
       {/* <AchievementBottomSheet
         text="업적 획득"
         achievement={achievements[0]}

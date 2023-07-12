@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
-import { CROP_PATH, RECORD_PATH, SIGN_IN_PATH, POSTS_PATH, CAMERA_PATH } from '../common/constants/path.const';
+import { CROP_PATH, RECORD_PATH, SIGN_IN_PATH, POSTS_PATH, UPLOAD_PATH } from '../common/constants/path.const';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import DogFoot from '../common/icons/dogfoot.svg';
 import Home from "../common/icons/home.svg";
@@ -50,7 +50,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
       // setCenter();
       // openFileGallery();
       dispatch(uploadAction.initAchievements());
-      navigate(CAMERA_PATH.CERTIFICATION)
+      navigate(UPLOAD_PATH.CERTIFICATION)
     } else setIsAlertOpen(true);
   };
 

@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
-import CaptureCertificationImg from './components/CaptureCertificationImg';
-import CaptureCertificationRecord from './components/CaptureCertificationRecord';
-import './CaptureCertificationPage.scss';
+import UploadImg from './components/UploadCertificationImg';
+import UploadRecord from './components/UploadCertificationRecord';
+import './UploadCertificationPage.scss';
 import { analytics } from '../../index';
 import { ROOT_PATH } from '../../common/constants/path.const';
 import DeleteBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import useActive from '../../common/hooks/useActive';
 
-function CaptureCertificationPage() {
+function UploadCertificationPage() {
   const [bottomSheetIsOpen, openBottomSheet,closeBottomSheet] = useActive(false);
   const [postCertificationIsLoading, onPostCertificationLoading,offPostCertificationLoading] = useActive(false);
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
@@ -31,8 +31,8 @@ function CaptureCertificationPage() {
 
   return (
     <>
-      <CaptureCertificationImg openBottomSheet={openBottomSheet} />
-      <CaptureCertificationRecord
+      <UploadImg openBottomSheet={openBottomSheet} />
+      <UploadRecord
         postCertificationIsLoading={postCertificationIsLoading}
         onPostCertificationLoading={onPostCertificationLoading}
         offPostCertificationLoading={offPostCertificationLoading}
@@ -50,4 +50,4 @@ function CaptureCertificationPage() {
   );
 }
 
-export default CaptureCertificationPage;
+export default UploadCertificationPage;

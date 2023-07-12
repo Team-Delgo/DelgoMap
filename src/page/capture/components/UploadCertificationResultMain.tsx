@@ -2,13 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
-function CaptureResultMain() {
+function UploadResultMain() {
   const { img, title, content, address, isHideAddress } = useSelector(
     (state: RootState) => state.persist.upload,
   );
-
-  console.log('content', content);
-  console.log('isHideAddress',isHideAddress)
 
   return (
     <main className="capture-img-result-main">
@@ -26,4 +23,4 @@ function CaptureResultMain() {
   );
 }
 
-export default CaptureResultMain;
+export default UploadResultMain;

@@ -14,7 +14,7 @@ import {
   certificationDelete,
 } from '../../common/api/certification';
 import { uploadAction } from '../../redux/slice/uploadSlice';
-import { CAMERA_PATH, RECORD_PATH } from '../../common/constants/path.const';
+import { UPLOAD_PATH, RECORD_PATH } from '../../common/constants/path.const';
 import { RootState } from '../../redux/store';
 import DeleteBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import { categoryCode2 } from '../../common/types/category';
@@ -96,7 +96,7 @@ function RecordCertification(props: { certification: any }) {
         isHideAddress:certification?.isHideAddress
       }),
     );
-    navigate(CAMERA_PATH.UPDATE, {
+    navigate(UPLOAD_PATH.UPDATE, {
       state: {
         prevPath: RECORD_PATH.PHOTO,
       },

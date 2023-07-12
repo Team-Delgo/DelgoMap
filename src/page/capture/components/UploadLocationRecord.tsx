@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 import Sheet from 'react-modal-sheet';
 import classnames from 'classnames';
-import { CAMERA_PATH } from '../../../common/constants/path.const';
+import { UPLOAD_PATH } from '../../../common/constants/path.const';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import { getMungPlaceList } from '../../../common/api/certification';
 import {
@@ -23,7 +23,7 @@ import { RootState } from '../../../redux/store';
 
 
 
-function CaptureLocationRecord() {
+function UploadLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const [placeName, onChangePlaceName] = useInput('');
@@ -53,14 +53,13 @@ function CaptureLocationRecord() {
 
   const selectMongPlace = useCallback(
     (place: MungPlaceType) => (event: React.MouseEvent) => {
-      console.log('place',place)
       const { mungpleId, placeName, address } = place;
       setCheckedPlaceId(mungpleId);
       dispatch(
         uploadAction.setMongPlace({ mungpleId, placeName, address }),
       );
       setTimeout(() => {
-        navigate(CAMERA_PATH.CERTIFICATION);
+        navigate(UPLOAD_PATH.CERTIFICATION);
       }, 1000);
     },
     [],
@@ -75,11 +74,7 @@ function CaptureLocationRecord() {
 
   const navigateCertMap = () => {
     dispatch(mapAction.setCurrentPlaceName(inputRef.current.value));
-    navigate(CAMERA_PATH.MAP);
-  };
-
-  const screenUp = () => {
-    // window.webkit?.messageHandlers?.NAME.postMessage('screenUp');
+    navigate(UPLOAD_PATH.MAP);
   };
 
   const manualPlace = () => {
@@ -125,7 +120,6 @@ function CaptureLocationRecord() {
           className="review-place-name"
           placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
           onChange={onChangePlaceName}
-          onFocus={screenUp}
         />
         {placeName.length > 0 && manualPlace()}
         {mungPlaceList?.data.map((place: MungPlaceType) => {
@@ -196,7 +190,6 @@ function CaptureLocationRecord() {
                 className="review-place-name"
                 placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
                 onChange={onChangePlaceName}
-                onFocus={screenUp}
               />
               {mungPlaceList?.data.map((place: MungPlaceType) => {
                 if (placeName.length > 0) {
@@ -249,4 +242,4 @@ function CaptureLocationRecord() {
   );
 }
 
-export default CaptureLocationRecord;
+export default UploadLocationRecord;

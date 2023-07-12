@@ -3,10 +3,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import WhiteX from '../../../common/icons/white-x.svg';
-import { CAMERA_PATH } from '../../../common/constants/path.const';
+import { UPLOAD_PATH } from '../../../common/constants/path.const';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 
-function CaptureCertificationUpdateImg() {
+function UploadCertificationUpdateImg() {
   const img = useSelector((state: RootState) => state.persist.upload.img);
   const navigate = useNavigate();
   const location: any = useLocation();
@@ -33,8 +33,8 @@ function CaptureCertificationUpdateImg() {
   }, []);
 
   const moveToPreviousPage = () => {
-    if (location?.state?.prevPath === CAMERA_PATH.RESULT) {
-      navigate(CAMERA_PATH.RESULT, {
+    if (location?.state?.prevPath === UPLOAD_PATH.RESULT) {
+      navigate(UPLOAD_PATH.RESULT, {
         state: {
           prevPath: location.pathname,
           prevPrevPath: location?.state?.prevPath,
@@ -68,4 +68,4 @@ function CaptureCertificationUpdateImg() {
   );
 }
 
-export default CaptureCertificationUpdateImg;
+export default UploadCertificationUpdateImg;

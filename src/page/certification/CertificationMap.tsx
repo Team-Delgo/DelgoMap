@@ -7,7 +7,7 @@ import Marker from '../../common/icons/cert-map-marker.svg';
 import RightArrow from "../../common/icons/right-arrow-gray.svg";
 import './CertificationMap.scss';
 import { RootState } from '../../redux/store';
-import { CAMERA_PATH } from '../../common/constants/path.const';
+import { UPLOAD_PATH } from '../../common/constants/path.const';
 import { uploadAction } from '../../redux/slice/uploadSlice';
 
 function CertificationMap() {
@@ -61,7 +61,7 @@ function CertificationMap() {
         mongPlaceId:0,
       }),
     );
-    navigate(CAMERA_PATH.CERTIFICATION);
+    navigate(UPLOAD_PATH.CERTIFICATION);
   };
 
   const locationCard = <div className='location-card' aria-hidden onClick={selectManualPlace}>

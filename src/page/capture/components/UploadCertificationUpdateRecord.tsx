@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useMutation } from 'react-query';
 import Sheet from 'react-modal-sheet';
 import { updateCertificationPost } from '../../../common/api/certification';
-import { CAMERA_PATH } from '../../../common/constants/path.const';
+import { UPLOAD_PATH } from '../../../common/constants/path.const';
 import { RootState } from '../../../redux/store';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import useActive from '../../../common/hooks/useActive';
@@ -29,7 +29,7 @@ interface updateCertPostData {
 }
 
 
-function CaptureCategoryUpdateRecord() {
+function UploadCertificationUpdateRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const {
     title,
@@ -62,9 +62,6 @@ function CaptureCategoryUpdateRecord() {
   const sheetStyle = { borderRadius: '18px 18px 0px 0px',  height: initialHeight.current- window.innerWidth - 10   };
 
   let icon = FootPrintSmall;
-
-  console.log('categoryCode', categoryCode);
-  console.log('mongPlaceId',mongPlaceId);
 
   if (categoryCode === 'CA0001') icon = WalkSmall;
   else if (categoryCode === 'CA0002') icon = CafeSmall;
@@ -143,7 +140,7 @@ function CaptureCategoryUpdateRecord() {
   };
 
   const moveToCaptureResultPage = useCallback(() => {
-    navigate(CAMERA_PATH.RESULT, {
+    navigate(UPLOAD_PATH.RESULT, {
       state: {
         prevPath: location.pathname,
         prevPrevPath: location?.state?.prevPath,
@@ -288,7 +285,7 @@ function CaptureCategoryUpdateRecord() {
               <input
                 className="review-place-info-search-input"
                 placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
-                onFocus={() => navigate(CAMERA_PATH.LOCATION)}
+                onFocus={() => navigate(UPLOAD_PATH.LOCATION)}
                 value={title !== '' ? title : undefined}
               />
               {/* <div className="review-place-info-address">{address}</div> */}
@@ -376,4 +373,4 @@ function CaptureCategoryUpdateRecord() {
   );
 }
 
-export default CaptureCategoryUpdateRecord;
+export default UploadCertificationUpdateRecord;
