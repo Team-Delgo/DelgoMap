@@ -78,6 +78,9 @@ function CertificationPost({
   const profileImg = useRef<HTMLImageElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
+
+  console.log('post',post)
+
   const observeImg = (
     entries: IntersectionObserverEntry[],
     observer: IntersectionObserver,
@@ -211,6 +214,8 @@ function CertificationPost({
         certificationId: post?.certificationId,
         content: post?.description,
         address: post?.address,
+        isHideAddress:post?.isHideAddress,
+        // mongPlaceId:post?.
       }),
     );
     navigate(CAMERA_PATH.UPDATE, {
@@ -301,11 +306,10 @@ function CertificationPost({
           alt="postImg"
           aria-hidden="true"
           onClick={handleDoubleClick}
-          
         />
         {LikeAnimationLoading && (
-          <div className="like-animation-wrapper" style={{height:window.innerWidth}}>
-            <LikeAnimation isLike={isLike}/>
+          <div className="like-animation-wrapper" style={{ height: window.innerWidth }}>
+            <LikeAnimation isLike={isLike} />
           </div>
         )}
         <header className="post-img-result-main-header">
@@ -313,35 +317,43 @@ function CertificationPost({
             <div className="post-img-result-main-header-place-name">
               {post?.placeName}
             </div>
-            <div className="post-img-result-main-header-place-address">
-              {post?.address}
-            </div>
+            {!post?.isHideAddress && (
+              <div className="post-img-result-main-header-place-address">
+                {post?.address}
+              </div>
+            )}
           </div>
         </header>
         <body className="post-img-result-main-body">{post?.description}</body>
         <footer className="post-img-result-main-footer">
-          <img
-            className="post-img-result-main-footer-heart"
-            src={isLike ? FillHeart : Heart}
-            width={20}
-            height={20}
-            alt="heart"
-            aria-hidden="true"
-            onClick={handleCertificationLike}
-          />
-          {likeCount > 0 && (
-            <div className="post-img-result-main-footer-count">{likeCount}</div>
-          )}
+          <div className="post-img-result-main-footer-heart-wrapper">
+            <img
+              className="post-img-result-main-footer-heart"
+              src={isLike ? FillHeart : Heart}
+              width={22}
+              height={22}
+              alt="heart"
+              aria-hidden="true"
+              onClick={handleCertificationLike}
+            />
+            {likeCount > 0 && (
+              <div className="post-img-result-main-footer-count">{likeCount}</div>
+            )}
+          </div>
+          <div className="post-img-result-main-footer-comments-wrapper">
           <img
             className="post-img-result-main-footer-comments"
             src={Comments}
             alt="comments"
+            width={22}
+            height={22}
             aria-hidden="true"
             onClick={moveToCommentPage}
           />
           {post?.commentCount > 0 && (
             <div className="post-img-result-main-footer-count">{post?.commentCount}</div>
           )}
+          </div>
         </footer>
       </main>
       <div className="border-line" />

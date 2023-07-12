@@ -1,11 +1,13 @@
-.border-line{
+.border-line {
     height: 4px;
     background-color: #F2F2F2;
 }
-.certificationPostsPage{
+
+.certificationPostsPage {
     position: absolute;
     top: 0;
-    &-header{
+
+    &-header {
         position: fixed;
         display: flex;
         justify-content: center;
@@ -13,22 +15,24 @@
         width: 100vw;
         height: 50px;
         padding-top: 8px;
-        top:0;
-        img{
-          position: absolute;
-          left: 22px;
+        top: 0;
+
+        img {
+            position: absolute;
+            left: 22px;
         }
-        &-text{
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);      
-          font-weight: 500;
-          font-size: 18px;
+
+        &-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 500;
+            font-size: 18px;
         }
-      }
+    }
 }
 
-.other-dog-history{
+.other-dog-history {
     text-align: center;
     font-weight: 600;
     font-size: 18px;
@@ -46,30 +50,30 @@
         margin: 50px 5% 10px 5%;
 
         &-profile {
-                display: flex;
-        
-                &-img {
-                    width: 39px;
-                    height: 39px;
-                    border-radius: 100%;
-                }
-        
-                &-date {
-                    color: #8A8A8A;
-                    font-weight: 500;
-                    font-size: 12px;
-                    margin: 0 0 3px 15px;
-                }
-        
-                &-name {
-                    color: #3F3F3F;
-                    font-weight: 700;
-                    font-size: 14px;
-                    margin-left: 15px;
-                }
+            display: flex;
+
+            &-img {
+                width: 39px;
+                height: 39px;
+                border-radius: 100%;
+            }
+
+            &-date {
+                color: #8A8A8A;
+                font-weight: 500;
+                font-size: 12px;
+                margin: 0 0 3px 15px;
+            }
+
+            &-name {
+                color: #3F3F3F;
+                font-weight: 700;
+                font-size: 14px;
+                margin-left: 15px;
+            }
         }
 
-        &-report{
+        &-report {
             display: flex;
             margin-top: 15px;
             font-weight: 400;
@@ -87,17 +91,20 @@
     &-main {
         margin: 0 5%;
         position: relative;
-        &-img{
+
+        &-img {
             width: 100%;
             border-radius: 4px;
         }
+
         &-header {
             display: flex;
-            margin: 15px 0;
+            margin-top: 15px;
             padding-bottom: 15px;
             border-bottom: 1px solid #E5E5E5;
             justify-content: space-between;
-            &-place{
+
+            &-place {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -116,14 +123,16 @@
                 }
             }
         }
-        &-body{
+
+        &-body {
             color: #232323;
-            padding-top: 5px;
+            padding: 24px 0;
+
             &-title {
                 font-size: 24px;
                 font-weight: bold;
             }
-    
+
             &-content {
                 padding-top: 7px;
                 font-size: 14px;
@@ -131,31 +140,52 @@
             }
         }
 
-        &-footer{
+        &-footer {
             display: flex;
-            padding:50px 0 30px 0;
-            &-heart:active{
+            margin-bottom: 36px;
+
+            color: var(--reward-gray-2-bk, #000);
+            font-size: 14px;
+            font-weight: 500;
+
+            &-heart-wrapper {
+                display: flex;
+                align-items: center;
+            }
+
+            &-comments-wrapper {
+                display: flex;
+                align-items: center;
+            }
+
+            &-heart:active {
                 transform: scale(0.96);
                 // width: 200px;
             }
-            &-count{
-                font-size: 14px;
-                font-weight: 500;
-                color: #3f3f3f;
-                margin-left: 9px;
-              }
-              &-comments{
-                margin-left: 9px;
-              }
+
+            &-count {
+                margin-left: 8px;
+            }
+
+            &-heart {
+                width: 22px;
+                height: 22px;
+            }
+
+            &-comments {
+                width: 22px;
+                height: 22px;
+                margin-left: 8px;
+            }
         }
     }
 }
 
-.like-animation-wrapper{
+.like-animation-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    top:0px;
+    top: 0px;
     width: 100%;
 }

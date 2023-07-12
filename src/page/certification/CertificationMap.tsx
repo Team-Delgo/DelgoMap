@@ -58,6 +58,7 @@ function CertificationMap() {
         address,
         latitude: String(pointerLocation.lat),
         longitude: String(pointerLocation.lng),
+        mongPlaceId:0,
       }),
     );
     navigate(CAMERA_PATH.CERTIFICATION);

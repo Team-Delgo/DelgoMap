@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,9 +25,9 @@ interface updateCertPostData {
   certificationId: number;
   description: string;
   userId: number;
+  isHideAddress:boolean;
 }
 
-const sheetStyle = { borderRadius: '18px 18px 0px 0px' };
 
 function CaptureCategoryUpdateRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
@@ -37,6 +37,7 @@ function CaptureCategoryUpdateRecord() {
     content,
     address,
     isHideAddress,
+    mongPlaceId,
     categoryCode,
   } = useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
@@ -57,10 +58,13 @@ function CaptureCategoryUpdateRecord() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location: any = useLocation();
+  const initialHeight = useRef(window.innerHeight);
+  const sheetStyle = { borderRadius: '18px 18px 0px 0px',  height: initialHeight.current- window.innerWidth - 10   };
 
   let icon = FootPrintSmall;
 
   console.log('categoryCode', categoryCode);
+  console.log('mongPlaceId',mongPlaceId);
 
   if (categoryCode === 'CA0001') icon = WalkSmall;
   else if (categoryCode === 'CA0002') icon = CafeSmall;
@@ -133,6 +137,7 @@ function CaptureCategoryUpdateRecord() {
         certificationId,
         description: content,
         userId: user.id,
+        isHideAddress
       });
     }, 1000);
   };
@@ -158,7 +163,7 @@ function CaptureCategoryUpdateRecord() {
         <main
           className="capture-img-record ios-capture-record"
           style={{
-            height: window.screen.height - window.screen.width + 10,
+            height: initialHeight.current- window.innerWidth - 10 ,
           }}
         >
           <body className="review-container">
@@ -222,7 +227,7 @@ function CaptureCategoryUpdateRecord() {
 
             <textarea
               className="review-content"
-              placeholder="🐶강아지 친구들이 참고할 내용을 적어주면 좋아요"
+              placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
               onChange={(e) =>
                 dispatch(
                   uploadAction.setContent({
@@ -256,10 +261,10 @@ function CaptureCategoryUpdateRecord() {
           isOpen={bottomSheetIsOpen}
           onClose={closeBottomSheet}
           snapPoints={[
-            window.screen.height - window.screen.width + 10,
-            window.screen.height - window.screen.width + 10,
-            window.screen.height - window.screen.width + 10,
-            window.screen.height - window.screen.width + 10,
+            initialHeight.current- window.innerWidth - 10 ,
+            initialHeight.current- window.innerWidth - 10 ,
+            initialHeight.current- window.innerWidth - 10 ,
+            initialHeight.current- window.innerWidth - 10 ,
           ]}
           disableDrag
           className="modal-bottom-sheet"
@@ -269,7 +274,7 @@ function CaptureCategoryUpdateRecord() {
             <main
           className="capture-img-record ios-capture-record"
           style={{
-            height: window.screen.height - window.screen.width + 10,
+            height: initialHeight.current- window.innerWidth - 10 ,
           }}
         >
           <body className="review-container">
@@ -333,7 +338,7 @@ function CaptureCategoryUpdateRecord() {
 
             <textarea
               className="review-content"
-              placeholder="🐶강아지 친구들이 참고할 내용을 적어주면 좋아요"
+              placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
               onChange={(e) =>
                 dispatch(
                   uploadAction.setContent({

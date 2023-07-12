@@ -3,10 +3,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 
 function CaptureResultMain() {
-  const { img, title, content, address } = useSelector((state: RootState) => state.persist.upload);
+  const { img, title, content, address, isHideAddress } = useSelector(
+    (state: RootState) => state.persist.upload,
+  );
 
-
-  console.log('content',content)
+  console.log('content', content);
+  console.log('isHideAddress',isHideAddress)
 
   return (
     <main className="capture-img-result-main">
@@ -14,7 +16,9 @@ function CaptureResultMain() {
       <header className="capture-img-result-main-header">
         <div className="capture-img-result-main-header-place">
           <div className="capture-img-result-main-header-place-name">{title}</div>
-          <div className="capture-img-result-main-header-place-address">{address}</div>
+          {!isHideAddress && (
+            <div className="capture-img-result-main-header-place-address">{address}</div>
+          )}
         </div>
       </header>
       <body className="capture-img-result-main-body">{content}</body>
