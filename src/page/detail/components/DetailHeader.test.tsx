@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 import DetailHeader from './DetailHeader';
 
 const mockProps = {
-  categoryCode: 'CA0000',
   placeName: 'Test Place',
   address: '123 Test Street',
   dogFootCount: 5,

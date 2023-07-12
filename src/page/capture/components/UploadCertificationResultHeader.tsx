@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 import { RootState } from '../../../redux/store';
-import { CAMERA_PATH, POSTS_PATH, ROOT_PATH, RECORD_PATH } from '../../../common/constants/path.const';
+import { UPLOAD_PATH, POSTS_PATH, ROOT_PATH, RECORD_PATH } from '../../../common/constants/path.const';
 import { certificationDelete } from '../../../common/api/certification';
 import X from '../../../common/icons/xx.svg';
 import DeleteBottomSheet from '../../../common/dialog/ConfirmBottomSheet';
@@ -19,7 +19,7 @@ interface CertificationLIkeDataType{
   certificationId: number;
 }
 
-function CaptureResultHeader() {
+function UploadResultHeader() {
   const [deletePostBottomSheetIsOpen, openDeletePostBottomSheet, closeDeletePostBottomSheet] = useActive(false);
   const { registDt, certificationId } = useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
@@ -37,7 +37,7 @@ function CaptureResultHeader() {
           moveToPhotoPage();
         }
       },
-      onError: (error: any, variables, context) => {
+      onError: (error: any) => {
         useErrorHandlers(dispatch, error);
       },
     });
@@ -53,7 +53,7 @@ function CaptureResultHeader() {
   };
 
   const moveToUpdatePage = () => {
-    navigate(CAMERA_PATH.UPDATE, {
+    navigate(UPLOAD_PATH.UPDATE, {
       state: {
         prevPath: location.pathname,
       },
@@ -118,4 +118,4 @@ function CaptureResultHeader() {
   );
 }
 
-export default CaptureResultHeader;
+export default UploadResultHeader;

@@ -10,7 +10,7 @@ import './App.scss';
 import {
   ACHIEVEMENT_PATH,
   APPLE_REDIRECT_HANDLE_PATH,
-  CAMERA_PATH,
+  UPLOAD_PATH,
   CROP_PATH,
   KAKAO_REDIRECT_HANDLE_PATH,
   MY_ACCOUNT_PATH,
@@ -20,10 +20,10 @@ import {
   SIGN_IN_PATH,
   SIGN_UP_PATH,
 } from './common/constants/path.const';
-import CaptureCertificationPage from './page/capture/CaptureCertificationPage';
-import CaptureCertificationResultPage from './page/capture/CaptureCertificationResultPage';
-import CaptureCertificationUpatePage from './page/capture/CaptureCertificationUpatePage';
-import CaptureLocationPage from './page/capture/CaptureLocationPage';
+import UploadCertificationPage from './page/capture/UploadCertificationPage';
+import UploadCertificationResultPage from './page/capture/UploadCertificationResultPage';
+import UploadCertificationUpatePage from './page/capture/UploadCertificationUpatePage';
+import UploadLocationPage from './page/capture/UploadLocationPage';
 import DetailPage from './page/detail/DetailPage';
 // import MapPage from "./page/map/MapPage";
 import ChangePassword from './page/myaccount/ChangePassword';
@@ -168,19 +168,19 @@ function App() {
               <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
               <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
               <Route
-                path={CAMERA_PATH.CERTIFICATION}
-                element={<CaptureCertificationPage />}
+                path={UPLOAD_PATH.CERTIFICATION}
+                element={<UploadCertificationPage />}
               />
-              <Route path={CAMERA_PATH.LOCATION} element={<CaptureLocationPage />} />
+              <Route path={UPLOAD_PATH.LOCATION} element={<UploadLocationPage />} />
               <Route
-                path={CAMERA_PATH.UPDATE}
-                element={<CaptureCertificationUpatePage />}
+                path={UPLOAD_PATH.UPDATE}
+                element={<UploadCertificationUpatePage />}
               />
               <Route
-                path={CAMERA_PATH.RESULT}
-                element={<CaptureCertificationResultPage />}
+                path={UPLOAD_PATH.RESULT}
+                element={<UploadCertificationResultPage />}
               />
-              <Route path={CAMERA_PATH.MAP} element={<CertificationMap />} />
+              <Route path={UPLOAD_PATH.MAP} element={<CertificationMap />} />
               <Route path={CROP_PATH} element={<CropPage />} />
               <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
               <Route path={POSTS_PATH} element={<PostsPage />} />

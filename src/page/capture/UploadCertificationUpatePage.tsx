@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
-import CaptureCertificationUpdateImg from './components/CaptureCertificationUpdateImg';
-import CaptureCertificationUpdateRecord from './components/CaptureCertificationUpdateRecord';
-import './CaptureCertificationUpatePage.scss';
+import UploadCertificationUpdateImg from './components/UploadCertificationUpdateImg';
+import UploadCertificationUpdateRecord from './components/UploadCertificationUpdateRecord';
+import './UploadCertificationUpatePage.scss';
 import { analytics } from '../../index';
 
 function CaptureCertificationUpatePage() {
@@ -19,8 +19,8 @@ function CaptureCertificationUpatePage() {
 
   return (
     <>
-      <CaptureCertificationUpdateImg />
-      <CaptureCertificationUpdateRecord />
+      <UploadCertificationUpdateImg />
+      <UploadCertificationUpdateRecord />
     </>
   );
 }

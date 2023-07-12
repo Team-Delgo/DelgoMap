@@ -36,16 +36,15 @@ export const MY_STORAGE_PATH = '/my-storage';
 
 export const POSTS_PATH = '/posts';
 
-export const CAMERA_PATH = {
-  FRONT: '/camera/front',
-  REAR: '/camera/rear',
-  CAPTURE: '/camera/captureImg',
-  LOCATION: '/camera/captureImg/location',
-  CERTIFICATION: '/camera/captureImg/certification',
-  RESULT: '/camera/captureImg/certification/result',
-  UPDATE: '/camera/captureImg/certification/update',
-  MAP: '/camera/captureImg/certification/map'
+export const UPLOAD_PATH = {
+  CAPTURE: '/upload/captureImg',
+  LOCATION: '/upload/location',
+  CERTIFICATION: '/upload/certification',
+  RESULT: '/upload/certification/result',
+  UPDATE: '/upload/certification/update',
+  MAP: '/upload/certification/map'
 };
+
 
 export const RECORD_PATH = {
   PHOTO: '/photo',

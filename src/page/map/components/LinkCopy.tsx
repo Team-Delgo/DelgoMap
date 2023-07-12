@@ -9,8 +9,7 @@ import './LinkCopy.scss';
 import { RootState } from '../../../redux/store';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import {
-  CAMERA_PATH,
-  CROP_PATH,
+  UPLOAD_PATH,
   SIGN_IN_PATH,
 } from '../../../common/constants/path.const';
 import AlertConfirm from '../../../common/dialog/AlertConfirm';
@@ -63,7 +62,7 @@ function LinkCopy(props: {
         categoryCode: selectedMungple.categoryCode,
       }),
     );
-    navigate(CAMERA_PATH.CERTIFICATION, {
+    navigate(UPLOAD_PATH.CERTIFICATION, {
       state: { prevPath: isMungple ? 'homeMungple' : 'homeMap' },
     });
   };

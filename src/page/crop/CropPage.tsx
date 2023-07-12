@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CAMERA_PATH, ROOT_PATH } from '../../common/constants/path.const';
+import { UPLOAD_PATH } from '../../common/constants/path.const';
 import Crop from '../../common/utils/Crop';
 import getCroppedImg from '../../common/utils/CropHandle';
 import { uploadAction } from '../../redux/slice/uploadSlice';
@@ -41,11 +41,11 @@ function CropPage() {
 
   const moveToNextPage = useCallback(() => {
     if (location?.state?.prevPath === 'homeMap') {
-      navigate(CAMERA_PATH.CERTIFICATION);
+      navigate(UPLOAD_PATH.CERTIFICATION);
     } else if (location?.state?.prevPath === '/camera/captureImg/location') {
-      navigate(CAMERA_PATH.LOCATION);
+      navigate(UPLOAD_PATH.LOCATION);
     } else {
-      navigate(CAMERA_PATH.CERTIFICATION);
+      navigate(UPLOAD_PATH.CERTIFICATION);
     }
   }, []);
 

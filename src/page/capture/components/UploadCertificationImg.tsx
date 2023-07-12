@@ -8,11 +8,11 @@ import Camera from '../../../common/icons/camera.svg';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import { CROP_PATH } from '../../../common/constants/path.const';
 
-interface CaptureCertificationImgPropsType {
+interface props {
   openBottomSheet: () => void;
 }
 
-function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPropsType) {
+function UploadCertificationImg({ openBottomSheet }: props) {
   const img = useSelector((state: RootState) => state.persist.upload.img);
   const navigate = useNavigate();
   const eventTargetRef = useRef<HTMLDivElement | null>(null);
@@ -58,10 +58,6 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
   const moveToPreviousPage = () => {
     navigate(-1);
   };
-
-  // height: window.screen.height - window.screen.width + 10,
-
-
 
 
   return (
@@ -129,4 +125,4 @@ function CaptureCertificationImg({ openBottomSheet }: CaptureCertificationImgPro
   );
 }
 
-export default CaptureCertificationImg;
+export default UploadCertificationImg;

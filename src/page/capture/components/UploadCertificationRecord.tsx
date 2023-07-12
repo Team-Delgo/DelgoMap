@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useState, useEffect, useCallback,useRef } from 'react';
 import { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
@@ -8,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useSelector, useDispatch } from 'react-redux';
 import Sheet from 'react-modal-sheet';
-import { CAMERA_PATH } from '../../../common/constants/path.const';
+import { UPLOAD_PATH } from '../../../common/constants/path.const';
 import { registerGalleryCertificationPost } from '../../../common/api/certification';
 import { RootState } from '../../../redux/store';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
@@ -27,35 +24,27 @@ import WalkSmall from '../../../common/icons/walk-map-small.svg';
 import KinderSmall from '../../../common/icons/kinder-map-small.svg';
 import FootPrintSmall from '../../../common/icons/foot-print-small.svg'
 
-interface CaptureCertificationRecordPropsType {
+interface Props {
   postCertificationIsLoading: boolean;
   onPostCertificationLoading: () => void;
   offPostCertificationLoading: () => void;
 }
 
 
-function CaptureCertificationRecord({
+function UploadCertificationRecord({
   postCertificationIsLoading,
   onPostCertificationLoading,
   offPostCertificationLoading,
-}: CaptureCertificationRecordPropsType) {
+}: Props) {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  const [isAddressHide, setIsAddressHide] = useActive(false);
   const initialHeight = useRef(window.innerHeight);
-
-  // const [certificationPostContent, onChangeCertificationPostContent] = useInput('');
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
   const [
     errorToastIsOpen,
     openCertificateErrorToast,
     closeCertificateErrorToast,
   ] = useActive(false);
-  // const [
-  //   imgUploadToastIsOpen,
-  //   openImgUploadErrorToast,
-  //   closeImgUploadErrorToast,
-  // ] = useActive(false);
 
   const { latitude, longitude, mongPlaceId, title, file, address,content,isHideAddress,categoryCode } = useSelector(
     (state: RootState) => state.persist.upload,
@@ -69,7 +58,6 @@ function CaptureCertificationRecord({
   const prevPath = location?.state?.prevPath
   let icon = FootPrintSmall;
 
-  // const uploadHeight = useMemo(window.innerHeight - window.innerWidth - 10);
 
 
 
@@ -81,17 +69,11 @@ function CaptureCertificationRecord({
   else if (categoryCode === 'CA0006') icon = HospitalSmall;
   else if (categoryCode === 'CA0007') icon = KinderSmall;
 
-  console.log('prevPath',prevPath)
-  console.log('mongPlaceId',mongPlaceId)
-  console.log('initialHeight',initialHeight.current)
 
   const sheetStyle = {
     borderRadius: '18px 18px 0px 0px',
     height: initialHeight.current  - window.innerWidth - 10 
   };
-  // console.log('title',title)
-  // console.log('address',address)
-  // console.log('isHideAddress',isHideAddress)
 
   useEffect(() => {
     if (errorToastIsOpen) {
@@ -99,11 +81,6 @@ function CaptureCertificationRecord({
         closeCertificateErrorToast();
       }, 2000);
     }
-    // if (imgUploadToastIsOpen) {
-    //   setTimeout(() => {
-    //     closeImgUploadErrorToast();
-    //   }, 2000);
-    // }
   }, [errorToastIsOpen]);
 
   const registerMutation = useMutation(
@@ -116,15 +93,6 @@ function CaptureCertificationRecord({
         const { code, data } = response.data;
         console.log('response',response)
         if (code === 200) {
-          // dispatch(
-          //   uploadAction.setContentRegistDtCertificationIdAddress({
-          //     // content: certificationPostContent,
-          //     registDt: data.registDt,
-          //     certificationId: data.certificationId,
-          //     address: data.address,
-          //     achievements: [],
-          //   }),
-          // );
           moveToCaptureResultPage();
         } else if (code === 314) {
           offPostCertificationLoading();
@@ -162,7 +130,6 @@ function CaptureCertificationRecord({
       return;
     }
 
-    console.log('isHideAddress',isHideAddress)
 
     const data = {
       userId: user.id,
@@ -175,7 +142,6 @@ function CaptureCertificationRecord({
       isHideAddress
     };
 
-    console.log('data',data)
     formData.append('photo', file);
 
     const json = JSON.stringify(data);
@@ -189,7 +155,7 @@ function CaptureCertificationRecord({
   };
 
   const moveToCaptureResultPage = useCallback(() => {
-    navigate(CAMERA_PATH.RESULT, {
+    navigate(UPLOAD_PATH.RESULT, {
       state: {
         prevPath: location?.pathname,
       },
@@ -200,10 +166,6 @@ function CaptureCertificationRecord({
     window.webkit.messageHandlers.NAME.postMessage('screenUp');
   },[])
 
-
-  console.log('window.innerHeight-window.innerWidth',window.innerHeight-window.innerWidth)
-  console.log('width: window.innerHeight',window.innerHeight)
-  console.log('width: window.innerWidth',window.innerWidth)
 
   return (
     <>
@@ -233,7 +195,7 @@ function CaptureCertificationRecord({
                 }
                 onFocus={
                   prevPath === undefined
-                    ? () => navigate(CAMERA_PATH.LOCATION)
+                    ? () => navigate(UPLOAD_PATH.LOCATION)
                     : undefined
                 }
                 disabled={prevPath === 'homeMungple' && true}
@@ -357,7 +319,7 @@ function CaptureCertificationRecord({
                       }
                       onFocus={
                         prevPath === undefined
-                          ? () => navigate(CAMERA_PATH.LOCATION)
+                          ? () => navigate(UPLOAD_PATH.LOCATION)
                           : undefined
                       }
                       disabled={prevPath === 'homeMungple' && true}
@@ -383,6 +345,7 @@ function CaptureCertificationRecord({
                         />
                         <div
                           className="review-place-address-hide-label"
+                          aria-hidden="true"
                           onClick={() =>
                             dispatch(
                               uploadAction.setHideAddress({
@@ -449,4 +412,4 @@ function CaptureCertificationRecord({
   );
 }
 
-export default CaptureCertificationRecord;
+export default UploadCertificationRecord;

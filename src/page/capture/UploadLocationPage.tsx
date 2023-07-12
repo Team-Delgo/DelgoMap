@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
 import { useNavigate } from 'react-router-dom';
-import CaptureCertificationImg from './components/CaptureCertificationImg';
-import CaptureLocationRecord from './components/CaptureLocationRecord';
-import './CaptureLocationPage.scss';
+import UploadImg from './components/UploadCertificationImg';
+import UploadLocationRecord from './components/UploadLocationRecord';
+import './UploadLocationPage.scss';
 import { analytics } from '../../index';
 import DeleteBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import { ROOT_PATH } from '../../common/constants/path.const';
 import useActive from '../../common/hooks/useActive';
 
-function CaptureLocationPage() {
+function UploadLocationPage() {
   const [bottomSheetIsOpen, openBottomSheet, closeBottomSheet] = useActive(false);
   const navigate = useNavigate();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
 
   useEffect(() => {
-    window.localStorage.setItem('isFirstCert', "true");
+    window.localStorage.setItem('isFirstCert', 'true');
     mutation.mutate({
       params: {
         firebase_screen: 'CaptureLocation',
@@ -30,8 +30,8 @@ function CaptureLocationPage() {
 
   return (
     <>
-      <CaptureCertificationImg openBottomSheet={openBottomSheet} />
-      <CaptureLocationRecord />
+      <UploadImg openBottomSheet={openBottomSheet} />
+      <UploadLocationRecord />
       <DeleteBottomSheet
         text="작성중이던 기록이 삭제됩니다"
         description="지우면 다시 볼 수 없어요"
@@ -45,4 +45,4 @@ function CaptureLocationPage() {
   );
 }
 
-export default CaptureLocationPage;
+export default UploadLocationPage;

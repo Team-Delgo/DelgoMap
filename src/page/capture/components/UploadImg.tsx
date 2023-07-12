@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { CAMERA_PATH, CROP_PATH, ROOT_PATH } from '../../../common/constants/path.const';
+import { UPLOAD_PATH, CROP_PATH, ROOT_PATH } from '../../../common/constants/path.const';
 import PrevArrowBlack from '../../../common/icons/prev-arrow-black.svg';
 import X from '../../../common/icons/xx.svg';
 import DeleteBottomSheet from '../../../common/dialog/ConfirmBottomSheet';
 import useActive from '../../../common/hooks/useActive';
 
-function CaptureImg() {
+function UploadImg() {
   const [bottomSheetIsOpen, openBottomSheet, closeBottomSheet] = useActive(false);
   const { img } = useSelector((state: RootState) => state.persist.upload);
   const navigate = useNavigate();
@@ -36,8 +36,8 @@ function CaptureImg() {
   
 
   const moveToPreviousPage = () => {
-    if (location.pathname === CAMERA_PATH.CAPTURE) navigate(CROP_PATH);
-    else navigate(CAMERA_PATH.CAPTURE);
+    if (location.pathname === UPLOAD_PATH.CAPTURE) navigate(CROP_PATH);
+    else navigate(UPLOAD_PATH.CAPTURE);
   };
 
   const moveToHomePage = () => {
@@ -82,4 +82,4 @@ function CaptureImg() {
   );
 }
 
-export default CaptureImg;
+export default UploadImg;
