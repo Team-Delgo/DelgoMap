@@ -46,7 +46,6 @@ function UploadCertificationRecord({
     closeCertificateErrorToast,
   ] = useActive(false);
 
-
   const { latitude, longitude, mongPlaceId, title, file, address,content,isHideAddress,categoryCode } = useSelector(
     (state: RootState) => state.persist.upload,
   );
@@ -69,7 +68,6 @@ function UploadCertificationRecord({
   else if (categoryCode === 'CA0005') icon = BeautySmall;
   else if (categoryCode === 'CA0006') icon = HospitalSmall;
   else if (categoryCode === 'CA0007') icon = KinderSmall;
-
 
 
   const sheetStyle = {
@@ -245,7 +243,6 @@ function UploadCertificationRecord({
                 )}
               </div>
             )}
-
             <div className="review-guidance-text">
               이곳에 대해 남기고 싶은 기록이 있나요?
             </div>

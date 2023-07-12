@@ -50,7 +50,6 @@ function LinkCopy(props: {
     }
 
     const isMungple = selectedMungple?.title !== '';
-
     dispatch(
       uploadAction.setHomeCert({
         // prevImg: galleryImg,
