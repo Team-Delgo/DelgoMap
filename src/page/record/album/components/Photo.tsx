@@ -81,21 +81,21 @@ function Photo() {
     };
   }, []);
 
-  useEffect(() => {
-    if (hammertime) {
-      hammertime.on('swiperight', function (e) {
-        navigate('/');
-      });
-      hammertime.on('swipeleft', function (e) {
-        navigate('/calendar', { state: 'calendar' });
-      });
-    }
-    return () => {
-      if (hammertime) {
-        hammertime.destroy()
-      }
-    };
-  }, [hammertime]);
+  // useEffect(() => {
+  //   if (hammertime) {
+  //     hammertime.on('swiperight', function (e) {
+  //       navigate('/');
+  //     });
+  //     hammertime.on('swipeleft', function (e) {
+  //       navigate('/calendar', { state: 'calendar' });
+  //     });
+  //   }
+  //   return () => {
+  //     if (hammertime) {
+  //       hammertime.destroy()
+  //     }
+  //   };
+  // }, [hammertime]);
 
 
   useEffect(() => {

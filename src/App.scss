@@ -10,6 +10,7 @@ body {
   }
 
   textarea {
+    font-family: 'Spoqa Han Sans Neo';
     resize: none;
     -webkit-touch-callout: auto;
     -webkit-user-select: auto;
@@ -20,6 +21,20 @@ body {
     -webkit-text-fill-color: currentColor;
     caret-color: currentColor;
   }
+}
+
+textarea::-webkit-input-placeholder { 
+  font-family: 'Spoqa Han Sans Neo';
+
+}
+textarea::-moz-placeholder {
+  font-family: 'Spoqa Han Sans Neo';
+}
+textarea:-ms-input-placeholder { 
+  font-family: 'Spoqa Han Sans Neo';
+}
+textarea:-moz-placeholder {
+  font-family: 'Spoqa Han Sans Neo';
 }
 
 

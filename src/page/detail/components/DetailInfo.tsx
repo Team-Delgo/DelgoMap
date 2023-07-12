@@ -7,11 +7,13 @@ import Dog from '../../../common/icons/dog.svg';
 import DetailDogAcceptable from './DetailDogAcceptable';
 
 interface Props {
+  categoryCode: string;
   residentDog: string | null;
   residentDogPhoto: string | null;
   instagram: string;
   representMenu: string | null;
   menuImages: string[];
+  isPriceTag: boolean;
   acceptSize: { S: string; M: string; L: string };
   isParking: boolean;
   parkingInfo: string;
@@ -22,6 +24,7 @@ interface Props {
 }
 
 function DetailInfo({
+  categoryCode,
   residentDog,
   residentDogPhoto,
   instagram,
@@ -29,6 +32,7 @@ function DetailInfo({
   menuImages,
   enterDsc,
   acceptSize,
+  isPriceTag,
   isParking,
   parkingInfo,
   editorNoteUrl,
@@ -37,7 +41,6 @@ function DetailInfo({
 }: Props) {
   const [isDogInfoOpen, setIsDogInfoOpen] = useState(false);
   console.log(acceptSize);
-
   return (
     <div className="detail-info">
       {residentDog && (
@@ -65,32 +68,71 @@ function DetailInfo({
           </a>
         </div>
       )}
-      <div className="detail-info-item">
-        <div className="detail-info-item-first">
-          {representMenu ? '강아지 대표 메뉴' : '메뉴 이미지'}
+      {menuImages && (
+        <div className="detail-info-item">
+          <div className="detail-info-item-first">
+            {representMenu
+              ? '강아지 대표 메뉴'
+              : categoryCode === 'CA0005' || 'CA0006'
+              ? '가격표 이미지'
+              : '메뉴 이미지'}
+          </div>
+          <div className="detail-info-item-second">{representMenu}</div>
         </div>
-        <div className="detail-info-item-second">{representMenu}</div>
-      </div>
-      <div className="detail-info-image">
-        <img aria-hidden src={menuImages[0]} onClick={() => openFullSlider(0)} alt="" />
-        <img aria-hidden src={menuImages[1]} onClick={() => openFullSlider(1)} alt="" />
-        <img aria-hidden src={menuImages[2]} onClick={() => openFullSlider(2)} alt="" />
-      </div>
-      <div className="detail-info-div" />
+      )}
+      {menuImages && menuImages.length >= 1 && (
+        <div className="detail-info-image">
+          <img aria-hidden src={menuImages[0]} onClick={() => openFullSlider(0)} alt="" />
+          {menuImages.length >= 2 && (
+            <img
+              aria-hidden
+              src={menuImages[1]}
+              onClick={() => openFullSlider(1)}
+              alt=""
+            />
+          )}
+          {menuImages.length >= 3 && (
+            <img
+              aria-hidden
+              src={menuImages[2]}
+              onClick={() => openFullSlider(2)}
+              alt=""
+            />
+          )}
+        </div>
+      )}
+      {menuImages && <div className="detail-info-div" />}
       <div className="detail-info-item">
         <div className="detail-info-item-first">강아지 동반 안내</div>
         <div
-          className="detail-info-item-second type"
+          className="detail-info-item-second"
           aria-hidden
           onClick={() => setIsDogInfoOpen(!isDogInfoOpen)}
         >
-          {!isDogInfoOpen ? '자세히 보기' : '접기'}
+          {!isDogInfoOpen ? (
+            <>
+              자세히 보기
+              <img src={UnderArrow} alt="under-arrow" />
+            </>
+          ) : (
+            <>
+              접기 <img src={UpArrow} alt="up-arrow" />
+            </>
+          )}
         </div>
       </div>
       <div className="detail-info-doglist">
-        <DetailDogAcceptable type="소형견" allow={acceptSize.S} />
-        <DetailDogAcceptable type="중형견" allow={acceptSize.M} />
-        <DetailDogAcceptable type="대형견" allow={acceptSize.L} />
+        <div className={classNames('detail-info-doglist-dog', { disable: false })}>
+          소형견
+        </div>
+        <div className="detail-info-doglist-dot" />
+        <div className={classNames('detail-info-doglist-dog', { disable: false })}>
+          중형견
+        </div>
+        <div className="detail-info-doglist-dot" />
+        <div className={classNames('detail-info-doglist-dog', { disable: true })}>
+          대형견
+        </div>
       </div>
       {isDogInfoOpen && <div className="detail-info-enterDesc">{enterDsc}</div>}
       <div className="detail-info-div" />

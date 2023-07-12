@@ -11,6 +11,7 @@ export interface postType {
   userId: number;
   userName: string;
   userProfile: string;
+  isHideAddress:boolean;
 }
 
 export interface userType {

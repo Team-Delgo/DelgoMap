@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback,useRef } from 'react';
 import { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -33,10 +33,6 @@ interface CaptureCertificationRecordPropsType {
   offPostCertificationLoading: () => void;
 }
 
-const sheetStyle = {
-  borderRadius: '18px 18px 0px 0px',
-  height: window.innerHeight - window.innerWidth - 10  
-};
 
 function CaptureCertificationRecord({
   postCertificationIsLoading,
@@ -45,7 +41,10 @@ function CaptureCertificationRecord({
 }: CaptureCertificationRecordPropsType) {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  const [certificationPostContent, onChangeCertificationPostContent] = useInput('');
+  const [isAddressHide, setIsAddressHide] = useActive(false);
+  const initialHeight = useRef(window.innerHeight);
+
+  // const [certificationPostContent, onChangeCertificationPostContent] = useInput('');
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
   const [
     errorToastIsOpen,
@@ -57,6 +56,7 @@ function CaptureCertificationRecord({
   //   openImgUploadErrorToast,
   //   closeImgUploadErrorToast,
   // ] = useActive(false);
+
   const { latitude, longitude, mongPlaceId, title, file, address,content,isHideAddress,categoryCode } = useSelector(
     (state: RootState) => state.persist.upload,
   );
@@ -69,6 +69,8 @@ function CaptureCertificationRecord({
   const prevPath = location?.state?.prevPath
   let icon = FootPrintSmall;
 
+  // const uploadHeight = useMemo(window.innerHeight - window.innerWidth - 10);
+
 
 
   if (categoryCode === 'CA0001') icon = WalkSmall;
@@ -80,10 +82,13 @@ function CaptureCertificationRecord({
   else if (categoryCode === 'CA0007') icon = KinderSmall;
 
   console.log('prevPath',prevPath)
+  console.log('mongPlaceId',mongPlaceId)
+  console.log('initialHeight',initialHeight.current)
 
-
-
-
+  const sheetStyle = {
+    borderRadius: '18px 18px 0px 0px',
+    height: initialHeight.current  - window.innerWidth - 10 
+  };
   // console.log('title',title)
   // console.log('address',address)
   // console.log('isHideAddress',isHideAddress)
@@ -157,6 +162,8 @@ function CaptureCertificationRecord({
       return;
     }
 
+    console.log('isHideAddress',isHideAddress)
+
     const data = {
       userId: user.id,
       categoryCode: 'CA9999',
@@ -165,6 +172,7 @@ function CaptureCertificationRecord({
       description: content,
       latitude,
       longitude,
+      isHideAddress
     };
 
     console.log('data',data)
@@ -204,7 +212,7 @@ function CaptureCertificationRecord({
         <main
           className="capture-img-record ios-capture-record"
           style={{
-            height: window.innerHeight - window.innerWidth - 10,
+            height: initialHeight.current- window.innerWidth - 10 
           }}
         >
           <body className="review-container">
@@ -234,51 +242,52 @@ function CaptureCertificationRecord({
               {/* <div className="review-place-info-address">{address}</div> */}
             </div>
 
-            <div className="review-place-address-hide">
-              <div style={{ display: 'flex' }}>
-                <input
-                  className="review-place-address-hide-button"
-                  type="checkbox"
-                  checked={isHideAddress}
-                  onClick={() =>
-                    dispatch(
-                      uploadAction.setHideAddress({
-                        isHideAddress: !isHideAddress,
-                      }),
-                    )
-                  }
-                />
-                <div
-                  className="review-place-address-hide-label"
-                  aria-hidden
-                  onClick={() =>
-                    dispatch(
-                      uploadAction.setHideAddress({
-                        isHideAddress: !isHideAddress,
-                      }),
-                    )
-                  }
-                >
-                  주소 나만보기
-                </div>
-              </div>
-              {isHideAddress && (
-                <div style={{ position: 'relative' }}>
-                  <div className="review-place-address-hide-box">
-                    다른 사용자에게는 장소이름만 보여요
+            {mongPlaceId === 0 && (
+              <div className="review-place-address-hide">
+                <div style={{ display: 'flex' }}>
+                  <input
+                    className="review-place-address-hide-button"
+                    type="checkbox"
+                    checked={isHideAddress}
+                    onClick={() =>
+                      dispatch(
+                        uploadAction.setHideAddress({
+                          isHideAddress: !isHideAddress,
+                        }),
+                      )
+                    }
+                  />
+                  <div
+                    className="review-place-address-hide-label"
+                    aria-hidden
+                    onClick={() =>
+                      dispatch(
+                        uploadAction.setHideAddress({
+                          isHideAddress: !isHideAddress,
+                        }),
+                      )
+                    }
+                  >
+                    주소 나만보기
                   </div>
-                  <div className="review-place-address-hide-box-arrow" />
                 </div>
-              )}
-            </div>
-
+                {isHideAddress && (
+                  <div style={{ position: 'relative' }}>
+                    <div className="review-place-address-hide-box">
+                      다른 사용자에게는 장소이름만 보여요
+                    </div>
+                    <div className="review-place-address-hide-box-arrow" />
+                  </div>
+                )}
+              </div>
+            )}
             <div className="review-guidance-text">
               이곳에 대해 남기고 싶은 기록이 있나요?
             </div>
 
             <textarea
               className="review-content"
-              placeholder="🐶강아지 친구들이 참고할 내용을 적어주면 좋아요"
+              placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
               onChange={(e) =>
                 dispatch(
                   uploadAction.setContent({
@@ -312,10 +321,10 @@ function CaptureCertificationRecord({
           isOpen={bottomSheetIsOpen}
           onClose={closeBottomSheet}
           snapPoints={[
-            window.innerHeight - window.innerWidth - 10,
-            window.innerHeight - window.innerWidth - 10,
-            window.innerHeight - window.innerWidth - 10,
-            window.innerHeight - window.innerWidth - 10,
+            initialHeight.current- window.innerWidth - 10 ,
+            initialHeight.current- window.innerWidth - 10 ,
+            initialHeight.current- window.innerWidth - 10 ,
+            initialHeight.current- window.innerWidth - 10 
           ]}
           // ref={ref}
           disableDrag
@@ -326,7 +335,7 @@ function CaptureCertificationRecord({
               <main
                 className="capture-img-record ios-capture-record"
                 style={{
-                  height: window.innerHeight - window.innerWidth - 10,
+                  height: initialHeight.current- window.innerWidth - 10,
                 }}
               >
                 <body className="review-container">
@@ -357,42 +366,44 @@ function CaptureCertificationRecord({
                     {/* <div className="review-place-info-address">{address}</div> */}
                   </div>
 
-                  <div className="review-place-address-hide">
-                    <div style={{ display: 'flex' }}>
-                      <input
-                        className="review-place-address-hide-button"
-                        type="checkbox"
-                        checked={isHideAddress}
-                        onClick={() =>
-                          dispatch(
-                            uploadAction.setHideAddress({
-                              isHideAddress: !isHideAddress,
-                            }),
-                          )
-                        }
-                      />
-                      <div
-                        className="review-place-address-hide-label"
-                        onClick={() =>
-                          dispatch(
-                            uploadAction.setHideAddress({
-                              isHideAddress: !isHideAddress,
-                            }),
-                          )
-                        }
-                      >
-                        주소 나만보기
-                      </div>
-                    </div>
-                    {isHideAddress && (
-                      <div style={{ position: 'relative' }}>
-                        <div className="review-place-address-hide-box">
-                          다른 사용자에게는 장소이름만 보여요
+                  {mongPlaceId === 0 && (
+                    <div className="review-place-address-hide">
+                      <div style={{ display: 'flex' }}>
+                        <input
+                          className="review-place-address-hide-button"
+                          type="checkbox"
+                          checked={isHideAddress}
+                          onClick={() =>
+                            dispatch(
+                              uploadAction.setHideAddress({
+                                isHideAddress: !isHideAddress,
+                              }),
+                            )
+                          }
+                        />
+                        <div
+                          className="review-place-address-hide-label"
+                          onClick={() =>
+                            dispatch(
+                              uploadAction.setHideAddress({
+                                isHideAddress: !isHideAddress,
+                              }),
+                            )
+                          }
+                        >
+                          주소 나만보기
                         </div>
-                        <div className="review-place-address-hide-box-arrow" />
                       </div>
-                    )}
-                  </div>
+                      {isHideAddress && (
+                        <div style={{ position: 'relative' }}>
+                          <div className="review-place-address-hide-box">
+                            다른 사용자에게는 장소이름만 보여요
+                          </div>
+                          <div className="review-place-address-hide-box-arrow" />
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   <div className="review-guidance-text">
                     이곳에 대해 남기고 싶은 기록이 있나요?
@@ -400,7 +411,7 @@ function CaptureCertificationRecord({
 
                   <textarea
                     className="review-content"
-                    placeholder="🐶강아지 친구들이 참고할 내용을 적어주면 좋아요"
+                    placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
                     onChange={(e) =>
                       dispatch(
                         uploadAction.setContent({
@@ -409,7 +420,7 @@ function CaptureCertificationRecord({
                       )
                     }
                     maxLength={199}
-                    onFocus={screenUp}
+                    // onFocus={screenUp}
                   >
                     {content}
                   </textarea>

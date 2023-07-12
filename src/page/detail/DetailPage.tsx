@@ -31,7 +31,6 @@ function DetailPage() {
   );
 
   const navigateToHome = () => navigate('/');
-
   useEffect(() => {
     mutation.mutate({
       params: {
@@ -42,8 +41,12 @@ function DetailPage() {
   }, []);
 
   if (data === undefined || isLoading) return <BallLoading />;
-  const imageArray = [...data.photoUrls, ...data.representMenuPhotoUrls];
-
+  let imageArray: string[] = [];
+  if (data.categoryCode === 'CA0002' || data.categoryCode === 'CA0003') {
+    imageArray = [...data.photoUrls, ...data.representMenuPhotoUrls];
+  } else if (data.isPriceTag) {
+    imageArray = [...data.photoUrls, ...data.priceTagPhotoUrls];
+  }
   const placeFullScreenHandler = (index: number) => {
     setImageNumber(index);
     setIsFullScreenSliderOpen(true);
@@ -64,6 +67,7 @@ function DetailPage() {
       />
     );
 
+
   if (isEditorOpen)
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
   console.log(data.enterDesc);
@@ -81,11 +85,20 @@ function DetailPage() {
         heartCount={data.recommendCount}
         phoneNumber={data.phoneNo}
         openingHours={data.businessHour}
+        categoryCode={data.categoryCode}
       />
       <DetailInfo
         residentDog={data.residentDogName}
         residentDogPhoto={data.residentDogPhoto}
         instagram={data.instaId}
+        isPriceTag={data.isPriceTag}
+        representMenu={data.representMenuTitle}
+        menuImages={
+          data.categoryCode === 'CA0005' || data.categoryCode === 'CA0006'
+            ? data.priceTagPhotoUrls
+            : data.representMenuPhotoUrls
+        }
+        acceptSize={data.acceptSize}
         representMenu={data.representMenuTitle}
         menuImages={data.representMenuPhotoUrls}
         acceptSize={data.acceptSize}
@@ -95,6 +108,8 @@ function DetailPage() {
         editorNoteUrl={data.editorNoteUrl}
         openEditor={() => setIsEditorOpen(true)}
         openFullSlider={menuFullScreenHandler}
+        categoryCode={data.categoryCode}
+      />
       />
       <DetailReview
         mungpleId={data.mungpleId}

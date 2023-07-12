@@ -311,7 +311,6 @@ function MapTest() {
       showMungpleList();
     }
   }, [selectedCategory]);
-
   useEffect(() => {
     dispatch(mapAction.setSelectedId(selectedId));
     if (selectedId.prevId === selectedId.id) return;
