@@ -56,6 +56,7 @@ function CaptureCertificationRecord({
   //   openImgUploadErrorToast,
   //   closeImgUploadErrorToast,
   // ] = useActive(false);
+
   const { latitude, longitude, mongPlaceId, title, file, address,content,isHideAddress,categoryCode } = useSelector(
     (state: RootState) => state.persist.upload,
   );
@@ -83,7 +84,6 @@ function CaptureCertificationRecord({
   console.log('prevPath',prevPath)
   console.log('mongPlaceId',mongPlaceId)
   console.log('initialHeight',initialHeight.current)
-
 
   const sheetStyle = {
     borderRadius: '18px 18px 0px 0px',
@@ -281,7 +281,6 @@ function CaptureCertificationRecord({
                 )}
               </div>
             )}
-
             <div className="review-guidance-text">
               이곳에 대해 남기고 싶은 기록이 있나요?
             </div>
