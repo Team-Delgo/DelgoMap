@@ -99,9 +99,6 @@ function DetailPage() {
             : data.representMenuPhotoUrls
         }
         acceptSize={data.acceptSize}
-        representMenu={data.representMenuTitle}
-        menuImages={data.representMenuPhotoUrls}
-        acceptSize={data.acceptSize}
         isParking={data.isParking}
         enterDsc={data.enterDesc}
         parkingInfo={data.parkingInfo}
@@ -109,7 +106,6 @@ function DetailPage() {
         openEditor={() => setIsEditorOpen(true)}
         openFullSlider={menuFullScreenHandler}
         categoryCode={data.categoryCode}
-      />
       />
       <DetailReview
         mungpleId={data.mungpleId}

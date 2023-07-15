@@ -14,7 +14,7 @@ interface Props {
 
 const categoryList = [
   { code: 'CA0002', name: '카페', icon: cafeIcon },
-  //{ code: 'CA0003', name: '식당', icon: eatIcon },
+  // { code: 'CA0003', name: '식당', icon: eatIcon },
   // { code: 'CA0001', name: '산책', icon: walkIcon },
   { code: 'CA0007', name: '유치원/호텔', icon: kinderIcon },
   { code: 'CA0005', name: '미용/목욕', icon: beautyIcon },

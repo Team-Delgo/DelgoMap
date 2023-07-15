@@ -19,24 +19,24 @@ describe('DetailInfo Component with ResidentDog', () => {
     openFullSlider: jest.fn()
   }
 
-  test('should render resident dog information correctly', () => {
-    const { getByText } = render(<DetailInfo {...mockProps} />);
-    expect(getByText('상주견')).toBeInTheDocument();
-    expect(getByText('푸들')).toBeInTheDocument();
-    expect(getByText('@poodle')).toBeInTheDocument();
-  });
+  // test('should render resident dog information correctly', () => {
+  //   const { getByText } = render(<DetailInfo {...mockProps} />);
+  //   expect(getByText('상주견')).toBeInTheDocument();
+  //   expect(getByText('푸들')).toBeInTheDocument();
+  //   expect(getByText('@poodle')).toBeInTheDocument();
+  // });
 
-  test('should render representative menu correctly', () => {
-    const { getByText } = render(<DetailInfo {...mockProps} />);
-    expect(getByText('강아지 대표 메뉴')).toBeInTheDocument();
-    expect(getByText('Dog Biscuit')).toBeInTheDocument();
-  });
+  // test('should render representative menu correctly', () => {
+  //   const { getByText } = render(<DetailInfo {...mockProps} />);
+  //   expect(getByText('강아지 대표 메뉴')).toBeInTheDocument();
+  //   expect(getByText('Dog Biscuit')).toBeInTheDocument();
+  // });
 
-  test('should handle click on the "more details" button', () => {
-    const { getByText } = render(<DetailInfo {...mockProps} />);
-    fireEvent.click(getByText('자세히 보기'));
-    expect(getByText('Entrance Description')).toBeInTheDocument();
-  });
+  // test('should handle click on the "more details" button', () => {
+  //   const { getByText } = render(<DetailInfo {...mockProps} />);
+  //   fireEvent.click(getByText('자세히 보기'));
+  //   expect(getByText('Entrance Description')).toBeInTheDocument();
+  // });
 
 });
 

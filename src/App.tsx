@@ -20,10 +20,10 @@ import {
   SIGN_IN_PATH,
   SIGN_UP_PATH,
 } from './common/constants/path.const';
-import UploadCertificationPage from './page/capture/UploadCertificationPage';
-import UploadCertificationResultPage from './page/capture/UploadCertificationResultPage';
-import UploadCertificationUpatePage from './page/capture/UploadCertificationUpatePage';
-import UploadLocationPage from './page/capture/UploadLocationPage';
+import UploadCertificationPage from './page/upload/UploadCertificationPage';
+import UploadCertificationResultPage from './page/upload/UploadCertificationResultPage';
+import UploadCertificationUpatePage from './page/upload/UploadCertificationUpatePage';
+import UploadLocationPage from './page/upload/UploadLocationPage';
 import DetailPage from './page/detail/DetailPage';
 // import MapPage from "./page/map/MapPage";
 import ChangePassword from './page/myaccount/ChangePassword';
