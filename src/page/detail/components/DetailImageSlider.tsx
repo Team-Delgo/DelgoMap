@@ -5,24 +5,32 @@ import 'swiper/css/pagination';
 
 interface Props {
   images: string[];
-  openFullSlider: (index:number)=>void;
+  openFullSlider: (index: number) => void;
 }
 
 function DetailImageSlider({ images, openFullSlider }: Props) {
   const [imageNumber, setImageNumber] = useState(0);
 
   return (
-    <div className="detail-img">
+    <div className="relative">
       <Swiper onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
         {images.map((image, index) => {
           return (
             <SwiperSlide>
-              <img src={image} alt="placeimage" aria-hidden onClick={()=>openFullSlider(index)}/>
+              <img
+                className="w-screen h-[100vw] overflow-hidden"
+                src={image}
+                alt="placeimage"
+                aria-hidden
+                onClick={() => openFullSlider(index)}
+              />
             </SwiperSlide>
           );
         })}
       </Swiper>
-      <div className="detail-img-number">{imageNumber + 1} / {images.length}</div>
+      <div className="absolute z-[100] flex items-center justify-center text-white text-[11px] font-normal right-0 bottom-[5px] w-[55px] h-[23px] bg-gray-700 bg-opacity-70 ">
+        {imageNumber + 1} / {images.length}
+      </div>
     </div>
   );
 }

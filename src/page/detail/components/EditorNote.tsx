@@ -9,8 +9,8 @@ interface Props {
 function EditorNote({ image, close }: Props) {
   return (
     <div className="detail-editor">
-      <BackArrowComponent onClickHandler={close} isFixed/>
-      <img className="detail-editor-image" src={image} alt="editor-note" />
+      <BackArrowComponent onClickHandler={close} isFixed />
+      <img className="w-screen" src={image} alt="editor-note" />
     </div>
   );
 }
