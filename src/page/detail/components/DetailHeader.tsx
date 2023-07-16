@@ -15,16 +15,6 @@ interface Props {
   phoneNumber: string;
   openingHours: OpeningHours;
 }
-// interface OpeningHours {
-//   mon: string;
-//   tue: string;
-//   wed: string;
-//   thu: string;
-//   fri: string;
-//   sat: string;
-//   sun: string;
-//   lastOrder: string;
-// }
 
 interface OpeningHours {
   MON: string;
@@ -50,9 +40,8 @@ function DetailHeader({
 }: Props) {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const sendScrap = async () => {
-    await window.kakao.Share.sendScrap({
+    await window.Kakao.Share.sendScrap({
       requestUrl: 'http://go.delgo.pet/',
-      templateId: 92943,
     });
   };
   return (
@@ -88,11 +77,6 @@ function DetailHeader({
           공유
         </div>
         <div className="w-[1px] h-[21px] bg-[#e6e6e6]" />
-        {/* <div className="detail-interaction-button">
-          <img src="" alt="star" />
-          저장
-        </div>
-        <div className="detail-interaction-div" /> */}
         <div
           aria-hidden
           onClick={() => setIsInfoOpen(!isInfoOpen)}
