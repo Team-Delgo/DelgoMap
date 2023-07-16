@@ -15,10 +15,10 @@ function UploadImg() {
   const location = useLocation();
   const eventTargetRef = useRef<HTMLDivElement | null>(null);
 
-  const handleDragStart = (e: any) => {
+  const handleDragStart = (e: MouseEvent | TouchEvent) => {
     e.preventDefault();
   };
-
+  
   useEffect(() => {
     const eventTarget = eventTargetRef.current;
     if (eventTarget) {

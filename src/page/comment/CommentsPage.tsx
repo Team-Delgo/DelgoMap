@@ -1,9 +1,9 @@
 import React,{useCallback, useEffect, useRef, useState} from 'react';
+import { useMutation, useQuery } from 'react-query';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import LeftArrow from '../../common/icons/left-arrow.svg';
 import { getCommentList, postComment,deleteComment } from '../../common/api/comment';
 import { RootState } from '../../redux/store';
 import ConfirmBottomSheet from '../../common/dialog/ConfirmBottomSheet';
@@ -15,6 +15,9 @@ import './CommentsPage.scss';
 import useInput from '../../common/hooks/useInput';
 import { postType } from '../../common/types/post';
 import PageHeader from '../../components/PageHeader';
+import { useErrorHandlers } from '../../common/api/useErrorHandlers';
+import DogLoading from '../../common/utils/BallLoading';
+
 
 interface StateType {
   post:postType
@@ -22,7 +25,6 @@ interface StateType {
 
 function CommentsPage() {
   const [deleteCommentId, setDeleteCommentId] = useState(-1);
-  const [commentList, setCommentList] = useState<commentType[]>([]);
   const [inputComment, onChangeInputComment,resetInputComment] = useInput('');
   const [deleteCommentBottomSheetIsOpen, openDeleteCommentBottomSheet, closeDeleteCommentBottomSheet] = useActive(false);
   const [deleteCommentSuccessToastIsOpen, openDeleteCommentSuccessToast,closeDeleteCommentSuccessToast] = useActive(false);
@@ -35,9 +37,60 @@ function CommentsPage() {
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_post');
 
 
-  useEffect(() => {
-    getComments();
-  }, []);
+  const {
+    data: commentList,
+    refetch: refetchCommentList,
+    isLoading:getCommentListIsLoading,
+  } = useQuery('comments', () => getCommentList(post?.certificationId));
+
+  const {mutate:postCommentMutate,isLoading:postCommentIsLoading} = useMutation(
+    ({
+      userId,
+      certificationId,
+      content,
+    }: {
+      userId: number;
+      certificationId: number;
+      content: string;
+    }) => postComment(userId, certificationId, content),
+    {
+      onSuccess: (response: AxiosResponse) => {
+        if (response.data.code === 200) {
+          resetInputComment();
+          refetchCommentList();
+        }
+      },
+      onError: (error: any) => {
+        useErrorHandlers(dispatch, error);
+      },
+    },
+  );
+
+  const { mutate: deleteCommentMutate, isLoading: deleteCommentIsLoading } = useMutation(
+    ({
+      userId,
+      commentId,
+      certificationId,
+    }: {
+      userId: number;
+      commentId: number;
+      certificationId: number;
+    }) => deleteComment(userId, commentId, certificationId),
+    {
+      onSuccess: (response: AxiosResponse) => {
+        if (response.data.code === 200) {
+          openDeleteCommentSuccessToast();
+          closeDeleteCommentBottomSheet();
+          refetchCommentList();
+        } else {
+          closeDeleteCommentBottomSheet();
+        }
+      },
+      onError: (error: any) => {
+        useErrorHandlers(dispatch, error);
+      },
+    },
+  );
 
   useEffect(() => {
     if (deleteCommentSuccessToastIsOpen) {
@@ -47,50 +100,26 @@ function CommentsPage() {
     }
   }, [deleteCommentSuccessToastIsOpen]);
 
-  const getComments = useCallback(() => {
-    getCommentList(
-      post.certificationId,
-      (response: AxiosResponse) => {
-        setCommentList(response.data.data);
-      },
-      dispatch,
-    );
-  }, []);
-
-  const postCommentOnCert = useCallback(() => {
+  const postCommentOnCert = () => {
     commentEvent.mutate();
     resetInputComment();
-    postComment(
-      userId,
-      post.certificationId,
-      inputComment,
-      (response: AxiosResponse) => {
-        if (response.data.code === 200) {
-          resetInputComment();
-          getComments();
-        }
-      },
-      dispatch,
-    );
-  }, [inputComment]);
 
-  const deleteCommentOnCert = useCallback(() => {
-    deleteComment(
+    const data = {
       userId,
-      deleteCommentId,
-      post.certificationId,
-      (response: AxiosResponse) => {
-        if (response.data.code === 200) {
-          openDeleteCommentSuccessToast();
-          closeDeleteCommentBottomSheet();
-          getComments();
-        } else {
-          closeDeleteCommentBottomSheet();
-        }
-      },
-      dispatch,
-    );
-  }, [deleteCommentId, post.certificationId]);
+      certificationId: post.certificationId,
+      content: inputComment,
+    };
+
+    postCommentMutate(data);
+  };
+
+  const deleteCommentOnCert = () => {
+    deleteCommentMutate({
+      userId,
+      commentId: deleteCommentId,
+      certificationId: post.certificationId,
+    });
+  }
 
   const handleResizeHeight = useCallback(() => {
     if (textRef.current) {
@@ -115,7 +144,10 @@ function CommentsPage() {
   },[])
 
 
-  const context = commentList.map((comment: commentType) => {
+  const isLoading =
+    getCommentListIsLoading || postCommentIsLoading || deleteCommentIsLoading;
+
+  const context = commentList?.data?.map((comment: commentType) => {
     return (
       <div className="comment">
         <img src={comment.userProfile} alt="profile" />
@@ -156,6 +188,7 @@ function CommentsPage() {
 
   return (
     <>
+    {isLoading && <DogLoading />}
       <div className="comments">
         <PageHeader title="댓글" navigate={moveToPrevPage} />
         <div className="comments-context">{context}</div>

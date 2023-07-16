@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 import { RootState } from '../../../redux/store';
-import { UPLOAD_PATH, POSTS_PATH, ROOT_PATH, RECORD_PATH } from '../../../common/constants/path.const';
+import { UPLOAD_PATH, POSTS_PATH, RECORD_PATH } from '../../../common/constants/path.const';
 import { certificationDelete } from '../../../common/api/certification';
 import X from '../../../common/icons/xx.svg';
 import DeleteBottomSheet from '../../../common/dialog/ConfirmBottomSheet';

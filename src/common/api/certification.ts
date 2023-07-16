@@ -24,37 +24,17 @@ function registerGalleryCertificationPost(formdata: FormData) {
   });
 }
 
-async function registerGalleryCertificationImg(
-  formdata: FormData,
-  certificationId: number,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  try {
-    const result = await axiosInstance.post(
-      `/photo/upload/certification/${certificationId}`,
-      formdata,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
-    );
-    success(result);
-  } catch (err: any) {
-    useErrorHandlers(dispatch, err);
-  }
-}
-
- function updateCertificationPost(data: {
+function updateCertificationPost(data: {
   certificationId: number;
   description: string;
   userId: number;
+  isHideAddress: boolean;
 }) {
   return axiosInstance.put(`/certification`, {
     certificationId: data.certificationId,
     description: data.description,
     userId: data.userId,
+    isHideAddress: data.isHideAddress,
   });
 }
 
@@ -90,7 +70,6 @@ async function getFiveOtherDogsCert(userId: number, count: number) {
 export {
   getMungPlaceList,
   registerGalleryCertificationPost,
-  registerGalleryCertificationImg,
   getCertificationPostAll,
   updateCertificationPost,
   certificationLike,
