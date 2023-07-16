@@ -20,3 +20,15 @@ export async function compressFormData(formData: FormData): Promise<FormData> {
 
   return compressedFormData;
 }
+
+export const blobFormData = (data: any, file: any) => {
+  const formData = new FormData();
+
+  const json = JSON.stringify(data);
+  const blob = new Blob([json], { type: 'application/json' });
+
+  formData.append('data', blob);
+  formData.append('photo', file);
+
+  return formData;
+};
