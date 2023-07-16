@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 import Sheet from 'react-modal-sheet';
-import classnames from 'classnames';
 import { UPLOAD_PATH } from '../../../common/constants/path.const';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import { getMungPlaceList } from '../../../common/api/certification';

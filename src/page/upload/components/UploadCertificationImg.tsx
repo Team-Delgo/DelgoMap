@@ -21,7 +21,7 @@ function UploadCertificationImg({ openBottomSheet }: props) {
   const location = useLocation();
   
 
-  const handleDragStart = (e: any) => {
+  const handleDragStart = (e: MouseEvent | TouchEvent) => {
     e.preventDefault();
   };
 

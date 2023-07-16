@@ -1,17 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import WhiteX from '../../../common/icons/white-x.svg';
 import { UPLOAD_PATH } from '../../../common/constants/path.const';
-import { uploadAction } from '../../../redux/slice/uploadSlice';
+
 
 function UploadCertificationUpdateImg() {
   const img = useSelector((state: RootState) => state.persist.upload.img);
   const navigate = useNavigate();
   const location: any = useLocation();
   const eventTargetRef = useRef<HTMLDivElement | null>(null);
-  const dispatch = useDispatch()
 
   const handleDragStart = (e: any) => {
     e.preventDefault();
