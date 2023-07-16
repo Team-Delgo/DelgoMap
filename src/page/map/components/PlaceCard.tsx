@@ -72,9 +72,10 @@ function PlaceCard(props: {
       }),
     );
     dispatch(mapAction.setDetailUrl(detailUrl));
-    if (categoryCode !== 'CA0002') {
-      navigate(`detail/temp/${id}`);
-    } else navigate(`detail/${id}`);
+    // if (categoryCode !== 'CA0002') {
+    //   navigate(`detail/temp/${id}`);
+    // } else
+    navigate(`detail/${id}`);
   };
 
   return (
