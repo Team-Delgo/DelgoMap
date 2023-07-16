@@ -6,6 +6,7 @@ import walkIcon from '../../../../../common/icons/walk-category.svg';
 import kinderIcon from '../../../../../common/icons/kinder-category.svg';
 import beautyIcon from '../../../../../common/icons/beauty-category.svg';
 import hospitalIcon from '../../../../../common/icons/hospital-category.svg';
+import CategoryItem from './CategoryItem';
 
 interface Props {
   selectedCategory: string;
@@ -13,12 +14,12 @@ interface Props {
 }
 
 const categoryList = [
-  { code: 'CA0002', name: '카페', icon: cafeIcon },
-  { code: 'CA0003', name: '식당', icon: eatIcon },
-  // { code: 'CA0001', name: '산책', icon: walkIcon },
-  { code: 'CA0007', name: '유치원/호텔', icon: kinderIcon },
-  { code: 'CA0005', name: '미용/목욕', icon: beautyIcon },
-  { code: 'CA0006', name: '병원', icon: hospitalIcon },
+  { code: 'CA0002', name: '카페', icon: cafeIcon, color: 'border-[#8e6947]' },
+  { code: 'CA0003', name: '식당', icon: eatIcon, color: 'border-[#a33821]' },
+  // { code: 'CA0001', name: '산책', icon: walkIcon ,color:'bg-[#4a8c48]' },
+  { code: 'CA0007', name: '유치원/호텔', icon: kinderIcon, color: 'border-[#d66615]' },
+  { code: 'CA0005', name: '미용/목욕', icon: beautyIcon, color: 'border-[#df3390]' },
+  { code: 'CA0006', name: '병원', icon: hospitalIcon, color: 'border-[#7a5ccf]' },
 ];
 
 function Categroy({ selectedCategory, onClick }: Props) {
@@ -42,19 +43,17 @@ function Categroy({ selectedCategory, onClick }: Props) {
   };
 
   return (
-    <div className="absolute top-[92px] flex w-screen overflow-x-scroll scrollbar-none">
-      {categoryList.map((data) => (
-        <li
-          className="z-10 mr-[8px] flex shrink-0 items-center rounded-[25px] border border-white bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d]"
-          // className={`categoryList${data.code === selectedValue ? ' active' : ''}`}
-          key={data.code}
-          onClick={clickEventHandler}
-          role="none"
-          value={data.code}
-        >
-          <img src={data.icon} alt={data.name} className="categoryIcon" />
-          {data.name}
-        </li>
+    <div className="absolute top-[92px] z-10 flex w-screen overflow-x-scroll scrollbar-none">
+      {categoryList.map((data, i) => (
+        <CategoryItem
+          icon={data.icon}
+          name={data.name}
+          code={data.code}
+          handler={clickEventHandler}
+          color={data.color}
+          selectedValue={selectedValue}
+          isFirst={i === 0}
+        />
       ))}
     </div>
   );

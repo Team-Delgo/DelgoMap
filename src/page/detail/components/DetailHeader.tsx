@@ -51,68 +51,68 @@ function DetailHeader({
           {placeName}
         </div>
         <div className="flex items-center text-xs font-medium">
-          <img className="w-3 mr-1" src={DogFoot} alt="foot" />
+          <img className="mr-1 w-3" src={DogFoot} alt="foot" />
           <span>{dogFootCount}</span>
-          <div className="w-[3px] h-[3px] rounded-[100%] bg-[#ababab] mx-[3px]" />
-          <img className="w-3 mr-1" src={Heart} alt="heart" />
+          <div className="mx-[3px] h-[3px] w-[3px] rounded-[100%] bg-[#ababab]" />
+          <img className="mr-1 w-3" src={Heart} alt="heart" />
           <span>{heartCount}</span>
         </div>
       </div>
       <div className="mt-1 text-xs font-normal text-[#646566]">{address}</div>
-      <div className="pb-[10px] mt-9 text-sm font-normal flex justify-evenly">
+      <div className="mt-9 flex justify-evenly pb-[10px] text-sm font-normal">
         <a
           href={`tel:${phoneNumber}`}
-          className="flex items-center leading-[150%] no-underline text-black"
+          className="flex items-center leading-[150%] text-black no-underline"
         >
           <img className="mr-[6px]" src={Phone} alt="phone" />
           전화
         </a>
-        <div className="w-[1px] h-[21px] bg-[#e6e6e6]" />
+        <div className="h-[21px] w-[1px] bg-[#e6e6e6]" />
         <div
-          className="flex items-center leading-[150%] no-underline text-black"
+          className="flex items-center leading-[150%] text-black no-underline"
           onClick={sendScrap}
           aria-hidden
         >
           <img className="mr-[6px]" src={Upload} alt="upload" />
           공유
         </div>
-        <div className="w-[1px] h-[21px] bg-[#e6e6e6]" />
+        <div className="h-[21px] w-[1px] bg-[#e6e6e6]" />
         <div
           aria-hidden
           onClick={() => setIsInfoOpen(!isInfoOpen)}
-          className="flex items-center leading-[150%] no-underline text-black"
+          className="flex items-center leading-[150%] text-black no-underline"
         >
           <img className="mr-[6px]" src={Clock} alt="time" />
           {categoryCode === 'CA0005' ? '운영시간' : '영업시간'}
         </div>
       </div>
-      {isInfoOpen && <div className="mt-[10px] w-full h-[1px] bg-[#e6e6e6]" />}
+      {isInfoOpen && <div className="mt-[10px] h-[1px] w-full bg-[#e6e6e6]" />}
       {isInfoOpen && (
-        <div className="p-[13px] flex justify-evenly">
+        <div className="flex justify-evenly p-[13px]">
           <div className="text-sm font-medium">
             <div className="m-[5px]">
-              월 <span className="font-normal ml-[5px]">{openingHours.MON}</span>
+              월 <span className="ml-[5px] font-normal">{openingHours.MON}</span>
             </div>
             <div className="m-[5px]">
-              화 <span className="font-normal ml-[5px]">{openingHours.TUE}</span>
+              화 <span className="ml-[5px] font-normal">{openingHours.TUE}</span>
             </div>
             <div className="m-[5px]">
-              수 <span className="font-normal ml-[5px]">{openingHours.WED}</span>
+              수 <span className="ml-[5px] font-normal">{openingHours.WED}</span>
             </div>
             <div className="m-[5px]">
-              목 <span className="font-normal ml-[5px]">{openingHours.THU}</span>
+              목 <span className="ml-[5px] font-normal">{openingHours.THU}</span>
             </div>
             <div className="m-[5px]">
-              금 <span className="font-normal ml-[5px]">{openingHours.FRI}</span>
+              금 <span className="ml-[5px] font-normal">{openingHours.FRI}</span>
             </div>
             <div className="m-[5px]">
-              토 <span className="font-normal ml-[5px]">{openingHours.SAT}</span>
+              토 <span className="ml-[5px] font-normal">{openingHours.SAT}</span>
             </div>
             <div className="m-[5px]">
-              일 <span className="font-normal ml-[5px]">{openingHours.SUN}</span>
+              일 <span className="ml-[5px] font-normal">{openingHours.SUN}</span>
             </div>
           </div>
-          <div className="font-medium text-sm">
+          <div className="text-sm font-medium">
             <div className="m-[5px]">라스트 오더</div>
             <div className="m-[5px] mb-4 font-normal">{openingHours.LAST_ORDER}</div>
             <div className="m-[5px]">브레이크 타임</div>
@@ -127,7 +127,7 @@ function DetailHeader({
         </div>
       )}
       {isInfoOpen && (
-        <div className="w-full flex justify-center items-center">
+        <div className="flex w-full items-center justify-center">
           <div
             className="flex items-center"
             aria-hidden
