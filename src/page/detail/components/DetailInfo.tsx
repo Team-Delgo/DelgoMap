@@ -83,7 +83,8 @@ function DetailInfo({
         </div>
       )}
       {menuImages && menuImages.length >= 1 && (
-        <div className="mt-2.5 flex justify-center">
+
+        <div className={`flex mt-2.5 ${menuImages.length <= 2 ? '' : 'justify-center'}`}>
           <img
             className="mr-[3px] aspect-square w-[32.7%]"
             aria-hidden
@@ -131,11 +132,13 @@ function DetailInfo({
           )}
         </div>
       </div>
-      <div className="mt-3 flex items-center">
-        <DetailDogAcceptable type="소형견" allow={acceptSize.S} />
-        <DetailDogAcceptable type="중형견" allow={acceptSize.M} />
-        <DetailDogAcceptable type="대형견" allow={acceptSize.L} />
-      </div>
+      {acceptSize && (
+        <div className="mt-3 flex items-center">
+          <DetailDogAcceptable type="소형견" allow={acceptSize.S} />
+          <DetailDogAcceptable type="중형견" allow={acceptSize.M} />
+          <DetailDogAcceptable type="대형견" allow={acceptSize.L} />
+        </div>
+      )}
       {isDogInfoOpen && (
         <div className="mt-5 whitespace-pre-line text-sm font-normal leading-[150%]">
           {enterDsc}
