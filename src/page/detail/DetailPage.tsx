@@ -45,6 +45,8 @@ function DetailPage() {
     imageArray = [...data.photoUrls, ...data.representMenuPhotoUrls];
   } else if (data.isPriceTag) {
     imageArray = [...data.photoUrls, ...data.priceTagPhotoUrls];
+  } else {
+    imageArray = [...data.photoUrls];
   }
   const placeFullScreenHandler = (index: number) => {
     setImageNumber(index);
@@ -65,7 +67,6 @@ function DetailPage() {
         placeName={data.placeName}
       />
     );
-
 
   if (isEditorOpen)
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
@@ -93,9 +94,7 @@ function DetailPage() {
         isPriceTag={data.isPriceTag}
         representMenu={data.representMenuTitle}
         menuImages={
-          data.categoryCode === 'CA0005' || data.categoryCode === 'CA0006'
-            ? data.priceTagPhotoUrls
-            : data.representMenuPhotoUrls
+          data.isPriceTag === true ? data.priceTagPhotoUrls : data.representMenuPhotoUrls
         }
         acceptSize={data.acceptSize}
         isParking={data.isParking}
