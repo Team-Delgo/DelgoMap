@@ -66,7 +66,6 @@ function DetailPage() {
       />
     );
 
-
   if (isEditorOpen)
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
   console.log(data.enterDesc);

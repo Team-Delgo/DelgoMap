@@ -42,22 +42,22 @@ function DetailInfo({
   const [isDogInfoOpen, setIsDogInfoOpen] = useState(false);
   console.log(acceptSize);
   return (
-    <div className="-translate-y-[5px] m-3 px-5 py-5 bg-white rounded-xl">
+    <div className="m-3 -translate-y-[5px] rounded-xl bg-white px-5 py-5">
       {residentDog && (
-        <div className="flex justify-between items-center mt-2 pb-5">
+        <div className="mt-2 flex items-center justify-between pb-5">
           <div className="flex">
             {residentDogPhoto ? (
               <img
-                className="w-[47px] h-[47px] rounded-[100%]"
+                className="h-[47px] w-[47px] rounded-[100%]"
                 src={residentDogPhoto}
                 alt="dog"
               />
             ) : (
-              <div className="w-[47px] h-[47px] rounded-[100%] bg-[url('./common/icons/dog.svg')] bg-cover" />
+              <div className="h-[47px] w-[47px] rounded-[100%] bg-[url('./common/icons/dog.svg')] bg-cover" />
             )}
-            <div className="flex flex-col justify-center ml-4">
+            <div className="ml-4 flex flex-col justify-center">
               <div className="text-xs font-medium text-[#646566]">상주견</div>
-              <div className="font-medium text-sm">{residentDog}</div>
+              <div className="text-sm font-medium">{residentDog}</div>
             </div>
           </div>
           <a
@@ -70,22 +70,22 @@ function DetailInfo({
       )}
       {menuImages && (
         <div className="mt-5 flex justify-between">
-          <div className="font-medium text-sm">
+          <div className="text-sm font-medium">
             {representMenu
               ? '강아지 대표 메뉴'
               : categoryCode === 'CA0005' || 'CA0006'
               ? '가격표 이미지'
               : '메뉴 이미지'}
           </div>
-          <div className="flex items-center font-normal text-sm text-[#646566]">
+          <div className="flex items-center text-sm font-normal text-[#646566]">
             {representMenu}
           </div>
         </div>
       )}
       {menuImages && menuImages.length >= 1 && (
-        <div className="flex mt-2.5 justify-center">
+        <div className="mt-2.5 flex justify-center">
           <img
-            className="w-[32.7%] aspect-square mr-[3px]"
+            className="mr-[3px] aspect-square w-[32.7%]"
             aria-hidden
             src={menuImages[0]}
             onClick={() => openFullSlider(0)}
@@ -93,7 +93,7 @@ function DetailInfo({
           />
           {menuImages.length >= 2 && (
             <img
-              className="w-[32.7%] aspect-square mr-[3px]"
+              className="mr-[3px] aspect-square w-[32.7%]"
               aria-hidden
               src={menuImages[1]}
               onClick={() => openFullSlider(1)}
@@ -102,7 +102,7 @@ function DetailInfo({
           )}
           {menuImages.length >= 3 && (
             <img
-              className="w-[32.7%] aspect-square mr-[3px]"
+              className="mr-[3px] aspect-square w-[32.7%]"
               aria-hidden
               src={menuImages[2]}
               onClick={() => openFullSlider(2)}
@@ -111,11 +111,11 @@ function DetailInfo({
           )}
         </div>
       )}
-      {menuImages && <div className="w-full h-[1px] mt-[18px] bg-[#e6e6e6]" />}
+      {menuImages && <div className="mt-[18px] h-[1px] w-full bg-[#e6e6e6]" />}
       <div className="mt-5 flex justify-between">
-        <div className="font-medium text-sm">강아지 동반 안내</div>
+        <div className="text-sm font-medium">강아지 동반 안내</div>
         <div
-          className="flex font-medium text-sm text-[#7a5ccf]"
+          className="flex text-sm font-medium text-[#7a5ccf]"
           aria-hidden
           onClick={() => setIsDogInfoOpen(!isDogInfoOpen)}
         >
@@ -137,27 +137,27 @@ function DetailInfo({
         <DetailDogAcceptable type="대형견" allow={acceptSize.L} />
       </div>
       {isDogInfoOpen && (
-        <div className="whitespace-pre-line leading-[150%] mt-5 text-sm font-normal">
+        <div className="mt-5 whitespace-pre-line text-sm font-normal leading-[150%]">
           {enterDsc}
         </div>
       )}
-      <div className="w-full h-[1px] mt-[18px] bg-[#e6e6e6]" />
+      <div className="mt-[18px] h-[1px] w-full bg-[#e6e6e6]" />
       <div className="mt-5 flex justify-between">
-        <div className="font-medium text-sm">주차공간</div>
-        <div className="font-medium text-sm text-[#7a5ccf]">
+        <div className="text-sm font-medium">주차공간</div>
+        <div className="text-sm font-medium text-[#7a5ccf]">
           {isParking ? '있음' : '없음'}
         </div>
       </div>
       {parkingInfo && (
-        <div className="whitespace-pre-line leading-[150%] mt-5 text-sm font-normal">
+        <div className="mt-5 whitespace-pre-line text-sm font-normal leading-[150%]">
           {parkingInfo}
         </div>
       )}
-      {!residentDog && <div className="w-full h-[1px] mt-[18px] bg-[#e6e6e6]" />}
+      {!residentDog && <div className="mt-[18px] h-[1px] w-full bg-[#e6e6e6]" />}
       {!residentDog && (
         <div className="mt-5 flex justify-between">
-          <div className="font-medium text-sm">인스타그램</div>
-          <div className="flex items-center font-normal text-sm text-[#646566]">
+          <div className="text-sm font-medium">인스타그램</div>
+          <div className="flex items-center text-sm font-normal text-[#646566]">
             <a
               href={`https://instagram.com/${instagram.slice(1)}`}
               className="detail-info-dog-instagram"
@@ -168,11 +168,11 @@ function DetailInfo({
         </div>
       )}
       {editorNoteUrl && (
-        <div className="mt-10 w-full flex justify-center">
+        <div className="mt-10 flex w-full justify-center">
           <div
             aria-hidden
             onClick={openEditor}
-            className="flex items-center text-center text-sm font-medium px-[33px] py-2.5 border border-[#ababab] rounded-[31px]"
+            className="flex items-center rounded-[31px] border border-[#ababab] px-[33px] py-2.5 text-center text-sm font-medium"
           >
             에디터 노트로 이동
             <img className="ml-[7px]" src={RightArrow} alt="right-arrow" />

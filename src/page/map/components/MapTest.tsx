@@ -9,7 +9,7 @@ import { Cert, certDefault, Mungple } from './maptype';
 import FooterNavigation from '../../../components/FooterNavigation';
 import { mapAction } from '../../../redux/slice/mapSlice';
 import Logo from '../../../common/icons/logo.svg';
-import Categroy from './Category';
+import Categroy from './components/Category/Category';
 import PlaceCard from './PlaceCard';
 import TempMarkerImageLoader, {
   clearSelectedId,
