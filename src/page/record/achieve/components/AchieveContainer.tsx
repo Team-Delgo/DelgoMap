@@ -102,12 +102,12 @@ function AchievementPage() {
   console.log('myProfileInfoData', myProfileInfoData);
 
   return (
-    <motion.div
-      initial={{ opacity: 1, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 1, x: -50 }}
-      transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
-    >
+    // <motion.div
+    //   initial={{ opacity: 1, x: 50 }}
+    //   animate={{ opacity: 1, x: 0 }}
+    //   exit={{ opacity: 1, x: -50 }}
+    //   transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
+    // >
       <div
         aria-hidden="true"
         ref={swipeArea}
@@ -128,7 +128,7 @@ function AchievementPage() {
           bottomSheetIsOpen={achievementBottomSheetIsOpen}
         />
       </div>
-    </motion.div>
+    // </motion.div>
   );
 }
 

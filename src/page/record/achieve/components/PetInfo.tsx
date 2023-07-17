@@ -38,6 +38,7 @@ function PetInfo({ myProfileInfoData }: petInfoPropsType) {
 
   return (
     <header className="pet-info-container">
+      <div className="pet-info-img-wrapper">
       <img
         className="pet-info-img"
         src={pet.image}
@@ -45,6 +46,7 @@ function PetInfo({ myProfileInfoData }: petInfoPropsType) {
         width={81}
         height={81}
       />
+      </div>
       <div className="pet-info-name">{pet.name}</div>
       <div className="pet-info-birth-day">{pet.birthday}</div>
       <div className="pet-history-info-wrapper">
