@@ -1,9 +1,17 @@
 .pet-info-container{
     margin-top: 13vh;
     text-align: center;
+
     .pet-info{
+
+        &-img-wrapper{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         &-img{
             border-radius: 4px;
+            text-align: center;
         }
         &-name{
             font-weight: 700;
