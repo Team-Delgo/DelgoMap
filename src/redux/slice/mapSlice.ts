@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { idDefault } from '../../page/map/components/maptype';
+import { idDefault } from '../../page/map/index.types';
 
 const initialState = {
   zoom: 6,

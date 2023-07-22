@@ -16,7 +16,7 @@ export interface Cert {
   placeName: string;
   registDt: string;
   userId: number;
-  userName:string;
+  userName: string;
 }
 export const certDefault: Cert = {
   categoryCode: '',
@@ -36,7 +36,7 @@ export const certDefault: Cert = {
   placeName: '',
   registDt: '',
   userId: 0,
-  userName:''
+  userName: '',
 };
 
 export const idDefault = {
@@ -44,30 +44,23 @@ export const idDefault = {
   title: '',
   address: '',
   detailUrl: '',
-  instaUrl: '',
   id: 0,
   prevId: 0,
   lat: 0,
   lng: 0,
   categoryCode: '0',
-  prevLat: 0,
-  prevLng: 0,
   prevCategoryCode: '0',
 };
 
 export interface Mungple {
   categoryCode: string;
-  geoCode: string;
   address: string;
   latitude: string;
   longitude: string;
-  instaUrl: string;
   detailUrl: string;
   mungpleId: number;
-  p_geoCode: string;
   placeName: string;
   placeNameEn: string | null;
-  registDt: string;
   photoUrl: string;
 }
 
@@ -78,4 +71,23 @@ export interface WardOffice {
   name: string;
   registDt: string;
   wardOfficeId: number;
+}
+
+export interface MungpleMarkerType {
+  id: number;
+  category: string;
+  marker: kakao.maps.Marker;
+}
+
+export interface SelectedMungpleType {
+  img: string;
+  title: string;
+  address: string;
+  detailUrl: string;
+  id: number;
+  prevId: number;
+  lat: number;
+  lng: number;
+  categoryCode: string;
+  prevCategoryCode: string;
 }

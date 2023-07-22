@@ -1,4 +1,4 @@
-import {Cert} from "../../../map/components/maptype";
+import {Cert} from "../../../map/index.types";
 
 export interface DateType{
   date:string;

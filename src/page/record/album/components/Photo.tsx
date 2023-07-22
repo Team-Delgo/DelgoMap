@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import './Photo.scss';
 import UnderArrow from '../../../../common/icons/under-arrow-gray.svg';
-import { Cert } from '../../../map/components/maptype';
+import { Cert } from '../../../map/index.types';
 import { getPhotoCount, getPhotoData } from '../../../../common/api/record';
 import { POSTS_PATH, RECORD_PATH } from '../../../../common/constants/path.const';
 import { analytics } from '../../../../index';
@@ -268,7 +268,7 @@ function Photo() {
       initial={{ opacity: 1, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
       // exit={{ opacity: 1, x: -50 }}
-      transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
+      // transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
     >
       <div className="photo" ref={swipeArea}>
         <div className="photo-history">

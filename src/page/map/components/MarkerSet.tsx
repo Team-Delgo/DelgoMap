@@ -21,7 +21,7 @@ import BathCert from '../../../common/icons/bath-cert.svg';
 import BeauthCert from '../../../common/icons/beauty-cert.svg';
 import HospitalCert from '../../../common/icons/hospital-cert.svg';
 import NormalCert from '../../../common/icons/normal-cert.svg';
-import { Cert } from './maptype';
+import { Cert } from '../index.types';
 import './MarkerSet.scss';
 import { POSTS_PATH } from '../../../common/constants/path.const';
 
@@ -46,14 +46,11 @@ export function clearSelectedId(
       title: string;
       address: string;
       detailUrl: string;
-      instaUrl: string;
       id: number;
       prevId: number;
       lat: number;
       lng: number;
       categoryCode: string;
-      prevLat: number;
-      prevLng: number;
       prevCategoryCode: string;
     }>
   >,
@@ -62,14 +59,11 @@ export function clearSelectedId(
     title: string;
     address: string;
     detailUrl: string;
-    instaUrl: string;
     id: number;
     prevId: number;
     lat: number;
     lng: number;
     categoryCode: string;
-    prevLat: number;
-    prevLng: number;
     prevCategoryCode: string;
   },
 ) {
@@ -83,11 +77,8 @@ export function clearSelectedId(
         prevId: prev.id,
         lat: 0,
         detailUrl: '',
-        instaUrl: '',
         lng: 0,
         categoryCode: '0',
-        prevLat: prev.lat,
-        prevLng: prev.lng,
         prevCategoryCode: prev.categoryCode,
       };
     });

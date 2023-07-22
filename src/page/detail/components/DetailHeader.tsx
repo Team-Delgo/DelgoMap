@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'index.css';
 import DogFoot from '../../../common/icons/dogfoot.svg';
 import Heart from '../../../common/icons/heart.svg';
 import Phone from '../../../common/icons/phone.svg';

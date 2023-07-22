@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo } from 'react';
 import useOnclickOutside from 'react-cool-onclickoutside';
 import { useDispatch, useSelector } from 'react-redux';
-import { Mungple } from './maptype';
+import { Mungple } from '../index.types';
 import './SearchBar.scss';
 import BackArrowComponent from '../../../components/BackArrowComponent';
 import { searchAction } from '../../../redux/slice/searchSlice';
