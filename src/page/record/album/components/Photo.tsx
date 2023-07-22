@@ -13,16 +13,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import './Photo.scss';
 import UnderArrow from '../../../../common/icons/under-arrow-gray.svg';
-import { Cert } from '../../../map/components/maptype';
+import { Cert } from '../../../map/index.types';
 import { getPhotoCount, getPhotoData } from '../../../../common/api/record';
 import { POSTS_PATH, RECORD_PATH } from '../../../../common/constants/path.const';
 import { analytics } from '../../../../index';
 import { scrollActions } from '../../../../redux/slice/scrollSlice';
 import { RootState } from '../../../../redux/store';
 import Plus from '../../../../common/icons/plus.svg';
-import Loading from '../../../../common/utils/Loading';
 import { getFiveOtherDogsCert } from '../../../../common/api/certification';
-import { OtherDogsCert } from './PhotoType';
 
 function Photo() {
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
@@ -63,12 +61,7 @@ function Photo() {
       },
     });
     getTotalCount();
-    // if (location?.state?.from !== 'home' && pageSizeFor === 1) {
-    //   getPhotoDataList();
-    // }
-    // if (pageSizeFor > 1) {
     getPhotoDataList();
-    // }
     const handleScroll = () => {
       const { scrollTop, offsetHeight } = document.documentElement;
       if (window.innerHeight + scrollTop >= offsetHeight) {
@@ -80,23 +73,6 @@ function Photo() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (hammertime) {
-  //     hammertime.on('swiperight', function (e) {
-  //       navigate('/');
-  //     });
-  //     hammertime.on('swipeleft', function (e) {
-  //       navigate('/calendar', { state: 'calendar' });
-  //     });
-  //   }
-  //   return () => {
-  //     if (hammertime) {
-  //       hammertime.destroy()
-  //     }
-  //   };
-  // }, [hammertime]);
-
 
   useEffect(() => {
     if (isFetching && !isLast) {
@@ -267,8 +243,6 @@ function Photo() {
     <motion.div
       initial={{ opacity: 1, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
-      // exit={{ opacity: 1, x: -50 }}
-      transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
     >
       <div className="photo" ref={swipeArea}>
         <div className="photo-history">

@@ -63,7 +63,7 @@ import { RootState } from './redux/store';
 import { userActions } from './redux/slice/userSlice';
 import { getMyInfo } from './common/api/myaccount';
 
-import MapTest from './page/map/components/MapTest';
+import Map from './page/map';
 import RouterWrapper from './RouterWrapper';
 import TempDetailPage from './page/detail/TempDetailPage';
 
@@ -144,8 +144,8 @@ function App() {
           <RouterWrapper>
             <Routes>
               {/* <Route path="/" element={<MapPage />} /> */}
-              <Route path="/" element={<MapTest />} />
-              <Route path="/:id" element={<MapTest />} />
+              <Route path="/" element={<Map />} />
+              <Route path="/:id" element={<Map />} />
               {/* <Route path="/:id" element={<MapPage />} /> */}
               <Route path="/help" element={<HelpPage />} />
               <Route path="/detail/temp/:id" element={<TempDetailPage />} />

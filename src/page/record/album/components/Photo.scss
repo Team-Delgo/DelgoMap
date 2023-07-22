@@ -3,7 +3,6 @@
   scrollbar-width: none;
   &-others{
     &-photo{
-      
       width: 100%;
       display: flex;
       overflow-x: scroll;
@@ -111,13 +110,12 @@
     }
   }
   &-wrapper {
-    // display: flex;
+    display: flex;
     // justify-content: center;
     // align-items: center;
     flex-wrap: wrap;
     padding: 4%;
     // min-height: 100vh;
-    
     &-img {
       width: 46%;
       margin: 2%;
@@ -144,6 +142,7 @@
         }
       }
       &-sort {
+        display: flex;
         img {
           margin-left: 5px;
         }

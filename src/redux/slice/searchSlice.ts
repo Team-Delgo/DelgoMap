@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Mungple } from "../../page/map/components/maptype";
+import { Mungple } from "../../page/map/index.types";
 
 interface searchStateType {
   recentSearch: Mungple[];

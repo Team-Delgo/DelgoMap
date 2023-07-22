@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import { AnyAction, Dispatch } from 'redux';
+import { Mungple } from 'page/map/index.types';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 import { APIResponse } from '../types/api';
 
 export interface MapData {
-  mungpleList: any[];
+  mungpleList: Mungple[];
   normalCertList: any[];
   mungpleCertList: any[];
   exposedMungpleCertList: any[];

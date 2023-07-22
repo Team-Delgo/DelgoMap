@@ -7,7 +7,7 @@ import { AxiosResponse } from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import './Calendar.scss';
 import { getCalendarData } from '../../../../common/api/record';
-import { Cert } from '../../../map/components/maptype';
+import { Cert } from '../../../map/index.types';
 import { DateType } from './calendarType';
 import { RECORD_PATH } from '../../../../common/constants/path.const';
 import { RootState } from '../../../../redux/store';
@@ -236,7 +236,7 @@ function Calender() {
       initial={{ opacity: 0, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
       // exit={{ opacity: 0, x: -50 }}
-      transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
+      // transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
     >
       <div className="calender" ref={swipeArea}>
         <div className="date-wrapper" ref={scrollRef}>

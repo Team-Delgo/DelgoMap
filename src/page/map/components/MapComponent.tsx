@@ -1,5 +1,5 @@
 import { NavigateFunction } from 'react-router-dom';
-import { Mungple, Cert } from './maptype';
+import { Mungple, Cert } from '../index.types';
 import Cafe from '../../../common/icons/cafe-map.svg';
 import CafeSmall from '../../../common/icons/cafe-map-small.svg';
 import Bath from '../../../common/icons/bath-map.svg';

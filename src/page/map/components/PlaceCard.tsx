@@ -17,7 +17,6 @@ import EatSmall from '../../../common/icons/eat-map-small.svg';
 
 function PlaceCard(props: {
   id: number;
-  instaUrl: string;
   detailUrl: string;
   img: string;
   title: string;
@@ -28,7 +27,7 @@ function PlaceCard(props: {
   const navigate = useNavigate();
   const linkClickEvent = useAnalyticsCustomLogEvent(analytics, 'card_click');
   const dispatch = useDispatch();
-  const { id, img, title, address, categoryCode, detailUrl, instaUrl, map } = props;
+  const { id, img, title, address, categoryCode, detailUrl, map } = props;
   const icon = useMemo(() => {
     if (categoryCode === 'CA0001') {
       return <img src={WalkSmall} alt="" />;

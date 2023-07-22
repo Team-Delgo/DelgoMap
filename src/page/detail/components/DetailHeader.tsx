@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'index.css';
 import DogFoot from '../../../common/icons/dogfoot.svg';
 import Heart from '../../../common/icons/heart.svg';
 import Phone from '../../../common/icons/phone.svg';
@@ -44,6 +45,7 @@ function DetailHeader({
       requestUrl: 'http://go.delgo.pet/',
     });
   };
+  console.log(phoneNumber);
   return (
     <div className="-translate-y-[5px] bg-white p-5">
       <div className="flex justify-between">
@@ -60,13 +62,20 @@ function DetailHeader({
       </div>
       <div className="mt-1 text-xs font-normal text-[#646566]">{address}</div>
       <div className="mt-9 flex justify-evenly pb-[10px] text-sm font-normal">
-        <a
-          href={`tel:${phoneNumber}`}
-          className="flex items-center leading-[150%] text-black no-underline"
-        >
-          <img className="mr-[6px]" src={Phone} alt="phone" />
-          전화
-        </a>
+        {phoneNumber.length > 0 ? (
+          <a
+            href={`tel:${phoneNumber}`}
+            className="flex items-center leading-[150%] text-black no-underline"
+          >
+            <img className="mr-[6px]" src={Phone} alt="phone" />
+            전화
+          </a>
+        ) : (
+          <div className="opacity-50 flex items-center leading-[150%] text-black no-underline">
+            <img className="mr-[6px]" src={Phone} alt="phone" />
+            전화
+          </div>
+        )}
         <div className="h-[21px] w-[1px] bg-[#e6e6e6]" />
         <div
           className="flex items-center leading-[150%] text-black no-underline"
