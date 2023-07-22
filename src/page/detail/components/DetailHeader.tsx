@@ -41,8 +41,9 @@ function DetailHeader({
 }: Props) {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const sendScrap = async () => {
-    await window.Kakao.Share.sendScrap({
-      requestUrl: 'http://go.delgo.pet/',
+    await window.Kakao.Share.sendCustom({
+      templateId: 92943,
+      requestUrl: 'https://go.delgo.pet',
     });
   };
   console.log(phoneNumber);
