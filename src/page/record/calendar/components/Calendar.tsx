@@ -26,8 +26,6 @@ function Calender() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [dateList, setDateList] = useState<DateType[]>([]);
   const certEvent = useAnalyticsCustomLogEvent(analytics, 'calendar_cert');
-  const swipeArea = useRef<HTMLDivElement>(null);
-  const [hammertime, setHammertime] = useState<HammerManager | null>(null);
   const getNextYear = (currentMonth: number, currentYear: number, add: number) => {
     if (currentMonth + add > 12) {
       return currentYear + 1;
@@ -35,19 +33,13 @@ function Calender() {
     return currentYear;
   };
 
-  
-
   const tempUserSignDate = '2022-05-01';
   
   useEffect(() => {
-    if (swipeArea.current) {
-      const hammerInstance = new Hammer(swipeArea.current);
-      setHammertime(hammerInstance);
-    }
     getCalendarData(
       userId,
       (response: AxiosResponse) => {
-        const { code, data } = response.data;
+        const { data } = response.data;
         setDateList(data);
       },
       dispatch,
@@ -61,22 +53,6 @@ function Calender() {
       window.scroll(0, scrollY);
     }
   }, [dateList]);
-
-  useEffect(() => {
-    if (hammertime) {
-      hammertime.on('swiperight', function (e) {
-        navigate('/photo', {state: 'photo'});
-      });
-      hammertime.on('swipeleft', function (e) {
-        navigate('/achieve', { state: 'achieve' });
-      });
-    }
-    return () => {
-      if (hammertime) {
-        hammertime.destroy();
-      }
-    };
-  }, [hammertime]);
 
   const getDateContext = (prev: number) => {
     const date = new Date();
@@ -174,7 +150,6 @@ function Calender() {
                       from: RECORD_PATH.CALENDAR,
                     },
                   });
-                  // tnavigae('/certs', { state: { certifications: certification, pageFrom: RECORD_PATH.CALENDAR } });
                 }
               : undefined
           }
@@ -195,8 +170,6 @@ function Calender() {
 
     const startYear = new Date(tempUserSignDate).getFullYear();
     const startMonth = new Date(tempUserSignDate).getMonth();
-    // const startYear = new Date(userSignDate).getFullYear();
-    // const startMonth = new Date(userSignDate).getMonth();
 
     return (currentYear - startYear) * 12 + (currentMonth - startMonth);
   };
@@ -235,10 +208,8 @@ function Calender() {
     <motion.div
       initial={{ opacity: 0, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
-      // exit={{ opacity: 0, x: -50 }}
-      // transition={{duration:0.2, ease:'easeInOut', type:'spring'}}
     >
-      <div className="calender" ref={swipeArea}>
+      <div className="calender">
         <div className="date-wrapper" ref={scrollRef}>
           {datesElement}
         </div>

@@ -26,7 +26,6 @@ function ResetPassword() {
       return { ...prev, [id]: value };
     });
 
-
     if (id === 'password') {
       passwordValidCheck(value);
     } else {
@@ -99,12 +98,11 @@ function ResetPassword() {
   };
 
   const submitButtonHandler = () => {
-    changePassword(email, validInput.password, (response: AxiosResponse) => {
+    changePassword(email, validInput.password, () => {
       navigate(SIGN_IN_PATH.MAIN);
-    }, dispatch);
+    });
   };
-  
-  
+
   return (
     <div className="login">
       <div aria-hidden="true" className="login-back" onClick={() => navigate(-1)}>

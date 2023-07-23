@@ -118,6 +118,10 @@ function MapPageViewModel() {
     marker.setZIndex(20);
   };
 
+  const clickCategoryHandler = (category:string) => {
+    setSelectedCategory(category);
+  };
+
   // Markers visible handlers
   const hideMungpleMarkers = () => {
     mungpleMarkers.forEach((marker) => marker.marker.setVisible(false));
@@ -126,6 +130,7 @@ function MapPageViewModel() {
     certMarkers.forEach((marker) => marker.setVisible(false));
   };
   const showMungpleMarkers = () => {
+    console.log(selectedCategory);
     mungpleMarkers.forEach((marker) => {
       if (selectedCategory === '' || marker.category === selectedCategory)
         marker.marker.setVisible(true);
@@ -289,6 +294,13 @@ function MapPageViewModel() {
       mungpleMarkers[index].marker.setZIndex(10);
     }
   }, [selectedMungple]);
+
+  // 카테고리 선택 시
+  useEffect(()=>{
+    showMungpleMarkers();
+  }, [selectedCategory]);
+
+  console.log(selectedCategory);
 
   return {
     state: {

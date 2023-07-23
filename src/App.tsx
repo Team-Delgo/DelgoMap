@@ -1,9 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import VConsole from 'vconsole';
-import Hammer from 'hammerjs';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import './App.scss';
@@ -25,7 +23,6 @@ import UploadCertificationResultPage from './page/upload/UploadCertificationResu
 import UploadCertificationUpatePage from './page/upload/UploadCertificationUpatePage';
 import UploadLocationPage from './page/upload/UploadLocationPage';
 import DetailPage from './page/detail/DetailPage';
-// import MapPage from "./page/map/MapPage";
 import ChangePassword from './page/myaccount/ChangePassword';
 import ChangePasswordCheck from './page/myaccount/ChangePasswordCheck';
 import ChangeUserInfo from './page/myaccount/ChangeUserInfo';
@@ -64,7 +61,6 @@ import { userActions } from './redux/slice/userSlice';
 import { getMyInfo } from './common/api/myaccount';
 
 import Map from './page/map';
-import RouterWrapper from './RouterWrapper';
 import TempDetailPage from './page/detail/TempDetailPage';
 
 function App() {
@@ -141,7 +137,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AnimatePresence>
         <BrowserRouter>
-          <RouterWrapper>
             <Routes>
               {/* <Route path="/" element={<MapPage />} /> */}
               <Route path="/" element={<Map />} />
@@ -208,7 +203,6 @@ function App() {
                 element={<NaverRedirectHandler />}
               />
             </Routes>
-          </RouterWrapper>
         </BrowserRouter>
       </AnimatePresence>
     </QueryClientProvider>

@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { changePassword } from '../../common/api/myaccount';
 import { MY_ACCOUNT_PATH } from '../../common/constants/path.const';
-import { RootState } from '../../redux/store'
+import { RootState } from '../../redux/store';
 import LeftArrow from '../../common/icons/left-arrow.svg';
 import { checkPassword, checkPasswordConfirm } from '../sign/validcheck';
-import "./ChangePassword.scss";
+import './ChangePassword.scss';
 
 function ChangePassword() {
   const [feedback, setFeedback] = useState({ password: '', confirm: '' });
@@ -26,7 +26,6 @@ function ChangePassword() {
     setEnteredInput((prev) => {
       return { ...prev, [id]: value };
     });
-
 
     if (id === 'password') {
       passwordValidCheck(value);
@@ -97,34 +96,61 @@ function ChangePassword() {
   };
 
   const submitButtonHandler = () => {
-    changePassword(email, validInput.password,(response: AxiosResponse) => {
-      navigate(MY_ACCOUNT_PATH.MAIN);
-    },dispatch);
+    // changePassword(email, validInput.password, () => {
+    //   navigate(MY_ACCOUNT_PATH.MAIN);
+    // });
   };
 
-  return <div className='userinfo'>
-    <div className="userinfo-header">
-      <img
-        src={LeftArrow}
-        alt="back"
-        aria-hidden="true"
-        className="userinfo-header-back"
-        onClick={() => {
-          navigate(-1);
-        }}
-      />
-      <div className="userinfo-header-title">비밀번호 변경</div>
+  return (
+    <div className="userinfo">
+      <div className="userinfo-header">
+        <img
+          src={LeftArrow}
+          alt="back"
+          aria-hidden="true"
+          className="userinfo-header-back"
+          onClick={() => {
+            navigate(-1);
+          }}
+        />
+        <div className="userinfo-header-title">비밀번호 변경</div>
+      </div>
+      <div className="userinfo-wrapper">
+        <input
+          id="password"
+          onChange={inputChangeHandler}
+          type="password"
+          value={enteredInput.password}
+          placeholder="새 비밀번호"
+          className={classNames('login-input passwordcheck', {
+            invalid: feedback.password.length,
+          })}
+        />
+        <p className="login-feedback">{feedback.password}</p>
+      </div>
+      <div className="userinfo-wrapper">
+        <input
+          id="confirm"
+          onChange={inputChangeHandler}
+          type="password"
+          value={enteredInput.confirm}
+          placeholder="새 비밀번호 확인"
+          className={classNames('login-input passwordchange', {
+            invalid: feedback.confirm.length,
+          })}
+        />
+        <p className="login-feedback">{feedback.confirm}</p>
+      </div>
+      <button
+        onClick={submitButtonHandler}
+        disabled={!isValid}
+        type="button"
+        className={classNames('login-button', { active: isValid })}
+      >
+        새 비밀번호 설정
+      </button>
     </div>
-    <div className='userinfo-wrapper'>
-      <input id='password' onChange={inputChangeHandler} type="password" value={enteredInput.password} placeholder='새 비밀번호' className={classNames('login-input passwordcheck', { invalid: feedback.password.length })} />
-      <p className="login-feedback">{feedback.password}</p>
-    </div>
-    <div className='userinfo-wrapper'>
-      <input id='confirm' onChange={inputChangeHandler} type="password" value={enteredInput.confirm} placeholder='새 비밀번호 확인' className={classNames('login-input passwordchange', { invalid: feedback.confirm.length })} />
-      <p className="login-feedback">{feedback.confirm}</p>
-    </div>
-    <button onClick={submitButtonHandler} disabled={!isValid} type='button' className={classNames('login-button', { active: isValid })}>새 비밀번호 설정</button>
-  </div>
-};
+  );
+}
 
 export default ChangePassword;

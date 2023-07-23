@@ -1,11 +1,10 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
-// import axiosInstance from './interceptors';
 
 function changePetInfo(
   data: { email: string; name: string; birthday: string | undefined; breed: string },
-  success: (data: AxiosResponse) => void,
+  success: (response:AxiosResponse) => void,
   dispatch: any,
 ) {
   const { email, name, birthday, breed } = data;
@@ -16,8 +15,8 @@ function changePetInfo(
       birthday,
       breed,
     })
-    .then((data) => {
-      success(data);
+    .then((response) => {
+      success(response);
     })
     .catch((error) => {
       useErrorHandlers(dispatch, error);

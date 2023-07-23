@@ -44,7 +44,6 @@ function CertificationPostsPage() {
         pageParam,
         user.id,
         pageSize,
-        dispatch,
         firstCert?.certificationId === undefined ? '' : firstCert?.certificationId,
       ),
     {

@@ -45,24 +45,27 @@ function CategoryItem({
 
 interface Props {
   selectedCategory: string;
-  onClick: (selectedValue: string) => void;
+  onClick: (category: string) => void;
 }
 
 const categoryList = [
-  { code: 'CA0002', name: '카페', icon: cafeIcon, color: '#8e6947' },
-  { code: 'CA0003', name: '식당', icon: eatIcon, color: '#a33821' },
+  { code: 'CA0002', name: '카페', icon: cafeIcon, color: 'border-[#8e6947]' },
+  { code: 'CA0003', name: '식당', icon: eatIcon, color: 'border-[#a33821]' },
   // { code: 'CA0001', name: '산책', icon: walkIcon },
-  { code: 'CA0007', name: '유치원/호텔', icon: kinderIcon, color: '#d66615' },
-  { code: 'CA0005', name: '미용/목욕', icon: beautyIcon, color: '#df3390' },
-  { code: 'CA0006', name: '병원', icon: hospitalIcon, color: '#7a5ccf' },
+  { code: 'CA0007', name: '유치원/호텔', icon: kinderIcon, color: 'border-[#d66615]' },
+  { code: 'CA0005', name: '미용/목욕', icon: beautyIcon, color: 'border-[#df3390]' },
+  { code: 'CA0006', name: '병원', icon: hospitalIcon, color: 'border-[#7a5ccf]' },
 ];
 
 function Categroy({ selectedCategory, onClick }: Props) {
   const [selectedValue, setSelectedValue] = useState(selectedCategory);
 
+  console.log(selectedCategory, selectedValue);
+
   useEffect(() => {
     setSelectedValue(selectedCategory);
   }, [selectedCategory]);
+
   const clickEventHandler = (e: React.MouseEvent<HTMLElement>) => {
     let value = e.currentTarget.getAttribute('value');
 
@@ -70,9 +73,11 @@ function Categroy({ selectedCategory, onClick }: Props) {
       value = '';
       setSelectedValue('');
       onClick(value); // 부모 컴포넌트로 선택된 값을 전달
+      console.log(value);
     } else if (value) {
       setSelectedValue(value);
       onClick(value); // 부모 컴포넌트로 선택된 값을 전달
+      console.log(value);
     }
   };
 
