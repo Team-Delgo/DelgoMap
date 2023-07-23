@@ -40,7 +40,6 @@ async function getCertificationPostAll(
   pageParam: number,
   userId: number,
   pageSize: number,
-  dispatch: any,
   certificationId?: number,
 ) {
     const res = await axiosInstance.get(
