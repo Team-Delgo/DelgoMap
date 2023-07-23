@@ -115,6 +115,8 @@ function MapTest() {
     setTimeout(() => globarMap?.setLevel(5), 200);
   };
 
+  console.log(selectedCategory);
+
   return (
     <div className="map-wrapper">
       {isAlertOpen && (
@@ -151,7 +153,10 @@ function MapTest() {
       {!isCertVisible && (
         <Categroy
           selectedCategory={selectedCategory}
-          onClick={(category) => setSelectedCategory(category)}
+          onClick={(category) => {
+            console.log(1);
+            setSelectedCategory(category);
+          }}
         />
       )}
       <div className="map" ref={mapElement} />

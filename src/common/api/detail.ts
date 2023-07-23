@@ -1,6 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
 import axiosInstance from './interceptors';
-import { useErrorHandlers } from './useErrorHandlers';
 import { APIResponse } from '../types/api';
 import { postType } from '../types/post';
 

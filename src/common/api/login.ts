@@ -1,6 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import axiosInstance from './interceptors';
-import { useErrorHandlers } from './useErrorHandlers';
 
 function login(info: { email: string; password: string }) {
   const data = axios.post(`https://www.test.delgo.pet/login`, {
@@ -20,20 +19,16 @@ async function emailAuth(email: string) {
 function changePassword(
   email: string,
   password: string,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
+  success: () => void,
 ) {
   axiosInstance
     .put(`/user/password`, {
       email,
       newPassword: password,
     })
-    .then((data) => {
-      success(data);
+    .then(() => {
+      success();
     })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
 }
 
 export { login, emailAuth, changePassword };

@@ -41,19 +41,12 @@ function Photo() {
   const [pageSizeFor, setPageSizeFor] = useState(pageSize);
   const [buttonIsClicked, setButtonIsClicked] = useState(false);
   const [isFetching, setFetching] = useState(false);
-  const [categoryTab, setCategoryTab] = useState('전체');
   const [sortOption, setSortOption] = useState<boolean>(true);
   const [isLast, setLast] = useState(false);
   const dispatch = useDispatch();
-  const location: any = useLocation();
   const swipeArea = useRef<HTMLDivElement>(null);
-  const [hammertime, setHammertime] = useState<HammerManager | null>(null);
 
   useEffect(() => {
-    if (swipeArea.current) {
-      const hammerInstance = new Hammer(swipeArea.current);
-      setHammertime(hammerInstance);
-    }
     mutation.mutate({
       params: {
         firebase_screen: 'Album',

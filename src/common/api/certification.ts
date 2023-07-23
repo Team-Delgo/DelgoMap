@@ -1,6 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
 import axiosInstance from './interceptors';
-import { useErrorHandlers } from './useErrorHandlers';
 import { Cert } from '../types/map';
 
 interface CertResponse {
@@ -45,15 +43,11 @@ async function getCertificationPostAll(
   dispatch: any,
   certificationId?: number,
 ) {
-  try {
     const res = await axiosInstance.get(
       `/certification/all?page=${pageParam}&size=${pageSize}&userId=${userId}&certificationId=${certificationId}`,
     );
     const { content, last } = res.data.data;
     return { content, nextPage: pageParam + 1, last };
-  } catch (error: any) {
-    useErrorHandlers(dispatch, error);
-  }
 }
 
 function certificationDelete(data: { userId: number; certificationId: number }) {
