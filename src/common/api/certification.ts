@@ -37,17 +37,19 @@ function updateCertificationPost(data: {
 }
 
 async function getCertificationPostAll(
-  pageParam: number,
-  userId: number,
-  pageSize: number,
-  dispatch: any,
-  certificationId?: number,
+    pageParam: number,
+    userId: number,
+    pageSize: number,
+    dispatch: any,
+    certificationId?: number,
 ) {
-    const res = await axiosInstance.get(
-      `/certification/all?page=${pageParam}&size=${pageSize}&userId=${userId}&certificationId=${certificationId}`,
-    );
-    const { content, last } = res.data.data;
-    return { content, nextPage: pageParam + 1, last };
+  let url = `/certification/all?page=${pageParam}&size=${pageSize}&userId=${userId}`;
+  if (typeof certificationId !== 'undefined') {
+    url += `&certificationId=${certificationId}`;
+  }
+  const res = await axiosInstance.get(url);
+  const {content, last} = res.data.data;
+  return {content, nextPage: pageParam + 1, last};
 }
 
 function certificationDelete(data: { userId: number; certificationId: number }) {
