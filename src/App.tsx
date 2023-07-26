@@ -69,7 +69,7 @@ function App() {
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
 
-
+  
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
