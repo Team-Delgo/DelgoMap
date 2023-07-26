@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import './App.scss';
@@ -62,6 +62,7 @@ import { getMyInfo } from './common/api/myaccount';
 
 import Map from './page/map';
 import TempDetailPage from './page/detail/TempDetailPage';
+import Account from 'components/Account';
 
 function App() {
   const queryClient = new QueryClient();
@@ -69,7 +70,6 @@ function App() {
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
 
-  
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
@@ -89,7 +89,10 @@ function App() {
                   phone: data.phoneNo,
                   isSocial: false,
                   geoCode: data.geoCode,
-                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(
+                    5,
+                    7,
+                  )}.${registDt.slice(8, 10)}`,
                   notify: data.isNotify,
                 },
                 pet: {
@@ -137,26 +140,27 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AnimatePresence>
         <BrowserRouter>
-            <Routes>
-              {/* <Route path="/" element={<MapPage />} /> */}
-              <Route path="/" element={<Map />} />
-              <Route path="/:id" element={<Map />} />
-              {/* <Route path="/:id" element={<MapPage />} /> */}
-              <Route path="/help" element={<HelpPage />} />
-              <Route path="/detail/temp/:id" element={<TempDetailPage />} />
-              <Route path="/detail/:id" element={<DetailPage />} />
-              <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
-              <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
-              <Route path={SIGN_IN_PATH.FINDPASSWORD} element={<FindPassword />} />
-              <Route path={SIGN_IN_PATH.PHONEAUTH} element={<PhoneAuth />} />
-              <Route path={SIGN_IN_PATH.RESETPASSWORD} element={<ResetPassword />} />
-              <Route path={SIGN_UP_PATH.TERMS} element={<Terms />} />
-              <Route path={SIGN_UP_PATH.VERIFY} element={<VerifyPhone />} />
-              <Route path={SIGN_UP_PATH.USER_INFO} element={<UserInfo />} />
-              <Route path={SIGN_UP_PATH.SOCIAL.NICKNAME} element={<SocialUserInfo />} />
-              <Route path={SIGN_UP_PATH.USER_PET_INFO} element={<PetInfo />} />
-              <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
-              <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
+          <Routes>
+            {/* <Route path="/" element={<MapPage />} /> */}
+            <Route path="/" element={<Map />} />
+            <Route path="/:id" element={<Map />} />
+            {/* <Route path="/:id" element={<MapPage />} /> */}
+            <Route path="/help" element={<HelpPage />} />
+            <Route path="/detail/temp/:id" element={<TempDetailPage />} />
+            <Route path="/detail/:id" element={<DetailPage />} />
+            <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
+            <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
+            <Route path={SIGN_IN_PATH.FINDPASSWORD} element={<FindPassword />} />
+            <Route path={SIGN_IN_PATH.PHONEAUTH} element={<PhoneAuth />} />
+            <Route path={SIGN_IN_PATH.RESETPASSWORD} element={<ResetPassword />} />
+            <Route path={SIGN_UP_PATH.TERMS} element={<Terms />} />
+            <Route path={SIGN_UP_PATH.VERIFY} element={<VerifyPhone />} />
+            <Route path={SIGN_UP_PATH.USER_INFO} element={<UserInfo />} />
+            <Route path={SIGN_UP_PATH.SOCIAL.NICKNAME} element={<SocialUserInfo />} />
+            <Route path={SIGN_UP_PATH.USER_PET_INFO} element={<PetInfo />} />
+            <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
+            <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
+            <Route element={<Account />}>
               <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
               <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
               <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
@@ -190,19 +194,11 @@ function App() {
               <Route path={MY_ACCOUNT_PATH.PASSWORDCHANGE} element={<ChangePassword />} />
               <Route path={MY_ACCOUNT_PATH.TERM1} element={<ServiceTerm id={1} />} />
               <Route path={MY_ACCOUNT_PATH.TERM2} element={<ServiceTerm id={2} />} />
-              <Route
-                path={KAKAO_REDIRECT_HANDLE_PATH}
-                element={<KakaoRedirectHandler />}
-              />
-              <Route
-                path={APPLE_REDIRECT_HANDLE_PATH}
-                element={<AppleRedirectHandler />}
-              />
-              <Route
-                path={NAVER_REDIRECT_HANDLE_PATH}
-                element={<NaverRedirectHandler />}
-              />
-            </Routes>
+            </Route>
+            <Route path={KAKAO_REDIRECT_HANDLE_PATH} element={<KakaoRedirectHandler />} />
+            <Route path={APPLE_REDIRECT_HANDLE_PATH} element={<AppleRedirectHandler />} />
+            <Route path={NAVER_REDIRECT_HANDLE_PATH} element={<NaverRedirectHandler />} />
+          </Routes>
         </BrowserRouter>
       </AnimatePresence>
     </QueryClientProvider>

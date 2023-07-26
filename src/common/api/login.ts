@@ -1,5 +1,9 @@
 import axios from 'axios';
 import axiosInstance from './interceptors';
+import { useNavigate } from 'react-router-dom';
+import { SIGN_IN_PATH } from 'common/constants/path.const';
+import store from 'redux/store';
+import { userActions } from 'redux/slice/userSlice';
 
 function login(info: { email: string; password: string }) {
   const data = axios.post(`https://www.test.delgo.pet/login`, {
@@ -10,17 +14,13 @@ function login(info: { email: string; password: string }) {
 }
 
 async function emailAuth(email: string) {
-  const data = await axiosInstance.get(`/auth/email`, {
+  const data = await axios.get(`${process.env.REACT_APP_API_URL}/auth/email`, {
     params: { email },
   });
   return data;
 }
 
-function changePassword(
-  email: string,
-  password: string,
-  success: () => void,
-) {
+function changePassword(email: string, password: string, success: () => void) {
   axiosInstance
     .put(`/user/password`, {
       email,
@@ -28,7 +28,17 @@ function changePassword(
     })
     .then(() => {
       success();
-    })
+    });
 }
 
-export { login, emailAuth, changePassword };
+async function tokenRefresh() {
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/token/reissue`);
+    axiosInstance.defaults.headers.authorization_access = `Bearer ${response.headers['Authorization_Access']}`;
+  } catch {
+    console.log('refresh token stale');
+    store.dispatch(userActions.signout());
+  }
+}
+
+export { login, emailAuth, changePassword, tokenRefresh };
