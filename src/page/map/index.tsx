@@ -32,42 +32,12 @@ interface MakerItem {
 }
 
 function MapTest() {
-  // const mapElement = useRef(null);
-  const navigate = useNavigate();
-  const idDefault = useSelector((state: RootState) => state.map.selectedId);
   const toggleDefault = useSelector((state: RootState) => state.map.certToggle);
   const [isCertVisible, setIsCertVisible] = useState(toggleDefault);
-  // const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [isFirst, setIsFirst] = useState({ mungple: true, cert: true });
-  const isSignIn = useSelector((state: RootState) => state.persist.user.isSignIn);
-  const [searchIsOpen, setSearchIsOpen] = useState(false);
-  const initMapCenter = useSelector((state: RootState) => state.map);
-  // const [globarMap, setGlobarMap] = useState<kakao.maps.Map>();
-  // const [selectedId, setSelectedId] = useState(idDefault);
   const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
   const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [copyLoading, setCopyLoading] = useState(false);
-  // const [currentMarker, setCurrentMarker] = useState<kakao.maps.Marker>();
   const [isSelected, setIsSelected] = useState(false);
-  // const [selectedCategory, setSelectedCategory] = useState('');
-  // const [pointerLocation, setPointerLocation] = useState({ lat: 0, lng: 0 });
-  const [normalCertMarkerList, setNormalCertMarkerList] = useState<
-    kakao.maps.CustomOverlay[]
-  >([]);
-  const [mungpleCertMarkerList, setMungpleCertMarkerList] = useState<
-    kakao.maps.CustomOverlay[]
-  >([]);
-  const [otherCertMarkerList, setOtherCertMarkerList] = useState<
-    kakao.maps.CustomOverlay[]
-  >([]);
-  const [otherMungpleCertMarkerList, setOtherMungpleCertMarkerList] = useState<
-    kakao.maps.CustomOverlay[]
-  >([]);
-  const [linkId, setLinkId] = useState(NaN);
-  const dispatch = useDispatch();
-
-  const userId = useSelector((state: RootState) => state.persist.user.user.id);
-  // const clearId = clearSelectedId(setSelectedId, selectedId);
 
   const {
     state: {
