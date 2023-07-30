@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import './App.scss';
@@ -62,6 +62,8 @@ import { getMyInfo } from './common/api/myaccount';
 
 import Map from './page/map';
 import TempDetailPage from './page/detail/TempDetailPage';
+import Account from 'components/Account';
+import RedirectHandler from 'RedirectHandler';
 
 function App() {
   const queryClient = new QueryClient();
@@ -69,7 +71,6 @@ function App() {
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
 
-  
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
@@ -89,7 +90,10 @@ function App() {
                   phone: data.phoneNo,
                   isSocial: false,
                   geoCode: data.geoCode,
-                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
+                  registDt: `${registDt.slice(0, 4)}.${registDt.slice(
+                    5,
+                    7,
+                  )}.${registDt.slice(8, 10)}`,
                   notify: data.isNotify,
                 },
                 pet: {
@@ -137,6 +141,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AnimatePresence>
         <BrowserRouter>
+          <RedirectHandler>
             <Routes>
               {/* <Route path="/" element={<MapPage />} /> */}
               <Route path="/" element={<Map />} />
@@ -157,39 +162,44 @@ function App() {
               <Route path={SIGN_UP_PATH.USER_PET_INFO} element={<PetInfo />} />
               <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
               <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
-              <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
-              <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
-              <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
-              <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
-              <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
-              <Route
-                path={UPLOAD_PATH.CERTIFICATION}
-                element={<UploadCertificationPage />}
-              />
-              <Route path={UPLOAD_PATH.LOCATION} element={<UploadLocationPage />} />
-              <Route
-                path={UPLOAD_PATH.UPDATE}
-                element={<UploadCertificationUpatePage />}
-              />
-              <Route
-                path={UPLOAD_PATH.RESULT}
-                element={<UploadCertificationResultPage />}
-              />
-              <Route path={UPLOAD_PATH.MAP} element={<CertificationMap />} />
-              <Route path={CROP_PATH} element={<CropPage />} />
-              <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
-              <Route path={POSTS_PATH} element={<PostsPage />} />
-              <Route path={MY_ACCOUNT_PATH.MAIN} element={<MyAccountPage />} />
-              <Route path={MY_ACCOUNT_PATH.PETINFO} element={<ChangePetInfo />} />
-              <Route path={MY_ACCOUNT_PATH.SETTINGS} element={<Setting />} />
-              <Route path={MY_ACCOUNT_PATH.USERINFO} element={<ChangeUserInfo />} />
-              <Route
-                path={MY_ACCOUNT_PATH.PASSWORDCHECK}
-                element={<ChangePasswordCheck />}
-              />
-              <Route path={MY_ACCOUNT_PATH.PASSWORDCHANGE} element={<ChangePassword />} />
-              <Route path={MY_ACCOUNT_PATH.TERM1} element={<ServiceTerm id={1} />} />
-              <Route path={MY_ACCOUNT_PATH.TERM2} element={<ServiceTerm id={2} />} />
+              <Route element={<Account />}>
+                <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
+                <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
+                <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
+                <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
+                <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
+                <Route
+                  path={UPLOAD_PATH.CERTIFICATION}
+                  element={<UploadCertificationPage />}
+                />
+                <Route path={UPLOAD_PATH.LOCATION} element={<UploadLocationPage />} />
+                <Route
+                  path={UPLOAD_PATH.UPDATE}
+                  element={<UploadCertificationUpatePage />}
+                />
+                <Route
+                  path={UPLOAD_PATH.RESULT}
+                  element={<UploadCertificationResultPage />}
+                />
+                <Route path={UPLOAD_PATH.MAP} element={<CertificationMap />} />
+                <Route path={CROP_PATH} element={<CropPage />} />
+                <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
+                <Route path={POSTS_PATH} element={<PostsPage />} />
+                <Route path={MY_ACCOUNT_PATH.MAIN} element={<MyAccountPage />} />
+                <Route path={MY_ACCOUNT_PATH.PETINFO} element={<ChangePetInfo />} />
+                <Route path={MY_ACCOUNT_PATH.SETTINGS} element={<Setting />} />
+                <Route path={MY_ACCOUNT_PATH.USERINFO} element={<ChangeUserInfo />} />
+                <Route
+                  path={MY_ACCOUNT_PATH.PASSWORDCHECK}
+                  element={<ChangePasswordCheck />}
+                />
+                <Route
+                  path={MY_ACCOUNT_PATH.PASSWORDCHANGE}
+                  element={<ChangePassword />}
+                />
+                <Route path={MY_ACCOUNT_PATH.TERM1} element={<ServiceTerm id={1} />} />
+                <Route path={MY_ACCOUNT_PATH.TERM2} element={<ServiceTerm id={2} />} />
+              </Route>
               <Route
                 path={KAKAO_REDIRECT_HANDLE_PATH}
                 element={<KakaoRedirectHandler />}
@@ -203,6 +213,7 @@ function App() {
                 element={<NaverRedirectHandler />}
               />
             </Routes>
+          </RedirectHandler>
         </BrowserRouter>
       </AnimatePresence>
     </QueryClientProvider>

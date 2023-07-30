@@ -29,9 +29,8 @@ function CategoryItem({
   return (
     <li
       className={`${isFirst && 'ml-[18px]'} ${
-        selectedValue === code && color
-      } z-10 mr-[8px] flex shrink-0 items-center rounded-[25px] border  border-white bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d]`}
-      // className={`categoryList${data.code === selectedValue ? ' active' : ''}`}
+        selectedValue === code ? color : 'border-white'
+      } z-10 mr-[8px] flex shrink-0 items-center rounded-[25px] border-[1.5px] bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d] shadow-2`}
       key={code}
       onClick={handler}
       role="none"
@@ -51,7 +50,7 @@ interface Props {
 const categoryList = [
   { code: 'CA0002', name: '카페', icon: cafeIcon, color: 'border-[#8e6947]' },
   { code: 'CA0003', name: '식당', icon: eatIcon, color: 'border-[#a33821]' },
-  // { code: 'CA0001', name: '산책', icon: walkIcon },
+  { code: 'CA0001', name: '산책', icon: walkIcon, color: 'border-[#4A8C48]' },
   { code: 'CA0007', name: '유치원/호텔', icon: kinderIcon, color: 'border-[#d66615]' },
   { code: 'CA0005', name: '미용/목욕', icon: beautyIcon, color: 'border-[#df3390]' },
   { code: 'CA0006', name: '병원', icon: hospitalIcon, color: 'border-[#7a5ccf]' },

@@ -17,9 +17,7 @@ function CertToggle(props: { onClick: () => void; state: boolean }) {
     const isFirstToggle = window.localStorage.getItem('isFirstToggle');
 
     if (isFirstCert) {
-      console.log(1);
       if (!isFirstToggle) {
-        console.log(2);
         setShow(true);
       }
     }

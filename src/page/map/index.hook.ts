@@ -21,7 +21,7 @@ import {
 } from './index.types';
 import DogFootMarkerSvg from '../../common/icons/cert-map-marker.svg';
 
-function MapPageViewModel() {
+function useMap() {
   /** Variable */
   const mapElement = useRef(null);
   const navigate = useNavigate();
@@ -118,10 +118,6 @@ function MapPageViewModel() {
     marker.setZIndex(20);
   };
 
-  const clickCategoryHandler = (category:string) => {
-    setSelectedCategory(category);
-  };
-
   // Markers visible handlers
   const hideMungpleMarkers = () => {
     mungpleMarkers.forEach((marker) => marker.marker.setVisible(false));
@@ -130,7 +126,6 @@ function MapPageViewModel() {
     certMarkers.forEach((marker) => marker.setVisible(false));
   };
   const showMungpleMarkers = () => {
-    console.log(selectedCategory);
     mungpleMarkers.forEach((marker) => {
       if (selectedCategory === '' || marker.category === selectedCategory)
         marker.marker.setVisible(true);
@@ -167,16 +162,15 @@ function MapPageViewModel() {
     } else setIsAlertOpen(true);
   };
   const navigateToLoginPage = () => navigate(SIGN_IN_PATH.MAIN);
-  
+
   // Toggle handlers
   const certToggleClickHandler = () => {
-    if(userId === 0) setIsAlertOpen(true);
+    if (userId === 0) setIsAlertOpen(true);
     else {
       setIsCertToggleOn((prev) => !prev);
       dispatch(mapAction.setCertToggle(!isCertToggleOn));
     }
-  }
-
+  };
 
   /** Rendering */
   // 지도 생성
@@ -296,11 +290,9 @@ function MapPageViewModel() {
   }, [selectedMungple]);
 
   // 카테고리 선택 시
-  useEffect(()=>{
+  useEffect(() => {
     showMungpleMarkers();
   }, [selectedCategory]);
-
-  console.log(selectedCategory);
 
   return {
     state: {
@@ -315,6 +307,8 @@ function MapPageViewModel() {
       mungpleMarkers,
       isSearchViewOpen,
       isAlertOpen,
+      isSelectedAnything,
+      isCertToggleOn,
     },
     action: {
       setSelectedMungple,
@@ -326,9 +320,9 @@ function MapPageViewModel() {
       navigateToMyaccountPage,
       navigateToLoginPage,
       certToggleClickHandler,
-      setCurrentMapLocation
+      setCurrentMapLocation,
     },
   };
 }
 
-export default MapPageViewModel;
+export default useMap;

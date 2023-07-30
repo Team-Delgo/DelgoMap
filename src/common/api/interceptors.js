@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { tokenRefresh } from './login';
 
 const axiosInstance = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}`,
@@ -26,20 +27,8 @@ axiosInstance.interceptors.response.use(
       config,
       response: { status },
     } = error;
-    if (status === 403) {
-      const refreshToken = localStorage.getItem('refreshToken') || '';
-
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/token/reissue`, {
-        headers: {
-          authorization_refresh: refreshToken,
-        },
-      });
-
-      console.log('token reissue response', response);
-
-      if (response.data.code === 303) {
-        throw new Error('token exprired');
-      }
+    if (status === 401) {
+      tokenRefresh();
 
       const originalRequest = config;
       const newAccessToken = response.headers.authorization_access;
@@ -52,6 +41,7 @@ axiosInstance.interceptors.response.use(
 
       return axios(originalRequest);
     }
+
     return Promise.reject(error);
   },
 );
