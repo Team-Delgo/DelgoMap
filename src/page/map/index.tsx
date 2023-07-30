@@ -1,43 +1,23 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { useQuery } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import './index.scss';
-import { getMapData } from '../../common/api/record';
-import { RootState } from '../../redux/store';
-import { Cert, certDefault, Mungple } from './index.types';
 import FooterNavigation from '../../components/FooterNavigation';
-import { mapAction } from '../../redux/slice/mapSlice';
 import Logo from '../../common/icons/logo.svg';
 import Categroy from './components/Category';
 import PlaceCard from './components/PlaceCard';
 import TempMarkerImageLoader from './components/MarkerSet';
 import SearchBar from './components/SearchBar';
 import Search from '../../common/icons/search.svg';
-import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from '../../common/constants/path.const';
 import Human from '../../common/icons/human.svg';
 import AlertConfirm from '../../common/dialog/AlertConfirm';
 import LinkCopy from './components/LinkCopy';
 import CertToggle from './components/CertToggle';
 import CertCard from './components/CertCard';
 import BallLoading from '../../common/utils/BallLoading';
-import Marker from '../../common/icons/cert-map-marker.svg';
 import UserLocation from './components/UserLocation';
-import MapPageViewModel from './index.viewmodel';
-
-interface MakerItem {
-  id: number;
-  category: string;
-  marker: kakao.maps.Marker;
-}
+import useMap from './index.hook';
 
 function MapTest() {
-  const toggleDefault = useSelector((state: RootState) => state.map.certToggle);
-  const [isCertVisible, setIsCertVisible] = useState(toggleDefault);
-  const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
-  const [markerList, setMarkerList] = useState<MakerItem[]>([]);
   const [copyLoading, setCopyLoading] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
 
   const {
     state: {
@@ -46,11 +26,13 @@ function MapTest() {
       mapDataList,
       selectedCategory,
       dogFootMarkerLocation: pointerLocation,
-      selectedCert: tempa,
+      selectedCert,
       dogFootMarker: currentMarker,
       selectedMungple,
       isSearchViewOpen,
       isAlertOpen,
+      isSelectedAnything,
+      isCertToggleOn,
     },
     action: {
       setSelectedMungple,
@@ -64,28 +46,12 @@ function MapTest() {
       certToggleClickHandler,
       setCurrentMapLocation,
     },
-  } = MapPageViewModel();
-
-  const showMungpleList = () => {
-    markerList.forEach((marker) => {
-      if (selectedCategory === '' || marker.category === selectedCategory)
-        marker.marker.setVisible(true);
-      else marker.marker.setVisible(false);
-    });
-  };
-
-  useEffect(() => {
-    if (globarMap && mapDataList) {
-      showMungpleList();
-    }
-  }, [selectedCategory]);
+  } = useMap();
 
   const moveKakaoMapCurrentLocation = (lat: number, lng: number) => {
     globarMap?.panTo(new kakao.maps.LatLng(lat, lng));
     setTimeout(() => globarMap?.setLevel(5), 200);
   };
-
-  console.log(selectedCategory);
 
   return (
     <div className="map-wrapper">
@@ -98,13 +64,7 @@ function MapTest() {
         />
       )}
       <div className="whiteBox" />
-      <img
-        className="map-logo"
-        aria-hidden
-        src={Logo}
-        alt="logo"
-        // onClick={clearId}
-      />
+      <img className="map-logo" aria-hidden src={Logo} alt="logo" />
       <img
         className="map-search"
         src={Search}
@@ -120,11 +80,10 @@ function MapTest() {
         onClick={navigateToMyaccountPage}
       />
       <div className="slogun">강아지 델고 동네생활</div>
-      {!isCertVisible && (
+      {!isCertToggleOn && (
         <Categroy
           selectedCategory={selectedCategory}
           onClick={(category) => {
-            console.log(1);
             setSelectedCategory(category);
           }}
         />
@@ -159,19 +118,23 @@ function MapTest() {
           setCenter={setCurrentMapLocation}
         />
       )}
-      {!isSelected && !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
-        <UserLocation move={moveKakaoMapCurrentLocation} />
-      )}
-      {!isSelected && selectedMungple.title.length === 0 && selectedCert.userId === 0 && (
-        <FooterNavigation setCenter={setCurrentMapLocation} />
-      )}
-      {!isSelected && !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
-        <CertToggle onClick={certToggleClickHandler} state={isCertVisible} />
-      )}
+      {!isSelectedAnything &&
+        !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
+          <UserLocation move={moveKakaoMapCurrentLocation} />
+        )}
+      {!isSelectedAnything &&
+        selectedMungple.title.length === 0 &&
+        selectedCert.userId === 0 && (
+          <FooterNavigation setCenter={setCurrentMapLocation} />
+        )}
+      {!isSelectedAnything &&
+        !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
+          <CertToggle onClick={certToggleClickHandler} state={isCertToggleOn} />
+        )}
       {selectedMungple.title.length > 0 && (
         <LinkCopy isMungple setLoading={setCopyLoading} redirect={setIsAlertOpen} />
       )}
-      {isSelected && selectedMungple.title.length === 0 && (
+      {isSelectedAnything && selectedMungple.title.length === 0 && (
         <LinkCopy
           isMungple={false}
           setLoading={setCopyLoading}

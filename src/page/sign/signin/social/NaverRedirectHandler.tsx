@@ -41,7 +41,7 @@ function NaverRedirectHandler() {
               user: {
                 id: data.userId,
                 address: data.address,
-                nickname: data.name,
+                nickname: data.nickname,
                 email: data.email,
                 phone: data.phoneNo,
                 isSocial:true,
