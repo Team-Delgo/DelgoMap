@@ -175,6 +175,12 @@ const uploadSlice = createSlice({
         title: action.payload.title,
       };
     },
+    setCertificationId(state,action) {
+      return {
+        ...state,
+        certificationId: action.payload.certificationId,
+      };
+    },
   },
 });
 

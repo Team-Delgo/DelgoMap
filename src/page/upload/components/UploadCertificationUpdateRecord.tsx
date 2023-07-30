@@ -120,8 +120,6 @@ function UploadCertificationUpdateRecord() {
     onUpdateCertificationLoading();
     onButtonDisable();
 
-    console.log('isHideAddress',isHideAddress)
-
     setTimeout(() => {
       updateCertificationMutate({
         certificationId,
