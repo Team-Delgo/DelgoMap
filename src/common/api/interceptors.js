@@ -5,18 +5,18 @@ const axiosInstance = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}`,
 });
 
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const accessToken = localStorage.getItem('accessToken') || '';
-    if (config.headers !== undefined && accessToken !== '') {
-      config.headers.authorization_access = accessToken;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+// axiosInstance.interceptors.request.use(
+//   (config) => {
+//     const accessToken = localStorage.getItem('accessToken') || '';
+//     if (config.headers !== undefined && accessToken !== '') {
+//       config.headers.authorization_access = accessToken;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   },
+// );
 
 axiosInstance.interceptors.response.use(
   (response) => {

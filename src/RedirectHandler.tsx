@@ -11,7 +11,7 @@ interface Props {
 const RedirectHandler = ({ children }: Props) => {
   const navigate = useNavigate();
   const { isSignIn } = useSelector((state: RootState) => state.persist.user);
-
+  console.log(isSignIn);
   useEffect(()=>{
     if(!isSignIn) navigate(SIGN_IN_PATH.MAIN);
   } ,[isSignIn]);

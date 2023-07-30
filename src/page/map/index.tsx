@@ -9,7 +9,7 @@ import SearchBar from './components/SearchBar';
 import Search from '../../common/icons/search.svg';
 import Human from '../../common/icons/human.svg';
 import AlertConfirm from '../../common/dialog/AlertConfirm';
-import LinkCopy from './components/LinkCopy';
+import LinkCopy from './components/CertToastMessage';
 import CertToggle from './components/CertToggle';
 import CertCard from './components/CertCard';
 import BallLoading from '../../common/utils/BallLoading';
@@ -25,9 +25,7 @@ function MapTest() {
       mapElement,
       mapDataList,
       selectedCategory,
-      dogFootMarkerLocation: pointerLocation,
       selectedCert,
-      dogFootMarker: currentMarker,
       selectedMungple,
       isSearchViewOpen,
       isAlertOpen,
@@ -35,7 +33,6 @@ function MapTest() {
       isCertToggleOn,
     },
     action: {
-      setSelectedMungple,
       openSearchView,
       closeSearchView,
       searchAndMoveToMungple,
@@ -131,15 +128,9 @@ function MapTest() {
         !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
           <CertToggle onClick={certToggleClickHandler} state={isCertToggleOn} />
         )}
-      {selectedMungple.title.length > 0 && (
-        <LinkCopy isMungple setLoading={setCopyLoading} redirect={setIsAlertOpen} />
-      )}
+      {selectedMungple.title.length > 0 && <LinkCopy isMungple />}
       {isSelectedAnything && selectedMungple.title.length === 0 && (
-        <LinkCopy
-          isMungple={false}
-          setLoading={setCopyLoading}
-          redirect={setIsAlertOpen}
-        />
+        <LinkCopy isMungple={false} />
       )}
       {copyLoading && <BallLoading />}
       <TempMarkerImageLoader />

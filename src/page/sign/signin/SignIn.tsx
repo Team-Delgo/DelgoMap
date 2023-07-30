@@ -46,9 +46,6 @@ function SignIn() {
         firebase_screen_class: 'SignInPage',
       },
     });
-    if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')) {
-      navigate('/');
-    }
     setTimeout(() => {
       setLoading(false);
     }, 700);

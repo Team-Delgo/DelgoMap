@@ -145,7 +145,7 @@ function App() {
             <Routes>
               {/* <Route path="/" element={<MapPage />} /> */}
               <Route path="/" element={<Map />} />
-              <Route path="/:id" element={<Map />} />
+              {/* <Route path="/:id" element={<Map />} /> */}
               {/* <Route path="/:id" element={<MapPage />} /> */}
               <Route path="/help" element={<HelpPage />} />
               <Route path="/detail/temp/:id" element={<TempDetailPage />} />

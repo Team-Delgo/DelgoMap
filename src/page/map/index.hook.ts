@@ -299,8 +299,6 @@ function useMap() {
       map,
       mapElement,
       mapDataList,
-      dogFootMarkerLocation,
-      dogFootMarker,
       selectedCategory,
       selectedCert,
       selectedMungple,
@@ -311,7 +309,6 @@ function useMap() {
       isCertToggleOn,
     },
     action: {
-      setSelectedMungple,
       openSearchView,
       closeSearchView,
       searchAndMoveToMungple,
