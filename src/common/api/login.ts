@@ -33,7 +33,9 @@ function changePassword(email: string, password: string, success: () => void) {
 
 async function tokenRefresh() {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/token/reissue`);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/token/reissue`, {
+      withCredentials: true,
+    });
     axiosInstance.defaults.headers.authorization_access = `Bearer ${response.headers['Authorization_Access']}`;
   } catch {
     console.log('refresh token stale');

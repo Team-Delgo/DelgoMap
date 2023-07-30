@@ -1,12 +1,11 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import './SignIn.scss';
 import { useAnalyticsLogEvent, useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
-import { AxiosError, AxiosResponse } from 'axios';
-import AppleLogin from 'react-apple-login';
+import { AxiosError } from 'axios';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import KakaoButton from '../../../common/icons/kakao.svg';
 import Naver from '../../../common/icons/naver.svg';
 import { analytics } from '../../../index';
