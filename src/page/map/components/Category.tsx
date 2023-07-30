@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './Category.scss';
 import cafeIcon from '../../../common/icons/cafe-category.svg';
 import eatIcon from '../../../common/icons/eat-category.svg';
 import walkIcon from '../../../common/icons/walk-category.svg';

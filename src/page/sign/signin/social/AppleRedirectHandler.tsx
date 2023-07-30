@@ -8,6 +8,7 @@ import AlertConfirm from '../../../../common/dialog/AlertConfirm';
 import { SIGN_UP_PATH } from '../../../../common/constants/path.const';
 import AlertConfirmOne from '../../../../common/dialog/AlertConfirmOne';
 import { userActions } from '../../../../redux/slice/userSlice';
+import axiosInstance from 'common/api/interceptors';
 
 function AppleRedirectHandler() {
   const [signUp, setSignUp] = useState(false);
@@ -30,6 +31,8 @@ function AppleRedirectHandler() {
         const { code } = response.data;
         if (code === 200) {
           // 유저 정보, token dispatch
+          const accessToken = response.headers.authorization_access;
+          axiosInstance.defaults.headers.authorization_access = `Bearer ${accessToken}`;
           navigate('/');
         } else if (code === 383) {
           setSignUp(true);
