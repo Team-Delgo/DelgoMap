@@ -21,7 +21,7 @@ interface selectedPlace {
 
 function RegionSelector(props: {
   change: (r: string, rg: Region) => void;
-  close: (comment:string) => void;
+  close: (comment: string) => void;
   list: regionType[];
   rIndex: number | undefined;
   pIndex: number | undefined;
@@ -98,12 +98,17 @@ function RegionSelector(props: {
     key += 1;
     if (region.code < 6)
       return (
-        <div className="region-item blank" key={`dummyRegion${key}`}>
+        <div className="h-[40px] text-[white]" key={`dummyRegion${key}`}>
           .
         </div>
       );
     return (
-      <div key={region.code} className={classNames('region-item', { selected: region === selectedRegion.selected })}>
+      <div
+        key={region.code}
+        className={`${
+          selectedRegion.selected === region ? 'font-normal text-[#3e382f]' : ''
+        } text-[#c4c4c4] `}
+      >
         {region.region}
       </div>
     );
@@ -113,12 +118,17 @@ function RegionSelector(props: {
     key += 1;
     if (place.code < 6)
       return (
-        <div className="region-item blank" key={`dummyRegion${key}`}>
+        <div className="h-[40px] text-[white]" key={`dummyRegion${key}`}>
           .
         </div>
       );
     return (
-      <div key={place.code} className={classNames('region-item', { selected: place === selectedPlace.selected })}>
+      <div
+        key={place.code}
+        className={`${
+          selectedPlace.selected === place ? 'font-normal text-[#3e382f]' : ''
+        } text-[#c4c4c4] `}
+      >
         {place.place}
       </div>
     );
@@ -168,19 +178,31 @@ function RegionSelector(props: {
   };
 
   return (
-    <div className="regionSelector">
-      <div className="region">
-        <div className="region-regions tab" ref={yearRef} onScroll={yearScrollHandler}>
+    <div className="flex h-[360px] w-[335px] flex-col justify-center rounded-[5px] bg-white">
+      <div className="z-10 flex items-center justify-center bg-white text-center text-[18px] font-light">
+        <div
+          className="h-[280px] w-[120px] overflow-scroll scrollbar-none"
+          ref={yearRef}
+          onScroll={yearScrollHandler}
+        >
           {regionContext}
         </div>
-        <div className="region-divider" />
-        <div className="region-places tab" ref={monthRef} onScroll={monthScrollHandler}>
+        <div className="h-[60%] w-[0px] bg-[#8a8a8a]" />
+        <div
+          className="h-[280px] w-[120px] overflow-scroll scrollbar-none"
+          ref={monthRef}
+          onScroll={monthScrollHandler}
+        >
           {placeContext}
         </div>
       </div>
-      <div className="region-button">
-        <button type="button" onClick={buttonClickHandler}>
-          <div>다음</div>
+      <div className="flex w-[100%] justify-end">
+        <button
+          type="button"
+          onClick={buttonClickHandler}
+          className="items m-5 flex justify-center rounded-[42px] bg-[#3f3f3f] px-[24px] py-[12px] text-xs font-medium leading-[150%] text-white"
+        >
+          <div className="mr-[7px]">다음</div>
           <img src={RightArrow} alt="right-arrow" />
         </button>
       </div>
