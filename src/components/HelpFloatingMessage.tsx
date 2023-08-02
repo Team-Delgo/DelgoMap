@@ -2,10 +2,14 @@ import classNames from 'classnames';
 import React from 'react';
 import './HelpFloatingMessage.scss';
 
-function HelpFloatingMessage(props: { text: string; direction: string }) {
-  const { text, direction } = props;
+interface Props {
+  text: string;
+  guide: 'startCert' | 'viewCert';
+}
+
+function HelpFloatingMessage({ text, guide }: Props) {
   return (
-    <div className={classNames('help-floating', { right: direction === 'right' })}>
+    <div className={classNames('help-floating', { right: guide === 'viewCert' })}>
       {text}
     </div>
   );

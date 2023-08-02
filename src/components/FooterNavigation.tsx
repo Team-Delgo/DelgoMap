@@ -63,7 +63,7 @@ function FooterNavigation(props: { setCenter: () => void }) {
   return (
     <div className="absolute bottom-0 z-[100] flex h-[63px] w-screen justify-evenly rounded-t-[18px] bg-white">
       {helpShow && selectedId > 0 && (
-        <HelpFloatingMessage text="추억을 기록해보세요" direction="bottom" />
+        <HelpFloatingMessage text="추억을 기록해보세요" guide="startCert" />
       )}
       {isAlertOpen && (
         <AlertConfirm

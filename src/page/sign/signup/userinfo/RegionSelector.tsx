@@ -105,9 +105,9 @@ function RegionSelector(props: {
     return (
       <div
         key={region.code}
-        className={`${
-          selectedRegion.selected === region ? 'font-normal text-[#3e382f]' : ''
-        } text-[#c4c4c4] `}
+        className={`h-[40px] ${
+          selectedRegion.selected === region ? 'font-normal text-[#3e382f]' : 'text-[#c4c4c4]'
+        }  `}
       >
         {region.region}
       </div>
@@ -125,9 +125,9 @@ function RegionSelector(props: {
     return (
       <div
         key={place.code}
-        className={`${
-          selectedPlace.selected === place ? 'font-normal text-[#3e382f]' : ''
-        } text-[#c4c4c4] `}
+        className={`h-[40px] ${
+          selectedPlace.selected === place ? 'font-normal text-[#3e382f]' : 'text-[#c4c4c4]'
+        } `}
       >
         {place.place}
       </div>
@@ -179,7 +179,7 @@ function RegionSelector(props: {
 
   return (
     <div className="flex h-[360px] w-[335px] flex-col justify-center rounded-[5px] bg-white">
-      <div className="z-10 flex items-center justify-center bg-white text-center text-[18px] font-light">
+      <div className="z-10 flex items-center justify-center bg-white text-center rounded-[5px] text-[18px] font-light">
         <div
           className="h-[280px] w-[120px] overflow-scroll scrollbar-none"
           ref={yearRef}
