@@ -14,19 +14,19 @@ axiosInstance.interceptors.response.use(
       config,
       response: { status },
     } = error;
+    if(config.sent || status !== 401) return Promise.reject(err);
     if (status === 401) {
+      config.sent = true;
       const response = await tokenRefresh();
       if(response){
         const originalRequest = config;
         const newAccessToken = response.headers.authorization_access;
-  
+        console.log(newAccessToken);
         originalRequest.headers.authorization_access = newAccessToken;
   
         return axiosInstance(originalRequest);
       }
     }
-
-    return Promise.reject(error);
   },
 );
 
