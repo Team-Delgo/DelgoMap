@@ -13,7 +13,7 @@
     margin-top: 38px;
     background-color: #3d3d3f;
     border-radius: 7px;
-    &.detail{
+    &.detail {
       background-color: #f2f2f2;
     }
     &-item {
@@ -68,7 +68,6 @@
         align-items: center;
         @include typobold;
       }
-      
     }
   }
   &-button.term {
@@ -100,6 +99,7 @@
         margin-right: 13px;
       }
       &-input:checked + span::before {
+        //???
         content: '';
         position: absolute;
         width: 26px;
@@ -111,7 +111,6 @@
         background-color: #aa93ec;
       }
       &-icon {
-        
         position: absolute;
         z-index: 10;
         top: 50%;

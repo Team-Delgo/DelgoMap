@@ -34,7 +34,7 @@ $color-orange: #ffab6f;
     }
     &:active {
       animation: backButton 0.1s ease;
-      animation-fill-mode: forwards;
+      animation-fill-mode: forwards; //적용안됨
     }
   }
   &-header {
