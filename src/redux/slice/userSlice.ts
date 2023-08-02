@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isSignIn: false,
+  moveToLogin: false,
   appleCode: '',
   user: {
     id: 0,
@@ -25,6 +26,7 @@ const userSlice = createSlice({
     signin(state, action) {
       return {
         isSignIn: true,
+        moveToLogin: false,
         appleCode: '',
         firstCert: true,
         firstToggle: true,
@@ -34,6 +36,12 @@ const userSlice = createSlice({
     },
     signout() {
       return initialState;
+    },
+    redirectToLogin(state) {
+      return {
+        ...state,
+        moveToLogin: true
+      }
     },
     setpetprofile(state, action) {
       return {

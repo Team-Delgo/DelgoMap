@@ -1,7 +1,8 @@
 import { SIGN_IN_PATH } from 'common/constants/path.const';
 import { ReactNode, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { userActions } from 'redux/slice/userSlice';
 import { RootState } from 'redux/store';
 
 interface Props {
@@ -10,11 +11,15 @@ interface Props {
 
 const RedirectHandler = ({ children }: Props) => {
   const navigate = useNavigate();
-  const { isSignIn } = useSelector((state: RootState) => state.persist.user);
-  console.log(isSignIn);
+  const dispatch = useDispatch();
+  const { moveToLogin } = useSelector((state: RootState) => state.persist.user);
+  console.log(moveToLogin);
   useEffect(()=>{
-    if(!isSignIn) navigate(SIGN_IN_PATH.MAIN);
-  } ,[isSignIn]);
+    if(moveToLogin) {
+      dispatch(userActions.redirectToLogin());
+      navigate(SIGN_IN_PATH.MAIN);
+    }
+  } ,[moveToLogin]);
 
   return <>{children}</>;
 };
