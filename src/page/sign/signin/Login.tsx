@@ -7,15 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { userActions } from '../../../redux/slice/userSlice';
 import Arrow from '../../../common/icons/left-arrow.svg';
-import ToastMessage from '../../../common/dialog/ToastMessage';
 import { login } from '../../../common/api/login';
 import './Login.scss';
 import { checkEmail, checkPasswordLogin } from '../validcheck';
-import Loading from '../../../common/utils/BallLoading';
 import { ROOT_PATH } from '../../../common/constants/path.const';
-import { analytics } from "../../../index";
+import { analytics } from '../../../index';
 import { RootState } from '../../../redux/store';
 import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
+import axiosInstance from 'common/api/interceptors';
 
 interface Input {
   email: string;
@@ -25,7 +24,6 @@ interface Input {
 interface State {
   email: string;
 }
-
 
 declare global {
   interface Window {
@@ -46,14 +44,14 @@ function Login() {
   const { email } = state;
   const { OS, device } = useSelector((state: RootState) => state.persist.device);
 
-  const mutation = useAnalyticsLogEvent(analytics, "screen_view");
+  const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
 
   useEffect(() => {
     mutation.mutate({
       params: {
-        firebase_screen: "SignIn-Password",
-        firebase_screen_class: "SignInPasswordPage"
-      }
+        firebase_screen: 'SignIn-Password',
+        firebase_screen_class: 'SignInPasswordPage',
+      },
     });
   }, []);
 
@@ -81,63 +79,67 @@ function Login() {
     });
   };
 
-  const loginMutate = useMutation(() => login({ email, password: enteredInput.password }), {
-    onSuccess: (response: AxiosResponse) => {
-      const { code, data } = response.data;
-      if (code === 200) {
-        const { registDt } = data;
-        setIsLoading(true);
-        dispatch(
-          userActions.signin({
-            isSignIn: true,
-            user: {
-              id: data.userId,
-              address: data.address,
-              nickname: data.name,
-              email: data.email,
-              phone: data.phoneNo,
-              isSocial: false,
-              geoCode: data.geoCode,
-              registDt: `${registDt.slice(0, 4)}.${registDt.slice(5, 7)}.${registDt.slice(8, 10)}`,
-              notify: data.isNotify,
-            },
-            pet: {
-              petId: data.petId,
-              birthday: data.birthday,
-              breed: data.breed,
-              breedName: data.breedName,
-              name: data.petName,
-              image: data.profile,
-            },
-          }),
-        );
+  const loginMutate = useMutation(
+    () => login({ email, password: enteredInput.password }),
+    {
+      onSuccess: (response: AxiosResponse) => {
+        const { code, data } = response.data;
+        if (code === 200) {
+          const { registDt } = data;
+          setIsLoading(true);
+          dispatch(
+            userActions.signin({
+              isSignIn: true,
+              user: {
+                id: data.userId,
+                address: data.address,
+                nickname: data.nickname,
+                email: data.email,
+                phone: data.phoneNo,
+                isSocial: false,
+                geoCode: data.geoCode,
+                registDt: `${registDt.slice(0, 4)}.${registDt.slice(
+                  5,
+                  7,
+                )}.${registDt.slice(8, 10)}`,
+                notify: data.isNotify,
+              },
+              pet: {
+                petId: data.petId,
+                birthday: data.birthday,
+                breed: data.breed,
+                breedName: data.breedName,
+                name: data.petName,
+                image: data.profile,
+              },
+            }),
+          );
 
-        const accessToken = response.headers.authorization_access;
-        const refreshToken = response.headers.authorization_refresh;
-        localStorage.setItem('accessToken', accessToken || '');
-        localStorage.setItem('refreshToken', refreshToken || '');
-        if (device === 'mobile') {
-          sendFcmTokenHandler(data.userId);
+          const accessToken = response.headers.authorization_access;
+          axiosInstance.defaults.headers.authorization_access = `Bearer ${accessToken}`;
+          axiosInstance.defaults.withCredentials = true;
+          if (device === 'mobile') {
+            sendFcmTokenHandler(data.userId);
+          }
+          navigation(ROOT_PATH, { replace: true });
+        } else if (code === 304) {
+          setIsLoading(false);
+          setFeedback((prev) => {
+            return { ...prev, password: '비밀번호를 확인하세요' };
+          });
+          setLoginFailed(true);
         }
-        navigation(ROOT_PATH, { replace: true });
-      } else if (code === 304) {
-        setIsLoading(false);
-        setFeedback((prev) => {
-          return { ...prev, password: '비밀번호를 확인하세요' };
-        });
-        setLoginFailed(true);
-      }
+      },
+      onError: (error: AxiosError) => {
+        useErrorHandlers(dispatch, error);
+      },
     },
-    onError: (error: AxiosError) => {
-      useErrorHandlers(dispatch, error);
-    }
-  })
+  );
 
   const sendFcmTokenHandler = (userId: number) => {
     if (OS === 'android') {
       window.BRIDGE.sendFcmToken(userId);
-    }
-    else {
+    } else {
       // window.webkit.messageHandlers.sendFcmToken.postMessage(userId);
     }
   };
@@ -160,7 +162,6 @@ function Login() {
 
   return (
     <div className="login-signin">
-      {/* {isLoading && <Loading />} */}
       <div aria-hidden="true" className="login-back" onClick={() => navigation(-1)}>
         <img src={Arrow} alt="arrow" />
       </div>
@@ -184,7 +185,11 @@ function Login() {
           <p className="login-feedback">{feedback.password}</p>
         </div>
 
-        <button type="button" className="login-button active loginpage" onClick={loginButtonHandler}>
+        <button
+          type="button"
+          className="login-button active loginpage"
+          onClick={loginButtonHandler}
+        >
           로그인
         </button>
         <div className="login-find_password" aria-hidden="true" onClick={findPassword}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../../../../redux/slice/userSlice';
@@ -9,6 +9,7 @@ import AlertConfirm from '../../../../common/dialog/AlertConfirm';
 import AlertConfirmOne from '../../../../common/dialog/AlertConfirmOne';
 import Loading from '../../../../common/utils/BallLoading';
 import { RootState } from '../../../../redux/store';
+import axiosInstance from 'common/api/interceptors';
 
 declare global {
   interface Window {
@@ -41,7 +42,7 @@ function NaverRedirectHandler() {
               user: {
                 id: data.userId,
                 address: data.address,
-                nickname: data.name,
+                nickname: data.nickname,
                 email: data.email,
                 phone: data.phoneNo,
                 isSocial:true,
@@ -61,9 +62,7 @@ function NaverRedirectHandler() {
             }),
           );
           const accessToken = response.headers.authorization_access;
-          const refreshToken = response.headers.authorization_refresh;
-          localStorage.setItem('accessToken', accessToken || '');
-          localStorage.setItem('refreshToken', refreshToken || '');
+          axiosInstance.defaults.headers.authorization_access = `Bearer ${accessToken}`;
           if (device === 'mobile') {
             sendFcmTokenHandler(data.userId);
           }

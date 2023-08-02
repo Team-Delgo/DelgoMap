@@ -21,7 +21,7 @@ import {
 } from './index.types';
 import DogFootMarkerSvg from '../../common/icons/cert-map-marker.svg';
 
-function MapPageViewModel() {
+function useMap() {
   /** Variable */
   const mapElement = useRef(null);
   const navigate = useNavigate();
@@ -162,16 +162,15 @@ function MapPageViewModel() {
     } else setIsAlertOpen(true);
   };
   const navigateToLoginPage = () => navigate(SIGN_IN_PATH.MAIN);
-  
+
   // Toggle handlers
   const certToggleClickHandler = () => {
-    if(userId === 0) setIsAlertOpen(true);
+    if (userId === 0) setIsAlertOpen(true);
     else {
       setIsCertToggleOn((prev) => !prev);
       dispatch(mapAction.setCertToggle(!isCertToggleOn));
     }
-  }
-
+  };
 
   /** Rendering */
   // 지도 생성
@@ -290,22 +289,26 @@ function MapPageViewModel() {
     }
   }, [selectedMungple]);
 
+  // 카테고리 선택 시
+  useEffect(() => {
+    showMungpleMarkers();
+  }, [selectedCategory]);
+
   return {
     state: {
       map,
       mapElement,
       mapDataList,
-      dogFootMarkerLocation,
-      dogFootMarker,
       selectedCategory,
       selectedCert,
       selectedMungple,
       mungpleMarkers,
       isSearchViewOpen,
       isAlertOpen,
+      isSelectedAnything,
+      isCertToggleOn,
     },
     action: {
-      setSelectedMungple,
       openSearchView,
       closeSearchView,
       searchAndMoveToMungple,
@@ -314,9 +317,9 @@ function MapPageViewModel() {
       navigateToMyaccountPage,
       navigateToLoginPage,
       certToggleClickHandler,
-      setCurrentMapLocation
+      setCurrentMapLocation,
     },
   };
 }
 
-export default MapPageViewModel;
+export default useMap;

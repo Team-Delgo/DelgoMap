@@ -9,6 +9,7 @@ import AlertConfirm from '../../../../common/dialog/AlertConfirm';
 import AlertConfirmOne from '../../../../common/dialog/AlertConfirmOne';
 import Loading from '../../../../common/utils/BallLoading';
 import { RootState } from '../../../../redux/store';
+import axiosInstance from 'common/api/interceptors';
 
 declare global {
   interface Window {
@@ -47,7 +48,7 @@ function KakaoRedirectHandler() {
               user: {
                 id: data.userId,
                 address: data.address,
-                nickname: data.name,
+                nickname: data.nickname,
                 email: data.email,
                 phone: data.phoneNo,
                 isSocial: true,
@@ -67,9 +68,7 @@ function KakaoRedirectHandler() {
             }),
           );
           const accessToken = response.headers.authorization_access;
-          const refreshToken = response.headers.authorization_refresh;
-          localStorage.setItem('accessToken', accessToken || '');
-          localStorage.setItem('refreshToken', refreshToken || '');
+          axiosInstance.defaults.headers.authorization_access = `Bearer ${accessToken}`;
           if (device === 'mobile') {
             sendFcmTokenHandler(data.userId);
           }
