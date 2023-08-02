@@ -16,13 +16,14 @@ axiosInstance.interceptors.response.use(
     } = error;
     if (status === 401) {
       const response = await tokenRefresh();
-
-      const originalRequest = config;
-      const newAccessToken = response.headers.authorization_access;
-
-      originalRequest.headers.authorization_access = newAccessToken;
-
-      return axiosInstance(originalRequest);
+      if(response){
+        const originalRequest = config;
+        const newAccessToken = response.headers.authorization_access;
+  
+        originalRequest.headers.authorization_access = newAccessToken;
+  
+        return axiosInstance(originalRequest);
+      }
     }
 
     return Promise.reject(error);

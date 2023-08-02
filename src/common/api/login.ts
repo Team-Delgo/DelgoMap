@@ -38,6 +38,7 @@ async function tokenRefresh() {
     });
     const accessToken = response.headers.authorization_access;
     axiosInstance.defaults.headers.authorization_access = `Bearer ${accessToken}`;
+    return response;
   } catch {
     console.log('refresh token stale');
     store.dispatch(userActions.signout());
