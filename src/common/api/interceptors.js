@@ -21,8 +21,7 @@ axiosInstance.interceptors.response.use(
       if(response){
         const originalRequest = config;
         const newAccessToken = response.headers.authorization_access;
-        console.log(newAccessToken);
-        originalRequest.headers.authorization_access = newAccessToken;
+        originalRequest.headers.authorization_access = `Bearer ${newAccessToken}`;
   
         return axiosInstance(originalRequest);
       }
