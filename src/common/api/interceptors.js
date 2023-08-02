@@ -15,18 +15,14 @@ axiosInstance.interceptors.response.use(
       response: { status },
     } = error;
     if (status === 401) {
-      tokenRefresh();
+      const response = await tokenRefresh();
 
       const originalRequest = config;
       const newAccessToken = response.headers.authorization_access;
-      const newRefreshToken = response.headers.authorization_refresh;
-
-      localStorage.setItem('accessToken', newAccessToken);
-      localStorage.setItem('refreshToken', newRefreshToken);
 
       originalRequest.headers.authorization_access = newAccessToken;
 
-      return axios(originalRequest);
+      return axiosInstance(originalRequest);
     }
 
     return Promise.reject(error);
