@@ -79,7 +79,7 @@ function CertificationPost({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
 
-  console.log('post',post)
+  // console.log('post',post)
 
   const observeImg = (
     entries: IntersectionObserverEntry[],
