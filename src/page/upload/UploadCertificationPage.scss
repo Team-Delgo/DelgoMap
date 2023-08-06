@@ -143,6 +143,7 @@
   border-radius: 8px;
   border: none;
   resize: none;
+  white-space: pre-wrap;
   // word-spacing: -3px;
   &::placeholder {
     color: #8a8a8a;
