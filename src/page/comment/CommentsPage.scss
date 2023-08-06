@@ -4,7 +4,7 @@
   img {
     width: 33px;
     height: 33px;
-    border-radius: 4px;
+    border-radius: 38px;
   }
 
   &-content {
@@ -39,7 +39,7 @@
 
     &-text {
       font-size: 14px;
-      padding-top: 8px;
+      // padding-top: 8px;
       white-space: pre-wrap;
     }
   }
@@ -67,6 +67,7 @@
     img {
       position: absolute;
       left: 20px;
+      border-radius: 38px;
     }
 
     &-title {
@@ -96,7 +97,8 @@
       width: 41px;
       height: 41px;
       border-radius: 4px 4px 4px 4px;
-      margin-left: 5%
+      margin-left: 5%;
+      border-radius: 38px;
     }
 
     &-input {
