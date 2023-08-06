@@ -39,7 +39,7 @@ function RecordCertification(props: { certification: any }) {
   const { user } = useSelector((state: RootState) => state.persist.user);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  console.log('certification',certification)
+  // console.log('certification',certification)
 
   const { mutate: certificationLikeMutate } = useMutation(
     (data: CertificationLIkeDataType) => certificationLike(data),
@@ -161,6 +161,8 @@ function RecordCertification(props: { certification: any }) {
         <div className="record-cert-icons">
           <img
             className="record-cert-icons-heart"
+            width={22}
+            height={22}
             src={selfHeart ? FillHeart : Heart}
             alt="heart"
             aria-hidden="true"
