@@ -1,10 +1,20 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './RecordHeader.scss';
-import BackArrow from "../common/icons/prev-arrow-black.svg";
-import { ROOT_PATH } from '../common/constants/path.const';
-import PageHeader from './PageHeader';
+import PetInfo from './PetInfo';
+import BackArrow from '../common/icons/prev-arrow-black.svg';
+import { ROOT_PATH } from '../../../common/constants/path.const';
+import { RootState } from '../../../redux/store';
+import PageHeader from '../../../components/PageHeader';
+
+interface Pet {
+  petId: number;
+  petName: string;
+  breedName: string;
+  birthday: string;
+}
 
 function RecordHeader() {
   let tab = (useLocation().state as any) || 'photo';
@@ -42,7 +52,8 @@ function RecordHeader() {
         <img className='recordHeader-header-back' src={BackArrow} alt="back" aria-hidden="true" onClick={backButtonClickHandler}/>
         <div className="recordHeader-header-title">내 기록</div>
       </div> */}
-      <PageHeader navigate={()=>navigate(ROOT_PATH)} title="내 기록" short/>
+      <PageHeader navigate={() => navigate(ROOT_PATH)} title="내 기록" short />
+      <div></div>
       <div className="recordHeader">
         <div
           aria-hidden="true"
@@ -66,10 +77,10 @@ function RecordHeader() {
           className={classNames('recordHeader-item', { select: tab === 'achieve' })}
           onClick={clickHandler}
         >
-          업적
+          활동
         </div>
+        <div className="recordHeader-divider" />
       </div>
-      <div className="recordHeader-divider" />
     </div>
   );
 }

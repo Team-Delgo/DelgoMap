@@ -34,7 +34,7 @@ function Calender() {
   };
 
   const tempUserSignDate = '2022-05-01';
-  
+
   useEffect(() => {
     getCalendarData(
       userId,
@@ -48,7 +48,7 @@ function Calender() {
 
   useEffect(() => {
     if (scroll === 0) {
-        scrollRef.current?.scrollIntoView({ block: 'end' });
+      scrollRef.current?.scrollIntoView({ block: 'end' });
     } else {
       window.scroll(0, scrollY);
     }
@@ -205,10 +205,7 @@ function Calender() {
   });
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
-    >
+    <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}>
       <div className="calender">
         <div className="date-wrapper" ref={scrollRef}>
           {datesElement}
