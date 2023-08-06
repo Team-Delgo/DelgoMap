@@ -88,10 +88,14 @@
       }
 
       &-button:checked:before {
+        font-family: 'Spoqa Han Sans Neo';
         content: '✔';
         position: absolute;
         top: 0px;
-        left: 5px;
+        left: 4.5px;
+        color: white;
+        -webkit-text-fill-color: white;
+        font-size: 13px;
       }
 
       &-label {
