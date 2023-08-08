@@ -142,19 +142,6 @@ function UploadCertificationUpdateRecord() {
     switch (OS) {
       case 'ios':
         return (
-          <Sheet
-            isOpen={bottomSheetIsOpen}
-            onClose={closeBottomSheet}
-            snapPoints={[
-              initialHeight.current - window.innerWidth + 10,
-              initialHeight.current - window.innerWidth + 10,
-              initialHeight.current - window.innerWidth + 10,
-              initialHeight.current - window.innerWidth + 10,
-            ]}
-            disableDrag={false}
-          >
-            <Sheet.Container style={sheetStyle}>
-              <Sheet.Content>
                 <main
                   className="capture-img-record ios-capture-record"
                   style={{
@@ -251,9 +238,6 @@ function UploadCertificationUpdateRecord() {
                     )}
                   </footer>
                 </main>
-              </Sheet.Content>
-            </Sheet.Container>
-          </Sheet>
         );
       case 'android':
         return (
