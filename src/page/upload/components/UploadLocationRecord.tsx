@@ -105,19 +105,6 @@ function UploadLocationRecord() {
     );
   };
   return OS === 'ios' ? (
-    <Sheet
-      isOpen={bottomSheetIsOpen}
-      onClose={closeBottomSheet}
-      snapPoints={[
-        initialHeight.current - window.innerWidth + 10,
-        initialHeight.current - window.innerWidth + 10,
-        initialHeight.current - window.innerWidth + 10,
-        initialHeight.current - window.innerWidth + 10,
-      ]}
-      disableDrag={false}
-    >
-      <Sheet.Container style={sheetStyle}>
-        <Sheet.Content>
           <main
             className="capture-img-record ios-capture-record"
             style={{
@@ -177,9 +164,6 @@ function UploadLocationRecord() {
               })}
             </body>
           </main>
-        </Sheet.Content>
-      </Sheet.Container>
-    </Sheet>
   ) : (
     <Sheet
       isOpen={bottomSheetIsOpen}
