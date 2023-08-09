@@ -81,7 +81,7 @@ function RecordHeader() {
           활동
         </div>
         <div className="recordHeader-divider" />
-        <div className="absolute mt-[700px] w-[100%]">
+        <div className="fixed bottom-0 w-[100%]">
           <FooterNavigation setCenter={setCurrentMapLocation} />
         </div>
       </div>

@@ -7,7 +7,9 @@ import { UserProfile } from '../../../common/types/user';
 function PetInfo() {
   const { pet } = useSelector((state: RootState) => state.persist.user);
   const year = `${(new Date().getFullYear() - parseInt(pet.birthday)).toString()}` + `살`;
-  const mapButtonHandler = () => {};
+  const mapButtonHandler = () => {
+    console.log('click');
+  };
   return (
     <header className=" fixed z-20 mt-[80px] flex w-screen bg-white">
       <img

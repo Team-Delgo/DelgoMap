@@ -16,9 +16,7 @@ import { GET_ALL_CERTIFICATION_DATA_LIST } from '../../common/constants/queryKey
 import { postType } from '../../common/types/post';
 import PageHeader from '../../components/PageHeader';
 
-
 function CertificationPostsPage() {
-  
   const firstCert = (useLocation()?.state?.cert as any) || null;
   const pageFrom = (useLocation()?.state?.from as any) || 'home';
   const [pageSizeCount, setPageSizeCount] = useState(0);
@@ -52,8 +50,7 @@ function CertificationPostsPage() {
     },
   );
 
-
-  console.log('data',data)
+  console.log('data', data);
 
   useEffect(() => {
     mutation.mutate({
@@ -80,19 +77,24 @@ function CertificationPostsPage() {
 
   const moveToHomePage = useCallback(() => {
     dispatch(scrollActions.scrollInit());
-    if(pageFrom === 'home' || pageFrom === 'homeCert')
-      navigate(ROOT_PATH);
+    if (pageFrom === 'home' || pageFrom === 'homeCert') navigate(ROOT_PATH);
     else navigate(RECORD_PATH.PHOTO);
   }, []);
 
   if (isLoading) {
     return <DogLoading />;
   }
-  
+
   return (
     <div className="certificationPostsPage">
-      <PageHeader title='동네 강아지' navigate={moveToHomePage} isFixed isAbsolute={false} short={false} />
-      {pageFrom === 'photo' || pageFrom === 'homeCert'  ? (
+      <PageHeader
+        title="동네 강아지"
+        navigate={moveToHomePage}
+        isFixed
+        isAbsolute={false}
+        short={false}
+      />
+      {pageFrom === 'photo' || pageFrom === 'homeCert' ? (
         <CertificationPost
           post={firstCert}
           certificationPostsFetch={certificationPostsFetch}

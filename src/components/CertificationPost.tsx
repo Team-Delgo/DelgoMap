@@ -46,7 +46,7 @@ function CertificationPost({
   pageSize,
 }: CertificationPostPropsType) {
   const [clickCount, setClickCount] = useState(0);
-  const [LikeAnimationLoading,setLikeAnimationLoading] = useState(false)
+  const [LikeAnimationLoading, setLikeAnimationLoading] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likeCount);
   const [blockedUserName, setBlockedUserName] = useState('');
   const [isLike, setIsLike] = useState(post?.isLike);
@@ -76,10 +76,9 @@ function CertificationPost({
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_view');
   const mainImg = useRef<HTMLImageElement>(null);
   const profileImg = useRef<HTMLImageElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-
-  console.log('post',post)
+  console.log('post', post);
 
   const observeImg = (
     entries: IntersectionObserverEntry[],
@@ -100,8 +99,8 @@ function CertificationPost({
   }, [post]);
 
   useEffect(() => {
-    setLikeCount(post?.likeCount)
-    setIsLike(post?.isLike)
+    setLikeCount(post?.likeCount);
+    setIsLike(post?.isLike);
   }, [post]);
 
   useEffect(() => {
@@ -161,7 +160,7 @@ function CertificationPost({
       },
     },
   );
-
+  const profileClickHandler = () => {};
   const handleCertificationLike = () => {
     if (!isSignIn) {
       setLoginAlertIsOpen(true);
@@ -214,7 +213,7 @@ function CertificationPost({
         certificationId: post?.certificationId,
         content: post?.description,
         address: post?.address,
-        isHideAddress:post?.isHideAddress,
+        isHideAddress: post?.isHideAddress,
         // mongPlaceId:post?.
       }),
     );
@@ -234,13 +233,13 @@ function CertificationPost({
 
   const handleDoubleClick = () => {
     if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current); 
+      clearTimeout(timeoutRef.current);
     }
     setClickCount((prevCount: number) => {
       const newCount = prevCount + 1;
       if (newCount === 2) {
         setLikeAnimationLoading(true);
-        console.log(1)
+        console.log(1);
         handleCertificationLike();
 
         timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
@@ -249,7 +248,7 @@ function CertificationPost({
         timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
       }
       return newCount;
-    })
+    });
   };
 
   return (
@@ -258,6 +257,7 @@ function CertificationPost({
         <div className="post-img-result-header-profile">
           <img
             className="post-img-result-header-profile-img"
+            onClick={profileClickHandler}
             src={post?.userProfile}
             alt="copy url"
             ref={profileImg}
@@ -341,18 +341,20 @@ function CertificationPost({
             )}
           </div>
           <div className="post-img-result-main-footer-comments-wrapper">
-          <img
-            className="post-img-result-main-footer-comments"
-            src={Comments}
-            alt="comments"
-            width={22}
-            height={22}
-            aria-hidden="true"
-            onClick={moveToCommentPage}
-          />
-          {post?.commentCount > 0 && (
-            <div className="post-img-result-main-footer-count">{post?.commentCount}</div>
-          )}
+            <img
+              className="post-img-result-main-footer-comments"
+              src={Comments}
+              alt="comments"
+              width={22}
+              height={22}
+              aria-hidden="true"
+              onClick={moveToCommentPage}
+            />
+            {post?.commentCount > 0 && (
+              <div className="post-img-result-main-footer-count">
+                {post?.commentCount}
+              </div>
+            )}
           </div>
         </footer>
       </main>
