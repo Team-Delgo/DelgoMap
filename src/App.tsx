@@ -162,7 +162,7 @@ function App() {
       <AnimatePresence>
         <BrowserRouter>
           <RedirectHandler>
-          {/* {tokenExpriedError && <ToastPurpleMessage message="로그인 세션이 만료되었습니다." />} */}
+          {tokenExpriedError && <ToastPurpleMessage message="로그인 세션이 만료되었습니다." />}
             <Routes>
               {/* <Route path="/" element={<MapPage />} /> */}
               <Route path="/" element={<Map />} />
