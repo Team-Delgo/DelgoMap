@@ -176,7 +176,7 @@ function Photo() {
         <div className="photo-nocert">
           <h4>기록이 없어요</h4>
           <span className="photo-nocert-guide">
-            오른쪽 하단
+            하단
             <div className="photo-nocert-guide-icon">
               <img className="photo-nocert-guide-icon-img" src={Plus} alt="plus" />
             </div>
@@ -233,10 +233,7 @@ function Photo() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 1, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
-    >
+    <motion.div initial={{ opacity: 1, x: 50 }} animate={{ opacity: 1, x: 0 }}>
       <div className="photo" ref={swipeArea}>
         <div className="photo-history">
           <div className="photo-history-title">{certCount}장의 사진</div>

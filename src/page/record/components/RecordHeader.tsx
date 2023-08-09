@@ -8,6 +8,8 @@ import BackArrow from '../common/icons/prev-arrow-black.svg';
 import { ROOT_PATH } from '../../../common/constants/path.const';
 import { RootState } from '../../../redux/store';
 import PageHeader from '../../../components/PageHeader';
+import useMap from '../../map/index.hook';
+import FooterNavigation from 'components/FooterNavigation';
 
 interface Pet {
   petId: number;
@@ -17,6 +19,10 @@ interface Pet {
 }
 
 function RecordHeader() {
+  const {
+    action: { setCurrentMapLocation },
+  } = useMap();
+
   let tab = (useLocation().state as any) || 'photo';
   if (tab.from === 'home') {
     tab = 'photo';
@@ -42,18 +48,13 @@ function RecordHeader() {
     navigate(`/${id}`, { state: id });
   };
 
-  const backButtonClickHandler = () => {
-    navigate(ROOT_PATH);
-  };
-
   return (
     <div className={classNames('recordHeader-wrapper', { fixed: tab === 'calendar' })}>
       {/* <div className='recordHeader-header'>
         <img className='recordHeader-header-back' src={BackArrow} alt="back" aria-hidden="true" onClick={backButtonClickHandler}/>
         <div className="recordHeader-header-title">내 기록</div>
       </div> */}
-      <PageHeader navigate={() => navigate(ROOT_PATH)} title="내 기록" short />
-      <div></div>
+      <PageHeader navigate={() => navigate(ROOT_PATH)} title="" short />
       <div className="recordHeader">
         <div
           aria-hidden="true"
@@ -80,6 +81,9 @@ function RecordHeader() {
           활동
         </div>
         <div className="recordHeader-divider" />
+        <div className="absolute mt-[700px] w-[100%]">
+          <FooterNavigation setCenter={setCurrentMapLocation} />
+        </div>
       </div>
     </div>
   );

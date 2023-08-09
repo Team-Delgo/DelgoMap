@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { RootState } from '../../../redux/store';
 import { UserProfile } from '../../../common/types/user';
 
 function PetInfo() {
   const { pet } = useSelector((state: RootState) => state.persist.user);
   const year = `${(new Date().getFullYear() - parseInt(pet.birthday)).toString()}` + `살`;
-
+  const mapButtonHandler = () => {};
   return (
     <header className=" fixed z-20 mt-[80px] flex w-screen bg-white">
       <img
@@ -25,8 +26,11 @@ function PetInfo() {
             {year} {pet.breedName}
           </div>
         </div>
-        <div className="ml-[12px] mr-[20px] mt-[6px] justify-center rounded-[17px] border-[1px] border-solid border-[#ECE5FF] bg-[#F3EEFF] py-[7px] text-center text-sm font-medium text-[#4725A7]">
-          지도보기
+        <div
+          className="ml-[12px] mr-[20px] mt-[6px] justify-center rounded-[17px] border-[1px] border-solid border-[#ECE5FF] bg-[#F3EEFF] py-[7px] text-center text-sm font-medium text-[#4725A7]"
+          onClick={mapButtonHandler}
+        >
+          프로필공유
         </div>
       </div>
     </header>

@@ -10,7 +10,6 @@ function CalendarPage() {
       <PetInfo />
       <RecordHeader />
       <Calender />
-      <CertFloatingButton />
     </>
   );
 }
