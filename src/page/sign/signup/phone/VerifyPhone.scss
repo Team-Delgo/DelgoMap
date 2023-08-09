@@ -71,7 +71,7 @@
       }
       &.isUnMount {
         animation: buttonUnMount 0.3s ease-in-out;
-        animation-fill-mode: forwards;
+        animation-fill-mode: forwards; //???
       }
       &-exit {
         width: 10px;

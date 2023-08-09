@@ -183,6 +183,7 @@ function App() {
               <Route path={SIGN_UP_PATH.USER_PET_INFO} element={<PetInfo />} />
               <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
               <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
+              <Route path={POSTS_PATH} element={<PostsPage />} />
               <Route element={<Account />}>
                 <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
                 <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
@@ -205,7 +206,6 @@ function App() {
                 <Route path={UPLOAD_PATH.MAP} element={<CertificationMap />} />
                 <Route path={CROP_PATH} element={<CropPage />} />
                 <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
-                <Route path={POSTS_PATH} element={<PostsPage />} />
                 <Route path={MY_ACCOUNT_PATH.MAIN} element={<MyAccountPage />} />
                 <Route path={MY_ACCOUNT_PATH.PETINFO} element={<ChangePetInfo />} />
                 <Route path={MY_ACCOUNT_PATH.SETTINGS} element={<Setting />} />

@@ -20,8 +20,6 @@ import useInput from '../../../common/hooks/useInput';
 import { mapAction } from '../../../redux/slice/mapSlice';
 import { RootState } from '../../../redux/store';
 
-
-
 function UploadLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
@@ -33,7 +31,10 @@ function UploadLocationRecord() {
   const dispatch = useDispatch();
   const initialHeight = useRef(window.innerHeight);
 
-  const sheetStyle = { borderRadius: '18px 18px 0px 0px',  height: initialHeight.current- window.innerWidth - 10   };
+  const sheetStyle = {
+    borderRadius: '18px 18px 0px 0px',
+    height: initialHeight.current - window.innerWidth + 10,
+  };
 
   const { data: mungPlaceList } = useQuery(
     GET_MUNG_PLACE_LIST,
@@ -42,7 +43,7 @@ function UploadLocationRecord() {
       cacheTime: CACHE_TIME,
       staleTime: STALE_TIME,
       onSuccess(data) {
-        console.log('data',data)
+        console.log('data', data);
       },
       onError: (error: any) => {
         useErrorHandlers(dispatch, error);
@@ -54,9 +55,7 @@ function UploadLocationRecord() {
     (place: MungPlaceType) => (event: React.MouseEvent) => {
       const { mungpleId, placeName, address } = place;
       setCheckedPlaceId(mungpleId);
-      dispatch(
-        uploadAction.setMongPlace({ mungpleId, placeName, address }),
-      );
+      dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address }));
       setTimeout(() => {
         navigate(UPLOAD_PATH.CERTIFICATION);
       }, 1000);
@@ -106,70 +105,74 @@ function UploadLocationRecord() {
     );
   };
   return OS === 'ios' ? (
-    <main
-      className="capture-img-record ios-capture-record"
-      style={{
-        height: initialHeight.current- window.innerWidth - 10 ,
-      }}
-    >
-      <body className="review-container">
-        <input
-          type="text"
-          ref={inputRef}
-          className="review-place-name"
-          placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
-          onChange={onChangePlaceName}
-        />
-        {placeName.length > 0 && manualPlace()}
-        {mungPlaceList?.data.map((place: MungPlaceType) => {
-          if (placeName.length > 0) {
-            if (place.placeName.includes(placeName)) {
-              return (
-                <div
-                  className="review-place-wrapper"
-                  aria-hidden="true"
-                  onClick={selectMongPlace(place)}
-                  key={place.mungpleId}
-                >
-                  <div>
-                    <div
-                      className={
-                        checkedPlaceId === place.mungpleId
-                          ? 'review-place-wrapper-active-name'
-                          : 'review-place-wrapper-name'
-                      }
-                    >
-                      {place.placeName}
-                    </div>
-                    <div
-                      className={
-                        checkedPlaceId === place.mungpleId
-                          ? 'review-place-wrapper-active-address'
-                          : 'review-place-wrapper-address'
-                      }
-                    >
-                      {place.address}
-                    </div>
-                  </div>
-                  {checkedPlaceId === place.mungpleId ? (
-                    <img className="review-place-check" src={Check} alt="category-img" />
-                  ) : null}
-                </div>
-              );
-            }
-          }
-        })}
-      </body>
-    </main>
+          <main
+            className="capture-img-record ios-capture-record"
+            style={{
+              height: initialHeight.current - window.innerWidth + 10,
+            }}
+          >
+            <body className="review-container">
+              <input
+                type="text"
+                ref={inputRef}
+                className="review-place-name"
+                placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
+                onChange={onChangePlaceName}
+              />
+              {placeName.length > 0 && manualPlace()}
+              {mungPlaceList?.data.map((place: MungPlaceType) => {
+                if (placeName.length > 0) {
+                  if (place.placeName.includes(placeName)) {
+                    return (
+                      <div
+                        className="review-place-wrapper"
+                        aria-hidden="true"
+                        onClick={selectMongPlace(place)}
+                        key={place.mungpleId}
+                      >
+                        <div>
+                          <div
+                            className={
+                              checkedPlaceId === place.mungpleId
+                                ? 'review-place-wrapper-active-name'
+                                : 'review-place-wrapper-name'
+                            }
+                          >
+                            {place.placeName}
+                          </div>
+                          <div
+                            className={
+                              checkedPlaceId === place.mungpleId
+                                ? 'review-place-wrapper-active-address'
+                                : 'review-place-wrapper-address'
+                            }
+                          >
+                            {place.address}
+                          </div>
+                        </div>
+                        {checkedPlaceId === place.mungpleId ? (
+                          <img
+                            className="review-place-check"
+                            src={Check}
+                            alt="category-img"
+                          />
+                        ) : null}
+                      </div>
+                    );
+                  }
+                }
+              })}
+            </body>
+          </main>
   ) : (
     <Sheet
       isOpen={bottomSheetIsOpen}
       onClose={closeBottomSheet}
       snapPoints={[
-        initialHeight.current- window.innerWidth - 10 ,
-        initialHeight.current- window.innerWidth - 10 ,
-        initialHeight.current- window.innerWidth - 10 ,
-        initialHeight.current- window.innerWidth - 10 ,
+        initialHeight.current - window.innerWidth + 10,
+        initialHeight.current - window.innerWidth + 10,
+        initialHeight.current - window.innerWidth + 10,
+        initialHeight.current - window.innerWidth + 10,
       ]}
       disableDrag
       className="modal-bottom-sheet"
@@ -179,7 +182,7 @@ function UploadLocationRecord() {
           <main
             className="capture-img-record"
             style={{
-              height:         initialHeight.current- window.innerWidth - 10 ,
+              height: initialHeight.current - window.innerWidth - 10,
             }}
           >
             <body className="review-container">

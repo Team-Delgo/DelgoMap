@@ -37,7 +37,9 @@ async function tokenRefresh() {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/token/reissue`, {
       withCredentials: true,
     });
-    axiosInstance.defaults.headers.authorization_access = `Bearer ${response.headers['Authorization_Access']}`;
+    const accessToken = response.headers.authorization_access;
+    axiosInstance.defaults.headers.authorization_access = `Bearer ${accessToken}`;
+    return response;
   } catch {
     console.log('refresh token stale');
     store.dispatch(userActions.signout());

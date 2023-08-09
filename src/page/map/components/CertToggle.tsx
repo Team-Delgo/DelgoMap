@@ -41,8 +41,12 @@ function CertToggle(props: { onClick: () => void; state: boolean }) {
       >
         {(show && selectedLat === 0) && <HelpFloatingMessage
           text="내 기록을 지도에서 확인 할 수 있어요"
-          direction="right"
+          guide="viewCert"
         />}
+        <HelpFloatingMessage
+          text="내 기록을 지도에서 확인 할 수 있어요"
+          guide="viewCert"
+        />
         <img src={DogFoot} alt="toggle" />
       </div>
     </div>

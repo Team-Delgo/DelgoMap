@@ -19,7 +19,6 @@ function UploadCertificationImg({ openBottomSheet }: props) {
   const fileUploadRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const location = useLocation();
-  
 
   const handleDragStart = (e: MouseEvent | TouchEvent) => {
     e.preventDefault();
@@ -44,7 +43,9 @@ function UploadCertificationImg({ openBottomSheet }: props) {
     if (event.target.files) {
       const galleryImg = URL.createObjectURL(event.target.files[0]);
       const galleryImgName = event.target.files[0].name;
-      dispatch(uploadAction.setPrevImg({ prevImg: galleryImg, prevImgName: galleryImgName }));
+      dispatch(
+        uploadAction.setPrevImg({ prevImg: galleryImg, prevImgName: galleryImgName }),
+      );
       navigate(CROP_PATH, { state: { prevPath: location.pathname } });
     }
   };
@@ -58,7 +59,6 @@ function UploadCertificationImg({ openBottomSheet }: props) {
   const moveToPreviousPage = () => {
     navigate(-1);
   };
-
 
   return (
     <>
