@@ -29,8 +29,13 @@ function FooterNavigation(props: { setCenter: () => void }) {
   const dispatch = useDispatch();
 
   const moveToPostsPage = () => {
-    setCenter();
-    navigate(POSTS_PATH, { state: { cert: null, from: 'home' } });
+    if (userId) {
+      setCenter();
+      navigate(POSTS_PATH, { state: { cert: null, from: 'home' } });
+    }
+    else{
+      setIsAlertOpen(true);
+    }
   };
   const sendLoginPage = () => {
     navigate(SIGN_IN_PATH.MAIN);
