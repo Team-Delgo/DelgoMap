@@ -14,7 +14,7 @@ function RedirectHandler({ children }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { moveToLogin } = useSelector((state: RootState) => state.persist.user);
-  console.log(moveToLogin);
+  // console.log(moveToLogin);
   useEffect(()=>{
     if(moveToLogin) {
       dispatch(userActions.redirectToLogin());
