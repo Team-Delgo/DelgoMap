@@ -83,7 +83,6 @@ function SearchBar(props: { cafeList: Mungple[]; selectId: (data: Mungple) => vo
     <div ref={ref} className="search-wrapper">
       <div className="search-header">
         <BackArrowComponent onClickHandler={close}/>
-        {/* <img src={BackArrow} alt="back" aria-hidden="true" onClick={close} /> */}
         <div className="search">
           <input
             id="search"

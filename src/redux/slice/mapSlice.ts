@@ -1,30 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { idDefault } from '../../page/map/index.types';
+import { SelectedMungple, defaultSelectedMungple } from '../../page/map/index.types';
 
-const initialState = {
+interface MapSlice {
+  zoom: number;
+  lat: number;
+  lng: number;
+  detailImgUrl: string;
+  currentPlaceName: string;
+  certToggle: boolean;
+  selectedId: SelectedMungple;
+}
+
+const initialState: MapSlice = {
   zoom: 6,
   lat: 37.5057018,
   lng: 127.1141119,
-  selectedIcon: 0,
-  selectedArea: '송파',
-  link: 'https://www.delgo.pet',
-  isCopy: false,
-  viewCount: 0,
   detailImgUrl: '',
   currentPlaceName: '',
   certToggle: false,
-  selectedId: idDefault,
+  selectedId: defaultSelectedMungple,
 };
 
 export const mapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
-    setSelectedIdAddress(state, action){
+    setSelectedIdAddress(state, action) {
       state.selectedId = {
         ...state.selectedId,
-        address: action.payload
-      }
+        address: action.payload,
+      };
     },
     setCurrentPosition(state, action) {
       state.lat = action.payload.lat;
@@ -33,15 +38,6 @@ export const mapSlice = createSlice({
     },
     clearPosition(state) {
       state = initialState;
-    },
-    setLink(state, action) {
-      state.link = action.payload;
-    },
-    clearLink(state) {
-      state.link = 'https://map.delgo.pet';
-    },
-    setViewCount(state) {
-      state.viewCount += 1;
     },
     setDetailUrl(state, action) {
       state.detailImgUrl = action.payload;
@@ -56,11 +52,11 @@ export const mapSlice = createSlice({
       state.selectedId = action.payload;
     },
     clearSelectedId(state, action) {
-      state.selectedId = idDefault;
+      state.selectedId = defaultSelectedMungple;
     },
     setMapCustomPosition(state, action) {
       state.selectedId = {
-        ...idDefault,
+        ...defaultSelectedMungple,
         lat: action.payload.lat,
         lng: action.payload.lng,
       };

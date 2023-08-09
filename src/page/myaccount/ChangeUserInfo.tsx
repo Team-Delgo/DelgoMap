@@ -37,6 +37,8 @@ function ChangeUserInfo() {
   const [regionList, setRegionList] = useState<regionType[]>();
   const [region, setRegion] = useState<Region>();
 
+  console.log(user);
+
   const getRegionData = async () => {
     const response = await GetRegion();
     setRegionList(response);

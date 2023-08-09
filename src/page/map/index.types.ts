@@ -1,5 +1,15 @@
+export type CategoryCode =
+  | 'CA0001'
+  | 'CA0002'
+  | 'CA0003'
+  | 'CA0004'
+  | 'CA0005'
+  | 'CA0006'
+  | 'CA0007'
+  | 'CA9999';
+
 export interface Cert {
-  categoryCode: string;
+  categoryCode: CategoryCode;
   address: string;
   certificationId: number;
   description: string;
@@ -19,7 +29,7 @@ export interface Cert {
   userName: string;
 }
 export const certDefault: Cert = {
-  categoryCode: '',
+  categoryCode: 'CA9999',
   certificationId: 0,
   description: '',
   likeCount: 0,
@@ -39,7 +49,20 @@ export const certDefault: Cert = {
   userName: '',
 };
 
-export const idDefault = {
+export interface SelectedMungple {
+  img: string;
+  title: string;
+  address: string;
+  detailUrl: string;
+  id: number;
+  prevId: number;
+  lat: number;
+  lng: number;
+  categoryCode: CategoryCode;
+  prevCategoryCode: CategoryCode;
+}
+
+export const defaultSelectedMungple: SelectedMungple = {
   img: '',
   title: '',
   address: '',
@@ -48,8 +71,8 @@ export const idDefault = {
   prevId: 0,
   lat: 0,
   lng: 0,
-  categoryCode: '0',
-  prevCategoryCode: '0',
+  categoryCode: 'CA0001',
+  prevCategoryCode: 'CA0001',
 };
 
 export interface Mungple {
@@ -77,17 +100,4 @@ export interface MungpleMarkerType {
   id: number;
   category: string;
   marker: kakao.maps.Marker;
-}
-
-export interface SelectedMungpleType {
-  img: string;
-  title: string;
-  address: string;
-  detailUrl: string;
-  id: number;
-  prevId: number;
-  lat: number;
-  lng: number;
-  categoryCode: string;
-  prevCategoryCode: string;
 }
