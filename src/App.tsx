@@ -62,14 +62,26 @@ import { getMyInfo } from './common/api/myaccount';
 
 import Map from './page/map';
 import TempDetailPage from './page/detail/TempDetailPage';
-import Account from 'components/Account';
-import RedirectHandler from 'RedirectHandler';
+import Account from './components/Account';
+import RedirectHandler from './RedirectHandler';
+import ToastPurpleMessage from './common/dialog/ToastPurpleMessage';
+import { errorActions } from './redux/slice/errorSlice';
 
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
+  // const navigation = useNavigate();
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
+  const tokenExpriedError = useSelector((state: RootState) => state.persist.error.tokenExpried);
+
+  useEffect(() => {
+    if (tokenExpriedError) {
+      setTimeout(() => {
+        ConfirmLoginSessionExpried();
+      }, 2300);
+    }
+  }, [tokenExpriedError]);
 
   useEffect(() => {
     if (isSignIn) {
@@ -137,11 +149,20 @@ function App() {
     }
   }, []);
 
+  const ConfirmLoginSessionExpried = () => {
+    dispatch(errorActions.setTokenFine());
+    dispatch(userActions.signout());
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    // navigation(SIGN_IN_PATH.MAIN);
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <AnimatePresence>
         <BrowserRouter>
           <RedirectHandler>
+          {/* {tokenExpriedError && <ToastPurpleMessage message="로그인 세션이 만료되었습니다." />} */}
             <Routes>
               {/* <Route path="/" element={<MapPage />} /> */}
               <Route path="/" element={<Map />} />

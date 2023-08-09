@@ -1,9 +1,10 @@
+/* eslint-disable dot-notation */
 import axios from 'axios';
-import axiosInstance from './interceptors';
 import { useNavigate } from 'react-router-dom';
 import { SIGN_IN_PATH } from 'common/constants/path.const';
 import store from 'redux/store';
 import { userActions } from 'redux/slice/userSlice';
+import axiosInstance from './interceptors';
 
 function login(info: { email: string; password: string }) {
   const data = axios.post(`https://www.test.delgo.pet/login`, {

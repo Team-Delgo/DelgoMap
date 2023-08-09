@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { SIGN_IN_PATH } from 'common/constants/path.const';
 import { ReactNode, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +10,7 @@ interface Props {
   children: ReactNode;
 }
 
-const RedirectHandler = ({ children }: Props) => {
+function RedirectHandler({ children }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { moveToLogin } = useSelector((state: RootState) => state.persist.user);
@@ -21,7 +22,7 @@ const RedirectHandler = ({ children }: Props) => {
     }
   } ,[moveToLogin]);
 
-  return <>{children}</>;
-};
+  return <div>{children}</div>;
+}
 
 export default RedirectHandler;
