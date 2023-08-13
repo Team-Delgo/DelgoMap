@@ -21,7 +21,6 @@ function DetailPage() {
   const [imageNumber, setImageNumber] = useState(1);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
-  const url = useSelector((state: any) => state.map.detailImgUrl);
   const splitUrl = window.location.href.split('/');
   const detailPageId = parseInt(splitUrl[splitUrl.length - 1], 10);
 

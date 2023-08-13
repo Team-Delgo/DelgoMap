@@ -16,7 +16,7 @@ import {
   Cert,
   Mungple,
   MungpleMarkerType,
-  SelectedMungpleType,
+  SelectedMungple,
   certDefault,
 } from './index.types';
 import DogFootMarkerSvg from '../../common/icons/cert-map-marker.svg';
@@ -42,7 +42,7 @@ function useMap() {
   const [isSelectedAnything, setIsSelectedAnything] = useState(false);
   const [dogFootMarkerLocation, setDogFootMarkerLocation] = useState({ lat: 0, lng: 0 });
   const [selectedMungple, setSelectedMungple] =
-    useState<SelectedMungpleType>(initialSelectedMungple);
+    useState<SelectedMungple>(initialSelectedMungple);
   const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [isFirstRendering, setIsFirstRendering] = useState({ mungple: true, cert: true });
@@ -63,7 +63,7 @@ function useMap() {
   /** Function */
   const clearSelectedMungple = clearSelectedId(setSelectedMungple, selectedMungple);
   const clearSelectedCert = () => setSelectedCert(certDefault);
-  const dispatchSelectedMungple = (prev: SelectedMungpleType, mungple: any) => {
+  const dispatchSelectedMungple = (prev: SelectedMungple, mungple: any) => {
     return {
       img: mungple.photoUrl,
       title: mungple.placeName,
@@ -116,6 +116,7 @@ function useMap() {
     image = setMarkerImageBig(mungple.categoryCode);
     marker.setImage(image);
     marker.setZIndex(20);
+    setDogFootMarkerLocation(() => ({ lat: 0, lng: 0 }));
   };
 
   // Markers visible handlers
@@ -220,7 +221,7 @@ function useMap() {
     }
     dispatch(mapAction.setMapCustomPosition(dogFootMarkerLocation));
   }, [dogFootMarkerLocation]);
-
+  console.log(mapDataList);
   // 멍플, 인증 마커 렌더링
   useEffect(() => {
     if (mapDataList && map && (isFirstRendering.mungple || isFirstRendering.cert)) {

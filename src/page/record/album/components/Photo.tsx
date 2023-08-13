@@ -120,7 +120,6 @@ function Photo() {
     console.log(isLoading, pageSizeFor, photos);
     if (!isLoading && pageSizeFor > 1 && photos.length >= pageSizeFor * 8) {
       window.scroll(0, scroll);
-      console.log('scroll');
       setPageSizeFor(1);
     }
   }, [isLoading, photos]);

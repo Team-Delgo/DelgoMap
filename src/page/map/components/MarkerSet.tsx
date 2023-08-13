@@ -14,14 +14,8 @@ import Walk from '../../../common/icons/walk-map.svg';
 import WalkSmall from '../../../common/icons/walk-map-small.svg';
 import Kinder from '../../../common/icons/kinder-map.svg';
 import KinderSmall from '../../../common/icons/kinder-map-small.svg';
-import WalkCert from '../../../common/icons/walk-cert.svg';
-import CafeCert from '../../../common/icons/cafe-cert.svg';
-import EatCert from '../../../common/icons/eat-cert.svg';
-import BathCert from '../../../common/icons/bath-cert.svg';
-import BeauthCert from '../../../common/icons/beauty-cert.svg';
-import HospitalCert from '../../../common/icons/hospital-cert.svg';
 import NormalCert from '../../../common/icons/normal-cert.svg';
-import { Cert } from '../index.types';
+import { Cert, SelectedMungple, defaultSelectedMungple } from '../index.types';
 import './MarkerSet.scss';
 import { POSTS_PATH } from '../../../common/constants/path.const';
 
@@ -40,45 +34,14 @@ export interface MarkerImageSets {
 }
 
 export function clearSelectedId(
-  setSelectedId: React.Dispatch<
-    React.SetStateAction<{
-      img: string;
-      title: string;
-      address: string;
-      detailUrl: string;
-      id: number;
-      prevId: number;
-      lat: number;
-      lng: number;
-      categoryCode: string;
-      prevCategoryCode: string;
-    }>
-  >,
-  selectedId: {
-    img: string;
-    title: string;
-    address: string;
-    detailUrl: string;
-    id: number;
-    prevId: number;
-    lat: number;
-    lng: number;
-    categoryCode: string;
-    prevCategoryCode: string;
-  },
+  setSelectedId: React.Dispatch<React.SetStateAction<SelectedMungple>>,
+  selectedId: SelectedMungple,
 ) {
   return useCallback(() => {
-    setSelectedId((prev: any) => {
+    setSelectedId((prev: SelectedMungple) => {
       return {
-        img: '',
-        title: '',
-        address: '',
-        id: 0,
+        ...defaultSelectedMungple,
         prevId: prev.id,
-        lat: 0,
-        detailUrl: '',
-        lng: 0,
-        categoryCode: '0',
         prevCategoryCode: prev.categoryCode,
       };
     });
@@ -116,19 +79,19 @@ export function setNormalCertMarker(
   console.log(certList);
   const markers = certList.map((m) => {
     const icon = NormalCert;
-    const content = document.createElement("div");
-    content.className = "normalCert";
-    content.setAttribute("aria-hidden", "true");
+    const content = document.createElement('div');
+    content.className = 'normalCert';
+    content.setAttribute('aria-hidden', 'true');
 
-    const iconImg = document.createElement("img");
+    const iconImg = document.createElement('img');
     iconImg.src = icon;
-    iconImg.className = "outside-image";
-    iconImg.alt = "pin";
+    iconImg.className = 'outside-image';
+    iconImg.alt = 'pin';
 
-    const insideImg = document.createElement("img");
+    const insideImg = document.createElement('img');
     insideImg.src = m.photoUrl;
-    insideImg.className = "inside-image";
-    insideImg.alt = "cert";
+    insideImg.className = 'inside-image';
+    insideImg.alt = 'cert';
 
     content.appendChild(iconImg);
     content.appendChild(insideImg);
@@ -136,12 +99,12 @@ export function setNormalCertMarker(
       position: new kakao.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
       content,
       map,
-      clickable: true
+      clickable: true,
     });
-    content.addEventListener("click", (e) => {
+    content.addEventListener('click', (e) => {
       e.stopPropagation();
       console.log(e);
-      setCert(m)
+      setCert(m);
     });
     marker.setMap(map);
     return marker;
@@ -177,19 +140,19 @@ export function setOtherNormalCertMarker(
 ) {
   const markers = certList.map((m) => {
     const icon = NormalCert;
-    const content = document.createElement("div");
-    content.className = "normalCert";
-    content.setAttribute("aria-hidden", "true");
+    const content = document.createElement('div');
+    content.className = 'normalCert';
+    content.setAttribute('aria-hidden', 'true');
 
-    const iconImg = document.createElement("img");
+    const iconImg = document.createElement('img');
     iconImg.src = icon;
-    iconImg.className = "outside-image";
-    iconImg.alt = "pin";
+    iconImg.className = 'outside-image';
+    iconImg.alt = 'pin';
 
-    const insideImg = document.createElement("img");
+    const insideImg = document.createElement('img');
     insideImg.src = m.photoUrl;
-    insideImg.className = "inside-image";
-    insideImg.alt = "cert";
+    insideImg.className = 'inside-image';
+    insideImg.alt = 'cert';
 
     content.appendChild(iconImg);
     content.appendChild(insideImg);
@@ -199,22 +162,21 @@ export function setOtherNormalCertMarker(
         state: {
           cert: m,
           from: 'homeCert',
-        }
-      })
-    })
+        },
+      });
+    });
     const marker = new kakao.maps.CustomOverlay({
       position: new kakao.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
       content,
       map,
       zIndex: 11,
-      clickable: true
+      clickable: true,
     });
     marker.setMap(map);
     return marker;
   });
   return markers;
 }
-
 
 export function MarkerImages() {
   let imageSize = new kakao.maps.Size(50, 59);

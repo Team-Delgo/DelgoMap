@@ -1,5 +1,5 @@
 import axiosInstance from './interceptors';
-import { Cert } from '../types/map';
+import { Cert } from '../../../src/page/map/index.types';
 
 interface CertResponse {
   data: Cert[];
