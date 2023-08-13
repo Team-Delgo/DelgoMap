@@ -100,14 +100,6 @@ const userSlice = createSlice({
         appleCode: action.payload,
       };
     },
-    sessionLogout(){
-      return(
-        {
-          ...initialState,
-          moveToLogin:true
-        }
-      )
-    }
   },
 });
 
