@@ -1,16 +1,15 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { useQuery } from 'react-query';
-import { motion } from 'framer-motion';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import classNames from 'classnames';
+import { useInView } from 'react-intersection-observer';
 import {
   useAnalyticsLogEvent,
   useAnalyticsCustomLogEvent,
 } from '@react-query-firebase/analytics';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useOnclickOutside from 'react-cool-onclickoutside';
 import Sheet from 'react-modal-sheet';
 import { useDispatch, useSelector } from 'react-redux';
-import { AxiosResponse } from 'axios';
 import './Photo.scss';
 import UnderArrow from '../../../../common/icons/under-arrow-gray.svg';
 import { Cert } from '../../../map/index.types';
@@ -27,24 +26,14 @@ function Photo() {
   const navigate = useNavigate();
   const certEvent = useAnalyticsCustomLogEvent(analytics, 'album_cert');
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
-  const { pageSize, scroll } = useSelector(
-    (state: RootState) => state.persist.scroll.photos,
-  );
-  const ref = useOnclickOutside(() => {
+  const sheetRef = useOnclickOutside(() => {
     setButtonIsClicked(false);
   });
-  const [photos, setPhotos] = useState<Cert[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isFetched, setIsFetched] = useState(false);
   const [page, setPage] = useState<number>(0);
-  const [certCount, setCertCount] = useState(0);
-  const [pageSizeFor, setPageSizeFor] = useState(pageSize);
   const [buttonIsClicked, setButtonIsClicked] = useState(false);
-  const [isFetching, setFetching] = useState(false);
   const [sortOption, setSortOption] = useState<boolean>(true);
-  const [isLast, setLast] = useState(false);
   const dispatch = useDispatch();
-  const swipeArea = useRef<HTMLDivElement>(null);
+  const { ref, inView } = useInView();
 
   useEffect(() => {
     mutation.mutate({
@@ -53,101 +42,31 @@ function Photo() {
         firebase_screen_class: 'AlbumPage',
       },
     });
-    getTotalCount();
-    getPhotoDataList();
-    const handleScroll = () => {
-      const { scrollTop, offsetHeight } = document.documentElement;
-      if (window.innerHeight + scrollTop >= offsetHeight) {
-        setFetching(true);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, []);
 
-  useEffect(() => {
-    if (isFetching && !isLast) {
-      console.log('here');
-      getPhotoDataList();
-    } else if (isLast) setFetching(true);
-  }, [isFetching]);
+  const { data: totalPhotoCount } = useQuery(['getCertPhotoCount', userId], () =>
+    getPhotoCount(userId),
+  );
 
-  const getTotalCount = () => {
-    getPhotoCount(
-      userId,
-      (response: AxiosResponse) => {
-        setCertCount(response.data.data);
-      },
-      dispatch,
-    );
-  };
-  const changePhotoData = () => {
-    getPhotoData(
-      userId,
-      'CA0000',
-      0,
-      8,
-      sortOption,
-      (response: AxiosResponse) => {
-        const { data } = response;
-        setPage(1);
-        setPhotos(data.data.content);
-        setLast(data.data.last);
-        setPageSizeFor(1);
-        setFetching(false);
-      },
-      dispatch,
-    );
-  };
-
-  useEffect(() => {
-    changePhotoData();
-  }, [sortOption]);
+  const {
+    data: photos,
+    isFetched: isPhotoFetched,
+    fetchNextPage,
+  } = useInfiniteQuery(
+    ['getCertPhotos', userId, `page${page}`, sortOption],
+    ({ pageParam = 0 }) => getPhotoData(userId, 'CA0000', pageParam, 8, sortOption),
+    {
+      getNextPageParam: (last) => (!last.last ? last.number + 1 : undefined),
+    },
+  );
 
   const { data: otherDogsCerts, isLoading: otherDogsCertsLoading } = useQuery(
     ['getFiveOtherDogsCert', userId],
     () => getFiveOtherDogsCert(userId, 5),
     {
-      enabled: photos.length === 0 && isFetched,
-      staleTime: 2000,
-      cacheTime: 2000,
+      enabled: photos?.pages[0].content.length === 0,
     },
   );
-
-  useEffect(() => {
-    console.log(isLoading, pageSizeFor, photos);
-    if (!isLoading && pageSizeFor > 1 && photos.length >= pageSizeFor * 8) {
-      window.scroll(0, scroll);
-      setPageSizeFor(1);
-    }
-  }, [isLoading, photos]);
-
-  const getPhotoDataList = () => {
-    setIsLoading(true);
-    getPhotoData(
-      userId,
-      'CA0000',
-      page,
-      pageSizeFor > 1 ? 8 * pageSizeFor : 8,
-      sortOption,
-      (response: AxiosResponse) => {
-        const { data } = response;
-        if (pageSizeFor > 1) {
-          setPage(pageSizeFor);
-        } else {
-          setPage(page + 1);
-        }
-        setPhotos(photos.concat(data.data.content));
-        setLast(data.data.last);
-        setFetching(false);
-      },
-      dispatch,
-    );
-    setIsLoading(false);
-    setIsFetched(true);
-  };
 
   const navigateToOthers = (cert: Cert) => {
     navigate(POSTS_PATH, { state: { cert, from: 'photo' } });
@@ -165,13 +84,14 @@ function Photo() {
           <img
             src={o.photoUrl}
             alt="others"
+            key={o.certificationId}
             onClick={() => navigateToOthers(o)}
             aria-hidden
           />
         );
       });
     return (
-      isFetched && (
+      isPhotoFetched && (
         <div className="photo-nocert">
           <h4>기록이 없어요</h4>
           <span className="photo-nocert-guide">
@@ -193,114 +113,119 @@ function Photo() {
       )
     );
   }, [photos, otherDogsCerts]);
+
   const photoContext = useMemo(
     () =>
-      photos.map((photo) => {
-        const photoClickHandler = () => {
-          dispatch(
-            scrollActions.photosScroll({ scroll: window.scrollY, pageSize: page }),
-          );
-          certEvent.mutate();
-          navigate('/certs', {
-            state: {
-              info: {
-                certId: photo.certificationId,
-                userId,
-                date: photo.registDt,
-              },
-              from: RECORD_PATH.PHOTO,
-            },
-          });
-        };
+      photos?.pages.map((photo) => (
+        <>
+          {photo.content.map((cert) => {
+            const photoClickHandler = () => {
+              dispatch(
+                scrollActions.photosScroll({ scroll: window.scrollY, pageSize: page }),
+              );
+              certEvent.mutate();
+              navigate('/certs', {
+                state: {
+                  info: {
+                    certId: cert.certificationId,
+                    userId,
+                    date: cert.registDt,
+                  },
+                  from: RECORD_PATH.PHOTO,
+                },
+              });
+            };
 
-        return (
-          <img
-            className="photo-wrapper-img"
-            src={photo.photoUrl}
-            alt="cert"
-            aria-hidden="true"
-            key={photo.certificationId}
-            onClick={photoClickHandler}
-          />
-        );
-      }),
+            return (
+              <img
+                className="photo-wrapper-img"
+                src={cert.photoUrl}
+                alt="cert"
+                aria-hidden="true"
+                key={cert.certificationId}
+                onClick={photoClickHandler}
+              />
+            );
+          })}
+        </>
+      )),
     [photos],
   );
 
-  if (photoContext.length % 2 === 0) {
+  if (photoContext && photoContext.length % 2 === 0) {
     photoContext.concat(<div className="photo-fake" />);
   }
 
+  useEffect(() => {
+    if (inView) fetchNextPage();
+  }, [inView]);
+
   return (
-    <motion.div
-      initial={{ opacity: 1, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
-    >
-      <div className="photo" ref={swipeArea}>
-        <div className="photo-history">
-          <div className="photo-history-title">{certCount}장의 사진</div>
-          <div className="photo-history-select">
-            <div
-              className="photo-history-select-sort"
-              aria-hidden="true"
-              onClick={() => {
-                setButtonIsClicked(!buttonIsClicked);
-              }}
-            >
-              {sortOption ? '최신순' : '오래된순'}
-              <img src={UnderArrow} alt="arrow" />
-            </div>
+    <div className="photo">
+      <div className="photo-history">
+        <div className="photo-history-title">{totalPhotoCount}장의 사진</div>
+        <div className="photo-history-select">
+          <div
+            className="photo-history-select-sort"
+            aria-hidden="true"
+            onClick={() => {
+              setButtonIsClicked(!buttonIsClicked);
+            }}
+          >
+            {sortOption ? '최신순' : '오래된순'}
+            <img src={UnderArrow} alt="arrow" />
           </div>
         </div>
-
-        <div className="photo-wrapper">
-          {photos.length > 0 ? photoContext : noRecordContext}
-        </div>
-        <Sheet
-          className="confirm-bottom-sheet-container"
-          isOpen={buttonIsClicked}
-          disableDrag
-          onClose={() => {
-            setButtonIsClicked(false);
-          }}
-          snapPoints={[160, 160, 160, 160]}
-        >
-          <Sheet.Container>
-            <Sheet.Content>
-              <div className="photo-sort-option" ref={ref}>
-                <div
-                  className={classNames('photo-sort-option-item', {
-                    selected: sortOption,
-                  })}
-                  aria-hidden="true"
-                  onClick={() => {
-                    setSortOption(true);
-
-                    setButtonIsClicked(false);
-                  }}
-                >
-                  최신순
-                </div>
-                <div className="photo-sort-option-devider" />
-                <div
-                  className={classNames('photo-sort-option-item', {
-                    selected: !sortOption,
-                  })}
-                  aria-hidden="true"
-                  onClick={() => {
-                    setSortOption(false);
-                    setButtonIsClicked(false);
-                  }}
-                >
-                  오래된순
-                </div>
-              </div>
-            </Sheet.Content>
-          </Sheet.Container>
-          <Sheet.Backdrop />
-        </Sheet>
       </div>
-    </motion.div>
+
+      <div className="photo-wrapper">
+        {photos && photos.pages[0].content.length > 0 ? photoContext : noRecordContext}
+      </div>
+      <div ref={ref}>&nbsp;</div>
+      <Sheet
+        className="confirm-bottom-sheet-container"
+        isOpen={buttonIsClicked}
+        disableDrag
+        onClose={() => {
+          setButtonIsClicked(false);
+        }}
+        snapPoints={[160, 160, 160, 160]}
+      >
+        <Sheet.Container>
+          <Sheet.Content>
+            <div className="photo-sort-option" ref={sheetRef}>
+              <div
+                className={classNames('photo-sort-option-item', {
+                  selected: sortOption,
+                })}
+                aria-hidden="true"
+                onClick={() => {
+                  setSortOption(true);
+
+                  setButtonIsClicked(false);
+                }}
+              >
+                최신순
+              </div>
+              <div className="photo-sort-option-devider" />
+              <div
+                className={classNames('photo-sort-option-item', {
+                  selected: !sortOption,
+                })}
+                aria-hidden="true"
+                onClick={() => {
+                  setSortOption(false);
+                  setButtonIsClicked(false);
+                }}
+              >
+                오래된순
+              </div>
+            </div>
+          </Sheet.Content>
+        </Sheet.Container>
+        <Sheet.Backdrop />
+      </Sheet>
+    </div>
   );
 }
 

@@ -13,15 +13,12 @@ export interface Cert {
   address: string;
   certificationId: number;
   description: string;
-  geoCode: string;
-  isPhotoChecked: boolean;
   latitude: string;
   isLike: boolean;
   longitude: string;
   likeCount: number;
   commentCount: number;
   mungpleId: number;
-  p_geoCode: string;
   photoUrl: string;
   placeName: string;
   registDt: string;
@@ -36,12 +33,9 @@ export const certDefault: Cert = {
   commentCount: 0,
   isLike: false,
   address: '',
-  geoCode: '',
-  isPhotoChecked: false,
   latitude: '',
   longitude: '',
   mungpleId: 0,
-  p_geoCode: '',
   photoUrl: '',
   placeName: '',
   registDt: '',
