@@ -9,7 +9,7 @@ import HospitalSmall from '../../../common/icons/hospital-map-small.svg';
 import KinderSmall from '../../../common/icons/kinder-map-small.svg';
 import EatSmall from '../../../common/icons/eat-map-small.svg';
 import EtcSmall from '../../../common/icons/etc-small.svg';
-import { Cert } from '../../../common/types/map';
+import { Cert } from '../index.types';
 import { RECORD_PATH, ROOT_PATH } from '../../../common/constants/path.const';
 import { RootState } from '../../../redux/store';
 

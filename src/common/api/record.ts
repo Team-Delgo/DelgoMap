@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { AnyAction, Dispatch } from 'redux';
-import { Mungple } from 'page/map/index.types';
+import { Cert, Mungple } from 'page/map/index.types';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 import { APIResponse } from '../types/api';
@@ -50,41 +50,32 @@ function sendEmail(
     });
 }
 
-function getPhotoData(
+interface Photos{
+  number:number;
+  last:boolean;
+  content: Cert[];
+}
+
+async function getPhotoData(
   userId: number,
   categoryCode: string,
   currentPage: number,
   pageSize: number,
   isDesc: boolean,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
 ) {
   const sortOrder = isDesc ? 'desc' : 'asc'; // isDesc 값에 따라 정렬 순서를 결정합니다.
-  axiosInstance
-    .get(
-      `/certification/category?categoryCode=${categoryCode}&userId=${userId}&page=${currentPage}&size=${pageSize}&sort=registDt,${sortOrder}`,
-    )
-    .then((data) => {
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
+  const response = await axiosInstance.get<APIResponse<Photos>>(
+    `/certification/category?categoryCode=${categoryCode}&userId=${userId}&page=${currentPage}&size=${pageSize}&sort=registDt,${sortOrder}`,
+  );
+  return response.data.data;
 }
 
-function getPhotoCount(
-  userId: number,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
+async function getPhotoCount(
+  userId: number
 ) {
-  axiosInstance
-    .get(`/certification/count/${userId}`)
-    .then((data) => {
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
+  const response = await axiosInstance
+    .get<AxiosResponse<number>>(`/certification/count/${userId}`);
+  return response.data.data;
 }
 
 async function getRecordCertificationDate(
