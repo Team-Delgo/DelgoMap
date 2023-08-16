@@ -33,10 +33,10 @@ function RecordHeader() {
     achieve: false,
   });
   const navigate = useNavigate();
+  const userId = useSelector((state: RootState) => state.persist.user.user.id);
 
   const clickHandler = (e: any) => {
     const { id } = e.target;
-    if (tab === id) return;
     setSeleceted((prev) => {
       const temp = {
         photo: false,
@@ -45,7 +45,10 @@ function RecordHeader() {
       };
       return { ...temp, [id]: true };
     });
-    navigate(`/${id}`, { state: id });
+    if (userId) {
+      navigate(`/${id}/${userId}`, { state: id });
+    }
+    console.log('click');
   };
 
   return (

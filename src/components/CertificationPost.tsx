@@ -10,7 +10,7 @@ import FillHeart from '../common/icons/heart.svg';
 import Comments from '../common/icons/comments.svg';
 import DogLoading from '../common/icons/dog-loading.svg';
 import { RootState } from '../redux/store';
-import { UPLOAD_PATH, SIGN_IN_PATH } from '../common/constants/path.const';
+import { UPLOAD_PATH, SIGN_IN_PATH, RECORD_PATH } from '../common/constants/path.const';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { scrollActions } from '../redux/slice/scrollSlice';
 import DeleteBottomSheet from '../common/dialog/ConfirmBottomSheet';

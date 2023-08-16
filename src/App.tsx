@@ -150,7 +150,7 @@ function App() {
               <Route path="/help" element={<HelpPage />} />
               <Route path="/detail/temp/:id" element={<TempDetailPage />} />
               <Route path="/detail/:id" element={<DetailPage />} />
-              <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
+              <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />x
               <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
               <Route path={SIGN_IN_PATH.FINDPASSWORD} element={<FindPassword />} />
               <Route path={SIGN_IN_PATH.PHONEAUTH} element={<PhoneAuth />} />
@@ -163,9 +163,9 @@ function App() {
               <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
               <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
               <Route element={<Account />}>
-                <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
-                <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
-                <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
+                <Route path="/calendar/:id" element={<CalendarPage />} />
+                <Route path="/photo/:id" element={<AlbumPage />} />
+                <Route path="/achieve/:id" element={<AchievePage />} />
                 <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
                 <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
                 <Route

@@ -27,7 +27,7 @@ function AchievementPage() {
     closeAchievementBottomSheet,
   ] = useActive(false);
   const { user } = useSelector((state: RootState) => state.persist.user);
-  console.log(user.id);
+  // console.log(user.id);
   const dispatch = useDispatch();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const swipeArea = useRef<HTMLDivElement>(null);
