@@ -9,6 +9,8 @@ interface MapSlice {
   currentPlaceName: string;
   certToggle: boolean;
   selectedId: SelectedMungple;
+  isFirstCertToggle: boolean;
+  isFisrtCert: boolean;
 }
 
 const initialState: MapSlice = {
@@ -19,6 +21,8 @@ const initialState: MapSlice = {
   currentPlaceName: '',
   certToggle: false,
   selectedId: defaultSelectedMungple,
+  isFirstCertToggle: false,
+  isFisrtCert: true,
 };
 
 export const mapSlice = createSlice({

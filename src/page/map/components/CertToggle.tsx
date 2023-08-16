@@ -1,35 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DogFoot from '../../../common/icons/dogfoot.svg';
 import HelpFloatingMessage from '../../../components/HelpFloatingMessage';
 import { RootState } from '../../../redux/store';
+import { userActions } from 'redux/slice/userSlice';
 
 function CertToggle(props: { onClick: () => void; state: boolean }) {
   const { onClick, state } = props;
   const [isDisabled, setIsDisabled] = useState(false);
-  const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
   const selectedLat = useSelector((state: RootState) => state.map.selectedId.lat);
+  const isFirstCertToggle = useSelector((state:RootState) => state.persist.user.isFirstCertToggle);
+  // useEffect(() => {
+  //   const isFirstCert = window.localStorage.getItem('isFirstCert');
+  //   const isFirstToggle = window.localStorage.getItem('isFirstToggle');
 
-  useEffect(() => {
-    const isFirstCert = window.localStorage.getItem('isFirstCert');
-    const isFirstToggle = window.localStorage.getItem('isFirstToggle');
-
-    if (isFirstCert) {
-      if (!isFirstToggle) {
-        setShow(true);
-      }
-    }
-  }, []);
+  //   if (isFirstCert) {
+  //     if (!isFirstToggle) {
+  //       setShow(true);
+  //     }
+  //   }
+  // }, []);
 
   const onClickHandler = () => {
-    if (!isDisabled) {
-      onClick();
-      setShow(false);
-      window.localStorage.setItem('isFirstToggle', 'true');
-      setIsDisabled(true);
-      setTimeout(() => setIsDisabled(false), 100);
-    }
+    onClick();
+    dispatch(userActions.setIsFirstCertToggle(false));
   };
+
   return (
     <div>
       <div
@@ -37,7 +34,7 @@ function CertToggle(props: { onClick: () => void; state: boolean }) {
         aria-hidden="true"
         onClick={onClickHandler}
       >
-        {show && selectedLat === 0 && (
+        {isFirstCertToggle && selectedLat === 0 && (
           <HelpFloatingMessage
             text="내 기록을 지도에서 확인 할 수 있어요"
             guide="viewCert"
