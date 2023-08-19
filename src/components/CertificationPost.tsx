@@ -78,8 +78,6 @@ function CertificationPost({
   const profileImg = useRef<HTMLImageElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  console.log('post', post);
-
   const observeImg = (
     entries: IntersectionObserverEntry[],
     observer: IntersectionObserver,
@@ -160,7 +158,12 @@ function CertificationPost({
       },
     },
   );
-  const profileClickHandler = () => {};
+  const profileClickHandler = () => {
+    if (post.userId) {
+      console.log(post.userId);
+      navigate(`${RECORD_PATH.PHOTO}/${post.userId}`);
+    }
+  };
   const handleCertificationLike = () => {
     if (!isSignIn) {
       setLoginAlertIsOpen(true);

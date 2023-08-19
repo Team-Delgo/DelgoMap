@@ -24,7 +24,7 @@ function DetailPage() {
   const url = useSelector((state: any) => state.map.detailImgUrl);
   const splitUrl = window.location.href.split('/');
   const detailPageId = parseInt(splitUrl[splitUrl.length - 1], 10);
-
+  ('');
   const { data, isLoading } = useQuery(['getDetailPageData', detailPageId], () =>
     getDetailPageData(detailPageId),
   );

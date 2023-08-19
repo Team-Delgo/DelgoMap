@@ -26,7 +26,8 @@ function Photo() {
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const navigate = useNavigate();
   const certEvent = useAnalyticsCustomLogEvent(analytics, 'album_cert');
-  const userId = useSelector((state: RootState) => state.persist.user.user.id);
+  const splitUrl = window.location.href.split('/');
+  const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
   const { pageSize, scroll } = useSelector(
     (state: RootState) => state.persist.scroll.photos,
   );

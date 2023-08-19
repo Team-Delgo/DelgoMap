@@ -26,7 +26,8 @@ function AchievementPage() {
     openAchievementBottomSheet,
     closeAchievementBottomSheet,
   ] = useActive(false);
-  const { user } = useSelector((state: RootState) => state.persist.user);
+  const splitUrl = window.location.href.split('/');
+  const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
   // console.log(user.id);
   const dispatch = useDispatch();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
@@ -42,7 +43,7 @@ function AchievementPage() {
   }, []);
 
   const { isFetching: getAchievementDataListIsLoading, data: achievementDataList } =
-    useQuery(GET_ACHIEVEMENT_DATA_LIST, () => getAchievementList(user.id), {
+    useQuery(GET_ACHIEVEMENT_DATA_LIST, () => getAchievementList(userId), {
       cacheTime: CACHE_TIME,
       staleTime: STALE_TIME,
       onError: (error: any) => {

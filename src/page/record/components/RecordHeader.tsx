@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './RecordHeader.scss';
 import PetInfo from './PetInfo';
 import BackArrow from '../common/icons/prev-arrow-black.svg';
-import { ROOT_PATH } from '../../../common/constants/path.const';
+import { ROOT_PATH, POSTS_PATH } from '../../../common/constants/path.const';
 import { RootState } from '../../../redux/store';
 import PageHeader from '../../../components/PageHeader';
 import useMap from '../../map/index.hook';
@@ -19,9 +19,20 @@ interface Pet {
 }
 
 function RecordHeader() {
+  const splitUrl = window.location.href.split('/');
+  const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
+  const myId = useSelector((state: RootState) => state.persist.user.user.id);
+  let isMyAccount = true;
+
   const {
     action: { setCurrentMapLocation },
   } = useMap();
+
+  if (userId === myId) {
+    isMyAccount = true;
+  } else {
+    isMyAccount = false;
+  }
 
   let tab = (useLocation().state as any) || 'photo';
   if (tab.from === 'home') {
@@ -33,8 +44,11 @@ function RecordHeader() {
     achieve: false,
   });
   const navigate = useNavigate();
-  const userId = useSelector((state: RootState) => state.persist.user.user.id);
 
+  const handleNavigate = () => {
+    if (isMyAccount) navigate(ROOT_PATH);
+    else navigate(POSTS_PATH);
+  };
   const clickHandler = (e: any) => {
     const { id } = e.target;
     setSeleceted((prev) => {
@@ -57,7 +71,7 @@ function RecordHeader() {
         <img className='recordHeader-header-back' src={BackArrow} alt="back" aria-hidden="true" onClick={backButtonClickHandler}/>
         <div className="recordHeader-header-title">내 기록</div>
       </div> */}
-      <PageHeader navigate={() => navigate(ROOT_PATH)} title="" short />
+      <PageHeader navigate={handleNavigate} title="" short />
       <div className="recordHeader">
         <div
           aria-hidden="true"
@@ -84,7 +98,10 @@ function RecordHeader() {
           활동
         </div>
         <div className="recordHeader-divider" />
-        <div className="fixed bottom-0 w-[100%]">
+        <div
+          className="fixed bottom-0 w-[100%]"
+          style={{ display: isMyAccount ? 'block' : 'none' }}
+        >
           <FooterNavigation setCenter={setCurrentMapLocation} />
         </div>
       </div>

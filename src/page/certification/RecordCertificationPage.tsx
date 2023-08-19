@@ -51,13 +51,13 @@ function RecordCertificationPage() {
     return <RecordCertification certification={e} />;
   });
 
-  let headerFrom: string;
-  if (pageFrom === RECORD_PATH.CALENDAR) headerFrom = 'calendar';
-  else if (pageFrom === ROOT_PATH) headerFrom = 'map';
-  else headerFrom = 'photo';
+  // let headerFrom: string;
+  // if (pageFrom === RECORD_PATH.CALENDAR) headerFrom = 'calendar';
+  // else if (pageFrom === ROOT_PATH) headerFrom = 'map';
+  // else headerFrom = 'photo';
 
   const navigateBack = () => {
-    navigate(pageFrom, { state: headerFrom });
+    navigate(-1);
   };
 
   return (

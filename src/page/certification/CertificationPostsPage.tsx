@@ -49,9 +49,6 @@ function CertificationPostsPage() {
         !lastPage?.last ? lastPage?.nextPage : undefined,
     },
   );
-
-  console.log('data', data);
-
   useEffect(() => {
     mutation.mutate({
       params: {
@@ -78,7 +75,7 @@ function CertificationPostsPage() {
   const moveToHomePage = useCallback(() => {
     dispatch(scrollActions.scrollInit());
     if (pageFrom === 'home' || pageFrom === 'homeCert') navigate(ROOT_PATH);
-    else navigate(RECORD_PATH.PHOTO);
+    else navigate(`${RECORD_PATH.PHOTO}/${user.id}`);
   }, []);
 
   if (isLoading) {

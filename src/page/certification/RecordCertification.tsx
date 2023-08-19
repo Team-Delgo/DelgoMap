@@ -9,10 +9,7 @@ import FillHeart from '../../common/icons/heart.svg';
 import Comments from '../../common/icons/comments.svg';
 import { Cert } from '../../common/types/map';
 import './RecordCertification.scss';
-import {
-  certificationLike,
-  certificationDelete,
-} from '../../common/api/certification';
+import { certificationLike, certificationDelete } from '../../common/api/certification';
 import { uploadAction } from '../../redux/slice/uploadSlice';
 import { UPLOAD_PATH, RECORD_PATH } from '../../common/constants/path.const';
 import { RootState } from '../../redux/store';
@@ -30,16 +27,14 @@ function RecordCertification(props: { certification: any }) {
   const { certification } = props;
   const dispatch = useDispatch();
   const [clickCount, setClickCount] = useState(0);
-  const [LikeAnimationLoading,setLikeAnimationLoading] = useState(false)
+  const [LikeAnimationLoading, setLikeAnimationLoading] = useState(false);
   const [selfHeart, setSelfHeart] = useState(certification.isLike);
   const [count, setCount] = useState(certification.likeCount);
   const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDeleteBottomSheet] =
     useActive(false);
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.persist.user);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-  console.log('certification',certification)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { mutate: certificationLikeMutate } = useMutation(
     (data: CertificationLIkeDataType) => certificationLike(data),
@@ -84,7 +79,7 @@ function RecordCertification(props: { certification: any }) {
   }, []);
 
   const moveToUpdatePage = useCallback(() => {
-    console.log('certification',certification)
+    console.log('certification', certification);
     dispatch(
       uploadAction.setCertificationUpdate({
         img: certification?.photoUrl,
@@ -93,7 +88,7 @@ function RecordCertification(props: { certification: any }) {
         certificationId: certification?.certificationId,
         content: certification?.description,
         address: certification?.address,
-        isHideAddress:certification?.isHideAddress
+        isHideAddress: certification?.isHideAddress,
       }),
     );
     navigate(UPLOAD_PATH.UPDATE, {
@@ -103,10 +98,9 @@ function RecordCertification(props: { certification: any }) {
     });
   }, []);
 
-
   const handleDoubleClick = () => {
     if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current); 
+      clearTimeout(timeoutRef.current);
     }
     setClickCount((prevCount: number) => {
       const newCount = prevCount + 1;
@@ -115,7 +109,7 @@ function RecordCertification(props: { certification: any }) {
         certificationLikeMutate({
           userId: certification.userId,
           certificationId: certification.certificationId,
-        })
+        });
 
         timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
         setTimeout(() => setLikeAnimationLoading(false), 500);
@@ -123,7 +117,7 @@ function RecordCertification(props: { certification: any }) {
         timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
       }
       return newCount;
-    })
+    });
   };
 
   return (

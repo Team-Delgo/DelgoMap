@@ -1,9 +1,9 @@
 import React from 'react';
 import RecordHeader from '../components/RecordHeader';
-import CertFloatingButton from '../../CertFloatingButton';
 import Photo from './components/Photo';
 import PetInfo from '../components/PetInfo';
-import FooterNavigation from 'components/FooterNavigation';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 
 function AlbumPage() {
   return (
