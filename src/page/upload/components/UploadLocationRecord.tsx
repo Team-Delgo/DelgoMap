@@ -23,9 +23,9 @@ import { RootState } from '../../../redux/store';
 function UploadLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  const [placeName, onChangePlaceName] = useInput('');
-  const [checkedPlaceId, setCheckedPlaceId] = useState(-1);
-  const [manualChecked, onCheckManual] = useActive(false);
+  const [placeName, onChangePlaceName] = useInput(''); //장소명
+  const [checkedPlaceId, setCheckedPlaceId] = useState(-1); //선택한 placeId (멍플장소만)
+  const [manualChecked, onCheckManual] = useActive(false); //선택된 장소 UI변경을 위해
   const inputRef = useRef<any>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,10 +33,10 @@ function UploadLocationRecord() {
 
   const sheetStyle = {
     borderRadius: '18px 18px 0px 0px',
-    height: initialHeight.current - window.innerWidth + 10,
+    height: initialHeight.current - window.innerWidth + 10, //기본적으로 window.innerHeight,innerWidth등은 인라은으로설정 css에선 알수 x 
   };
 
-  const { data: mungPlaceList } = useQuery(
+  const { data: mungPlaceList } = useQuery( //멍플장소 api hook
     GET_MUNG_PLACE_LIST,
     () => getMungPlaceList(),
     {
@@ -51,22 +51,22 @@ function UploadLocationRecord() {
     },
   );
 
-  const selectMongPlace = useCallback(
+  const selectMongPlace = useCallback( //멍플장속 선택
     (place: MungPlaceType) => (event: React.MouseEvent) => {
       const { mungpleId, placeName, address } = place;
-      setCheckedPlaceId(mungpleId);
-      dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address }));
+      setCheckedPlaceId(mungpleId); //멍플아이디 등록 
+      dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address })); //선택한 멍플데이터 store 저장
       setTimeout(() => {
-        navigate(UPLOAD_PATH.CERTIFICATION);
+        navigate(UPLOAD_PATH.CERTIFICATION); //다시 인증페이지 이동
       }, 1000);
     },
     [],
   );
 
-  const selectManualPlace = useCallback(() => {
+  const selectManualPlace = useCallback(() => { //장소 수 동설정
     onCheckManual();
     setTimeout(() => {
-      navigateCertMap();
+      navigateCertMap(); //인증맵으로 이동
     }, 500);
   }, [placeName]);
 
