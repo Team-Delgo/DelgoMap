@@ -33,6 +33,8 @@ interface petInfoPropsType {
   myProfileInfoData: myProfileInfoDataType;
 }
 
+//강아지 정보보여주는 컴포넌트
+
 function PetInfo({ myProfileInfoData }: petInfoPropsType) {
   const { pet } = useSelector((state: RootState) => state.persist.user);
 

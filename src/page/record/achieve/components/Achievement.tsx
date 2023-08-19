@@ -7,9 +7,11 @@ interface achievementPropsType {
   openBottomSheet: (param: achievementType) => (event: React.MouseEvent) => void;
 }
 
+//업적리스트 컴포넌트(지금은 1개이나 원래 여러개였음 -> 나중에 추가될 수 있음)
+
 function Achievement({ achievementList, openBottomSheet }: achievementPropsType) {
   const activeAchievementList = achievementList.filter(
-    (element: achievementType) => element.isActive === true,
+    (element: achievementType) => element.isActive === true,  //isActive 가 true이면 획득한 업적
   );
 
   return (

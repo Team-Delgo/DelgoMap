@@ -7,6 +7,8 @@ interface Props {
   isLike: boolean;
 }
 
+//동네강아지들 포스트에 이미지 더블클릭하면 동작하는 에니메이션 이미지
+
 function LikeAnimation({ isLike }: Props) {
   return (
     <div className="like-animation">

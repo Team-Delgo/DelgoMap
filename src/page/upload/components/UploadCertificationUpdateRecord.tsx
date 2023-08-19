@@ -28,19 +28,16 @@ interface updateCertPostData {
   isHideAddress: boolean;
 }
 
+//인증수정컴포넌트(인증등록->인증수정만 바뀌었다고 생각하면됨)
+
 function UploadCertificationUpdateRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const { title, certificationId, content, address, isHideAddress, categoryCode } =
     useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
-  const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
-  const [buttonDisabled, onButtonDisable, OffButtonDisable] = useActive(false);
-  const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  const [
-    updateCertificationIsLoading,
-    onUpdateCertificationLoading,
-    offUpdateCertificationLoading,
-  ] = useActive(false);
+  const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState(''); //인증에러 토스트메시지 text
+  const [buttonDisabled, onButtonDisable, OffButtonDisable] = useActive(false); //인증수정을 연속적으로 호출하는것 방지하기위해 선언 
+  const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true); //바텀오픈여부 ()
   const [errorToastIsOpen, openCertificateErrorToast, closeCertificateErrorToast] =
     useActive(false);
   const navigate = useNavigate();
@@ -71,7 +68,9 @@ function UploadCertificationUpdateRecord() {
     }
   }, [errorToastIsOpen]);
 
-  const { mutate: updateCertificationMutate } = useMutation(
+
+  //인증수정 api hook
+  const { mutate: updateCertificationMutate ,isLoading:updateCertificationIsLoading} = useMutation(
     (data: updateCertPostData) => updateCertificationPost(data),
     {
       onSuccess: (response: AxiosResponse) => {
@@ -86,33 +85,30 @@ function UploadCertificationUpdateRecord() {
           );
           moveToCaptureResultPage();
         } else {
-          offUpdateCertificationLoading();
           OffButtonDisable();
         }
       },
       onError: () => {
-        offUpdateCertificationLoading();
         OffButtonDisable();
       },
     },
   );
 
   const uploadCertificationPost = () => {
-    if (buttonDisabled || updateCertificationIsLoading) {
+    if (buttonDisabled || updateCertificationIsLoading) { //이미 버튼을 눌렀거나 api호출중이면 그냥 리턴해버림 
       return;
     }
     if (address === '') {
       setCertificateErrorToastMessage('장소를 입력해 주세요');
-      openCertificateErrorToast();
+      openCertificateErrorToast(); //에러 toast 오픈
       return;
     }
     if (content.length < 15) {
       setCertificateErrorToastMessage('최소 15자 이상 입력해 주세요');
-      openCertificateErrorToast();
+      openCertificateErrorToast(); //에러 toast 오픈
       return;
     }
-    onUpdateCertificationLoading();
-    onButtonDisable();
+    onButtonDisable(); //인증수정 버튼 비활성화 (연속적으로 호출하는것을 방지하기위해)
 
     setTimeout(() => {
       updateCertificationMutate({
@@ -128,16 +124,14 @@ function UploadCertificationUpdateRecord() {
     navigate(UPLOAD_PATH.RESULT, {
       state: {
         prevPath: location.pathname,
-        prevPrevPath: location?.state?.prevPath,
-        updateSuccess: true,
+        prevPrevPath: location?.state?.prevPath,//지금 현재페이지를 이동한 이전페이지 저장해준부분인데 기획이 하도바껴서 왜저장했는지 까먹음
+        updateSuccess: true, //결과페이지에서 수정성공이라는 toast메세지를 띄워야해서 updateSuccess 저장해줌
       },
     });
   }, []);
 
-  const screenUp = useCallback(() => {
-    window.webkit.messageHandlers.NAME.postMessage('screenUp');
-  }, []);
 
+  //모바일 운영체제에 따라 랜더링(키보드 이슈때문에)
   const renderContentByOS = () => {
     switch (OS) {
       case 'ios':
@@ -218,7 +212,6 @@ function UploadCertificationUpdateRecord() {
                         )
                       }
                       maxLength={199}
-                      onFocus={screenUp}
                     >
                       {content}
                     </textarea>
@@ -331,7 +324,6 @@ function UploadCertificationUpdateRecord() {
                         )
                       }
                       maxLength={199}
-                      onFocus={screenUp}
                     >
                       {content}
                     </textarea>

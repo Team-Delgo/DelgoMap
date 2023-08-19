@@ -20,6 +20,7 @@ import {
 } from '../../../../common/constants/queryKey.const';
 import { useErrorHandlers } from '../../../../common/api/useErrorHandlers';
 import { getMyProfileInfo } from '../../../../common/api/myaccount';
+import DogLoading from '../../../../common/utils/BallLoading';
 
 function AchievementPage() {
   const [selectedAchievement, setSelectedAchievement] = useState<achievementType>();
@@ -29,7 +30,6 @@ function AchievementPage() {
     closeAchievementBottomSheet,
   ] = useActive(false);
   const { user } = useSelector((state: RootState) => state.persist.user);
-  console.log(user.id);
   const dispatch = useDispatch();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const swipeArea = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ function AchievementPage() {
     });
   }, []);
 
-  const { isFetching: getMyProfileInfoDataIsLoading, data: myProfileInfoData } = useQuery(
+  const { isLoading: getMyProfileInfoDataIsLoading, data: myProfileInfoData } = useQuery( //프로필 api hook
     GET_MY_PROFILE_INFO_DATA,
     () => getMyProfileInfo(user.id),
     {
@@ -55,7 +55,7 @@ function AchievementPage() {
     },
   );
 
-  const { isFetching: getAchievementDataListIsLoading, data: achievementDataList } =
+  const { isLoading: getAchievementDataListIsLoading, data: achievementDataList } = //업적 api hook
     useQuery(GET_ACHIEVEMENT_DATA_LIST, () => getAchievementList(user.id), {
       cacheTime: CACHE_TIME,
       staleTime: STALE_TIME,
@@ -64,7 +64,7 @@ function AchievementPage() {
       },
     });
 
-  const openBottomSheet = useCallback(
+  const openBottomSheet = useCallback( //업적바텀시트 open 핸들러
     (achievement: achievementType) => (event: React.MouseEvent) => {
       setSelectedAchievement(achievement);
       setTimeout(() => {
@@ -74,9 +74,11 @@ function AchievementPage() {
     [],
   );
 
-  console.log('myProfileInfoData', myProfileInfoData);
+  const isLoading = getMyProfileInfoDataIsLoading || getAchievementDataListIsLoading;
 
   return (
+    <>
+      {isLoading && <DogLoading />}
       <div
         aria-hidden="true"
         ref={swipeArea}
@@ -97,6 +99,7 @@ function AchievementPage() {
           bottomSheetIsOpen={achievementBottomSheetIsOpen}
         />
       </div>
+    </>
   );
 }
 

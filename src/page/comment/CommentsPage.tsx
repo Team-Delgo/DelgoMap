@@ -24,14 +24,14 @@ interface StateType {
 }
 
 function CommentsPage() {
-  const [deleteCommentId, setDeleteCommentId] = useState(-1);
-  const [inputComment, onChangeInputComment,resetInputComment] = useInput('');
-  const [deleteCommentBottomSheetIsOpen, openDeleteCommentBottomSheet, closeDeleteCommentBottomSheet] = useActive(false);
-  const [deleteCommentSuccessToastIsOpen, openDeleteCommentSuccessToast,closeDeleteCommentSuccessToast] = useActive(false);
+  const [deleteCommentId, setDeleteCommentId] = useState(-1); //댓글Id(댓글삭제 api 호출시 필요)
+  const [inputComment, onChangeInputComment,resetInputComment] = useInput(''); //input에 입력하는 댓글
+  const [deleteCommentBottomSheetIsOpen, openDeleteCommentBottomSheet, closeDeleteCommentBottomSheet] = useActive(false); //댓글삭제 바텀시트
+  const [deleteCommentSuccessToastIsOpen, openDeleteCommentSuccessToast,closeDeleteCommentSuccessToast] = useActive(false); //댓글삭제 tost
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const profile = useSelector((state: RootState) => state.persist.user.pet.image);
   const { post} = useLocation()?.state as StateType;
-  const textRef = useRef<any>(null);
+  const textRef = useRef<any>(null); //textarea 높이설정을 위한 ref객체
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_post');
@@ -41,9 +41,9 @@ function CommentsPage() {
     data: commentList,
     refetch: refetchCommentList,
     isLoading:getCommentListIsLoading,
-  } = useQuery('comments', () => getCommentList(post?.certificationId));
+  } = useQuery('comments', () => getCommentList(post?.certificationId)); //댓글리스트 api 훅
 
-  const {mutate:postCommentMutate,isLoading:postCommentIsLoading} = useMutation(
+  const {mutate:postCommentMutate,isLoading:postCommentIsLoading} = useMutation( //댓글생성 api 훅
     ({
       userId,
       certificationId,
@@ -55,9 +55,10 @@ function CommentsPage() {
     }) => postComment(userId, certificationId, content),
     {
       onSuccess: (response: AxiosResponse) => {
+        //생성성공하면
         if (response.data.code === 200) {
-          resetInputComment();
-          refetchCommentList();
+          resetInputComment(); //input창 값 초기화
+          refetchCommentList(); //댓글리스트 refetch(stale -> fresh)
         }
       },
       onError: (error: any) => {
@@ -66,6 +67,7 @@ function CommentsPage() {
     },
   );
 
+  //댓글삭제 api 훅
   const { mutate: deleteCommentMutate, isLoading: deleteCommentIsLoading } = useMutation(
     ({
       userId,
@@ -79,9 +81,13 @@ function CommentsPage() {
     {
       onSuccess: (response: AxiosResponse) => {
         if (response.data.code === 200) {
-          openDeleteCommentSuccessToast();
-          closeDeleteCommentBottomSheet();
-          refetchCommentList();
+          openDeleteCommentSuccessToast(); //댓글삭제 toast 열고
+          closeDeleteCommentBottomSheet(); //댓글삭제 bottom sheet 닫고
+          refetchCommentList(); //댓글리스트 refetch(stale -> fresh)
+
+          setTimeout(() => {
+            closeDeleteCommentSuccessToast(); //deleteCommentSuccessToastIsOpen open되면 2초후에 닫아줌
+          }, 2000);
         } else {
           closeDeleteCommentBottomSheet();
         }
@@ -92,14 +98,8 @@ function CommentsPage() {
     },
   );
 
-  useEffect(() => {
-    if (deleteCommentSuccessToastIsOpen) {
-      setTimeout(() => {
-        closeDeleteCommentSuccessToast();
-      }, 2000);
-    }
-  }, [deleteCommentSuccessToastIsOpen]);
 
+  //댓글 생성 핸들러
   const postCommentOnCert = () => {
     commentEvent.mutate();
     resetInputComment();
@@ -113,6 +113,7 @@ function CommentsPage() {
     postCommentMutate(data);
   };
 
+  //댓글 삭제 핸들러
   const deleteCommentOnCert = () => {
     deleteCommentMutate({
       userId,
@@ -121,6 +122,7 @@ function CommentsPage() {
     });
   }
 
+  //textarea 높이 설정
   const handleResizeHeight = useCallback(() => {
     if (textRef.current) {
       if (textRef.current.scrollHeight <= 203) {
@@ -131,6 +133,7 @@ function CommentsPage() {
   }, []);
 
 
+  //댓글삭제 바텀시트 오픈 (삭제한 댓글id 저장)
   const openBottomSheet = useCallback(
     (commentId: number) => (e: React.MouseEvent) => {
       openDeleteCommentBottomSheet();

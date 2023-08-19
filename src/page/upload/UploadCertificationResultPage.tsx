@@ -37,6 +37,7 @@ function CaptureResult() {
 
   useEffect(() => {
     if (location?.state?.prevPath?.includes('update')) {
+          //update페이지에서 왔고 인증수정을 했으면 ->  인증수정성공 toast를 띄워줌
       if (location?.state?.updateSuccess) {
         onCertificateUpdateSuccessToast();
         setTimeout(() => {
@@ -44,6 +45,7 @@ function CaptureResult() {
         }, 2000);
       }
     } else {
+      //아니면 그냥 인증성공 toast를 띄워줌
       onCertificateSuccessToast();
       setTimeout(() => {
         closeCertificateSuccessToast();

@@ -7,7 +7,7 @@ function UploadResultMain() {
     (state: RootState) => state.persist.upload,
   );
 
-  // console.log('content',content)
+  //업로드 결과 컴포넌트
 
   return (
     <main className="capture-img-result-main">
