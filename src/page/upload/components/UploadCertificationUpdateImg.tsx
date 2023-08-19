@@ -6,6 +6,7 @@ import WhiteX from '../../../common/icons/white-x.svg';
 import { UPLOAD_PATH } from '../../../common/constants/path.const';
 
 
+//인증수정 img부분(uploadCertificationImg와 동일하게 이해하면됨)
 function UploadCertificationUpdateImg() {
   const img = useSelector((state: RootState) => state.persist.upload.img);
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ function UploadCertificationUpdateImg() {
     };
   }, []);
 
+  //
   const moveToPreviousPage = () => {
     if (location?.state?.prevPath === UPLOAD_PATH.RESULT) {
       navigate(UPLOAD_PATH.RESULT, {

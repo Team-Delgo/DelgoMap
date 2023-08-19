@@ -7,20 +7,23 @@ interface achievementDataPropsType {
 }
 
 function AchievementData({ achievement, openBottomSheet }: achievementDataPropsType) {
-  const iconImg = useRef<HTMLImageElement>(null);
+  const iconImg = useRef<HTMLImageElement>(null); //아이콘 이미지 참조 ref
 
+
+   // 이미지가 뷰포트 내에 들어왔을 때 해당 이미지의 src 속성을 변경하는 함수(lazy loading을 위해)
   const observeImg = (
     entries: IntersectionObserverEntry[],
     observer: IntersectionObserver,
   ) => {
     entries.forEach((entry: any) => {
-      if (entry.isIntersecting) {
-        entry.target.src = entry.target.dataset.src;
-        observer.unobserve(entry.target);
+      if (entry.isIntersecting) { //이미지가 뷰포트에 참조되면 
+        entry.target.src = entry.target.dataset.src; //dataset.src값을 아이콘이미지 src에 넣어줌
+        observer.unobserve(entry.target);  // 이미지가 뷰포트 내에 들어왔을 때 해당 이미지의 src 속성을 변경하는 함수
       }
     });
   };
 
+   // 컴포넌트가 마운트 될 때, IntersectionObserver를 설정하여 업적 이미지 관찰
   useEffect(() => {
     const observer = new IntersectionObserver(observeImg);
     iconImg.current && observer.observe(iconImg.current);

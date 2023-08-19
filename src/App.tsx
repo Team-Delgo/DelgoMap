@@ -72,6 +72,7 @@ function App() {
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
 
 
+  //회원정보수정(강아지 정보수정등)했을때 동시 로그인된 여러 기기에 상태값을 동기화해주기위해 설정 (실시간은 안되고 앱을 끄고 켯을때만 동작)
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
@@ -114,6 +115,7 @@ function App() {
     }
   }, []);
 
+  //기기를 설정해주는부분(pc or mobile) -> 분기처리가 필요한 로직일떄 필요
   useEffect(() => {
     const pcDevice = 'win16|win32|win64|mac|macintel';
     if (navigator.platform) {
@@ -125,6 +127,7 @@ function App() {
     }
   }, []);
 
+  //모바일 운영체제를 설정해주는부분(ios or android) -> 분기처리가 필요한 로직일떄 필요
   useEffect(() => {
     const varUA = navigator.userAgent.toLowerCase();
     if (varUA.indexOf('android') > -1) {
