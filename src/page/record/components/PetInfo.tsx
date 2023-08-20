@@ -4,11 +4,14 @@ import { getMyProfileInfo } from 'common/api/myaccount';
 import BallLoading from 'common/utils/BallLoading';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
+import { useNavigate } from 'react-router-dom';
+import { ROOT_PATH } from '../../../common/constants/path.const';
 
 function PetInfo() {
   const splitUrl = window.location.href.split('/');
   const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
   const myId = useSelector((state: RootState) => state.persist.user.user.id);
+  const navigate = useNavigate();
   const { data, isLoading } = useQuery(['getPetdata', userId], () =>
     getMyProfileInfo(userId),
   );
