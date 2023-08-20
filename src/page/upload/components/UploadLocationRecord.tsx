@@ -119,7 +119,9 @@ function UploadLocationRecord() {
                 placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
                 onChange={onChangePlaceName}
               />
+              {/* 검색창에 입력한 장소명  */}
               {placeName.length > 0 && manualPlace()}
+              {/* 검색창에 입력한 값을 포함하는 멍플리스트만 보여줌 */}
               {mungPlaceList?.data.map((place: MungPlaceType) => {
                 if (placeName.length > 0) {
                   if (place.placeName.includes(placeName)) {
