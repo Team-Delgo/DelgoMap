@@ -64,6 +64,7 @@ import Map from './page/map';
 import TempDetailPage from './page/detail/TempDetailPage';
 import Account from 'components/Account';
 import RedirectHandler from 'RedirectHandler';
+import OthersMap from 'page/record/components/OthersMap';
 
 function App() {
   const queryClient = new QueryClient();
@@ -166,6 +167,7 @@ function App() {
                 <Route path="/calendar/:id" element={<CalendarPage />} />
                 <Route path="/photo/:id" element={<AlbumPage />} />
                 <Route path="/achieve/:id" element={<AchievePage />} />
+                <Route path="/map/:id" element={<OthersMap />} />
                 <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
                 <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
                 <Route

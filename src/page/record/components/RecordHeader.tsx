@@ -28,11 +28,8 @@ function RecordHeader() {
     action: { setCurrentMapLocation },
   } = useMap();
 
-  if (userId === myId) {
-    isMyAccount = true;
-  } else {
-    isMyAccount = false;
-  }
+  if (userId === myId) isMyAccount = true;
+  else isMyAccount = false;
 
   let tab = (useLocation().state as any) || 'photo';
   if (tab.from === 'home') {

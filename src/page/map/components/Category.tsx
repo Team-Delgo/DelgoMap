@@ -58,7 +58,7 @@ const categoryList = [
 function Categroy({ selectedCategory, onClick }: Props) {
   const [selectedValue, setSelectedValue] = useState(selectedCategory);
 
-  console.log(selectedCategory, selectedValue);
+  // console.log(selectedCategory, selectedValue);
 
   useEffect(() => {
     setSelectedValue(selectedCategory);
