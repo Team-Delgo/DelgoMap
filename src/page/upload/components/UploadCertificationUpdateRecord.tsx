@@ -124,7 +124,7 @@ function UploadCertificationUpdateRecord() {
     navigate(UPLOAD_PATH.RESULT, {
       state: {
         prevPath: location.pathname,
-        prevPrevPath: location?.state?.prevPath,//지금 현재페이지를 이동한 이전페이지 저장해준부분인데 기획이 하도바껴서 왜저장했는지 까먹음
+        prevPrevPath: location?.state?.prevPath,
         updateSuccess: true, //결과페이지에서 수정성공이라는 toast메세지를 띄워야해서 updateSuccess 저장해줌
       },
     });
