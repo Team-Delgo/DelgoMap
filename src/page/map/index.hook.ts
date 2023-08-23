@@ -182,6 +182,7 @@ function useMap() {
     };
     if (!mapElement.current) return;
     const map = new kakao.maps.Map(mapElement.current, options);
+    const ps = new kakao.maps.services.Places();
     setMap(map);
   }, []);
 
@@ -221,18 +222,21 @@ function useMap() {
     }
     dispatch(mapAction.setMapCustomPosition(dogFootMarkerLocation));
   }, [dogFootMarkerLocation]);
+  
   console.log(mapDataList);
   // 멍플, 인증 마커 렌더링
   useEffect(() => {
     if (mapDataList && map && (isFirstRendering.mungple || isFirstRendering.cert)) {
       if (userId > 0 && isCertToggleOn) {
-        hideMungpleMarkers();
         // hide other certs markers
+        hideMungpleMarkers();
+        // 일반 인증 마커 만들기
         const certMarkers = setNormalCertMarker(
           mapDataList.normalCertList,
           map,
           setSelectedCert,
         );
+        // 멍플 인증 마커 만들기
         const mungpleCertMarkers = setNormalCertMarker(
           mapDataList.mungpleCertList,
           map,
@@ -244,7 +248,7 @@ function useMap() {
       } else {
         hideCertMarkers(certMarkers);
         hideCertMarkers(mungpleCertMarkers);
-        hideMungpleMarkers();
+        // hideMungpleMarkers();
 
         const markers: MungpleMarkerType[] = mapDataList.mungpleList.map((mungple) => {
           const position = new kakao.maps.LatLng(
