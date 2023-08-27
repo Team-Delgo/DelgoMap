@@ -17,6 +17,7 @@ import {
   RECORD_PATH,
   SIGN_IN_PATH,
   SIGN_UP_PATH,
+  CROP_LIST_PATH
 } from './common/constants/path.const';
 import UploadCertificationPage from './page/upload/UploadCertificationPage';
 import UploadCertificationResultPage from './page/upload/UploadCertificationResultPage';
@@ -54,6 +55,7 @@ import PostsPage from './page/certification/CertificationPostsPage';
 import CommentsPage from './page/comment/CommentsPage';
 import RecordCertificationPage from './page/certification/RecordCertificationPage';
 import CertificationMap from './page/certification/CertificationMap';
+import CropListPage from "./page/crop/CropListPage"
 import { deviceAction } from './redux/slice/deviceSlice';
 import HelpPage from './page/help/HelpPage';
 import { RootState } from './redux/store';
@@ -189,6 +191,7 @@ function App() {
                 />
                 <Route path={UPLOAD_PATH.MAP} element={<CertificationMap />} />
                 <Route path={CROP_PATH} element={<CropPage />} />
+                <Route path={CROP_LIST_PATH} element={<CropListPage/>} />
                 <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
                 <Route path={MY_ACCOUNT_PATH.MAIN} element={<MyAccountPage />} />
                 <Route path={MY_ACCOUNT_PATH.PETINFO} element={<ChangePetInfo />} />
