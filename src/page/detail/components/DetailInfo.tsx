@@ -73,7 +73,7 @@ function DetailInfo({
           <div className="text-sm font-medium">
             {representMenu
               ? '강아지 대표 메뉴'
-              : categoryCode === 'CA0005' || 'CA0006'
+              : categoryCode === 'CA0005' || categoryCode === 'CA0006'
               ? '가격표 이미지'
               : '메뉴 이미지'}
           </div>
@@ -83,8 +83,7 @@ function DetailInfo({
         </div>
       )}
       {menuImages && menuImages.length >= 1 && (
-
-        <div className={`flex mt-2.5 ${menuImages.length <= 2 ? '' : 'justify-center'}`}>
+        <div className={`mt-2.5 flex ${menuImages.length <= 2 ? '' : 'justify-center'}`}>
           <img
             className="mr-[3px] aspect-square w-[32.7%]"
             aria-hidden
