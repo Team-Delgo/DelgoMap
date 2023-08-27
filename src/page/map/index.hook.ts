@@ -182,7 +182,6 @@ function useMap() {
     };
     if (!mapElement.current) return;
     const map = new kakao.maps.Map(mapElement.current, options);
-    const ps = new kakao.maps.services.Places();
     setMap(map);
   }, []);
 
