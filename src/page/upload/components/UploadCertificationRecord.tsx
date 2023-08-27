@@ -13,7 +13,7 @@ import ToastPurpleMessage from '../../../common/dialog/ToastPurpleMessage';
 import { analytics } from '../../../index';
 import useActive from '../../../common/hooks/useActive';
 import DogLoading from '../../../common/utils/BallLoading';
-import { compressFormData, blobFormData } from '../../../common/utils/FormData';
+import { compressFormData, blobFormData ,blobFormDataForMultipleFiles} from '../../../common/utils/FormData';
 import CafeSmall from '../../../common/icons/cafe-map-small.svg';
 import BathSmall from '../../../common/icons/bath-map-small.svg';
 import EatSmall from '../../../common/icons/eat-map-small.svg';
@@ -51,6 +51,8 @@ function UploadCertificationRecord({
     content,
     isHideAddress,
     categoryCode,
+    imgList,
+    fileList
   } = useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();
@@ -124,7 +126,7 @@ function UploadCertificationRecord({
       return;
     }
     //해당 조건문값들은 서버에서 api호출하기전에 미리 프론트에서 막아줌
-    if (file === '') {
+    if (imgList.length === 0) {
       setCertificateErrorToastMessage('이미지를 업로드해 주세요');
       openCertificateErrorToast();
       return;
@@ -151,10 +153,11 @@ function UploadCertificationRecord({
       isHideAddress,
     };
 
-    const formData = blobFormData(data, file); //utils에 정의된 blobFormData호출후 반환된 formData이용
-    const compressedFormData = await compressFormData(formData); //폼데이터 압축해주고
+    console.log('fileList',fileList)
+    const formData = blobFormDataForMultipleFiles(data, fileList); //utils에 정의된 blobFormData호출후 반환된 formData이용
+    // const compressedFormData = await compressFormData(formData); //폼데이터 압축해주고
 
-    registerMutation.mutate(compressedFormData);
+    registerMutation.mutate(formData);
   };
 
   const moveToUploadResultPage = useCallback(() => {

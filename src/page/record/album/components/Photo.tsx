@@ -60,6 +60,8 @@ function Photo() {
     },
   );
 
+  console.log('photos',photos)
+
   const { data: otherDogsCerts, isLoading: otherDogsCertsLoading } = useQuery(
     ['getFiveOtherDogsCert', userId],
     () => getFiveOtherDogsCert(userId, 5),
@@ -139,7 +141,7 @@ function Photo() {
             return (
               <img
                 className="photo-wrapper-img"
-                src={cert.photoUrl}
+                src={cert.photos[0]}
                 alt="cert"
                 aria-hidden="true"
                 key={cert.certificationId}

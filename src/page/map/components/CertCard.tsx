@@ -54,6 +54,7 @@ function CertCard({
   const navigate = useNavigate();
   const descriptionText =
     description.length > 50 ? `${description.substring(0, 50)}...` : description;
+  
   return (
     <div
       className="absolute bottom-[30px] left-[50%] z-[100] flex h-[90px] w-[90%]
@@ -74,7 +75,7 @@ function CertCard({
         });
       }}
     >
-      <img src={img} alt="cardimg" className="ml-[6px] h-[78px] w-[78px] rounded-[6px]" />
+      <img src={cert.photos[0]} alt="cardimg" className="ml-[6px] h-[78px] w-[78px] rounded-[6px]" />
       <div className="ml-[13px] max-h-[100%]">
         <div className="flex items-center text-[16px] font-semibold">
           {title}

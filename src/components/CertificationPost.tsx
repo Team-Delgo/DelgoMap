@@ -23,6 +23,9 @@ import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import { useErrorHandlers } from '../common/api/useErrorHandlers';
 import LikeAnimation from '../common/utils/LikeAnimation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 interface CertificationPostPropsType {
   post: postType;
@@ -45,15 +48,16 @@ function CertificationPost({
   certificationPostsFetch,
   pageSize,
 }: CertificationPostPropsType) {
+  const [imageNumber, setImageNumber] = useState(0);
   const [clickCount, setClickCount] = useState(0); //이미지 더블클릭시 좋아요 여부를 처리하기 위해 선언
-  const [LikeAnimationLoading,setLikeAnimationLoading] = useState(false) //라이크에니메이션 로딩여부(이미지 더블클릭)
+  const [LikeAnimationLoading, setLikeAnimationLoading] = useState(false); //라이크에니메이션 로딩여부(이미지 더블클릭)
   const [likeCount, setLikeCount] = useState(post?.likeCount); //좋아요 갯수
-  const [blockedUserName, setBlockedUserName] = useState(''); //차단한 유저이름 
+  const [blockedUserName, setBlockedUserName] = useState(''); //차단한 유저이름
   const [isLike, setIsLike] = useState(post?.isLike); //내가 좋아요 눌렀는지 여부
   const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDelteBottomSheet] = //삭제 바텀시트 오픈여부 담은 커스텀훅
     useActive(false);
   const [
-    deletePostSuccessToastIsOpen, 
+    deletePostSuccessToastIsOpen,
     openDeletePostSuccessToast,
     closeDeletePostSuccessToast,
   ] = useActive(false); //인증글 삭제후 뜰 Toast 오픈여부 담은 커스텀훅
@@ -66,7 +70,7 @@ function CertificationPost({
     blockUserSuccessToastIsOpen,
     openBlockUserSuccessToastIsOpen,
     closeBlockUserSuccessToast,
-  ] = useActive(false);//차단 완료후 뜰 Toast 오픈여부 담은 커스텀훅
+  ] = useActive(false); //차단 완료후 뜰 Toast 오픈여부 담은 커스텀훅
   const [loginAlertIsOpen, setLoginAlertIsOpen] = useState(false); //로그인 하라고 뜨는 alert창 오픈여부
   const { user, isSignIn } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();
@@ -75,37 +79,39 @@ function CertificationPost({
   const heartEvent = useAnalyticsCustomLogEvent(analytics, 'cert_like');
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_view');
   const mainImg = useRef<HTMLImageElement>(null); //인증이미지 참조하는 useRef훅
-  const profileImg = useRef<HTMLImageElement>(null);//프로플이미지 참조하는 useRef훅
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null) //Timeout 참조하는 useRef 훅
+  const profileImg = useRef<HTMLImageElement>(null); //프로플이미지 참조하는 useRef훅
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null); //Timeout 참조하는 useRef 훅
 
+  console.log('post', post.photos);
 
   //이미지가 뷰포트에 나타나면 해당 이미지의 src 속성을 데이터 속성에서 가져와 설정
   //default img를 보여주고있다가 obeserver에 의해 관찰되면 그떄 이미지 dataset src속성을 해당 요소 src에 설정해줌
   //즉 뷰포트에 이미지가 감지될떄 해당 이미지를 load하기 위한 설정(image lazy loading)
-  const observeImg = (
-    entries: IntersectionObserverEntry[], // 감지된 요소의 정보를 제공하는 배열
-    observer: IntersectionObserver, // 해당 IntersectionObserver 인스턴스
-  ) => {
-    entries.forEach((entry: any) => { //감지된요소를 반복문으로 돌며
-      if (entry.isIntersecting) { // 해당 요소가 뷰포트와 교차하는 경우
-        entry.target.src = entry.target.dataset.src; // 이미지의 src 속성을 데이터 속성에서 가져와 설정
-        observer.unobserve(entry.target); // 이미지가 로드되면 더 이상 관찰할 필요가 없으므로 관찰을 중단
-      }
-    });
-  };
+  // const observeImg = (
+  //   entries: IntersectionObserverEntry[], // 감지된 요소의 정보를 제공하는 배열
+  //   observer: IntersectionObserver, // 해당 IntersectionObserver 인스턴스
+  // ) => {
+  //   entries.forEach((entry: any) => {
+  //     //감지된요소를 반복문으로 돌며
+  //     if (entry.isIntersecting) {
+  //       // 해당 요소가 뷰포트와 교차하는 경우
+  //       entry.target.src = entry.target.dataset.src; // 이미지의 src 속성을 데이터 속성에서 가져와 설정
+  //       observer.unobserve(entry.target); // 이미지가 로드되면 더 이상 관찰할 필요가 없으므로 관찰을 중단
+  //     }
+  //   });
+  // };
 
-  //해당 컴포넌트가 마운트될 때 IntersectionObserver를 생성하고 이미지들을 관찰
-  useEffect(() => {
-    const observer = new IntersectionObserver(observeImg); //IntersectionObserver를 생성
-    mainImg.current && observer.observe(mainImg.current);  // mainImg가 존재하면 관찰을 시작
-    profileImg.current && observer.observe(profileImg.current); // profileImg가 존재하면 관찰을 시작
-  }, [post]);
-
+  // //해당 컴포넌트가 마운트될 때 IntersectionObserver를 생성하고 이미지들을 관찰
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(observeImg); //IntersectionObserver를 생성
+  //   mainImg.current && observer.observe(mainImg.current); // mainImg가 존재하면 관찰을 시작
+  //   profileImg.current && observer.observe(profileImg.current); // profileImg가 존재하면 관찰을 시작
+  // }, [post]);
 
   //post props값이 변경되면 좋아요여부와 갯수를 갱신해줌(stale -> fresh)
   useEffect(() => {
-    setLikeCount(post?.likeCount)
-    setIsLike(post?.isLike)
+    setLikeCount(post?.likeCount);
+    setIsLike(post?.isLike);
   }, [post]);
 
   // blockUserSuccessToastIsOpen true되면 2초후 false로 변환해줌
@@ -209,7 +215,7 @@ function CertificationPost({
   };
 
   const moveToCommentPage = () => {
-     //로그인 안되있으면 로그인alert창 띄워주고
+    //로그인 안되있으면 로그인alert창 띄워주고
     if (!isSignIn) {
       setLoginAlertIsOpen(true);
       return;
@@ -228,12 +234,12 @@ function CertificationPost({
     //업데이트페이지에서 필요한 post관련 상태값 store에 저장
     dispatch(
       uploadAction.setCertificationUpdate({
-        img: post?.photoUrl,
+        imgList: post?.photos,
         title: post?.placeName,
         certificationId: post?.certificationId,
         content: post?.description,
         address: post?.address,
-        isHideAddress:post?.isHideAddress,
+        isHideAddress: post?.isHideAddress,
         // mongPlaceId:post?.
       }),
     );
@@ -322,17 +328,30 @@ function CertificationPost({
         )}
       </header>
       <main className="post-img-result-main">
-        <img
-          className="post-img-result-main-img"
-          ref={mainImg}
-          data-src={post.photoUrl ? post.photoUrl : DogLoading}
-          src={DogLoading}
-          width={window.innerWidth}
-          height={window.innerWidth}
-          alt="postImg"
-          aria-hidden="true"
-          onClick={handleDoubleClick}
-        />
+        <>
+          <Swiper onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
+            {post.photos.map((image: string) => {
+              return (
+                <SwiperSlide>
+                  <img
+                    className="post-img-result-main-img"
+                    // ref={mainImg}
+                    // data-src={image ? image : DogLoading}
+                    src={image}
+                    width={window.innerWidth}
+                    height={window.innerWidth}
+                    alt="postImg"
+                    aria-hidden="true"
+                    onClick={handleDoubleClick}
+                  />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+          {/* <div className="absolute bottom-[5px] right-0 z-[100] flex h-[23px] w-[55px] items-center justify-center bg-gray-700 bg-opacity-70 text-[11px] font-normal text-white ">
+            {imageNumber + 1} / {post.photos.length}
+          </div> */}
+        </>
         {LikeAnimationLoading && (
           <div className="like-animation-wrapper" style={{ height: window.innerWidth }}>
             <LikeAnimation isLike={isLike} />
@@ -367,18 +386,20 @@ function CertificationPost({
             )}
           </div>
           <div className="post-img-result-main-footer-comments-wrapper">
-          <img
-            className="post-img-result-main-footer-comments"
-            src={Comments}
-            alt="comments"
-            width={22}
-            height={22}
-            aria-hidden="true"
-            onClick={moveToCommentPage}
-          />
-          {post?.commentCount > 0 && (
-            <div className="post-img-result-main-footer-count">{post?.commentCount}</div>
-          )}
+            <img
+              className="post-img-result-main-footer-comments"
+              src={Comments}
+              alt="comments"
+              width={22}
+              height={22}
+              aria-hidden="true"
+              onClick={moveToCommentPage}
+            />
+            {post?.commentCount > 0 && (
+              <div className="post-img-result-main-footer-count">
+                {post?.commentCount}
+              </div>
+            )}
           </div>
         </footer>
       </main>

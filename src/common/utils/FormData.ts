@@ -44,3 +44,21 @@ export const blobFormData = (data: any, file: any) => {
 
   return formData;
 };
+
+export const blobFormDataForMultipleFiles = (data: any, fileList: any) => {
+  const formData = new FormData();
+
+  // 데이터를 JSON 형식으로 변환한 후 Blob 객체로 변환
+  const json = JSON.stringify(data);
+  const blob = new Blob([json], { type: 'application/json' });
+
+  // Blob 데이터와 파일들을 FormData에 추가
+  formData.append('data', blob);
+
+  fileList.forEach((file:any) => {
+    console.log(file instanceof File);
+    formData.append('photos', file); 
+  });
+
+  return formData;
+};
