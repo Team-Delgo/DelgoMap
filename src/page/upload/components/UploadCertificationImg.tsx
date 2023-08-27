@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
@@ -6,14 +6,20 @@ import PrevArrowWhite from '../../../common/icons/prev-arrow-white.svg';
 import X from '../../../common/icons/white-x.svg';
 import Camera from '../../../common/icons/camera.svg';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
-import { CROP_PATH } from '../../../common/constants/path.const';
+import { CROP_PATH,CROP_LIST_PATH } from '../../../common/constants/path.const';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 interface props {
   openBottomSheet: () => void;
 }
 
 function UploadCertificationImg({ openBottomSheet }: props) {
+  const [uploadImgList,setUploadImgList] = useState([])
+  const [imageNumber, setImageNumber] = useState(0);
   const img = useSelector((state: RootState) => state.persist.upload.img);
+  const imgList = useSelector((state: RootState) => state.persist.upload.imgList);
   const navigate = useNavigate();
   const eventTargetRef = useRef<HTMLDivElement | null>(null); //이미지 전체 div 참조하는 ref객체
   const fileUploadRef = useRef<HTMLInputElement>(null); // input file 참조하는 ref객체
@@ -44,12 +50,22 @@ function UploadCertificationImg({ openBottomSheet }: props) {
   //upload과정에서 크롭하기전에 prevImg를 store에 저장해주는부분
   const setPevImg = (event: { target: HTMLInputElement }) => {
     if (event.target.files) {
-      const galleryImg = URL.createObjectURL(event.target.files[0]); //파일 url생성해주고 (브라우저에 랜더링위해 이미지 url필요)
-      const galleryImgName = event.target.files[0].name; //이미지 네임 저장하고
+      const fileArray = Array.from(event.target.files); // FileList를 배열로 변환
+      const galleryImgURLs = fileArray.map(file => URL.createObjectURL(file));
+      const galleryImgNames = fileArray.map(file => file.name);
+
       dispatch(
-        uploadAction.setPrevImg({ prevImg: galleryImg, prevImgName: galleryImgName }), //prevImg를 스토어에 저장
+        uploadAction.setPrevImgList({ prevImgList: galleryImgURLs, prevImgNameList: galleryImgNames })
       );
-      navigate(CROP_PATH, { state: { prevPath: location.pathname } }); //cropPage로 이동 (cropPage에서 분기처리를 위해 prevPath를 보내줌)
+
+
+
+      // const galleryImg = URL.createObjectURL(event.target.files[0]); //파일 url생성해주고 (브라우저에 랜더링위해 이미지 url필요)
+      // const galleryImgName = event.target.files[0].name; //이미지 네임 저장하고
+      // dispatch(
+      //   uploadAction.setPrevImg({ prevImg: galleryImg, prevImgName: galleryImgName }), //prevImg를 스토어에 저장
+      // );
+      navigate(CROP_LIST_PATH, { state: { prevPath: location.pathname } }); //cropPage로 이동 (cropPage에서 분기처리를 위해 prevPath를 보내줌)
     }
   };
 
@@ -66,7 +82,7 @@ function UploadCertificationImg({ openBottomSheet }: props) {
   return (
     <>
       <div ref={eventTargetRef}>
-        {img === '' ? (
+        {imgList.length === 0 ? (
           <div
             className="capture-certification-void-img"
             style={{
@@ -94,13 +110,33 @@ function UploadCertificationImg({ openBottomSheet }: props) {
             </div>
           </div>
         ) : (
-          <img
-            className="capture-certification-img"
-            src={img}
-            width={window.innerWidth}
-            height={window.innerWidth}
-            alt="caputeImg"
-          />
+          <>
+            <Swiper onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
+              {imgList.map((image: string) => {
+                return (
+                  <SwiperSlide>
+                    <img
+                      className="capture-certification-img"
+                      src={image}
+                      width={window.innerWidth}
+                      height={window.innerWidth}
+                      alt="caputeImg"
+                    />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+            <div className="absolute bottom-[5px] right-0 z-[100] flex h-[23px] w-[55px] items-center justify-center bg-gray-700 bg-opacity-70 text-[11px] font-normal text-white ">
+              {imageNumber + 1} / {imgList.length}
+            </div>
+          </>
+          // <img
+          //   className="capture-certification-img"
+          //   src={img}
+          //   width={window.innerWidth}
+          //   height={window.innerWidth}
+          //   alt="caputeImg"
+          // />
         )}
       </div>
       <img
@@ -120,6 +156,7 @@ function UploadCertificationImg({ openBottomSheet }: props) {
       <input
         type="file"
         accept="image/jpeg,image/gif,image/png,image/jpg;capture=filesystem"
+        multiple
         ref={fileUploadRef}
         onChange={setPevImg}
         style={{ display: 'none' }}

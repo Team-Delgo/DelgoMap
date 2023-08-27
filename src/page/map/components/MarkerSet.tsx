@@ -89,7 +89,7 @@ export function setNormalCertMarker(
     iconImg.alt = 'pin';
 
     const insideImg = document.createElement('img');
-    insideImg.src = m.photoUrl;
+    insideImg.src = m.photos[0];
     insideImg.className = 'inside-image';
     insideImg.alt = 'cert';
 
@@ -118,7 +118,7 @@ export function setMungpleCertMarker(certList: Cert[], map: kakao.maps.Map) {
     const content = `
       <div class"normalCert">
       <img src="${icon}" class="outside-image" alt="pin" />
-      <img src="${m.photoUrl}" class="inside-image" alt="cert"/>
+      <img src="${m.photos[0]}" class="inside-image" alt="cert"/>
       </div>
     `;
     const marker = new kakao.maps.CustomOverlay({

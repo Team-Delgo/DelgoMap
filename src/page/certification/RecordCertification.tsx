@@ -20,6 +20,9 @@ import DeleteBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import { categoryCode2 } from '../../common/types/category';
 import useActive from '../../common/hooks/useActive';
 import LikeAnimation from '../../common/utils/LikeAnimation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 interface CertificationLIkeDataType {
   userId: number;
@@ -27,6 +30,7 @@ interface CertificationLIkeDataType {
 }
 
 function RecordCertification(props: { certification: any }) {
+  const [imageNumber, setImageNumber] = useState(0);
   const { certification } = props;
   const dispatch = useDispatch();
   const [clickCount, setClickCount] = useState(0); //이미지 더블클릭시 좋아요 여부를 처리하기 위해 선언
@@ -39,7 +43,7 @@ function RecordCertification(props: { certification: any }) {
   const { user } = useSelector((state: RootState) => state.persist.user);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null) //Timeout 참조하는 useRef 훅
 
-  // console.log('certification',certification)
+  console.log('certification',certification)
 
   //좋아요 api 훅
   const { mutate: certificationLikeMutate } = useMutation(
@@ -94,7 +98,7 @@ function RecordCertification(props: { certification: any }) {
     //업데이트 페이지 이동시 화면을 보여주기위해 현재 인증글을 store에 저장해줌(업데이트 페이지에서 필요한 상태값을 저장해주면 됨)
     dispatch(
       uploadAction.setCertificationUpdate({
-        img: certification?.photoUrl,
+        imgList: certification?.photos,
         categoryKo: categoryCode2[certification?.categoryCode],
         title: certification?.placeName,
         certificationId: certification?.certificationId,
@@ -155,13 +159,26 @@ function RecordCertification(props: { certification: any }) {
             삭제
           </div>
         </div>
-        <img
-          className="record-cert-img"
-          src={certification.photoUrl}
-          alt={certification.placeName}
-          aria-hidden="true"
-          onClick={handleDoubleClick}
-        />
+        <>
+          <Swiper onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
+            {certification.photos.map((image: string) => {
+              return (
+                <SwiperSlide>
+                  <img
+                    className="record-cert-img"
+                    src={image}
+                    alt={certification.placeName}
+                    aria-hidden="true"
+                    onClick={handleDoubleClick}
+                  />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+          {/* <div className="absolute bottom-[5px] right-0 z-[100] flex h-[23px] w-[55px] items-center justify-center bg-gray-700 bg-opacity-70 text-[11px] font-normal text-white ">
+            {imageNumber + 1} / {certification.photos.length}
+          </div> */}
+        </>
         {LikeAnimationLoading && (
           <div className="like-animation-wrapper" style={{ height: window.innerWidth }}>
             <LikeAnimation isLike={selfHeart} />

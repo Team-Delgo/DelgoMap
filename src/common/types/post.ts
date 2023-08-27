@@ -12,6 +12,7 @@ export interface postType {
   userName: string;
   userProfile: string;
   isHideAddress:boolean;
+  photos:Array<string>
 }
 
 export interface userType {

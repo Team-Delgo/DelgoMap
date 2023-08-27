@@ -123,7 +123,7 @@ function Calender() {
           if (date.date === id) {
             isCertificated = true;
             certification = date.dateList;
-            imageSrc = date.dateList[0].photoUrl;
+            imageSrc = date.dateList[0].photos[0];
             achieve = date.isAchievements;
           }
         });

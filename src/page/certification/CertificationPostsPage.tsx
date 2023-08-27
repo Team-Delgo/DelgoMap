@@ -16,14 +16,13 @@ import { GET_ALL_CERTIFICATION_DATA_LIST } from '../../common/constants/queryKey
 import { postType } from '../../common/types/post';
 import PageHeader from '../../components/PageHeader';
 
-
 function CertificationPostsPage() {
-  
-  const firstCert = (useLocation()?.state?.cert as any) || null;  //내기록 앨범부분에서 다른강아지들 뭐할까? post 클릭시 해당 post 맨위로 끌어내리기 위해 설정
+  const firstCert = (useLocation()?.state?.cert as any) || null; //내기록 앨범부분에서 다른강아지들 뭐할까? post 클릭시 해당 post 맨위로 끌어내리기 위해 설정
   const pageFrom = (useLocation()?.state?.from as any) || 'home'; //이전 페이지가 어디있는지 알려줌(router로 보낸 state가 없으면 home)
   const [pageSizeCount, setPageSizeCount] = useState(0); // 현재 load된 포스트사이즈 상태값(업데이트 페이지, 댓글 페이지 이동시 스크롤 유지를 위해)
   const { user } = useSelector((state: RootState) => state.persist.user);
-  const { scroll, pageSize } = useSelector( //store에서 스크롤Y 높이와, 포스트사이즈 가져옴(스크롤 유지를 위해)
+  const { scroll, pageSize } = useSelector(
+    //store에서 스크롤Y 높이와, 포스트사이즈 가져옴(스크롤 유지를 위해)
     (state: RootState) => state.persist.scroll.posts,
   );
 
@@ -32,7 +31,7 @@ function CertificationPostsPage() {
   const navigate = useNavigate();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
 
-  // 무한 스크롤 api hook 
+  // 무한 스크롤 api hook
   const {
     data, //api 응닶 데이터 값
     fetchNextPage, //다음 page(포스터) fetch호출해주는 함수
@@ -44,13 +43,15 @@ function CertificationPostsPage() {
     ({ pageParam = 0 }) =>
       getCertificationPostAll(
         pageParam, //페이지 번호(페이지네이션때 클릭한 페이지 숫자로 생각하면 편함)
-        user.id, 
+        user.id,
         pageSize, //불러올 pageSize(인증글 사이즈)
         firstCert?.certificationId === undefined ? '' : firstCert?.certificationId,
       ),
     {
-      getNextPageParam: (lastPage: any) => //다음 page를 불러오는 함수
-      // lastPage.last의 값이 존재하지 않으면 (즉, 마지막 페이지가 아니면) lastPage.nextPage` 값을 반환 아니면 undefined
+      getNextPageParam: (
+        lastPage: any, //다음 page를 불러오는 함수
+      ) =>
+        // lastPage.last의 값이 존재하지 않으면 (즉, 마지막 페이지가 아니면) lastPage.nextPage` 값을 반환 아니면 undefined
         !lastPage?.last ? lastPage?.nextPage : undefined,
     },
   );
@@ -75,6 +76,7 @@ function CertificationPostsPage() {
   //isLoading간에 store에 저장된 scrollY를 적용해줌(디펜던시 배열에 isLoading을 빼면 그만큼 랜더링된 포스트가없어서 이전 스크롤이 그대로 유지가안됨)
   useEffect(() => {
     window.scroll(0, scroll);
+    console.log('data', data);
   }, [isLoading]);
 
   useEffect(() => {
@@ -86,8 +88,7 @@ function CertificationPostsPage() {
     //스크롤 상태값을 초기화해주고(홈->동네강아지 다시이동할때 스크롤이 적용되면 안되므로)
     dispatch(scrollActions.scrollInit());
     //이전페이지가 어디인지에 따라 분기처리해서 페이지 이동
-    if(pageFrom === 'home' || pageFrom === 'homeCert')
-      navigate(ROOT_PATH);
+    if (pageFrom === 'home' || pageFrom === 'homeCert') navigate(ROOT_PATH);
     else navigate(RECORD_PATH.PHOTO);
   }, []);
 
@@ -95,30 +96,38 @@ function CertificationPostsPage() {
   if (isLoading) {
     return <DogLoading />;
   }
-  
+
   return (
-    <div className="certificationPostsPage">
-      <PageHeader title='동네 강아지' navigate={moveToHomePage} isFixed isAbsolute={false} short={false} />
-      {pageFrom === 'photo' || pageFrom === 'homeCert'  ? (
-        <CertificationPost
-          post={firstCert}
-          certificationPostsFetch={certificationPostsFetch}
-          pageSize={pageSizeCount}
-        />
-      ) : null}
-      {data?.pages?.map((page) => (
-        <>
-          {page?.content?.map((post: postType) => (
-            <CertificationPost
-              post={post}
-              certificationPostsFetch={certificationPostsFetch}
-              pageSize={pageSizeCount}
-            />
-          ))}
-        </>
-      ))}
-      <div ref={ref}>&nbsp;</div>
-    </div>
+    <>
+      <PageHeader
+        title="동네 강아지"
+        navigate={moveToHomePage}
+        // isFixed
+        isAbsolute={false}
+        short={false}
+      />
+      <div className="certificationPostsPage">
+        {pageFrom === 'photo' || pageFrom === 'homeCert' ? (
+          <CertificationPost
+            post={firstCert}
+            certificationPostsFetch={certificationPostsFetch}
+            pageSize={pageSizeCount}
+          />
+        ) : null}
+        {data?.pages?.map((page) => (
+          <>
+            {page?.content?.map((post: postType) => (
+              <CertificationPost
+                post={post}
+                certificationPostsFetch={certificationPostsFetch}
+                pageSize={pageSizeCount}
+              />
+            ))}
+          </>
+        ))}
+        <div ref={ref}>&nbsp;</div>
+      </div>
+    </>
   );
 }
 

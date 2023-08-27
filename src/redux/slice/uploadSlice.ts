@@ -17,7 +17,11 @@ interface initialStateType {
   address: string,
   achievements:Array<AchievementType>,
   isHideAddress:boolean,
-  categoryCode:string
+  categoryCode:string,
+  prevImgList:Array<string>,
+  prevImgNameList:Array<string>,
+  imgList:Array<string>
+  fileList:Array<File>
 }
 interface AchievementType {
   achievementsId: number;
@@ -57,7 +61,11 @@ const initialState: initialStateType = {
   address: '',
   achievements: [],
   isHideAddress:false,
-  categoryCode:''
+  categoryCode:'',
+  prevImgList:[],
+  prevImgNameList:[],
+  imgList:[],
+  fileList:[]
 };
 
 const uploadSlice = createSlice({
@@ -77,12 +85,27 @@ const uploadSlice = createSlice({
 
       };
     },
+    setPrevImgList(state, action) {
+      return {
+        ...state,
+        prevImgList:action.payload.prevImgList,
+        prevImgNameList:action.payload.prevImgNameList
+
+      };
+    },
     setImg(state, action) {
       return {
         ...state,
         img: action.payload.img,
         tool: action.payload.tool,
         file: action.payload.file,
+      };
+    },
+    setImgList(state, action) {
+      return {
+        ...state,
+        imgList: action.payload.imgList,
+        fileList: action.payload.fileList,
       };
     },
     setCategory(state, action) {
@@ -135,7 +158,7 @@ const uploadSlice = createSlice({
     setCertificationUpdate(state, action) {
       return {
         ...initialState,
-        img: action.payload.img,
+        imgList: action.payload.imgList,
         categoryKo: action.payload.categoryKo,
         title: action.payload.title,
         certificationId: action.payload.certificationId,

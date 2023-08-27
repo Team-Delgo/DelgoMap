@@ -24,6 +24,7 @@ export interface Cert {
   registDt: string;
   userId: number;
   userName: string;
+  photos:Array<string>
 }
 export const certDefault: Cert = {
   categoryCode: 'CA9999',
@@ -41,6 +42,7 @@ export const certDefault: Cert = {
   registDt: '',
   userId: 0,
   userName: '',
+  photos:[]
 };
 
 export interface SelectedMungple {
