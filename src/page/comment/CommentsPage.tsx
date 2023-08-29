@@ -194,7 +194,9 @@ function CommentsPage() {
     {isLoading && <DogLoading />}
       <div className="comments">
         <PageHeader title="댓글" navigate={moveToPrevPage} />
-        <div className="comments-context">{context}</div>
+        {
+          !getCommentListIsLoading && <div className="comments-context">{context}</div>
+        }
         <div className="comments-post">
           <img src={profile} alt="myprofile" />
           <textarea
