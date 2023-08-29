@@ -7,7 +7,7 @@ import { userActions } from 'redux/slice/userSlice';
 import axiosInstance from './interceptors';
 
 function login(info: { email: string; password: string }) {
-  const data = axios.post(`https://www.test.delgo.pet/login`, {
+  const data = axios.post(`https://www.reward.delgo.pet/login`, {
     email: info.email,
     password: info.password,
   });
