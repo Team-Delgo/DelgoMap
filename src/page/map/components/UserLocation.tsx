@@ -1,12 +1,16 @@
 import React from 'react';
 import UserLocationIcon from '../../../common/icons/user-location.svg';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 
 interface Props {
   move: (lat: number, lng: number) => void;
 }
 
 function UserLocation({ move }: Props) {
+  const { OS } = useSelector((state: RootState) => state.persist.device);
   const moveToCurrentLocation = () => {
+    if (OS === 'android') window.BRIDGE.checkGPSService();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;

@@ -18,6 +18,8 @@ import {
   STALE_TIME,
 } from '../../../../common/constants/queryKey.const';
 import { useErrorHandlers } from '../../../../common/api/useErrorHandlers';
+import { getMyProfileInfo } from '../../../../common/api/myaccount';
+import DogLoading from '../../../../common/utils/BallLoading';
 
 function AchievementPage() {
   const [selectedAchievement, setSelectedAchievement] = useState<achievementType>();
@@ -42,7 +44,23 @@ function AchievementPage() {
     });
   }, []);
 
-  const { isFetching: getAchievementDataListIsLoading, data: achievementDataList } =
+  const { isLoading: getMyProfileInfoDataIsLoading, data: myProfileInfoData } = useQuery(
+    //프로필 api hook
+    GET_MY_PROFILE_INFO_DATA,
+    () => getMyProfileInfo(userId),
+    {
+      cacheTime: CACHE_TIME,
+      staleTime: STALE_TIME,
+      onError: (error: any) => {
+        useErrorHandlers(dispatch, error);
+      },
+    },
+  );
+
+  const {
+    isLoading: getAchievementDataListIsLoading,
+    data: achievementDataList,
+  } = //업적 api hook
     useQuery(GET_ACHIEVEMENT_DATA_LIST, () => getAchievementList(userId), {
       cacheTime: CACHE_TIME,
       staleTime: STALE_TIME,
@@ -52,6 +70,7 @@ function AchievementPage() {
     });
 
   const openBottomSheet = useCallback(
+    //업적바텀시트 open 핸들러
     (achievement: achievementType) => (event: React.MouseEvent) => {
       setSelectedAchievement(achievement);
       setTimeout(() => {
@@ -61,26 +80,31 @@ function AchievementPage() {
     [],
   );
 
+  const isLoading = getMyProfileInfoDataIsLoading || getAchievementDataListIsLoading;
+
   return (
-    <div
-      aria-hidden="true"
-      ref={swipeArea}
-      onClick={achievementBottomSheetIsOpen ? closeAchievementBottomSheet : undefined}
-    >
-      {achievementDataList && (
-        <Achievment
-          achievementList={achievementDataList.data}
-          openBottomSheet={openBottomSheet}
+    <>
+      {isLoading && <DogLoading />}
+      <div
+        aria-hidden="true"
+        ref={swipeArea}
+        onClick={achievementBottomSheetIsOpen ? closeAchievementBottomSheet : undefined}
+      >
+        {achievementDataList && (
+          <Achievment
+            achievementList={achievementDataList.data}
+            openBottomSheet={openBottomSheet}
+          />
+        )}
+        <AchievementBottomSheet
+          text=""
+          allView={false}
+          achievement={selectedAchievement}
+          cancelButtonHandler={closeAchievementBottomSheet}
+          bottomSheetIsOpen={achievementBottomSheetIsOpen}
         />
-      )}
-      <AchievementBottomSheet
-        text=""
-        allView={false}
-        achievement={selectedAchievement}
-        cancelButtonHandler={closeAchievementBottomSheet}
-        bottomSheetIsOpen={achievementBottomSheetIsOpen}
-      />
-    </div>
+      </div>
+    </>
   );
 }
 

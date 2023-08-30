@@ -22,7 +22,7 @@ function AchievementBottomSheet({ text, achievement, cancelButtonHandler, bottom
     navigate(ACHIEVEMENT_PATH);
   };
 
-  console.log('achievement',achievement)
+  // console.log('achievement',achievement)
 
   return (
     <Sheet className="confirm-bottom-sheet-container" isOpen={bottomSheetIsOpen} onClose={cancelButtonHandler} snapPoints={sheetSnapPoints}>
@@ -50,7 +50,7 @@ function AchievementBottomSheet({ text, achievement, cancelButtonHandler, bottom
                 width={103}
                 height={113}
               />
-              {allView && <div className="achievement-bottom-sheet-third-line-all">전체 업적 보기</div>}
+              {/* {allView && <div className="achievement-bottom-sheet-third-line-all">전체 업적 보기</div>} */}
             </div>
             <img
               src={X}

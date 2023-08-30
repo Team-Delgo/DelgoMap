@@ -84,16 +84,6 @@ function CertificationMap() {
       offset : new kakao.maps.Point(20,40)
     }
     const image = new kakao.maps.MarkerImage(Marker, imageSize, imageOptions);
-    // const markerOption = {
-    //   position: new window.naver.maps.LatLng(pointerLocation),
-    //   map: globarMap,
-    //   icon: {
-    //     content: [`<div class="cert-map-marker" >`, `<img src=${Marker}  style="" alt="pin"/>`, `</div>`].join(''),
-    //     size: new naver.maps.Size(20, 20),
-    //     origin: new naver.maps.Point(0, 0),
-    //     anchor: new naver.maps.Point(17, 48),
-    //   },
-    // };
     const marker = new kakao.maps.Marker({
       position,
       image

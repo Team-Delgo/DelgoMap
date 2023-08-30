@@ -4,8 +4,9 @@
 }
 
 .certificationPostsPage {
-    position: absolute;
-    top: 0;
+    // position: absolute;
+    // top: 0;
+    // background-color: red;
 
     &-header {
         position: fixed;
@@ -47,7 +48,8 @@
         align-items: center;
         font-size: 14px;
         font-weight: 400;
-        margin: 50px 5% 10px 5%;
+        margin: 32px 5% 10px 5%;
+
 
         &-profile {
             display: flex;
@@ -93,7 +95,6 @@
         position: relative;
 
         &-img {
-            width: 100%;
             border-radius: 4px;
         }
 
@@ -127,6 +128,7 @@
         &-body {
             color: #232323;
             padding: 24px 0;
+            white-space: pre-wrap;
 
             &-title {
                 font-size: 24px;

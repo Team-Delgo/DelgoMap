@@ -124,7 +124,7 @@ function Calender() {
           if (date.date === id) {
             isCertificated = true;
             certification = date.dateList;
-            imageSrc = date.dateList[0].photoUrl;
+            imageSrc = date.dateList[0].photos[0];
             achieve = date.isAchievements;
           }
         });
@@ -206,13 +206,13 @@ function Calender() {
   });
 
   return (
-    <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}>
+    <div>
       <div className="calender">
         <div className="date-wrapper" ref={scrollRef}>
           {datesElement}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

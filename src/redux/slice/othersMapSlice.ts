@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { idDefault } from '../../page/map/index.types';
+import { SelectedMungple, defaultSelectedMungple } from '../../page/map/index.types';
 
 const initialState = {
   zoom: 6,
@@ -14,7 +14,7 @@ const initialState = {
   detailImgUrl: '',
   currentPlaceName: '',
   certToggle: false,
-  selectedId: idDefault,
+  selectedId: defaultSelectedMungple,
 };
 
 export const othersMapSlice = createSlice({
@@ -57,11 +57,11 @@ export const othersMapSlice = createSlice({
       state.selectedId = action.payload;
     },
     clearSelectedId(state, action) {
-      state.selectedId = idDefault;
+      state.selectedId = defaultSelectedMungple;
     },
     setMapCustomPosition(state, action) {
       state.selectedId = {
-        ...idDefault,
+        ...defaultSelectedMungple,
         lat: action.payload.lat,
         lng: action.payload.lng,
       };

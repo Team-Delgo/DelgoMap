@@ -17,6 +17,7 @@ import {
   RECORD_PATH,
   SIGN_IN_PATH,
   SIGN_UP_PATH,
+  CROP_LIST_PATH,
 } from './common/constants/path.const';
 import UploadCertificationPage from './page/upload/UploadCertificationPage';
 import UploadCertificationResultPage from './page/upload/UploadCertificationResultPage';
@@ -54,6 +55,7 @@ import PostsPage from './page/certification/CertificationPostsPage';
 import CommentsPage from './page/comment/CommentsPage';
 import RecordCertificationPage from './page/certification/RecordCertificationPage';
 import CertificationMap from './page/certification/CertificationMap';
+import CropListPage from './page/crop/CropListPage';
 import { deviceAction } from './redux/slice/deviceSlice';
 import HelpPage from './page/help/HelpPage';
 import { RootState } from './redux/store';
@@ -72,6 +74,7 @@ function App() {
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
 
+  //회원정보수정(강아지 정보수정등)했을때 동시 로그인된 여러 기기에 상태값을 동기화해주기위해 설정 (실시간은 안되고 앱을 끄고 켯을때만 동작)
   useEffect(() => {
     if (isSignIn) {
       getMyInfo(
@@ -114,6 +117,7 @@ function App() {
     }
   }, []);
 
+  //기기를 설정해주는부분(pc or mobile) -> 분기처리가 필요한 로직일떄 필요
   useEffect(() => {
     const pcDevice = 'win16|win32|win64|mac|macintel';
     if (navigator.platform) {
@@ -125,6 +129,7 @@ function App() {
     }
   }, []);
 
+  //모바일 운영체제를 설정해주는부분(ios or android) -> 분기처리가 필요한 로직일떄 필요
   useEffect(() => {
     const varUA = navigator.userAgent.toLowerCase();
     if (varUA.indexOf('android') > -1) {
@@ -162,6 +167,7 @@ function App() {
               <Route path={SIGN_UP_PATH.SOCIAL.NICKNAME} element={<SocialUserInfo />} />
               <Route path={SIGN_UP_PATH.USER_PET_INFO} element={<PetInfo />} />
               <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
+              <Route path={POSTS_PATH} element={<PostsPage />} />
               <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
               <Route element={<Account />}>
                 <Route path="/calendar/:id" element={<CalendarPage />} />
@@ -185,8 +191,8 @@ function App() {
                 />
                 <Route path={UPLOAD_PATH.MAP} element={<CertificationMap />} />
                 <Route path={CROP_PATH} element={<CropPage />} />
+                <Route path={CROP_LIST_PATH} element={<CropListPage />} />
                 <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
-                <Route path={POSTS_PATH} element={<PostsPage />} />
                 <Route path={MY_ACCOUNT_PATH.MAIN} element={<MyAccountPage />} />
                 <Route path={MY_ACCOUNT_PATH.PETINFO} element={<ChangePetInfo />} />
                 <Route path={MY_ACCOUNT_PATH.SETTINGS} element={<Setting />} />

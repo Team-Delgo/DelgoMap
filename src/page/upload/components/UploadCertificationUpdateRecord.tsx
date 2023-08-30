@@ -28,25 +28,16 @@ interface updateCertPostData {
   isHideAddress: boolean;
 }
 
+//인증수정컴포넌트(인증등록->인증수정만 바뀌었다고 생각하면됨)
+
 function UploadCertificationUpdateRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
-  const {
-    title,
-    certificationId,
-    content,
-    address,
-    isHideAddress,
-    categoryCode,
-  } = useSelector((state: RootState) => state.persist.upload);
+  const { title, certificationId, content, address, isHideAddress, categoryCode } =
+    useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
-  const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
-  const [buttonDisabled, onButtonDisable, OffButtonDisable] = useActive(false);
-  const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  const [
-    updateCertificationIsLoading,
-    onUpdateCertificationLoading,
-    offUpdateCertificationLoading,
-  ] = useActive(false);
+  const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState(''); //인증에러 토스트메시지 text
+  const [buttonDisabled, onButtonDisable, OffButtonDisable] = useActive(false); //인증수정을 연속적으로 호출하는것 방지하기위해 선언 
+  const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true); //바텀오픈여부 ()
   const [errorToastIsOpen, openCertificateErrorToast, closeCertificateErrorToast] =
     useActive(false);
   const navigate = useNavigate();
@@ -77,7 +68,9 @@ function UploadCertificationUpdateRecord() {
     }
   }, [errorToastIsOpen]);
 
-  const { mutate: updateCertificationMutate } = useMutation(
+
+  //인증수정 api hook
+  const { mutate: updateCertificationMutate ,isLoading:updateCertificationIsLoading} = useMutation(
     (data: updateCertPostData) => updateCertificationPost(data),
     {
       onSuccess: (response: AxiosResponse) => {
@@ -92,33 +85,30 @@ function UploadCertificationUpdateRecord() {
           );
           moveToCaptureResultPage();
         } else {
-          offUpdateCertificationLoading();
           OffButtonDisable();
         }
       },
       onError: () => {
-        offUpdateCertificationLoading();
         OffButtonDisable();
       },
     },
   );
 
   const uploadCertificationPost = () => {
-    if (buttonDisabled || updateCertificationIsLoading) {
+    if (buttonDisabled || updateCertificationIsLoading) { //이미 버튼을 눌렀거나 api호출중이면 그냥 리턴해버림 
       return;
     }
     if (address === '') {
       setCertificateErrorToastMessage('장소를 입력해 주세요');
-      openCertificateErrorToast();
+      openCertificateErrorToast(); //에러 toast 오픈
       return;
     }
     if (content.length < 15) {
       setCertificateErrorToastMessage('최소 15자 이상 입력해 주세요');
-      openCertificateErrorToast();
+      openCertificateErrorToast(); //에러 toast 오픈
       return;
     }
-    onUpdateCertificationLoading();
-    onButtonDisable();
+    onButtonDisable(); //인증수정 버튼 비활성화 (연속적으로 호출하는것을 방지하기위해)
 
     setTimeout(() => {
       updateCertificationMutate({
@@ -135,115 +125,112 @@ function UploadCertificationUpdateRecord() {
       state: {
         prevPath: location.pathname,
         prevPrevPath: location?.state?.prevPath,
-        updateSuccess: true,
+        updateSuccess: true, //결과페이지에서 수정성공이라는 toast메세지를 띄워야해서 updateSuccess 저장해줌
       },
     });
   }, []);
 
-  const screenUp = useCallback(() => {
-    window.webkit.messageHandlers.NAME.postMessage('screenUp');
-  }, []);
 
+  //모바일 운영체제에 따라 랜더링(키보드 이슈때문에)
   const renderContentByOS = () => {
     switch (OS) {
       case 'ios':
         return (
-          <main
-            className="capture-img-record ios-capture-record"
-            style={{
-              height: initialHeight.current - window.innerWidth - 10,
-            }}
-          >
-            <body className="review-container">
-              <div className="review-place-info">
-                <div className="review-place-info-title-wrapper">
-                  <img src={icon} alt="category-img" />
-                  <div className="review-place-info-title">
-                    {address !== '' ? address : '기록 남길 주소'}
-                  </div>
-                </div>
-                <input
-                  className="review-place-info-search-input"
-                  placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
-                  disabled
-                  value={title !== '' ? title : undefined}
-                />
-                {/* <div className="review-place-info-address">{address}</div> */}
-              </div>
-
-              <div className="review-place-address-hide">
-                <div style={{ display: 'flex' }}>
-                  <input
-                    className="review-place-address-hide-button"
-                    type="checkbox"
-                    checked={isHideAddress}
-                    onClick={() =>
-                      dispatch(
-                        uploadAction.setHideAddress({
-                          isHideAddress: !isHideAddress,
-                        }),
-                      )
-                    }
-                  />
-                  <div
-                    className="review-place-address-hide-label"
-                    aria-hidden
-                    onClick={() =>
-                      dispatch(
-                        uploadAction.setHideAddress({
-                          isHideAddress: !isHideAddress,
-                        }),
-                      )
-                    }
-                  >
-                    주소 나만보기
-                  </div>
-                </div>
-                {isHideAddress && (
-                  <div style={{ position: 'relative' }}>
-                    <div className="review-place-address-hide-box">
-                      다른 사용자에게는 장소이름만 보여요
-                    </div>
-                    <div className="review-place-address-hide-arrow" />
-                  </div>
-                )}
-              </div>
-
-              <div className="review-guidance-text">
-                이곳에 대해 남기고 싶은 기록이 있나요?
-              </div>
-
-              <textarea
-                className="review-content"
-                placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
-                onChange={(e) =>
-                  dispatch(
-                    uploadAction.setContent({
-                      content: e.target.value,
-                    }),
-                  )
-                }
-                maxLength={199}
-                onFocus={screenUp}
-              >
-                {content}
-              </textarea>
-              <div className="review-content-length">{content.length}/200</div>
-            </body>
-            <footer>
-              {content.length > 0 ? (
-                <div
-                  className="writting-button-active"
-                  aria-hidden="true"
-                  onClick={uploadCertificationPost}
+                <main
+                  className="capture-img-record ios-capture-record"
+                  style={{
+                    height: initialHeight.current - window.innerWidth - 10,
+                  }}
                 >
-                  수정완료
-                </div>
-              ) : (
-                <div className="writting-button">수정완료</div>
-              )}
-            </footer>
-          </main>
+                  <body className="review-container">
+                    <div className="review-place-info">
+                      <div className="review-place-info-title-wrapper">
+                        <img src={icon} alt="category-img" />
+                        <div className="review-place-info-title">
+                          {address !== '' ? address : '기록 남길 주소'}
+                        </div>
+                      </div>
+                      <input
+                        className="review-place-info-search-input"
+                        placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
+                        disabled
+                        value={title !== '' ? title : undefined}
+                      />
+                      {/* <div className="review-place-info-address">{address}</div> */}
+                    </div>
+
+                    <div className="review-place-address-hide">
+                      <div style={{ display: 'flex' }}>
+                        <input
+                          className="review-place-address-hide-button"
+                          type="checkbox"
+                          checked={isHideAddress}
+                          onClick={() =>
+                            dispatch(
+                              uploadAction.setHideAddress({
+                                isHideAddress: !isHideAddress,
+                              }),
+                            )
+                          }
+                        />
+                        <div
+                          className="review-place-address-hide-label"
+                          aria-hidden
+                          onClick={() =>
+                            dispatch(
+                              uploadAction.setHideAddress({
+                                isHideAddress: !isHideAddress,
+                              }),
+                            )
+                          }
+                        >
+                          주소 나만보기
+                        </div>
+                      </div>
+                      {isHideAddress && (
+                        <div style={{ position: 'relative' }}>
+                          <div className="review-place-address-hide-box">
+                            다른 사용자에게는 장소이름만 보여요
+                          </div>
+                          <div className="review-place-address-hide-arrow" />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="review-guidance-text">
+                      이곳에 대해 남기고 싶은 기록이 있나요?
+                    </div>
+
+                    <textarea
+                      className="review-content"
+                      placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
+                      onChange={(e) =>
+                        dispatch(
+                          uploadAction.setContent({
+                            content: e.target.value,
+                          }),
+                        )
+                      }
+                      maxLength={199}
+                    >
+                      {content}
+                    </textarea>
+                    <div className="review-content-length">{content.length}/200</div>
+                  </body>
+                  <footer>
+                    {content.length > 0 ? (
+                      <div
+                        className="writting-button-active"
+                        aria-hidden="true"
+                        onClick={uploadCertificationPost}
+                      >
+                        수정완료
+                      </div>
+                    ) : (
+                      <div className="writting-button">수정완료</div>
+                    )}
+                  </footer>
+                </main>
         );
       case 'android':
         return (
@@ -251,10 +238,10 @@ function UploadCertificationUpdateRecord() {
             isOpen={bottomSheetIsOpen}
             onClose={closeBottomSheet}
             snapPoints={[
-              initialHeight.current - window.innerWidth - 10,
-              initialHeight.current - window.innerWidth - 10,
-              initialHeight.current - window.innerWidth - 10,
-              initialHeight.current - window.innerWidth - 10,
+              initialHeight.current - window.innerWidth + 10,
+              initialHeight.current - window.innerWidth + 10,
+              initialHeight.current - window.innerWidth + 10,
+              initialHeight.current - window.innerWidth + 10,
             ]}
             disableDrag
             className="modal-bottom-sheet"
@@ -313,7 +300,7 @@ function UploadCertificationUpdateRecord() {
                         </div>
                       </div>
                       {isHideAddress && (
-                        <div style={{ position: 'relative'}}>
+                        <div style={{ position: 'relative' }}>
                           <div className="review-place-address-hide-box">
                             다른 사용자에게는 장소이름만 보여요
                           </div>
@@ -337,7 +324,6 @@ function UploadCertificationUpdateRecord() {
                         )
                       }
                       maxLength={199}
-                      onFocus={screenUp}
                     >
                       {content}
                     </textarea>

@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from '../../../common/icons/dogfoot.svg';
-import './LinkCopy.scss';
+import 'index.css';
 import { RootState } from '../../../redux/store';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
 import { UPLOAD_PATH, SIGN_IN_PATH } from '../../../common/constants/path.const';
 import AlertConfirm from '../../../common/dialog/AlertConfirm';
 
-function LinkCopy(props: {
-  isMungple: boolean;
-}) {
+function LinkCopy(props: { isMungple: boolean }) {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const { isMungple } = props;
   const isSignIn = useSelector((state: RootState) => state.persist.user.isSignIn);
@@ -49,12 +46,16 @@ function LinkCopy(props: {
   return (
     <>
       <div
-        className={classNames('link', { isMungple })}
+        className={`${
+          isMungple ? 'bottom-[133px]' : 'bottom-[30px]'
+        } absolute left-[50%] z-[100] flex h-[35px] translate-x-[-50%] items-center justify-center rounded-[42px] bg-white text-[14px]`}
         aria-hidden="true"
         onClick={setCertLocation}
       >
-        <img src={Link} alt="link" className='ml-[20px]' />
-        <div className="link-text">이곳에{` ${dogName}`} 발자국 남기기</div>
+        <img src={Link} alt="link" className="ml-[20px] mr-[8px] h-[17px] w-[17px]" />
+        <div className="whitespace-nowrap pr-[20px]">
+          이곳에{` ${dogName}`} 발자국 남기기
+        </div>
       </div>
       {isAlertOpen && (
         <AlertConfirm

@@ -16,7 +16,7 @@ import BallLoading from '../../common/utils/BallLoading';
 import UserLocation from './components/UserLocation';
 import useMap from './index.hook';
 
-function MapTest() {
+function Map() {
   const [copyLoading, setCopyLoading] = useState(false);
 
   const {
@@ -49,6 +49,8 @@ function MapTest() {
     globarMap?.panTo(new kakao.maps.LatLng(lat, lng));
     setTimeout(() => globarMap?.setLevel(5), 200);
   };
+
+  console.log(selectedCert);
 
   return (
     <div className="map-wrapper">
@@ -138,4 +140,4 @@ function MapTest() {
   );
 }
 
-export default MapTest;
+export default Map;

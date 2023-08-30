@@ -17,20 +17,22 @@ import { RootState } from '../redux/store';
 import 'index.css';
 import HelpFloatingMessage from './HelpFloatingMessage';
 import { analytics } from '..';
+import { userActions } from 'redux/slice/userSlice';
 
 function FooterNavigation(props: { setCenter: () => void }) {
   const { setCenter } = props;
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [helpShow, setHelpShow] = useState(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
+  const isFirstCert= useSelector((state:RootState) => state.persist.user.isFirstCert);
+  const isFirstCertToggle = useSelector((state:RootState) => state.persist.user.isFirstCertToggle);
   const selectedId = useSelector((state: RootState) => state.map.selectedId.id);
   const clickEvent = useAnalyticsCustomLogEvent(analytics, 'cert-button-click');
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const moveToPostsPage = () => {
-    setCenter();
-    navigate(POSTS_PATH, { state: { cert: null, from: 'home' } });
+      setCenter();
+      navigate(POSTS_PATH, { state: { cert: null, from: 'home' } });
   };
   const sendLoginPage = () => {
     navigate(SIGN_IN_PATH.MAIN);
@@ -54,20 +56,19 @@ function FooterNavigation(props: { setCenter: () => void }) {
   const certButtonHandler = () => {
     clickEvent.mutate();
     if (userId) {
+      if(isFirstCert) {
+        dispatch(userActions.setIsFisrtCert(false));
+        dispatch(userActions.setIsFirstCertToggle(true));
+      }
       dispatch(uploadAction.initAchievements());
       navigate(UPLOAD_PATH.CERTIFICATION);
     } else setIsAlertOpen(true);
   };
 
-  useEffect(() => {
-    const isFirstTime = localStorage.getItem('isFirstCert');
-    if (!isFirstTime) setHelpShow(true);
-  }, []);
-
   return (
     <div className="absolute bottom-0 z-[100] flex h-[63px] w-screen justify-evenly rounded-t-[18px] bg-white">
-      {helpShow && selectedId > 0 && (
-        <HelpFloatingMessage text="추억을 기록해보세요" direction="bottom" />
+      {isFirstCert && selectedId > 0 && (
+        <HelpFloatingMessage text="추억을 기록해보세요" guide="startCert" />
       )}
       {isAlertOpen && (
         <AlertConfirm

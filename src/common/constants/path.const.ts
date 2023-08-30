@@ -55,6 +55,7 @@ export const RECORD_PATH = {
 };
 
 export const CROP_PATH = '/crop';
+export const CROP_LIST_PATH = '/crop-list';
 
 export const ACHIEVEMENT_PATH = '/achievement';
 

@@ -2,7 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isSignIn: false,
+  moveToLogin: false,
   appleCode: '',
+  isFirstCert: true,
+  isFirstCertToggle: false,
   user: {
     id: 0,
     address: '',
@@ -24,16 +27,22 @@ const userSlice = createSlice({
   reducers: {
     signin(state, action) {
       return {
+        ...state,
         isSignIn: true,
+        moveToLogin: false,
         appleCode: '',
-        firstCert: true,
-        firstToggle: true,
         user: action.payload.user,
         pet: action.payload.pet,
       };
     },
     signout() {
       return initialState;
+    },
+    redirectToLogin(state) {
+      return {
+        ...state,
+        moveToLogin: true,
+      };
     },
     setpetprofile(state, action) {
       return {
@@ -91,6 +100,12 @@ const userSlice = createSlice({
         ...state,
         appleCode: action.payload,
       };
+    },
+    setIsFisrtCert(state, action) {
+      return { ...state, isFirstCert: action.payload };
+    },
+    setIsFirstCertToggle(state, action) {
+      return { ...state, isFirstCertToggle: action.payload };
     },
   },
 });
