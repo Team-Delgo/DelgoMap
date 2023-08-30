@@ -1,15 +1,15 @@
-import React,{useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getCommentList, postComment,deleteComment } from '../../common/api/comment';
+import { getCommentList, postComment, deleteComment } from '../../common/api/comment';
 import { RootState } from '../../redux/store';
 import ConfirmBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import ToastPurpleMessage from '../../common/dialog/ToastPurpleMessage';
-import { analytics } from "../../index";
-import {commentType} from '../../common/types/comment';
+import { analytics } from '../../index';
+import { commentType } from '../../common/types/comment';
 import useActive from '../../common/hooks/useActive';
 import './CommentsPage.scss';
 import useInput from '../../common/hooks/useInput';
@@ -17,33 +17,41 @@ import { postType } from '../../common/types/post';
 import PageHeader from '../../components/PageHeader';
 import { useErrorHandlers } from '../../common/api/useErrorHandlers';
 import DogLoading from '../../common/utils/BallLoading';
-
+import { RECORD_PATH } from '../../common/constants/path.const';
 
 interface StateType {
-  post:postType
+  post: postType;
 }
 
 function CommentsPage() {
   const [deleteCommentId, setDeleteCommentId] = useState(-1);
-  const [inputComment, onChangeInputComment,resetInputComment] = useInput('');
-  const [deleteCommentBottomSheetIsOpen, openDeleteCommentBottomSheet, closeDeleteCommentBottomSheet] = useActive(false);
-  const [deleteCommentSuccessToastIsOpen, openDeleteCommentSuccessToast,closeDeleteCommentSuccessToast] = useActive(false);
+  const [inputComment, onChangeInputComment, resetInputComment] = useInput('');
+  const [
+    deleteCommentBottomSheetIsOpen,
+    openDeleteCommentBottomSheet,
+    closeDeleteCommentBottomSheet,
+  ] = useActive(false);
+  const [
+    deleteCommentSuccessToastIsOpen,
+    openDeleteCommentSuccessToast,
+    closeDeleteCommentSuccessToast,
+  ] = useActive(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const profile = useSelector((state: RootState) => state.persist.user.pet.image);
-  const { post} = useLocation()?.state as StateType;
+  const { post } = useLocation()?.state as StateType;
   const textRef = useRef<any>(null);
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_post');
 
-
   const {
     data: commentList,
     refetch: refetchCommentList,
-    isLoading:getCommentListIsLoading,
+    isLoading: getCommentListIsLoading,
   } = useQuery('comments', () => getCommentList(post?.certificationId));
 
-  const {mutate:postCommentMutate,isLoading:postCommentIsLoading} = useMutation(
+  const { mutate: postCommentMutate, isLoading: postCommentIsLoading } = useMutation(
     ({
       userId,
       certificationId,
@@ -119,7 +127,7 @@ function CommentsPage() {
       commentId: deleteCommentId,
       certificationId: post.certificationId,
     });
-  }
+  };
 
   const handleResizeHeight = useCallback(() => {
     if (textRef.current) {
@@ -130,6 +138,16 @@ function CommentsPage() {
     }
   }, []);
 
+  // const profileClickHandler = (commentId: number) => {
+  //   if (commentId) {
+  //     console.log(commentId);
+  //     navigate(`${RECORD_PATH.PHOTO}/${commentId}`, {
+  //       state: {
+  //         prevPath: location.pathname,
+  //       },
+  //     });
+  //   }
+  // };
 
   const openBottomSheet = useCallback(
     (commentId: number) => (e: React.MouseEvent) => {
@@ -139,10 +157,9 @@ function CommentsPage() {
     [],
   );
 
-  const moveToPrevPage = useCallback(()=>{
+  const moveToPrevPage = useCallback(() => {
     navigate(-1);
-  },[])
-
+  }, []);
 
   const isLoading =
     getCommentListIsLoading || postCommentIsLoading || deleteCommentIsLoading;
@@ -150,7 +167,11 @@ function CommentsPage() {
   const context = commentList?.data?.map((comment: commentType) => {
     return (
       <div className="comment">
-        <img src={comment.userProfile} alt="profile" />
+        <img
+          src={comment.userProfile}
+          alt="profile"
+          // onClick={() => profileClickHandler(comment.userId)}
+        />
         <div className="comment-content">
           <div className="comment-content-header">
             <div className="comment-content-header-name">{comment.userName}</div>
@@ -188,7 +209,7 @@ function CommentsPage() {
 
   return (
     <>
-    {isLoading && <DogLoading />}
+      {isLoading && <DogLoading />}
       <div className="comments">
         <PageHeader title="댓글" navigate={moveToPrevPage} />
         <div className="comments-context">{context}</div>

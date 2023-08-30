@@ -26,7 +26,7 @@ function PetInfo() {
     ).toString()}` + `살`;
 
   const mapButtonHandler = () => {
-    if (isMyAccount) window.BRIDGE.receiveUrlFromWeb(window.location.href);
+    if (isMyAccount) window.BRIDGE.shareDelgoProfile(window.location.href);
     else navigate(`${RECORD_PATH.MAP}/${userId}`);
   };
   return (
@@ -41,9 +41,12 @@ function PetInfo() {
       <div className="flex h-[36px] w-screen flex-col">
         <div className="flex">
           <div className="ml-[21px] h-[36px] text-[24px] font-bold leading-9 tracking-[0.72px]">
-            {data.data.petName}
+            {data.data.nickname}
           </div>
-          <div className="ml-[12px] mt-[9px] h-[18px] text-[12px] font-normal leading-[18px]">
+          <div className="ml-[19px] mt-[9px] h-[18px] text-[16px] font-medium leading-[18px]">
+            {data.data.petName}/
+          </div>
+          <div className=" mt-[9px] h-[18px] text-[12px] font-medium leading-[18px]">
             {year} {data.data.breedName}
           </div>
         </div>

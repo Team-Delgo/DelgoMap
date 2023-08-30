@@ -64,7 +64,7 @@ import Map from './page/map';
 import TempDetailPage from './page/detail/TempDetailPage';
 import Account from 'components/Account';
 import RedirectHandler from 'RedirectHandler';
-import OthersMap from 'page/record/components/OthersMap';
+import OthersMap from 'page/record/OthersMap/OthersMap';
 
 function App() {
   const queryClient = new QueryClient();

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './RecordHeader.scss';
@@ -42,10 +42,10 @@ function RecordHeader() {
   });
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
+  const handleNavigate = useCallback(() => {
     if (isMyAccount) navigate(ROOT_PATH);
     else navigate(POSTS_PATH);
-  };
+  }, []);
   const clickHandler = (e: any) => {
     const { id } = e.target;
     setSeleceted((prev) => {

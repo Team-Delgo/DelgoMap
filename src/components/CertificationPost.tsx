@@ -161,7 +161,11 @@ function CertificationPost({
   const profileClickHandler = () => {
     if (post.userId) {
       console.log(post.userId);
-      navigate(`${RECORD_PATH.PHOTO}/${post.userId}`);
+      navigate(`${RECORD_PATH.PHOTO}/${post.userId}`, {
+        state: {
+          prevPath: location.pathname,
+        },
+      });
     }
   };
   const handleCertificationLike = () => {

@@ -3,7 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation } from 'react-query';
 import { RootState } from '../../../redux/store';
-import { UPLOAD_PATH, POSTS_PATH, RECORD_PATH } from '../../../common/constants/path.const';
+import {
+  UPLOAD_PATH,
+  POSTS_PATH,
+  RECORD_PATH,
+} from '../../../common/constants/path.const';
 import { certificationDelete } from '../../../common/api/certification';
 import X from '../../../common/icons/xx.svg';
 import DeleteBottomSheet from '../../../common/dialog/ConfirmBottomSheet';
@@ -12,20 +16,24 @@ import { weekDay } from '../../../common/types/week';
 import useActive from '../../../common/hooks/useActive';
 import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
 
-
-interface CertificationLIkeDataType{
+interface CertificationLIkeDataType {
   userId: number;
   certificationId: number;
 }
 
 function UploadResultHeader() {
-  const [deletePostBottomSheetIsOpen, openDeletePostBottomSheet, closeDeletePostBottomSheet] = useActive(false);
-  const { registDt, certificationId } = useSelector((state: RootState) => state.persist.upload);
+  const [
+    deletePostBottomSheetIsOpen,
+    openDeletePostBottomSheet,
+    closeDeletePostBottomSheet,
+  ] = useActive(false);
+  const { registDt, certificationId } = useSelector(
+    (state: RootState) => state.persist.upload,
+  );
   const { user } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location: any = useLocation();
-
 
   const { mutate: certificationDeleteMutate, isLoading: cettificationDeleteIsLoading } =
     useMutation((data: CertificationLIkeDataType) => certificationDelete(data), {
@@ -41,9 +49,8 @@ function UploadResultHeader() {
       },
     });
 
-
   const deleteCertification = () => {
-    if (cettificationDeleteIsLoading) return
+    if (cettificationDeleteIsLoading) return;
     closeDeletePostBottomSheet();
     certificationDeleteMutate({
       userId: user?.id,
@@ -66,9 +73,8 @@ function UploadResultHeader() {
 
   const moveToPhotoPage = () => {
     handleInitAchievements();
-    navigate(RECORD_PATH.PHOTO);
+    navigate(`${RECORD_PATH.PHOTO}/${user.id}`);
   };
-
 
   const handleInitAchievements = () => {
     dispatch(uploadAction.initAchievements());
@@ -80,14 +86,23 @@ function UploadResultHeader() {
         <div className="capture-img-result-header-record-complete">기록완료</div>
         <div className="capture-img-result-header-record">
           <div className="capture-img-result-header-record-date">
-            {registDt.substring(0, 10)}&nbsp;{weekDay[registDt.substring(17, registDt.length)]}&nbsp;&nbsp;&nbsp;
+            {registDt.substring(0, 10)}&nbsp;
+            {weekDay[registDt.substring(17, registDt.length)]}&nbsp;&nbsp;&nbsp;
             {registDt.substring(11, 16)}
           </div>
           <div className="capture-img-result-header-record-work">
-            <div className="capture-img-result-header-record-work-modify" aria-hidden="true" onClick={moveToUpdatePage}>
+            <div
+              className="capture-img-result-header-record-work-modify"
+              aria-hidden="true"
+              onClick={moveToUpdatePage}
+            >
               수정&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
             </div>
-            <div className="capture-img-result-header-record-work-delete" aria-hidden="true" onClick={openDeletePostBottomSheet}>
+            <div
+              className="capture-img-result-header-record-work-delete"
+              aria-hidden="true"
+              onClick={openDeletePostBottomSheet}
+            >
               삭제
             </div>
           </div>

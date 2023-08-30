@@ -43,7 +43,11 @@ function FooterNavigation(props: { setCenter: () => void }) {
   const recordButtonHandler = () => {
     if (userId) {
       setCenter();
-      navigate(`${RECORD_PATH.PHOTO}/${userId}`);
+      navigate(`${RECORD_PATH.PHOTO}/${userId}`, {
+        state: {
+          prevPath: location.pathname,
+        },
+      });
     } else setIsAlertOpen(true);
   };
 
