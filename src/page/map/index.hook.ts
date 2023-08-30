@@ -58,6 +58,9 @@ function useMap() {
   /** API request */
   const { data: mapDataList } = useQuery(['getMapData', userId], () =>
     getMapData(userId),
+    {
+      refetchOnWindowFocus:false
+    }
   );
 
   /** Function */

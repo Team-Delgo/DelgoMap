@@ -49,6 +49,8 @@ function SearchBar(props: {
     });
   }, [enteredInput]);
 
+  const searchFromKakaoComponent = useMemo
+
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEnteredInput(e.target.value);
     if (cafeList.length > 0 && e.target.value.length > 0) {
