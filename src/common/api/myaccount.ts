@@ -90,7 +90,7 @@ function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch
 
 async function getMyInfo(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
-    .get(`/user?userId=${userId}`)
+    .get(`/account?userId=${userId}`)
     .then((data) => {
       success(data);
     })
