@@ -247,7 +247,7 @@ function useMap() {
         setCertMarkers(certMarkers);
         setMungpleCertMarkers(mungpleCertMarkers);
         setIsFirstRendering((prev) => ({ ...prev, cert: false }));
-      } else {
+      } else if(mungpleMarkers.length === 0){
         hideCertMarkers(certMarkers);
         hideCertMarkers(mungpleCertMarkers);
         // hideMungpleMarkers();
