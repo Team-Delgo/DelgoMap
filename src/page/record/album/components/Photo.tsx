@@ -25,7 +25,11 @@ function Photo() {
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const navigate = useNavigate();
   const certEvent = useAnalyticsCustomLogEvent(analytics, 'album_cert');
-  const userId = useSelector((state: RootState) => state.persist.user.user.id);
+  const splitUrl = window.location.href.split('/');
+  const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
+  const { pageSize, scroll } = useSelector(
+    (state: RootState) => state.persist.scroll.photos,
+  );
   const sheetRef = useOnclickOutside(() => {
     setButtonIsClicked(false);
   });
@@ -60,7 +64,7 @@ function Photo() {
     },
   );
 
-  console.log('photos',photos)
+  console.log('photos', photos);
 
   const { data: otherDogsCerts, isLoading: otherDogsCertsLoading } = useQuery(
     ['getFiveOtherDogsCert', userId],
@@ -97,7 +101,7 @@ function Photo() {
         <div className="photo-nocert">
           <h4>기록이 없어요</h4>
           <span className="photo-nocert-guide">
-            오른쪽 하단
+            하단
             <div className="photo-nocert-guide-icon">
               <img className="photo-nocert-guide-icon-img" src={Plus} alt="plus" />
             </div>

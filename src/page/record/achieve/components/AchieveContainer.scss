@@ -1,188 +1,184 @@
-.pet-info-container{
-    margin-top: 13vh;
+.pet-info-container {
+  margin-top: 13vh;
+  text-align: center;
+
+  .pet-info {
+    &-img-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &-img {
+      border-radius: 4px;
+      text-align: center;
+    }
+    &-name {
+      font-weight: 700;
+      font-size: 18px;
+      margin: 5px 0 2px 0;
+    }
+    &-birth-day {
+      font-weight: 400;
+      font-size: 12px;
+      color: #646566;
+    }
+  }
+  .pet-history-info-wrapper {
+    display: flex;
+    justify-content: space-around;
     text-align: center;
-
-    .pet-info{
-
-        &-img-wrapper{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        &-img{
-            border-radius: 4px;
-            text-align: center;
-        }
-        &-name{
-            font-weight: 700;
-            font-size: 18px;
-            margin: 5px 0 2px 0;
-        }
-        &-birth-day{
-            font-weight: 400;
-            font-size: 12px;
-            color:#646566;
-        }
+    align-items: center;
+    background-color: #f6f6f6;
+    height: 85px;
+    border-radius: 16px;
+    margin: 0 5%;
+    margin-top: 20px;
+    .pet-history-info {
+      &-first-line {
+        font-weight: 400;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+      &-second-line {
+        font-weight: 500;
+        font-size: 18px;
+      }
     }
-    .pet-history-info-wrapper{
-        display: flex;
-        justify-content: space-around;
-        text-align: center;
-        align-items: center;
-        background-color: #F6F6F6;
-        height: 85px;
-        border-radius: 16px;
-        margin: 0 5%;
-        margin-top: 20px;
-        .pet-history-info{
-            &-first-line{
-                font-weight: 400;
-                font-size: 14px;
-                margin-bottom: 5px;
-            }
-            &-second-line{
-                font-weight: 500;
-                font-size: 18px;
-            }
-        }
-    }
+  }
 }
 .achievement-page {
-    &-header {
-        padding: 140px 5% 20px 5%;
-        background-color: #F6F6F6;
-        // margin-top: 200px;
+  &-header {
+    padding: 140px 5% 20px 5%;
+    background-color: #f6f6f6;
+    // margin-top: 200px;
 
-        &-prev-arrow {
-            padding-top: 25px;
-        }
-
-        &-achievements {
-            &-representative {
-                display: flex;
-                justify-content: space-between;
-                color: #000000;
-                padding: 40px 5px 2px 0;
-
-                &-text {
-                    font-weight: 400;
-                    font-size: 14px;
-                }
-
-                &-button {
-                    font-size: 12px;
-                    color: #8A8A8A;
-                }
-
-                &-sub-text {
-                    font-size: 12px;
-                    padding-bottom: 10px;
-                    color: #8A8A8A;
-                }
-            }
-
-            &-images::-webkit-scrollbar {
-                display: none;
-                /* Chrome, Safari, Opera*/
-            }
-
-            &-images {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                padding-top: 5px;
-                overflow-y: scroll;
-
-                .achievement-page-header-achievements-image-container:active {
-                        transform: scale(0.93);
-                    }
-                
-                    .achievement-page-header-achievements-image-container {
-                        position: relative;
-                    .achievement-page-header-achievements-image {
-                        width: 100%;
-                        text-align: center;
-
-                        &-name{
-                            text-align: center;
-                            font-size: 14px;
-                            font-weight: 400;
-                            padding-top: 5px;
-                            color:#FFFFFF
-                        }
-
-                        &-check-img {
-                            position: absolute;
-                            top: -3px;
-                            right: 2px;
-                            z-index: 10;
-                        }
-                    }
-                }
-            }
-        }
+    &-prev-arrow {
+      padding-top: 25px;
     }
 
-    &-body {
-        padding: 40px 5% 0 5%;
+    &-achievements {
+      &-representative {
+        display: flex;
+        justify-content: space-between;
+        color: #000000;
+        padding: 40px 5px 2px 0;
 
-        &-achievements{
-           &-title {
-            padding-bottom: 2px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #000000
-        } 
-        &-count {
-            padding-bottom: 15px;
-            font-size: 14px;
-            font-weight: 400;
-            color: #8A8A8A
-
-        }
-        &-images::-webkit-scrollbar {
-            display: none;
-            /* Chrome, Safari, Opera*/
+        &-text {
+          font-weight: 400;
+          font-size: 14px;
         }
 
-        &-images {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+        &-button {
+          font-size: 12px;
+          color: #8a8a8a;
+        }
+
+        &-sub-text {
+          font-size: 12px;
+          padding-bottom: 10px;
+          color: #8a8a8a;
+        }
+      }
+
+      &-images::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari, Opera*/
+      }
+
+      &-images {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        padding-top: 5px;
+        overflow-y: scroll;
+
+        .achievement-page-header-achievements-image-container:active {
+          transform: scale(0.93);
+        }
+
+        .achievement-page-header-achievements-image-container {
+          position: relative;
+          .achievement-page-header-achievements-image {
+            width: 100%;
             text-align: center;
-            overflow-y: scroll;
-            padding-top: 5px;
-            // margin:0 -5%;
 
-
-            .achievement-page-body-achievements-image-container:active {
-                transform: scale(0.93);
+            &-name {
+              text-align: center;
+              font-size: 14px;
+              font-weight: 400;
+              padding-top: 5px;
+              color: #ffffff;
             }
 
-            .achievement-page-body-achievements-image-container {
-                position: relative;
-                .achievement-page-body-achievements-image {
-                    padding-bottom: 20px;
-
-                    &-wrapper{
-                        background-color: red;
-                        position: relative;
-                    }
-
-                    &-check-img {
-                        position: absolute;
-                        top: -3px;
-                        right: 2px;
-                        z-index: 10;
-                    }
-
-                    &-name {
-                        text-align: center;
-                        font-size: 14px;
-                        font-weight: 600;
-                        padding-top: 8px;
-                    }
-                }
+            &-check-img {
+              position: absolute;
+              top: -3px;
+              right: 2px;
+              z-index: 10;
             }
+          }
         }
-        }
+      }
     }
+  }
+
+  &-body {
+    padding: 280px 5% 0 5%;
+    &-achievements {
+      &-title {
+        padding-bottom: 2px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #000000;
+      }
+      &-count {
+        padding-bottom: 15px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #8a8a8a;
+      }
+      &-images::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari, Opera*/
+      }
+
+      &-images {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        text-align: center;
+        overflow-y: scroll;
+        padding-top: 5px;
+        // margin:0 -5%;
+
+        .achievement-page-body-achievements-image-container:active {
+          transform: scale(0.93);
+        }
+
+        .achievement-page-body-achievements-image-container {
+          position: relative;
+          .achievement-page-body-achievements-image {
+            padding-bottom: 20px;
+
+            &-wrapper {
+              background-color: red;
+              position: relative;
+            }
+
+            &-check-img {
+              position: absolute;
+              top: -3px;
+              right: 2px;
+              z-index: 10;
+            }
+
+            &-name {
+              text-align: center;
+              font-size: 14px;
+              font-weight: 600;
+              padding-top: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
 }

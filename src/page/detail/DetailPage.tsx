@@ -23,7 +23,7 @@ function DetailPage() {
   const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
   const splitUrl = window.location.href.split('/');
   const detailPageId = parseInt(splitUrl[splitUrl.length - 1], 10);
-
+  ('');
   const { data, isLoading } = useQuery(['getDetailPageData', detailPageId], () =>
     getDetailPageData(detailPageId),
   );

@@ -17,7 +17,7 @@ import {
   RECORD_PATH,
   SIGN_IN_PATH,
   SIGN_UP_PATH,
-  CROP_LIST_PATH
+  CROP_LIST_PATH,
 } from './common/constants/path.const';
 import UploadCertificationPage from './page/upload/UploadCertificationPage';
 import UploadCertificationResultPage from './page/upload/UploadCertificationResultPage';
@@ -55,7 +55,7 @@ import PostsPage from './page/certification/CertificationPostsPage';
 import CommentsPage from './page/comment/CommentsPage';
 import RecordCertificationPage from './page/certification/RecordCertificationPage';
 import CertificationMap from './page/certification/CertificationMap';
-import CropListPage from "./page/crop/CropListPage"
+import CropListPage from './page/crop/CropListPage';
 import { deviceAction } from './redux/slice/deviceSlice';
 import HelpPage from './page/help/HelpPage';
 import { RootState } from './redux/store';
@@ -64,15 +64,15 @@ import { getMyInfo } from './common/api/myaccount';
 
 import Map from './page/map';
 import TempDetailPage from './page/detail/TempDetailPage';
-import Account from './components/Account';
-import RedirectHandler from './RedirectHandler';
+import Account from 'components/Account';
+import RedirectHandler from 'RedirectHandler';
+import OthersMap from 'page/record/OthersMap/OthersMap';
 
 function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
-
 
   //회원정보수정(강아지 정보수정등)했을때 동시 로그인된 여러 기기에 상태값을 동기화해주기위해 설정 (실시간은 안되고 앱을 끄고 켯을때만 동작)
   useEffect(() => {
@@ -143,7 +143,6 @@ function App() {
     }
   }, []);
 
-
   return (
     <QueryClientProvider client={queryClient}>
       <AnimatePresence>
@@ -157,7 +156,7 @@ function App() {
               <Route path="/help" element={<HelpPage />} />
               <Route path="/detail/temp/:id" element={<TempDetailPage />} />
               <Route path="/detail/:id" element={<DetailPage />} />
-              <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
+              <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />x
               <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
               <Route path={SIGN_IN_PATH.FINDPASSWORD} element={<FindPassword />} />
               <Route path={SIGN_IN_PATH.PHONEAUTH} element={<PhoneAuth />} />
@@ -168,12 +167,13 @@ function App() {
               <Route path={SIGN_UP_PATH.SOCIAL.NICKNAME} element={<SocialUserInfo />} />
               <Route path={SIGN_UP_PATH.USER_PET_INFO} element={<PetInfo />} />
               <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
-                <Route path={POSTS_PATH} element={<PostsPage />} />
+              <Route path={POSTS_PATH} element={<PostsPage />} />
               <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
               <Route element={<Account />}>
-                <Route path={RECORD_PATH.CALENDAR} element={<CalendarPage />} />
-                <Route path={RECORD_PATH.PHOTO} element={<AlbumPage />} />
-                <Route path={RECORD_PATH.ACHIEVE} element={<AchievePage />} />
+                <Route path="/calendar/:id" element={<CalendarPage />} />
+                <Route path="/photo/:id" element={<AlbumPage />} />
+                <Route path="/achieve/:id" element={<AchievePage />} />
+                <Route path="/map/:id" element={<OthersMap />} />
                 <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
                 <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
                 <Route
@@ -191,7 +191,7 @@ function App() {
                 />
                 <Route path={UPLOAD_PATH.MAP} element={<CertificationMap />} />
                 <Route path={CROP_PATH} element={<CropPage />} />
-                <Route path={CROP_LIST_PATH} element={<CropListPage/>} />
+                <Route path={CROP_LIST_PATH} element={<CropListPage />} />
                 <Route path={ACHIEVEMENT_PATH} element={<AchievementPage />} />
                 <Route path={MY_ACCOUNT_PATH.MAIN} element={<MyAccountPage />} />
                 <Route path={MY_ACCOUNT_PATH.PETINFO} element={<ChangePetInfo />} />

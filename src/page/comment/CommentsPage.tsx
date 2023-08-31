@@ -1,15 +1,15 @@
-import React,{useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getCommentList, postComment,deleteComment } from '../../common/api/comment';
+import { getCommentList, postComment, deleteComment } from '../../common/api/comment';
 import { RootState } from '../../redux/store';
 import ConfirmBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import ToastPurpleMessage from '../../common/dialog/ToastPurpleMessage';
-import { analytics } from "../../index";
-import {commentType} from '../../common/types/comment';
+import { analytics } from '../../index';
+import { commentType } from '../../common/types/comment';
 import useActive from '../../common/hooks/useActive';
 import './CommentsPage.scss';
 import useInput from '../../common/hooks/useInput';
@@ -17,33 +17,41 @@ import { postType } from '../../common/types/post';
 import PageHeader from '../../components/PageHeader';
 import { useErrorHandlers } from '../../common/api/useErrorHandlers';
 import DogLoading from '../../common/utils/BallLoading';
-
+import { RECORD_PATH } from '../../common/constants/path.const';
 
 interface StateType {
-  post:postType
+  post: postType;
 }
 
 function CommentsPage() {
   const [deleteCommentId, setDeleteCommentId] = useState(-1); //댓글Id(댓글삭제 api 호출시 필요)
-  const [inputComment, onChangeInputComment,resetInputComment] = useInput(''); //input에 입력하는 댓글
-  const [deleteCommentBottomSheetIsOpen, openDeleteCommentBottomSheet, closeDeleteCommentBottomSheet] = useActive(false); //댓글삭제 바텀시트
-  const [deleteCommentSuccessToastIsOpen, openDeleteCommentSuccessToast,closeDeleteCommentSuccessToast] = useActive(false); //댓글삭제 tost
+  const [inputComment, onChangeInputComment, resetInputComment] = useInput(''); //input에 입력하는 댓글
+  const [
+    deleteCommentBottomSheetIsOpen,
+    openDeleteCommentBottomSheet,
+    closeDeleteCommentBottomSheet,
+  ] = useActive(false); //댓글삭제 바텀시트
+  const [
+    deleteCommentSuccessToastIsOpen,
+    openDeleteCommentSuccessToast,
+    closeDeleteCommentSuccessToast,
+  ] = useActive(false); //댓글삭제 tost
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const profile = useSelector((state: RootState) => state.persist.user.pet.image);
-  const { post} = useLocation()?.state as StateType;
+  const { post } = useLocation()?.state as StateType;
   const textRef = useRef<any>(null); //textarea 높이설정을 위한 ref객체
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_post');
 
-
   const {
     data: commentList,
     refetch: refetchCommentList,
-    isLoading:getCommentListIsLoading,
+    isLoading: getCommentListIsLoading,
   } = useQuery('comments', () => getCommentList(post?.certificationId)); //댓글리스트 api 훅
 
-  const {mutate:postCommentMutate,isLoading:postCommentIsLoading} = useMutation( //댓글생성 api 훅
+  const { mutate: postCommentMutate, isLoading: postCommentIsLoading } = useMutation(
+    //댓글생성 api 훅
     ({
       userId,
       certificationId,
@@ -98,7 +106,6 @@ function CommentsPage() {
     },
   );
 
-
   //댓글 생성 핸들러
   const postCommentOnCert = () => {
     commentEvent.mutate();
@@ -120,7 +127,7 @@ function CommentsPage() {
       commentId: deleteCommentId,
       certificationId: post.certificationId,
     });
-  }
+  };
 
   //textarea 높이 설정
   const handleResizeHeight = useCallback(() => {
@@ -132,6 +139,16 @@ function CommentsPage() {
     }
   }, []);
 
+  // const profileClickHandler = (commentId: number) => {
+  //   if (commentId) {
+  //     console.log(commentId);
+  //     navigate(`${RECORD_PATH.PHOTO}/${commentId}`, {
+  //       state: {
+  //         prevPath: location.pathname,
+  //       },
+  //     });
+  //   }
+  // };
 
   //댓글삭제 바텀시트 오픈 (삭제한 댓글id 저장)
   const openBottomSheet = useCallback(
@@ -142,10 +159,9 @@ function CommentsPage() {
     [],
   );
 
-  const moveToPrevPage = useCallback(()=>{
+  const moveToPrevPage = useCallback(() => {
     navigate(-1);
-  },[])
-
+  }, []);
 
   const isLoading =
     getCommentListIsLoading || postCommentIsLoading || deleteCommentIsLoading;
@@ -153,7 +169,11 @@ function CommentsPage() {
   const context = commentList?.data?.map((comment: commentType) => {
     return (
       <div className="comment">
-        <img src={comment.userProfile} alt="profile" />
+        <img
+          src={comment.userProfile}
+          alt="profile"
+          // onClick={() => profileClickHandler(comment.userId)}
+        />
         <div className="comment-content">
           <div className="comment-content-header">
             <div className="comment-content-header-name">{comment.userName}</div>
@@ -191,12 +211,10 @@ function CommentsPage() {
 
   return (
     <>
-    {isLoading && <DogLoading />}
+      {isLoading && <DogLoading />}
       <div className="comments">
         <PageHeader title="댓글" navigate={moveToPrevPage} />
-        {
-          !getCommentListIsLoading && <div className="comments-context">{context}</div>
-        }
+        {!getCommentListIsLoading && <div className="comments-context">{context}</div>}
         <div className="comments-post">
           <img src={profile} alt="myprofile" />
           <textarea

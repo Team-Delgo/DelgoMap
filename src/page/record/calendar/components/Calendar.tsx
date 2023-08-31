@@ -15,11 +15,12 @@ import { scrollActions } from '../../../../redux/slice/scrollSlice';
 import { analytics } from '../../../../index';
 
 function Calender() {
-  const userId = useSelector((state: RootState) => state.persist.user.user.id);
+  const splitUrl = window.location.href.split('/');
+  const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
   const scroll = useSelector((state: RootState) => state.persist.scroll.calendar.scroll);
-  const userSignDate = useSelector(
-    (state: RootState) => state.persist.user.user.registDt,
-  );
+  // const userSignDate = useSelector(
+  //   (state: RootState) => state.persist.user.user.registDt,
+  // );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(scroll);

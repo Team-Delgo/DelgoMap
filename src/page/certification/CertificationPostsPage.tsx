@@ -89,7 +89,7 @@ function CertificationPostsPage() {
     dispatch(scrollActions.scrollInit());
     //이전페이지가 어디인지에 따라 분기처리해서 페이지 이동
     if (pageFrom === 'home' || pageFrom === 'homeCert') navigate(ROOT_PATH);
-    else navigate(RECORD_PATH.PHOTO);
+    else navigate(`${RECORD_PATH.PHOTO}/${user.id}`);
   }, []);
 
   //서버 상태가 loading 중이면 보여줄 컴포넌트
