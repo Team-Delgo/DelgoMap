@@ -12,7 +12,7 @@ function PetInfo() {
   const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
   const myId = useSelector((state: RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
-  let isMyAccount = true;
+  let isMyAccount = false;
   if (userId === myId) isMyAccount = true;
   else isMyAccount = false;
   const { data, isLoading } = useQuery(['getPetdata', userId], () => {
@@ -23,10 +23,10 @@ function PetInfo() {
   if (data === undefined || isLoading) return <BallLoading />;
 
   let year;
-  if (data.data.yearOfPetAge === 0) {
-    year = data.data.monthOfPetAge;
+  if (data.yearOfPetAge === 0) {
+    year = data.monthOfPetAge + '개월';
   } else {
-    year = data.data.yearOfPetAge;
+    year = data.yearOfPetAge + '살';
   }
 
   const mapButtonHandler = () => {
@@ -37,7 +37,7 @@ function PetInfo() {
     <header className=" fixed z-20 mt-[80px] flex w-screen bg-white">
       <img
         className="ml-[16.51px] h-[82.246px] w-[83.492px] rounded-full"
-        src={data.data.profile}
+        src={data.profile}
         alt="copy url"
         width={81}
         height={81}
@@ -45,13 +45,13 @@ function PetInfo() {
       <div className="flex h-[36px] w-screen flex-col">
         <div className="flex">
           <div className="ml-[21px] h-[36px] text-[24px] font-bold leading-9 tracking-[0.72px]">
-            {data.data.nickname}
+            {data.nickname}
           </div>
           <div className="ml-[19px] mt-[9px] h-[18px] text-[16px] font-medium leading-[18px]">
-            {data.data.petName}/
+            {data.petName}/
           </div>
           <div className=" mt-[9px] h-[18px] text-[12px] font-medium leading-[18px]">
-            {year} {data.data.breedName}
+            {year} {data.breedName}
           </div>
         </div>
         <div
