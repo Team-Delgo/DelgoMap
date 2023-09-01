@@ -57,9 +57,9 @@ function Photo() {
     ['getCertPhotos', userId, `page${page}`, sortOption],
     ({ pageParam = 0 }) => {
       if (userId === myId) {
-        return getMyPhotoData(userId, 'CA0000', pageParam, 8, sortOption);
+        return getMyPhotoData(userId, 'CA0000', pageParam, 15, sortOption);
       } else {
-        return getOtherPhotoData(userId, 'CA0000', pageParam, 8, sortOption);
+        return getOtherPhotoData(userId, 'CA0000', pageParam, 15, sortOption);
       }
     },
     {
