@@ -114,7 +114,7 @@ async function getMyInfo(
   dispatch: any,
 ) {
   axiosInstance
-    .get(`/user?userId=${userId}`)
+    .get(`/account?userId=${userId}`)
     .then((data) => {
       success(data);
     })
