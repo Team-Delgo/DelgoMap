@@ -17,7 +17,7 @@ import { postType } from '../../common/types/post';
 import PageHeader from '../../components/PageHeader';
 import { useErrorHandlers } from '../../common/api/useErrorHandlers';
 import DogLoading from '../../common/utils/BallLoading';
-import { RECORD_PATH } from '../../common/constants/path.const';
+import { POSTS_PATH, RECORD_PATH } from '../../common/constants/path.const';
 
 interface StateType {
   post: postType;
@@ -142,10 +142,11 @@ function CommentsPage() {
 
   const profileClickHandler = (commentId: number) => {
     if (commentId) {
-      console.log(commentId);
+      console.log(location.pathname);
       navigate(`${RECORD_PATH.PHOTO}/${commentId}`, {
         state: {
           prevPath: location.pathname,
+          post,
         },
       });
     }
@@ -161,7 +162,7 @@ function CommentsPage() {
   );
 
   const moveToPrevPage = useCallback(() => {
-    navigate(-1);
+    navigate(POSTS_PATH);
   }, []);
 
   const isLoading =

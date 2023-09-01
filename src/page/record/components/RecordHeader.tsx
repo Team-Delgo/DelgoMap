@@ -5,11 +5,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './RecordHeader.scss';
 import PetInfo from './PetInfo';
 import BackArrow from '../common/icons/prev-arrow-black.svg';
-import { ROOT_PATH, POSTS_PATH } from '../../../common/constants/path.const';
+import { ROOT_PATH, POSTS_PATH, RECORD_PATH } from '../../../common/constants/path.const';
 import { RootState } from '../../../redux/store';
 import PageHeader from '../../../components/PageHeader';
 import useMap from '../../map/index.hook';
 import FooterNavigation from 'components/FooterNavigation';
+import { postType } from 'common/types/post';
 
 interface Pet {
   petId: number;
@@ -22,6 +23,8 @@ function RecordHeader() {
   const splitUrl = window.location.href.split('/');
   const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
   const myId = useSelector((state: RootState) => state.persist.user.user.id);
+  const pageFrom = (useLocation()?.state?.prevPath as string) || 'home';
+  const post = useLocation()?.state?.post as postType;
   let isMyAccount = true;
 
   const {
@@ -43,7 +46,9 @@ function RecordHeader() {
   const navigate = useNavigate();
 
   const handleNavigate = useCallback(() => {
+    console.log(pageFrom);
     if (isMyAccount) navigate(ROOT_PATH);
+    else if (pageFrom != 'home') navigate(pageFrom, { state: { post } });
     else navigate(POSTS_PATH);
   }, []);
   const clickHandler = (e: any) => {
