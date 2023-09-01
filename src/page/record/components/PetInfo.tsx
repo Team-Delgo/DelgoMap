@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { getMyProfileInfo } from 'common/api/myaccount';
+import { getMyProfileInfo, getOtherProfileInfo } from 'common/api/myaccount';
 import BallLoading from 'common/utils/BallLoading';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
@@ -13,17 +13,21 @@ function PetInfo() {
   const myId = useSelector((state: RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
   let isMyAccount = true;
-  const { data, isLoading } = useQuery(['getPetdata', userId], () =>
-    getMyProfileInfo(userId),
-  );
-  if (data === undefined || isLoading) return <BallLoading />;
   if (userId === myId) isMyAccount = true;
   else isMyAccount = false;
+  const { data, isLoading } = useQuery(['getPetdata', userId], () => {
+    if (isMyAccount) return getMyProfileInfo(userId);
+    else return getOtherProfileInfo(userId);
+  });
 
-  const year =
-    `${(
-      new Date().getFullYear() - parseInt(data.data.birthday.split('-')[0])
-    ).toString()}` + `살`;
+  if (data === undefined || isLoading) return <BallLoading />;
+
+  let year;
+  if (data.data.yearOfPetAge === 0) {
+    year = data.data.monthOfPetAge;
+  } else {
+    year = data.data.yearOfPetAge;
+  }
 
   const mapButtonHandler = () => {
     if (isMyAccount) window.BRIDGE.shareDelgoProfile(window.location.href);
