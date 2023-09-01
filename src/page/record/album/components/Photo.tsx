@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './Photo.scss';
 import UnderArrow from '../../../../common/icons/under-arrow-gray.svg';
 import { Cert } from '../../../map/index.types';
-import { getPhotoCount, getPhotoData } from '../../../../common/api/record';
+import { getMyPhotoData, getOtherPhotoData } from '../../../../common/api/record';
 import { POSTS_PATH, RECORD_PATH } from '../../../../common/constants/path.const';
 import { analytics } from '../../../../index';
 import { scrollActions } from '../../../../redux/slice/scrollSlice';
@@ -27,6 +27,7 @@ function Photo() {
   const certEvent = useAnalyticsCustomLogEvent(analytics, 'album_cert');
   const splitUrl = window.location.href.split('/');
   const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
+  const myId = useSelector((state: RootState) => state.persist.user.user.id);
   const { pageSize, scroll } = useSelector(
     (state: RootState) => state.persist.scroll.photos,
   );
@@ -48,24 +49,24 @@ function Photo() {
     });
   }, []);
 
-  const { data: totalPhotoCount } = useQuery(['getCertPhotoCount', userId], () =>
-    getPhotoCount(userId),
-  );
-
   const {
     data: photos,
     isFetched: isPhotoFetched,
     fetchNextPage,
   } = useInfiniteQuery(
     ['getCertPhotos', userId, `page${page}`, sortOption],
-    ({ pageParam = 0 }) => getPhotoData(userId, 'CA0000', pageParam, 8, sortOption),
+    ({ pageParam = 0 }) => {
+      if (userId === myId) {
+        return getMyPhotoData(userId, 'CA0000', pageParam, 8, sortOption);
+      } else {
+        return getOtherPhotoData(userId, 'CA0000', pageParam, 8, sortOption);
+      }
+    },
     {
       getNextPageParam: (last) => (!last.last ? last.number + 1 : undefined),
     },
   );
-
-  console.log('photos', photos);
-
+  console.log(photos);
   const { data: otherDogsCerts, isLoading: otherDogsCertsLoading } = useQuery(
     ['getFiveOtherDogsCert', userId],
     () => getFiveOtherDogsCert(userId, 5),
@@ -168,8 +169,10 @@ function Photo() {
 
   return (
     <div className="photo">
-      <div className="photo-history">
-        <div className="photo-history-title">{totalPhotoCount}장의 사진</div>
+      {/* <div className="photo-history">
+        {photos && (
+          <div className="photo-history-title">{photos.pages[0].totalCount}장의 사진</div>
+        )}
         <div className="photo-history-select">
           <div
             className="photo-history-select-sort"
@@ -182,7 +185,7 @@ function Photo() {
             <img src={UnderArrow} alt="arrow" />
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="photo-wrapper">
         {photos && photos.pages[0].content.length > 0 ? photoContext : noRecordContext}
