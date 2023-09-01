@@ -82,7 +82,7 @@ function CertificationPost({
   const profileImg = useRef<HTMLImageElement>(null); //프로플이미지 참조하는 useRef훅
   const timeoutRef = useRef<NodeJS.Timeout | null>(null); //Timeout 참조하는 useRef 훅
 
-  console.log('post', post.photos);
+  // console.log('post', post.photos);
 
   //이미지가 뷰포트에 나타나면 해당 이미지의 src 속성을 데이터 속성에서 가져와 설정
   //default img를 보여주고있다가 obeserver에 의해 관찰되면 그떄 이미지 dataset src속성을 해당 요소 src에 설정해줌

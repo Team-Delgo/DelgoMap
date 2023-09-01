@@ -169,13 +169,13 @@ function App() {
               <Route path={SIGN_UP_PATH.COMPLETE} element={<SignUpComplete />} />
               <Route path={POSTS_PATH} element={<PostsPage />} />
               <Route path={SIGN_UP_PATH.SOCIAL.OTHER} element={<SocialExist />} />
+              <Route path="/calendar/:id" element={<CalendarPage />} />
+              <Route path="/photo/:id" element={<AlbumPage />} />
+              <Route path="/achieve/:id" element={<AchievePage />} />
+              <Route path="/map/:id" element={<OthersMap />} />
+              <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
+              <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
               <Route element={<Account />}>
-                <Route path="/calendar/:id" element={<CalendarPage />} />
-                <Route path="/photo/:id" element={<AlbumPage />} />
-                <Route path="/achieve/:id" element={<AchievePage />} />
-                <Route path="/map/:id" element={<OthersMap />} />
-                <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
-                <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
                 <Route
                   path={UPLOAD_PATH.CERTIFICATION}
                   element={<UploadCertificationPage />}

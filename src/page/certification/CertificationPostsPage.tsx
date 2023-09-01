@@ -76,7 +76,7 @@ function CertificationPostsPage() {
   //isLoading간에 store에 저장된 scrollY를 적용해줌(디펜던시 배열에 isLoading을 빼면 그만큼 랜더링된 포스트가없어서 이전 스크롤이 그대로 유지가안됨)
   useEffect(() => {
     window.scroll(0, scroll);
-    console.log('data', data);
+    // console.log('data', data);
   }, [isLoading]);
 
   useEffect(() => {

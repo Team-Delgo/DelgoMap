@@ -17,7 +17,7 @@ import { postType } from '../../common/types/post';
 import PageHeader from '../../components/PageHeader';
 import { useErrorHandlers } from '../../common/api/useErrorHandlers';
 import DogLoading from '../../common/utils/BallLoading';
-import { RECORD_PATH } from '../../common/constants/path.const';
+import { POSTS_PATH, RECORD_PATH } from '../../common/constants/path.const';
 
 interface StateType {
   post: postType;
@@ -41,6 +41,7 @@ function CommentsPage() {
   const { post } = useLocation()?.state as StateType;
   const textRef = useRef<any>(null); //textarea 높이설정을 위한 ref객체
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_post');
 
@@ -139,16 +140,17 @@ function CommentsPage() {
     }
   }, []);
 
-  // const profileClickHandler = (commentId: number) => {
-  //   if (commentId) {
-  //     console.log(commentId);
-  //     navigate(`${RECORD_PATH.PHOTO}/${commentId}`, {
-  //       state: {
-  //         prevPath: location.pathname,
-  //       },
-  //     });
-  //   }
-  // };
+  const profileClickHandler = (commentId: number) => {
+    if (commentId) {
+      console.log(location.pathname);
+      navigate(`${RECORD_PATH.PHOTO}/${commentId}`, {
+        state: {
+          prevPath: location.pathname,
+          post,
+        },
+      });
+    }
+  };
 
   //댓글삭제 바텀시트 오픈 (삭제한 댓글id 저장)
   const openBottomSheet = useCallback(
@@ -160,7 +162,7 @@ function CommentsPage() {
   );
 
   const moveToPrevPage = useCallback(() => {
-    navigate(-1);
+    navigate(POSTS_PATH);
   }, []);
 
   const isLoading =
@@ -172,7 +174,7 @@ function CommentsPage() {
         <img
           src={comment.userProfile}
           alt="profile"
-          // onClick={() => profileClickHandler(comment.userId)}
+          onClick={() => profileClickHandler(comment.userId)}
         />
         <div className="comment-content">
           <div className="comment-content-header">
