@@ -159,7 +159,7 @@ function RecordCertification(props: { certification: any }) {
             삭제
           </div>
         </div>
-        <>
+        <div style={{ position: 'relative' }}>
           <Swiper onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
             {certification.photos.map((image: string) => {
               return (
@@ -175,10 +175,10 @@ function RecordCertification(props: { certification: any }) {
               );
             })}
           </Swiper>
-          {/* <div className="absolute bottom-[5px] right-0 z-[100] flex h-[23px] w-[55px] items-center justify-center bg-gray-700 bg-opacity-70 text-[11px] font-normal text-white ">
+          <div className="absolute bottom-[4px] right-[4px] z-[100] flex h-[23px] w-[55px] items-center justify-center bg-gray-700 bg-opacity-70 text-[11px] font-normal text-white">
             {imageNumber + 1} / {certification.photos.length}
-          </div> */}
-        </>
+          </div>
+        </div>
         {LikeAnimationLoading && (
           <div className="like-animation-wrapper" style={{ height: window.innerWidth }}>
             <LikeAnimation isLike={selfHeart} />

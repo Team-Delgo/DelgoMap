@@ -139,7 +139,7 @@ function UploadCertificationUpdateRecord() {
                 <main
                   className="capture-img-record ios-capture-record"
                   style={{
-                    height: initialHeight.current - window.innerWidth - 10,
+                    height: initialHeight.current - window.innerWidth + 10,
                   }}
                 >
                   <body className="review-container">
