@@ -10,6 +10,8 @@ import { CROP_PATH,CROP_LIST_PATH } from '../../../common/constants/path.const';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import useActive from '../../../common/hooks/useActive';
+import ToastPurpleMessage from '../../../common/dialog/ToastPurpleMessage';
 
 interface props {
   openBottomSheet: () => void;
@@ -25,6 +27,8 @@ function UploadCertificationImg({ openBottomSheet }: props) {
   const fileUploadRef = useRef<HTMLInputElement>(null); // input file 참조하는 ref객체
   const dispatch = useDispatch();
   const location = useLocation();
+  const [errorToastIsOpen, openCertificateErrorToast, closeCertificateErrorToast] =
+  useActive(false);
 
 
   //이벤트 발생 막는함수
@@ -51,6 +55,17 @@ function UploadCertificationImg({ openBottomSheet }: props) {
   const setPevImg = (event: { target: HTMLInputElement }) => {
     if (event.target.files) {
       const fileArray = Array.from(event.target.files); // FileList를 배열로 변환
+
+
+      if (fileArray.length > 5) {
+        openCertificateErrorToast();
+        setTimeout(()=>{
+          closeCertificateErrorToast();
+        },2000)
+        return
+
+      }
+
       const galleryImgURLs = fileArray.map(file => URL.createObjectURL(file));
       const galleryImgNames = fileArray.map(file => file.name);
 
@@ -161,6 +176,9 @@ function UploadCertificationImg({ openBottomSheet }: props) {
         onChange={setPevImg}
         style={{ display: 'none' }}
       />
+      {
+        errorToastIsOpen && <ToastPurpleMessage message="이미지는 최대 5장 업로드 가능합니다." />
+      }
     </>
   );
 }
