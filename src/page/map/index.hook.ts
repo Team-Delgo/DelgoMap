@@ -56,11 +56,12 @@ function useMap() {
   >([]);
 
   /** API request */
-  const { data: mapDataList } = useQuery(['getMapData', userId], () =>
-    getMapData(userId),
+  const { data: mapDataList } = useQuery(
+    ['getMapData', userId],
+    () => getMapData(userId),
     {
-      refetchOnWindowFocus:false
-    }
+      refetchOnWindowFocus: false,
+    },
   );
 
   /** Function */
@@ -143,6 +144,17 @@ function useMap() {
   // Search handlers
   const openSearchView = () => setIsSearchViewOpen(true);
   const closeSearchView = () => setIsSearchViewOpen(false);
+
+  const searchAndMoveToKakaoPlace = (location: kakao.maps.LatLng) => {
+    setIsSearchViewOpen(false);
+    setIsCertToggleOn(false);
+    clearSelectedMungple();
+    clearSelectedCert();
+    setDogFootMarkerLocation(() => ({ lat: location.getLat(), lng: location.getLng() }));
+    setIsSelectedAnything(true);
+    map?.panTo(location);
+  };
+
   const searchAndMoveToMungple = (mungple: Mungple) => {
     dispatch(mapAction.setCertToggle(false));
     setIsSearchViewOpen(false);
@@ -224,7 +236,7 @@ function useMap() {
     }
     dispatch(mapAction.setMapCustomPosition(dogFootMarkerLocation));
   }, [dogFootMarkerLocation]);
-  
+
   console.log(mapDataList);
   // 멍플, 인증 마커 렌더링
   useEffect(() => {
@@ -247,7 +259,7 @@ function useMap() {
         setCertMarkers(certMarkers);
         setMungpleCertMarkers(mungpleCertMarkers);
         setIsFirstRendering((prev) => ({ ...prev, cert: false }));
-      } else if(mungpleMarkers.length === 0){
+      } else if (mungpleMarkers.length === 0) {
         hideCertMarkers(certMarkers);
         hideCertMarkers(mungpleCertMarkers);
         // hideMungpleMarkers();
@@ -325,6 +337,7 @@ function useMap() {
       navigateToLoginPage,
       certToggleClickHandler,
       setCurrentMapLocation,
+      searchAndMoveToKakaoPlace,
     },
   };
 }

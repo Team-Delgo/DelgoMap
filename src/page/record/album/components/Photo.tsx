@@ -11,7 +11,6 @@ import useOnclickOutside from 'react-cool-onclickoutside';
 import Sheet from 'react-modal-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import './Photo.scss';
-import UnderArrow from '../../../../common/icons/under-arrow-gray.svg';
 import { Cert } from '../../../map/index.types';
 import { getMyPhotoData, getOtherPhotoData } from '../../../../common/api/record';
 import { POSTS_PATH, RECORD_PATH } from '../../../../common/constants/path.const';

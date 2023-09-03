@@ -5,7 +5,7 @@ import Logo from '../../common/icons/logo.svg';
 import Categroy from './components/Category';
 import PlaceCard from './components/PlaceCard';
 import TempMarkerImageLoader from './components/MarkerSet';
-import SearchBar from './components/SearchBar';
+import SearchBar from './components/Search';
 import Search from '../../common/icons/search.svg';
 import Human from '../../common/icons/human.svg';
 import AlertConfirm from '../../common/dialog/AlertConfirm';
@@ -42,6 +42,7 @@ function Map() {
       navigateToLoginPage,
       certToggleClickHandler,
       setCurrentMapLocation,
+      searchAndMoveToKakaoPlace
     },
   } = useMap();
 
@@ -90,6 +91,7 @@ function Map() {
       <div className="map" ref={mapElement} />
       {isSearchViewOpen && (
         <SearchBar
+          selectKakaoPlace={searchAndMoveToKakaoPlace}
           selectId={searchAndMoveToMungple}
           cafeList={mapDataList!.mungpleList}
           close={closeSearchView}
