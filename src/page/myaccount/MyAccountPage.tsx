@@ -7,15 +7,17 @@ import './MyAccountPage.scss';
 import LeftArrow from '../../common/icons/left-arrow.svg';
 import RightArrow from '../../common/icons/right-arrow.svg';
 import RightArrowGray from '../../common/icons/right-arrow-gray.svg';
-import { MY_ACCOUNT_PATH, ROOT_PATH, SIGN_IN_PATH } from '../../common/constants/path.const';
+import {
+  MY_ACCOUNT_PATH,
+  ROOT_PATH,
+  SIGN_IN_PATH,
+} from '../../common/constants/path.const';
 import { RootState } from '../../redux/store';
 import { userActions } from '../../redux/slice/userSlice';
 import DeleteBottomSheet from '../../common/dialog/ConfirmBottomSheet';
-import {analytics} from "../../index";
+import { analytics } from '../../index';
 import { logOut } from '../../common/api/myaccount';
 import PageHeader from '../../components/PageHeader';
-
-
 
 const neighborRankingPageBodyStyle = { minHeight: window.innerHeight - 260 };
 
@@ -46,7 +48,7 @@ function MyAccountPage() {
     } else {
       window.webkit.messageHandlers.goToPlusFriends.postMessage('');
     }
-  },[])
+  }, []);
 
   const logoutHandler = () => {
     if (device === 'mobile') {
@@ -54,7 +56,7 @@ function MyAccountPage() {
         user.id,
         (response: AxiosResponse) => {
           const { code, codeMsg, data } = response.data;
-          console.log('response',response)
+          console.log('response', response);
           if (code === 200) {
             window.localStorage.removeItem('accessToken');
             window.localStorage.removeItem('refreshToken');
@@ -65,7 +67,7 @@ function MyAccountPage() {
         dispatch,
       );
     } else {
-      console.log('response')
+      console.log('response');
       window.localStorage.removeItem('accessToken');
       window.localStorage.removeItem('refreshToken');
       dispatch(userActions.signout());
@@ -75,7 +77,7 @@ function MyAccountPage() {
 
   return (
     <div className="my-account-page">
-      <PageHeader navigate={()=>navigate(ROOT_PATH)} title="내 정보" isAbsolute/>
+      <PageHeader navigate={() => navigate(ROOT_PATH)} title="내 정보" isAbsolute />
       <header className="my-account-page-header">
         <body className="my-account-page-header-my-pet">
           <img className="my-account-page-header-my-pet-img" src={image} alt="copy url" />

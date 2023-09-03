@@ -64,9 +64,9 @@
     }
   }
   &-auto {
-    left: 50%;
-    top: 45px;
-    transform: translateX(-50%);
+    // left: 50%;
+    // top: 45px;
+    // transform: translateX(-50%);
     background-color: white;
     width: 88vw;
     display: flex;
@@ -75,7 +75,7 @@
     justify-content: center;
 
     z-index: 10;
-    position: absolute;
+    // position: absolute;
     &-item {
       padding: 10px;
       font-size: 15px;

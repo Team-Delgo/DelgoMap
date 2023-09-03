@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 import { getAchievementList } from '../../../../common/api/achievement';
 import { RootState } from '../../../../redux/store';
-import PetInfo from './PetInfo';
 import Achievment from './Achievement';
 import { analytics } from '../../../../index';
 import AchievementBottomSheet from '../../../../common/dialog/AchievementBottomSheet';
@@ -29,7 +28,9 @@ function AchievementPage() {
     openAchievementBottomSheet,
     closeAchievementBottomSheet,
   ] = useActive(false);
-  const { user } = useSelector((state: RootState) => state.persist.user);
+  const splitUrl = window.location.href.split('/');
+  const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
+  // console.log(user.id);
   const dispatch = useDispatch();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const swipeArea = useRef<HTMLDivElement>(null);
@@ -43,9 +44,10 @@ function AchievementPage() {
     });
   }, []);
 
-  const { isLoading: getMyProfileInfoDataIsLoading, data: myProfileInfoData } = useQuery( //프로필 api hook
+  const { isLoading: getMyProfileInfoDataIsLoading, data: myProfileInfoData } = useQuery(
+    //프로필 api hook
     GET_MY_PROFILE_INFO_DATA,
-    () => getMyProfileInfo(user.id),
+    () => getMyProfileInfo(userId),
     {
       cacheTime: CACHE_TIME,
       staleTime: STALE_TIME,
@@ -55,8 +57,11 @@ function AchievementPage() {
     },
   );
 
-  const { isLoading: getAchievementDataListIsLoading, data: achievementDataList } = //업적 api hook
-    useQuery(GET_ACHIEVEMENT_DATA_LIST, () => getAchievementList(user.id), {
+  const {
+    isLoading: getAchievementDataListIsLoading,
+    data: achievementDataList,
+  } = //업적 api hook
+    useQuery(GET_ACHIEVEMENT_DATA_LIST, () => getAchievementList(userId), {
       cacheTime: CACHE_TIME,
       staleTime: STALE_TIME,
       onError: (error: any) => {
@@ -64,7 +69,8 @@ function AchievementPage() {
       },
     });
 
-  const openBottomSheet = useCallback( //업적바텀시트 open 핸들러
+  const openBottomSheet = useCallback(
+    //업적바텀시트 open 핸들러
     (achievement: achievementType) => (event: React.MouseEvent) => {
       setSelectedAchievement(achievement);
       setTimeout(() => {
@@ -84,7 +90,6 @@ function AchievementPage() {
         ref={swipeArea}
         onClick={achievementBottomSheetIsOpen ? closeAchievementBottomSheet : undefined}
       >
-        {myProfileInfoData && <PetInfo myProfileInfoData={myProfileInfoData.data} />}
         {achievementDataList && (
           <Achievment
             achievementList={achievementDataList.data}

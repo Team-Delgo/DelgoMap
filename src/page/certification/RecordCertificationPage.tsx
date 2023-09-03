@@ -7,7 +7,10 @@ import Back from '../../common/icons/prev-arrow-black.svg';
 import './RecordCertificationPage.scss';
 import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import Loading from '../../common/utils/BallLoading';
-import { getRecordCertificationDate, getRecordCertificationId } from '../../common/api/record';
+import {
+  getRecordCertificationDate,
+  getRecordCertificationId,
+} from '../../common/api/record';
 import PageHeader from '../../components/PageHeader';
 
 interface LocationState {
@@ -33,10 +36,10 @@ function RecordCertificationPage() {
         console.log(response);
         setCertifications(response.data.data);
       });
-    }else if(pageFrom === RECORD_PATH.CALENDAR){
-      getRecordCertificationDate(userId, date, (response:AxiosResponse)=>{
+    } else if (pageFrom === RECORD_PATH.CALENDAR) {
+      getRecordCertificationDate(userId, date, (response: AxiosResponse) => {
         setCertifications(response.data.data);
-      })
+      });
     }
     scrollRef.current?.scrollIntoView({ block: 'start' });
     setTimeout(() => {
@@ -48,14 +51,14 @@ function RecordCertificationPage() {
     return <RecordCertification certification={e} />;
   });
 
-  let headerFrom: string;
-  if (pageFrom === RECORD_PATH.CALENDAR) headerFrom = 'calendar';
-  else if (pageFrom === ROOT_PATH) headerFrom = 'map';
-  else headerFrom = 'photo';
+  // let headerFrom: string;
+  // if (pageFrom === RECORD_PATH.CALENDAR) headerFrom = 'calendar';
+  // else if (pageFrom === ROOT_PATH) headerFrom = 'map';
+  // else headerFrom = 'photo';
 
   const navigateBack = () => {
-    navigate(pageFrom, { state: headerFrom });
-  }
+    navigate(-1);
+  };
 
   return (
     <div className="record-certs" ref={scrollRef}>
@@ -63,7 +66,7 @@ function RecordCertificationPage() {
         <Loading />
       ) : (
         <>
-          <PageHeader title={date?.slice(0,10)} navigate={navigateBack} isFixed/>
+          <PageHeader title={date?.slice(0, 10)} navigate={navigateBack} isFixed />
           <div className="record-certs-content">{contents}</div>
         </>
       )}

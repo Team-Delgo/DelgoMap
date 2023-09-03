@@ -10,7 +10,7 @@ import FillHeart from '../common/icons/heart.svg';
 import Comments from '../common/icons/comments.svg';
 import DogLoading from '../common/icons/dog-loading.svg';
 import { RootState } from '../redux/store';
-import { UPLOAD_PATH, SIGN_IN_PATH } from '../common/constants/path.const';
+import { UPLOAD_PATH, SIGN_IN_PATH, RECORD_PATH } from '../common/constants/path.const';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { scrollActions } from '../redux/slice/scrollSlice';
 import DeleteBottomSheet from '../common/dialog/ConfirmBottomSheet';
@@ -82,7 +82,7 @@ function CertificationPost({
   const profileImg = useRef<HTMLImageElement>(null); //프로플이미지 참조하는 useRef훅
   const timeoutRef = useRef<NodeJS.Timeout | null>(null); //Timeout 참조하는 useRef 훅
 
-  console.log('post', post.photos);
+  // console.log('post', post.photos);
 
   //이미지가 뷰포트에 나타나면 해당 이미지의 src 속성을 데이터 속성에서 가져와 설정
   //default img를 보여주고있다가 obeserver에 의해 관찰되면 그떄 이미지 dataset src속성을 해당 요소 src에 설정해줌
@@ -177,8 +177,16 @@ function CertificationPost({
       },
     },
   );
-
-  //좋아요 핸들러
+  const profileClickHandler = () => {
+    if (post.userId) {
+      console.log(post.userId);
+      navigate(`${RECORD_PATH.PHOTO}/${post.userId}`, {
+        state: {
+          prevPath: location.pathname,
+        },
+      });
+    }
+  };
   const handleCertificationLike = () => {
     //로그인 안되있으면 로그인alert창 띄워주고
     if (!isSignIn) {
@@ -280,7 +288,7 @@ function CertificationPost({
         // 더블클릭이 아니면 1초 후 클릭 카운트만 0으로 리셋
         timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
       }
-      return newCount; // 새로운 클릭 카운트 반환
+      return newCount;
     });
   };
 
@@ -290,6 +298,7 @@ function CertificationPost({
         <div className="post-img-result-header-profile">
           <img
             className="post-img-result-header-profile-img"
+            onClick={profileClickHandler}
             src={post?.userProfile}
             alt="copy url"
             ref={profileImg}

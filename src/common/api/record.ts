@@ -3,6 +3,8 @@ import { AnyAction, Dispatch } from 'redux';
 import { Cert, Mungple } from 'page/map/index.types';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 import { APIResponse } from '../types/api';
 
 export interface MapData {
@@ -50,13 +52,14 @@ function sendEmail(
     });
 }
 
-interface Photos{
-  number:number;
-  last:boolean;
+interface Photos {
+  number: number;
+  last: boolean;
   content: Cert[];
+  totalCount: number;
 }
 
-async function getPhotoData(
+async function getMyPhotoData(
   userId: number,
   categoryCode: string,
   currentPage: number,
@@ -65,16 +68,28 @@ async function getPhotoData(
 ) {
   const sortOrder = isDesc ? 'desc' : 'asc'; // isDesc 값에 따라 정렬 순서를 결정합니다.
   const response = await axiosInstance.get<APIResponse<Photos>>(
-    `/certification/category?categoryCode=${categoryCode}&userId=${userId}&page=${currentPage}&size=${pageSize}&sort=registDt,${sortOrder}`,
+    `/certification/my?categoryCode=${categoryCode}&userId=${userId}&page=${currentPage}&size=${pageSize}&sort=registDt,${sortOrder}`,
+  );
+  return response.data.data;
+}
+async function getOtherPhotoData(
+  userId: number,
+  categoryCode: string,
+  currentPage: number,
+  pageSize: number,
+  isDesc: boolean,
+) {
+  const sortOrder = isDesc ? 'desc' : 'asc'; // isDesc 값에 따라 정렬 순서를 결정합니다.
+  const response = await axiosInstance.get<APIResponse<Photos>>(
+    `/certification/other?categoryCode=${categoryCode}&userId=${userId}&page=${currentPage}&size=${pageSize}&sort=registDt,${sortOrder}`,
   );
   return response.data.data;
 }
 
-async function getPhotoCount(
-  userId: number
-) {
-  const response = await axiosInstance
-    .get<AxiosResponse<number>>(`/certification/count/${userId}`);
+async function getPhotoCount(userId: number) {
+  const response = await axiosInstance.get<AxiosResponse<number>>(
+    `/certification/count/${userId}`,
+  );
   return response.data.data;
 }
 
@@ -114,6 +129,7 @@ export {
   getRecordCertificationId,
   sendEmail,
   getCalendarData,
-  getPhotoData,
+  getMyPhotoData,
+  getOtherPhotoData,
   getPhotoCount,
 };

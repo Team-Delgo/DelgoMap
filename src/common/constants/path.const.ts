@@ -42,20 +42,20 @@ export const UPLOAD_PATH = {
   CERTIFICATION: '/upload/certification',
   RESULT: '/upload/certification/result',
   UPDATE: '/upload/certification/update',
-  MAP: '/upload/certification/map'
+  MAP: '/upload/certification/map',
 };
-
 
 export const RECORD_PATH = {
   PHOTO: '/photo',
   CALENDAR: '/calendar',
   ACHIEVE: '/achieve',
-  CERT:'/certs',
-  COMMENT:'/comments/:id'
+  CERT: '/certs',
+  COMMENT: '/comments/:id',
+  MAP: '/map',
 };
 
-export const CROP_PATH = '/crop'
-export const CROP_LIST_PATH = '/crop-list'
+export const CROP_PATH = '/crop';
+export const CROP_LIST_PATH = '/crop-list';
 
 export const ACHIEVEMENT_PATH = '/achievement';
 

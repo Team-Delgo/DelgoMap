@@ -76,7 +76,7 @@ function CertificationPostsPage() {
   //isLoading간에 store에 저장된 scrollY를 적용해줌(디펜던시 배열에 isLoading을 빼면 그만큼 랜더링된 포스트가없어서 이전 스크롤이 그대로 유지가안됨)
   useEffect(() => {
     window.scroll(0, scroll);
-    console.log('data', data);
+    // console.log('data', data);
   }, [isLoading]);
 
   useEffect(() => {
@@ -89,7 +89,7 @@ function CertificationPostsPage() {
     dispatch(scrollActions.scrollInit());
     //이전페이지가 어디인지에 따라 분기처리해서 페이지 이동
     if (pageFrom === 'home' || pageFrom === 'homeCert') navigate(ROOT_PATH);
-    else navigate(RECORD_PATH.PHOTO);
+    else navigate(`${RECORD_PATH.PHOTO}/${user.id}`);
   }, []);
 
   //서버 상태가 loading 중이면 보여줄 컴포넌트

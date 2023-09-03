@@ -1,4 +1,4 @@
-import React, { useEffect,  useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
@@ -45,7 +45,11 @@ function FooterNavigation(props: { setCenter: () => void }) {
   const recordButtonHandler = () => {
     if (userId) {
       setCenter();
-      navigate(RECORD_PATH.PHOTO);
+      navigate(`${RECORD_PATH.PHOTO}/${userId}`, {
+        state: {
+          prevPath: location.pathname,
+        },
+      });
     } else setIsAlertOpen(true);
   };
 

@@ -1,14 +1,16 @@
-import React from "react";
-import RecordHeader from "../../../components/RecordHeader";
-import CertFloatingButton from "../../CertFloatingButton";
-import Photo from "./components/Photo";
+import React from 'react';
+import RecordHeader from '../components/RecordHeader';
+import Photo from './components/Photo';
+import PetInfo from '../components/PetInfo';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 
 function AlbumPage() {
   return (
     <>
+      <PetInfo />
       <RecordHeader />
-      <Photo/>
-      <CertFloatingButton />
+      <Photo />
     </>
   );
 }

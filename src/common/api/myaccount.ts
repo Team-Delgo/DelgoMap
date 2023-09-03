@@ -4,7 +4,7 @@ import { useErrorHandlers } from './useErrorHandlers';
 
 function changePetInfo(
   data: { email: string; name: string; birthday: string | undefined; breed: string },
-  success: (response:AxiosResponse) => void,
+  success: (response: AxiosResponse) => void,
   dispatch: any,
 ) {
   const { email, name, birthday, breed } = data;
@@ -23,7 +23,12 @@ function changePetInfo(
     });
 }
 
-function changePassword(email: string, password: string, success: (data: AxiosResponse) => void, dispatch: any) {
+function changePassword(
+  email: string,
+  password: string,
+  success: (data: AxiosResponse) => void,
+  dispatch: any,
+) {
   axiosInstance
     .put(`/account/password`, {
       email,
@@ -37,8 +42,15 @@ function changePassword(email: string, password: string, success: (data: AxiosRe
     });
 }
 
-function changeGeoCode(email: string, geoCode: string, pGeoCode: string, success: (data: AxiosResponse) => void, dispatch: any) {
-  axiosInstance.put(`/account/user`, {
+function changeGeoCode(
+  email: string,
+  geoCode: string,
+  pGeoCode: string,
+  success: (data: AxiosResponse) => void,
+  dispatch: any,
+) {
+  axiosInstance
+    .put(`/account/user`, {
       email,
       geoCode,
       pGeoCode,
@@ -51,7 +63,12 @@ function changeGeoCode(email: string, geoCode: string, pGeoCode: string, success
     });
 }
 
-function changeName(userId: number, name: string, success: (data: AxiosResponse) => void, dispatch: any) {
+function changeName(
+  userId: number,
+  name: string,
+  success: (data: AxiosResponse) => void,
+  dispatch: any,
+) {
   axiosInstance
     .put(`/account/user`, {
       userId,
@@ -65,7 +82,11 @@ function changeName(userId: number, name: string, success: (data: AxiosResponse)
     });
 }
 
-function setPushNotification(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
+function setPushNotification(
+  userId: number,
+  success: (data: AxiosResponse) => void,
+  dispatch: any,
+) {
   axiosInstance
     .put(`/account/notify/${userId}`)
     .then((data) => {
@@ -75,7 +96,6 @@ function setPushNotification(userId: number, success: (data: AxiosResponse) => v
       useErrorHandlers(dispatch, error);
     });
 }
-
 
 function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
   axiosInstance
@@ -88,9 +108,13 @@ function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch
     });
 }
 
-async function getMyInfo(userId: number, success: (data: AxiosResponse) => void, dispatch: any) {
+async function getMyInfo(
+  userId: number,
+  success: (data: AxiosResponse) => void,
+  dispatch: any,
+) {
   axiosInstance
-    .get(`/user?userId=${userId}`)
+    .get(`/account?userId=${userId}`)
     .then((data) => {
       success(data);
     })
@@ -107,7 +131,22 @@ async function getMyPoint(userId: number) {
 async function getMyProfileInfo(userId: number) {
   const { data } = await axiosInstance.get(`/account?userId=${userId}`);
   console.log(data);
-  return data;
+  return data.data;
 }
-
-export { changePetInfo, changePassword, changeGeoCode, changeName, setPushNotification, logOut, getMyInfo, getMyPoint, getMyProfileInfo };
+async function getOtherProfileInfo(userId: number) {
+  const { data } = await axiosInstance.get(`/user/other?userId=${userId}`);
+  console.log(data);
+  return data.data;
+}
+export {
+  changePetInfo,
+  changePassword,
+  getOtherProfileInfo,
+  changeGeoCode,
+  changeName,
+  setPushNotification,
+  logOut,
+  getMyInfo,
+  getMyPoint,
+  getMyProfileInfo,
+};

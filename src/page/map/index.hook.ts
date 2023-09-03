@@ -58,6 +58,9 @@ function useMap() {
   /** API request */
   const { data: mapDataList } = useQuery(['getMapData', userId], () =>
     getMapData(userId),
+    {
+      refetchOnWindowFocus:false
+    }
   );
 
   /** Function */
@@ -182,7 +185,6 @@ function useMap() {
     };
     if (!mapElement.current) return;
     const map = new kakao.maps.Map(mapElement.current, options);
-    const ps = new kakao.maps.services.Places();
     setMap(map);
   }, []);
 
@@ -245,7 +247,7 @@ function useMap() {
         setCertMarkers(certMarkers);
         setMungpleCertMarkers(mungpleCertMarkers);
         setIsFirstRendering((prev) => ({ ...prev, cert: false }));
-      } else {
+      } else if(mungpleMarkers.length === 0){
         hideCertMarkers(certMarkers);
         hideCertMarkers(mungpleCertMarkers);
         // hideMungpleMarkers();
