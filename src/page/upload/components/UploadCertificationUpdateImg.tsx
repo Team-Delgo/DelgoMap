@@ -54,7 +54,7 @@ function UploadCertificationUpdateImg() {
   return (
     <>
       <div ref={eventTargetRef}>
-        <>
+        <div style={{ position: 'relative' }}>
           <Swiper onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
             {imgList.map((image: string) => {
               return (
@@ -70,10 +70,10 @@ function UploadCertificationUpdateImg() {
               );
             })}
           </Swiper>
-          <div className="absolute bottom-[5px] right-0 z-[100] flex h-[23px] w-[55px] items-center justify-center bg-gray-700 bg-opacity-70 text-[11px] font-normal text-white ">
+          {/* <div className="absolute bottom-[4px] right-[4px] z-[100] flex h-[23px] w-[55px] items-center justify-center bg-gray-700 bg-opacity-70 text-[11px] font-normal text-white">
             {imageNumber + 1} / {imgList.length}
-          </div>
-        </>
+          </div> */}
+        </div>
       </div>
       <img
         src={WhiteX}

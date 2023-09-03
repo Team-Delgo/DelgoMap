@@ -41,7 +41,11 @@ function CommentsPage() {
     data: commentList,
     refetch: refetchCommentList,
     isLoading:getCommentListIsLoading,
-  } = useQuery('comments', () => getCommentList(post?.certificationId)); //댓글리스트 api 훅
+  } = useQuery('comments', () => getCommentList(post?.certificationId),{
+    onError: (error: any) => {
+      useErrorHandlers(dispatch, error);
+    },
+  }); //댓글리스트 api 훅
 
   const {mutate:postCommentMutate,isLoading:postCommentIsLoading} = useMutation( //댓글생성 api 훅
     ({
@@ -205,7 +209,7 @@ function CommentsPage() {
             onInput={handleResizeHeight}
             onChange={onChangeInputComment}
             placeholder={`${post?.userName}에게 댓글 남기기...`}
-            className="comments-post-input"
+            className="comments-post-input" 
           />
           <div
             aria-hidden="true"
