@@ -102,7 +102,7 @@ function CertificationPostsPage() {
       <PageHeader
         title="동네 강아지"
         navigate={moveToHomePage}
-        // isFixed
+        isFixed
         isAbsolute={false}
         short={false}
       />

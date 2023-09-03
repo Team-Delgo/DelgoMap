@@ -21,7 +21,7 @@ function CropListPage() {
   const location = useLocation();
 
   useEffect(() => {
-    if (currentImageIndex === prevImgList.length - 1 && cropImgList.length === 3) {
+    if (currentImageIndex === prevImgList.length) {
       dispatch(uploadAction.setImgList({ imgList: cropImgList,  fileList: cropFileList }));
       moveToNextPage();
     }
@@ -46,7 +46,7 @@ function CropListPage() {
       setCropFileList(prevList => [...prevList, newFile]);
 
 
-      if (currentImageIndex < prevImgList.length - 1) {
+      if (currentImageIndex < prevImgList.length) {
         setCurrentImageIndex(prev => prev + 1); // 다음 이미지로
       } 
       
