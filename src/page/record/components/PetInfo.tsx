@@ -49,11 +49,11 @@ function PetInfo() {
             {data.nickname}
           </div>
           <div className="flex">
-            <div className="ml-[16px] h-[18px] rounded-[4px] bg-[#EEE] px-1 py-[1px] text-[12px] font-medium leading-[18px]">
+            <div className="ml-[16px] h-[18px] whitespace-nowrap rounded-[4px] bg-[#EEE] px-1 py-[1px] text-center text-[12px] font-medium leading-[18px]">
               {data.petName}
             </div>
             <img src={dot} className="mx-1" />
-            <div className="h-[18px] text-[12px] font-medium leading-[18px]">
+            <div className="mr-[21px] h-[18px] overflow-hidden text-ellipsis whitespace-nowrap text-[12px] font-medium leading-[18px]">
               {year}/{data.breedName}
             </div>
           </div>
