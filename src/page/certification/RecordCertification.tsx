@@ -87,7 +87,7 @@ function RecordCertification(props: { certification: any }) {
   }, []);
 
   const moveToPhotoPage = useCallback(() => {
-    navigate(RECORD_PATH.PHOTO);
+    navigate(`${RECORD_PATH.PHOTO}/${user.id}`);
   }, []);
 
   //업데이트 페이지 이동 핸들러
