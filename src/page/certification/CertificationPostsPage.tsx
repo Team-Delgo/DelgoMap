@@ -106,6 +106,7 @@ function CertificationPostsPage() {
         isAbsolute={false}
         short={false}
       />
+      <div style={{padding:"20px 0"}}/>
       <div className="certificationPostsPage">
         {pageFrom === 'photo' || pageFrom === 'homeCert' ? (
           <CertificationPost
