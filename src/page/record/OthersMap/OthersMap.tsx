@@ -79,7 +79,7 @@ function OthersMap() {
       {selectedCert.userId > 0 && (
         <CertCard
           cert={selectedCert}
-          img={selectedCert.photoUrl}
+          img={selectedCert.photos[0]}
           title={selectedCert.placeName}
           categoryCode={selectedCert.categoryCode}
           registDt={selectedCert.registDt}
