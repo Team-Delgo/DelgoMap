@@ -140,7 +140,7 @@ function Login() {
     if (OS === 'android') {
       window.BRIDGE.sendFcmToken(userId);
     } else {
-      // window.webkit.messageHandlers.sendFcmToken.postMessage(userId);
+      window.webkit.messageHandlers.sendFcmToken.postMessage(userId);
     }
   };
 

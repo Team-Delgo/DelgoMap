@@ -5,7 +5,10 @@ import BallLoading from 'common/utils/BallLoading';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { useNavigate } from 'react-router-dom';
-import { RECORD_PATH } from '../../../common/constants/path.const';
+
+import dot from '../../../common/icons/dot.svg';
+import { ROOT_PATH, RECORD_PATH } from '../../../common/constants/path.const';
+
 
 function PetInfo() {
   const splitUrl = window.location.href.split('/');
@@ -22,6 +25,7 @@ function PetInfo() {
 
   if (!data || isLoading) return <BallLoading />;
 
+
   let year;
   if (data.yearOfPetAge === 0) {
     year = data.monthOfPetAge + '개월';
@@ -34,34 +38,37 @@ function PetInfo() {
     else navigate(`${RECORD_PATH.MAP}/${userId}`);
   };
   return (
-    <header className=" fixed z-20 mt-[80px] flex w-screen bg-white">
-      <img
-        className="ml-[16.51px] h-[82.246px] w-[83.492px] rounded-full"
-        src={data.profile}
-        alt="copy url"
-        width={81}
-        height={81}
-      />
-      <div className="flex h-[36px] w-screen flex-col">
-        <div className="flex">
-          <div className="ml-[21px] h-[36px] text-[24px] font-bold leading-9 tracking-[0.72px]">
+    <div className=" fixed z-20 mt-[60px] w-screen">
+      <div className="flex">
+        <img
+          className="ml-[16.51px] h-[70.062px] w-[71,123px] rounded-full"
+          src={data.profile}
+          alt="copy url"
+          width={81}
+          height={81}
+        />
+        <div className="mt-[6px] flex h-[36px] w-screen flex-col">
+          <div className="ml-[16px] h-[36px] text-[24px] font-bold leading-9 tracking-[0.72px]">
             {data.nickname}
           </div>
-          <div className="ml-[19px] mt-[9px] h-[18px] text-[16px] font-medium leading-[18px]">
-            {data.petName}/
+          <div className="flex">
+            <div className="ml-[16px] h-[18px] whitespace-nowrap rounded-[4px] bg-[#EEE] px-1 py-[1px] text-center text-[12px] font-medium leading-[18px]">
+              {data.petName}
+            </div>
+            <img src={dot} className="mx-1" />
+            <div className="mr-[21px] h-[18px] overflow-hidden text-ellipsis whitespace-nowrap text-[12px] font-medium leading-[18px]">
+              {year}/{data.breedName}
+            </div>
           </div>
-          <div className=" mt-[9px] h-[18px] text-[12px] font-medium leading-[18px]">
-            {year} {data.breedName}
-          </div>
-        </div>
-        <div
-          className="ml-[12px] mr-[20px] mt-[6px] justify-center rounded-[17px] border-[1px] border-solid border-[#ECE5FF] bg-[#F3EEFF] py-[7px] text-center text-sm font-medium text-[#4725A7]"
-          onClick={mapButtonHandler}
-        >
-          {isMyAccount ? '프로필공유' : '지도보기'}
         </div>
       </div>
-    </header>
+      <div
+        className="mx-[21px] mt-[20px] justify-center rounded-[17px] border-[1px] border-solid border-[#ECE5FF] bg-[#F3EEFF] py-[7px] text-center text-sm font-medium text-[#4725A7]"
+        onClick={mapButtonHandler}
+      >
+        {isMyAccount ? '프로필공유' : '지도보기'}
+      </div>
+    </div>
   );
 }
 

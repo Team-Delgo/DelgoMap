@@ -88,7 +88,7 @@ function Photo() {
       otherDogsCerts.map((o) => {
         return (
           <img
-            src={o.photoUrl}
+            src={o.photos[0]}
             alt="others"
             key={o.certificationId}
             onClick={() => navigateToOthers(o)}
@@ -163,7 +163,11 @@ function Photo() {
   }, [inView]);
 
   return (
-    <div className="photo">
+    <div
+      className={classNames('photo', {
+        my: userId === myId,
+      })}
+    >
       {/* <div className="photo-history">
         {photos && (
           <div className="photo-history-title">{photos.pages[0].totalCount}장의 사진</div>
@@ -185,7 +189,9 @@ function Photo() {
       <div className="photo-wrapper">
         {photos && photos.pages[0].content.length > 0 ? photoContext : noRecordContext}
       </div>
-      <div ref={ref}>&nbsp;</div>
+      <div className="h-0" ref={ref}>
+        &nbsp;
+      </div>
       <Sheet
         className="confirm-bottom-sheet-container"
         isOpen={buttonIsClicked}

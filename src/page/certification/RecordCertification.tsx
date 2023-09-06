@@ -39,7 +39,9 @@ function RecordCertification(props: { certification: any }) {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.persist.user);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null); //Timeout 참조하는 useRef 훅
+
   const queryClient = useQueryClient();
+
 
   //좋아요 api 훅
   const { mutate: certificationLikeMutate } = useMutation(
@@ -148,15 +150,17 @@ function RecordCertification(props: { certification: any }) {
   return (
     <>
       <div className="record-cert">
-        <div className="record-cert-edit">
-          <div aria-hidden="true" onClick={moveToUpdatePage}>
-            수정
+        {certification.userId === user.id && (
+          <div className="record-cert-edit">
+            <div aria-hidden="true" onClick={moveToUpdatePage}>
+              수정
+            </div>
+            <img src={VerticalDevider} alt="devider" />
+            <div aria-hidden="true" onClick={openDeleteBottomSheet}>
+              삭제
+            </div>
           </div>
-          <img src={VerticalDevider} alt="devider" />
-          <div aria-hidden="true" onClick={openDeleteBottomSheet}>
-            삭제
-          </div>
-        </div>
+        )}
         <div style={{ position: 'relative' }}>
           <Swiper onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
             {certification.photos.map((image: string) => {
