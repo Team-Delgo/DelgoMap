@@ -41,10 +41,8 @@ function DetailHeader({
 }: Props) {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const sendScrap = async () => {
-    await window.Kakao.Share.sendCustom({
-      templateId: 92943,
-      requestUrl: 'https://go.delgo.pet',
-    });
+    console.log('click');
+    window.BRIDGE.shareDelgoProfile(window.location.href);
   };
   console.log(phoneNumber);
   return (
@@ -72,7 +70,7 @@ function DetailHeader({
             전화
           </a>
         ) : (
-          <div className="opacity-50 flex items-center leading-[150%] text-black no-underline">
+          <div className="flex items-center leading-[150%] text-black no-underline opacity-50">
             <img className="mr-[6px]" src={Phone} alt="phone" />
             전화
           </div>
