@@ -156,7 +156,7 @@ function App() {
               <Route path="/help" element={<HelpPage />} />
               <Route path="/detail/temp/:id" element={<TempDetailPage />} />
               <Route path="/detail/:id" element={<DetailPage />} />
-              <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />x
+              <Route path={SIGN_IN_PATH.MAIN} element={<SignIn />} />
               <Route path={SIGN_IN_PATH.SIGNIN} element={<Login />} />
               <Route path={SIGN_IN_PATH.FINDPASSWORD} element={<FindPassword />} />
               <Route path={SIGN_IN_PATH.PHONEAUTH} element={<PhoneAuth />} />

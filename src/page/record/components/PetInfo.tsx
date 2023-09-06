@@ -5,7 +5,7 @@ import BallLoading from 'common/utils/BallLoading';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { useNavigate } from 'react-router-dom';
-import { ROOT_PATH, RECORD_PATH } from '../../../common/constants/path.const';
+import { RECORD_PATH } from '../../../common/constants/path.const';
 
 function PetInfo() {
   const splitUrl = window.location.href.split('/');

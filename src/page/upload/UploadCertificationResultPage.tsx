@@ -38,7 +38,6 @@ function CaptureResult() {
   // }, []);
 
   useEffect(() => {
-    console.log(2);
     queryClient.invalidateQueries('getCertPhotos');
     queryClient.refetchQueries('getCertPhotos');
     if (location?.state?.prevPath?.includes('update')) {

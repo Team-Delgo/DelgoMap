@@ -65,8 +65,9 @@ function RecordCertification(props: { certification: any }) {
 
         if (code === 200) {
           //삭제를 성공했으면 photo 페이지로 이동
-          queryClient.invalidateQueries('getCertPhotos');
-          queryClient.refetchQueries('getCertPhotos');
+          queryClient.invalidateQueries(['getCertPhotos', user.id]);
+          queryClient.removeQueries(['getCertPhotos', user.id]);
+          queryClient.refetchQueries(['getCertPhotos', user.id]);
           moveToPhotoPage();
         }
       },

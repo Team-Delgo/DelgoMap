@@ -63,7 +63,6 @@ function Photo() {
     },
     {
       getNextPageParam: (last) => (!last.last ? last.number + 1 : undefined),
-      staleTime: 10,
     },
   );
   console.log(photos);
@@ -121,43 +120,39 @@ function Photo() {
     );
   }, [photos, otherDogsCerts]);
 
-  const photoContext = useMemo(
-    () =>
-      photos?.pages.map((photo) => (
-        <>
-          {photo.content.map((cert) => {
-            const photoClickHandler = () => {
-              dispatch(
-                scrollActions.photosScroll({ scroll: window.scrollY, pageSize: page }),
-              );
-              certEvent.mutate();
-              navigate('/certs', {
-                state: {
-                  info: {
-                    certId: cert.certificationId,
-                    userId,
-                    date: cert.registDt,
-                  },
-                  from: RECORD_PATH.PHOTO,
-                },
-              });
-            };
+  const photoContext = photos?.pages.map((photo) => (
+    <>
+      {photo.content.map((cert) => {
+        const photoClickHandler = () => {
+          dispatch(
+            scrollActions.photosScroll({ scroll: window.scrollY, pageSize: page }),
+          );
+          certEvent.mutate();
+          navigate('/certs', {
+            state: {
+              info: {
+                certId: cert.certificationId,
+                userId,
+                date: cert.registDt,
+              },
+              from: RECORD_PATH.PHOTO,
+            },
+          });
+        };
 
-            return (
-              <img
-                className="photo-wrapper-img"
-                src={cert.photos[0]}
-                alt="cert"
-                aria-hidden="true"
-                key={cert.certificationId}
-                onClick={photoClickHandler}
-              />
-            );
-          })}
-        </>
-      )),
-    [photos],
-  );
+        return (
+          <img
+            className="photo-wrapper-img"
+            src={cert.photos[0]}
+            alt="cert"
+            aria-hidden="true"
+            key={cert.certificationId}
+            onClick={photoClickHandler}
+          />
+        );
+      })}
+    </>
+  ));
 
   if (photoContext && photoContext.length % 2 === 0) {
     photoContext.concat(<div className="photo-fake" />);
