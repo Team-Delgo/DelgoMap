@@ -27,9 +27,9 @@ function RecordHeader() {
   const post = useLocation()?.state?.post as postType;
   let isMyAccount = true;
 
-  const {
-    action: { setCurrentMapLocation },
-  } = useMap();
+  // const {
+  //   action: { setCurrentMapLocation },
+  // } = useMap();
 
   if (userId === myId) isMyAccount = true;
   else isMyAccount = false;
@@ -104,7 +104,7 @@ function RecordHeader() {
           className="fixed bottom-0 w-[100%]"
           style={{ display: isMyAccount ? 'block' : 'none' }}
         >
-          <FooterNavigation setCenter={setCurrentMapLocation} />
+          <FooterNavigation />
         </div>
       </div>
     </div>

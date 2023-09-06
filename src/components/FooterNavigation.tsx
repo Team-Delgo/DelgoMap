@@ -19,8 +19,7 @@ import HelpFloatingMessage from './HelpFloatingMessage';
 import { analytics } from '..';
 import { userActions } from 'redux/slice/userSlice';
 
-function FooterNavigation(props: { setCenter: () => void }) {
-  const { setCenter } = props;
+function FooterNavigation() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const isFirstCert= useSelector((state:RootState) => state.persist.user.isFirstCert);
@@ -31,7 +30,6 @@ function FooterNavigation(props: { setCenter: () => void }) {
   const dispatch = useDispatch();
 
   const moveToPostsPage = () => {
-      setCenter();
       navigate(POSTS_PATH, { state: { cert: null, from: 'home' } });
   };
   const sendLoginPage = () => {
@@ -44,7 +42,6 @@ function FooterNavigation(props: { setCenter: () => void }) {
 
   const recordButtonHandler = () => {
     if (userId) {
-      setCenter();
       navigate(`${RECORD_PATH.PHOTO}/${userId}`, {
         state: {
           prevPath: location.pathname,

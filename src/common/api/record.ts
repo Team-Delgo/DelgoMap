@@ -3,8 +3,6 @@ import { AnyAction, Dispatch } from 'redux';
 import { Cert, Mungple } from 'page/map/index.types';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
 import { APIResponse } from '../types/api';
 
 export interface MapData {
@@ -123,6 +121,32 @@ async function getRecordCertificationId(
     });
 }
 
+export type SearchedUser = {
+  userId: number;
+  nickname: string;
+  profile: string;
+  petId: number;
+  petName: string;
+  breed: string;
+  breedName: string;
+  yearOfPetAge: number;
+  monthOfPetAge: number;
+};
+type SearchUserResponse = {
+  size: number;
+  number: number;
+  last: boolean;
+  content: SearchedUser[];
+};
+
+async function searchUserList(searchWord: string, page: number, size: number) {
+  return (
+    await axiosInstance.get<APIResponse<SearchUserResponse>>(
+      `/user/search?searchWord=${searchWord}&page=${page}&size=${size}`,
+    )
+  ).data.data;
+}
+
 export {
   getMapData,
   getRecordCertificationDate,
@@ -132,4 +156,5 @@ export {
   getMyPhotoData,
   getOtherPhotoData,
   getPhotoCount,
+  searchUserList,
 };

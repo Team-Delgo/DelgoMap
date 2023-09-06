@@ -55,6 +55,7 @@ function useMap() {
     kakao.maps.CustomOverlay[]
   >([]);
 
+  console.log(1);
   /** API request */
   const { data: mapDataList } = useQuery(
     ['getMapData', userId],

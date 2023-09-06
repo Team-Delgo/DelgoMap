@@ -1,16 +1,11 @@
-import React, { useCallback, useState, useMemo, useEffect } from 'react';
-import useOnclickOutside from 'react-cool-onclickoutside';
-import { useDispatch, useSelector } from 'react-redux';
-import debounce from 'lodash/debounce';
+import React, { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import { Mungple } from '../../index.types';
 import './index.scss';
 import BackArrowComponent from '../../../../components/BackArrowComponent';
 import { searchAction } from '../../../../redux/slice/searchSlice';
-import { RootState } from '../../../../redux/store';
-import SearchIcon from '../../../../common/icons/search.svg';
-import SearchMore from './SearchMore';
-import { useInView } from 'react-intersection-observer';
 import { icons } from '../PlaceCard';
+import useSearch from './index.hook';
 
 interface Props {
   selectKakaoPlace: (location: kakao.maps.LatLng) => void;
@@ -20,80 +15,69 @@ interface Props {
 }
 
 function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
-  const { ref, inView } = useInView();
-  const [selectedTab, setSelectedTab] = useState<'keyword' | 'user'>('keyword');
-  const [isFocus, setIsFocus] = useState(false);
-  const [isSearchMore, setIsSearchMore] = useState(false);
-  const [enteredInput, setEnteredInput] = useState('');
-  const [page, setPage] = useState(1);
-  const [kakaoPlaceSearch, setKakaoPlaceSearch] = useState<
-    kakao.maps.services.PlacesSearchResultItem[]
-  >([]);
-  const recentSearch: Mungple[] = useSelector(
-    (state: RootState) => state.persist.search.recentSearch,
-  );
-  const [option, setOption] = useState<Mungple[]>([]);
-  const outsideRef = useOnclickOutside(() => {
-    setIsFocus(false);
-    document.getElementById('search')?.blur();
-  });
+  const {
+    states: {
+      option,
+      enteredInput,
+      placeRef,
+      recentSearch,
+      outsideRef,
+      selectedTab,
+      isFocus,
+      searchedKakaoPlace,
+      userList,
+    },
+    actions: { setIsFocus, setOption, inputChangeHandler, inputFoucs, setSelectedTab },
+  } = useSearch(cafeList);
   const dispatch = useDispatch();
-  const inputFoucs = useCallback(() => {
-    setIsFocus(true);
-  }, []);
 
-  // 키워드 기반 장소 검색
-  const searchFromKakao = (place: string, isFirst?: boolean) => {
-    const placeSearchCB = (
-      data: kakao.maps.services.PlacesSearchResult,
-      status: kakao.maps.services.Status,
-    ) => {
-      if (status === kakao.maps.services.Status.OK) {
-        const list = isFirst ? data : [...kakaoPlaceSearch, ...data];
-        setKakaoPlaceSearch(list);
-      }
-    };
-    const ps = new kakao.maps.services.Places();
-    ps.keywordSearch(place, placeSearchCB, {
-      size: 15,
-      page: page,
-    });
-    setPage(page + 1);
-  };
+  const searchedUserList = useMemo(
+    () =>
+      userList.map((user) => {
+        const nickname = user.nickname.split(new RegExp(`(${enteredInput})`, 'gi'));
+        const petName = user.petName.split(new RegExp(`(${enteredInput})`, 'gi'));
+        return (
+          <div className="mx-[55px] mt-[20px] flex items-center">
+            <img
+              className="mr-[12px] h-[39px] w-[39px] rounded-full"
+              src={user.profile}
+              alt="profile"
+            />
+            <div>
+              <div className="">
+                {nickname.map((part, index) =>
+                  part === enteredInput ? (
+                    <span key={index} className="font-medium text-[#7a7ccf]">
+                      {part}
+                    </span>
+                  ) : (
+                    part
+                  ),
+                )}
+              </div>
+              <div className="text-[12px] text-[#646566]">
+                <span>
+                  {petName.map((part, index) =>
+                    part === enteredInput ? (
+                      <span key={index} className="font-medium text-[#7a7ccf]">
+                        {part}
+                      </span>
+                    ) : (
+                      part
+                    ),
+                  )}
+                </span>
+                {`/${user.yearOfPetAge}살 ${user.breedName}`}
+              </div>
+            </div>
+          </div>
+        );
+      }),
+    [userList],
+  );
 
-  const debouncedSearchFromKakao = (place: string) => {
-    if (place.length === 0) setKakaoPlaceSearch([]);
-    else {
-      setPage(1);
-      searchFromKakao(place, true);
-    }
-  };
-
-  const debouncedSave = useCallback(debounce(debouncedSearchFromKakao, 400), []);
-
-  const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEnteredInput(e.target.value);
-    if (cafeList.length > 0 && e.target.value.length > 0) {
-      let autoComplete: Mungple[];
-      if (e.target.value.length > 1) {
-        autoComplete = cafeList.filter((cafe) => {
-          return (
-            cafe.placeName.includes(e.target.value) ||
-            cafe.address.includes(e.target.value) ||
-            cafe.placeNameEn?.includes(e.target.value)
-          );
-        });
-      } else {
-        autoComplete = cafeList.filter((cafe) => {
-          return cafe.placeName.includes(e.target.value);
-        });
-      }
-      setOption(autoComplete);
-    }
-    debouncedSave(e.target.value);
-  };
-
-  const autoCompleteContext = useMemo(
+  // 멍플 자동완성
+  const mungpleAutoComplete = useMemo(
     () =>
       option.map((cafe) => {
         const onClickHandler = () => {
@@ -143,7 +127,8 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
     [option],
   );
 
-  const recentContext = useMemo(
+  // 최근 검색
+  const recentPlace = useMemo(
     () =>
       recentSearch.map((cafe) => {
         const onClickHandler = () => {
@@ -164,10 +149,6 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
       }),
     [recentSearch],
   );
-
-  useEffect(() => {
-    if (inView) searchFromKakao(enteredInput);
-  }, [inView]);
 
   return (
     <div ref={outsideRef} className="search-wrapper flex flex-col items-center">
@@ -193,6 +174,8 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
                   ? ' border-b-[3px] border-b-black text-black'
                   : 'text-[#646566]'
               } px-[3px]`}
+              aria-hidden
+              onClick={() => setSelectedTab('keyword')}
             >
               장소
             </div>
@@ -202,6 +185,8 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
                   ? ' border-b-[3px] border-b-black text-black'
                   : 'text-[#646566]'
               } px-[3px]`}
+              aria-hidden
+              onClick={() => setSelectedTab('user')}
             >
               프로필
             </div>
@@ -213,27 +198,27 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
           <div className="search-recent-tag mt-[80px]">
             <h4>최근 검색</h4>
           </div>
-          <div className="search-recent">{recentContext}</div>
+          <div className="search-recent">{recentPlace}</div>
         </div>
       )}
-      {enteredInput.length > 0 && (
+      {enteredInput.length > 0 && selectedTab === 'keyword' && (
         <div className="mt-[80px] w-full">
           <div>
             {isFocus && option.length > 0 && enteredInput.length > 0 && (
-              <div className="search-auto mt-[24px]">{autoCompleteContext}</div>
+              <div className="search-auto mt-[24px]">{mungpleAutoComplete}</div>
             )}
           </div>
           <div>
             {option.length > 0 && (
               <div className="mt-[20px] h-[3px] w-full bg-[#f6f6f6]" />
             )}
-            {kakaoPlaceSearch.map((place) => (
+            {searchedKakaoPlace.map((place) => (
               <div
                 className="mx-[55px] mt-[20px]"
                 aria-hidden
                 onClick={() =>
                   selectKakaoPlace(
-                    new kakao.maps.LatLng(parseFloat(place.y),parseFloat(place.x)),
+                    new kakao.maps.LatLng(parseFloat(place.y), parseFloat(place.x)),
                   )
                 }
               >
@@ -241,9 +226,12 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
                 <div className="text-[12px] text-[#646566]">{place.address_name}</div>
               </div>
             ))}
-            <div ref={ref}>&nbsp;</div>
+            <div ref={placeRef}>&nbsp;</div>
           </div>
         </div>
+      )}
+      {selectedTab === 'user' && (
+        <div className="mt-[80px] w-full">{searchedUserList}</div>
       )}
     </div>
   );

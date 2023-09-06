@@ -53,7 +53,7 @@ function Photo() {
     isFetched: isPhotoFetched,
     fetchNextPage,
   } = useInfiniteQuery(
-    ['getCertPhotos', userId, `page${page}`, sortOption],
+    ['getCertPhotos', userId],
     ({ pageParam = 0 }) => {
       if (userId === myId) {
         return getMyPhotoData(userId, 'CA0000', pageParam, 15, sortOption);
@@ -63,6 +63,7 @@ function Photo() {
     },
     {
       getNextPageParam: (last) => (!last.last ? last.number + 1 : undefined),
+      staleTime: 10,
     },
   );
   console.log(photos);

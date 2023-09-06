@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
 import { useQuery } from 'react-query';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-// import './DetailPage.scss';
 import BallLoading from '../../common/utils/BallLoading';
 import { analytics } from '../..';
 import DetailHeader from './components/DetailHeader';
@@ -40,6 +38,7 @@ function DetailPage() {
 
   if (data === undefined || isLoading) return <BallLoading />;
   let imageArray: string[] = [];
+  console.log(data);
   if (data.categoryCode === 'CA0002' || data.categoryCode === 'CA0003') {
     imageArray = [...data.photoUrls, ...data.representMenuPhotoUrls];
   } else if (data.isPriceTag) {

@@ -20,7 +20,7 @@ function PetInfo() {
     else return getOtherProfileInfo(userId);
   });
 
-  if (data === undefined || isLoading) return <BallLoading />;
+  if (!data || isLoading) return <BallLoading />;
 
   let year;
   if (data.yearOfPetAge === 0) {

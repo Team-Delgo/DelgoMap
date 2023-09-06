@@ -126,7 +126,7 @@ function Map() {
       {!isSelectedAnything &&
         selectedMungple.title.length === 0 &&
         selectedCert.userId === 0 && (
-          <FooterNavigation setCenter={setCurrentMapLocation} />
+          <FooterNavigation />
         )}
       {!isSelectedAnything &&
         !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (

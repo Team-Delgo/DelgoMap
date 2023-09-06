@@ -8,6 +8,7 @@ import { analytics } from '../../index';
 import ToastPurpleMessage from '../../common/dialog/ToastPurpleMessage';
 import useActive from '../../common/hooks/useActive';
 import './UploadCertificationResultPage.scss';
+import { useQueryClient } from 'react-query';
 
 function CaptureResult() {
   const [
@@ -24,6 +25,7 @@ function CaptureResult() {
   
   // const { achievements } = useSelector((state: RootState) => state.persist.upload);
   const location: any = useLocation();
+  const queryClient = useQueryClient();
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
 
   // useEffect(() => {
@@ -36,6 +38,9 @@ function CaptureResult() {
   // }, []);
 
   useEffect(() => {
+    console.log(2);
+    queryClient.invalidateQueries('getCertPhotos');
+    queryClient.refetchQueries('getCertPhotos');
     if (location?.state?.prevPath?.includes('update')) {
           //update페이지에서 왔고 인증수정을 했으면 ->  인증수정성공 toast를 띄워줌
       if (location?.state?.updateSuccess) {
