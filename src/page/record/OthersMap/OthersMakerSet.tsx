@@ -20,7 +20,7 @@ export function setNormalCertMarker(
     iconImg.alt = 'pin';
 
     const insideImg = document.createElement('img');
-    insideImg.src = m.photoUrl;
+    insideImg.src = m.photos[0];
     insideImg.className = 'inside-image';
     insideImg.alt = 'cert';
 
