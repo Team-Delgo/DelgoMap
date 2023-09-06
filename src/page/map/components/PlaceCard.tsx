@@ -23,7 +23,7 @@ interface Props {
   categoryCode: CategoryCode;
   map: kakao.maps.Map | undefined;
 }
-const icons = {
+export const icons = {
   CA0001: WalkSmall,
   CA0002: CafeSmall,
   CA0003: EatSmall,

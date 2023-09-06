@@ -11,7 +11,6 @@ import useOnclickOutside from 'react-cool-onclickoutside';
 import Sheet from 'react-modal-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import './Photo.scss';
-import UnderArrow from '../../../../common/icons/under-arrow-gray.svg';
 import { Cert } from '../../../map/index.types';
 import { getMyPhotoData, getOtherPhotoData } from '../../../../common/api/record';
 import { POSTS_PATH, RECORD_PATH } from '../../../../common/constants/path.const';
@@ -54,7 +53,7 @@ function Photo() {
     isFetched: isPhotoFetched,
     fetchNextPage,
   } = useInfiniteQuery(
-    ['getCertPhotos', userId, `page${page}`, sortOption],
+    ['getCertPhotos', userId],
     ({ pageParam = 0 }) => {
       if (userId === myId) {
         return getMyPhotoData(userId, 'CA0000', pageParam, 15, sortOption);
@@ -121,43 +120,39 @@ function Photo() {
     );
   }, [photos, otherDogsCerts]);
 
-  const photoContext = useMemo(
-    () =>
-      photos?.pages.map((photo) => (
-        <>
-          {photo.content.map((cert) => {
-            const photoClickHandler = () => {
-              dispatch(
-                scrollActions.photosScroll({ scroll: window.scrollY, pageSize: page }),
-              );
-              certEvent.mutate();
-              navigate('/certs', {
-                state: {
-                  info: {
-                    certId: cert.certificationId,
-                    userId,
-                    date: cert.registDt,
-                  },
-                  from: RECORD_PATH.PHOTO,
-                },
-              });
-            };
+  const photoContext = photos?.pages.map((photo) => (
+    <>
+      {photo.content.map((cert) => {
+        const photoClickHandler = () => {
+          dispatch(
+            scrollActions.photosScroll({ scroll: window.scrollY, pageSize: page }),
+          );
+          certEvent.mutate();
+          navigate('/certs', {
+            state: {
+              info: {
+                certId: cert.certificationId,
+                userId,
+                date: cert.registDt,
+              },
+              from: RECORD_PATH.PHOTO,
+            },
+          });
+        };
 
-            return (
-              <img
-                className="photo-wrapper-img"
-                src={cert.photos[0]}
-                alt="cert"
-                aria-hidden="true"
-                key={cert.certificationId}
-                onClick={photoClickHandler}
-              />
-            );
-          })}
-        </>
-      )),
-    [photos],
-  );
+        return (
+          <img
+            className="photo-wrapper-img"
+            src={cert.photos[0]}
+            alt="cert"
+            aria-hidden="true"
+            key={cert.certificationId}
+            onClick={photoClickHandler}
+          />
+        );
+      })}
+    </>
+  ));
 
   if (photoContext && photoContext.length % 2 === 0) {
     photoContext.concat(<div className="photo-fake" />);

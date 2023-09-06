@@ -5,8 +5,10 @@ import BallLoading from 'common/utils/BallLoading';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { useNavigate } from 'react-router-dom';
+
 import dot from '../../../common/icons/dot.svg';
 import { ROOT_PATH, RECORD_PATH } from '../../../common/constants/path.const';
+
 
 function PetInfo() {
   const splitUrl = window.location.href.split('/');
@@ -20,8 +22,9 @@ function PetInfo() {
     if (isMyAccount) return getMyProfileInfo(userId);
     else return getOtherProfileInfo(userId);
   });
-  console.log(data);
-  if (data === undefined || isLoading) return <BallLoading />;
+
+  if (!data || isLoading) return <BallLoading />;
+
 
   let year;
   if (data.yearOfPetAge === 0) {

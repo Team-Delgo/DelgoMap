@@ -72,7 +72,7 @@ export const defaultSelectedMungple: SelectedMungple = {
 };
 
 export interface Mungple {
-  categoryCode: string;
+  categoryCode: CategoryCode;
   address: string;
   latitude: string;
   longitude: string;

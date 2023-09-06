@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 import { Cert } from '../../common/types/map';
 import RecordCertification from './RecordCertification';
-import Back from '../../common/icons/prev-arrow-black.svg';
 import './RecordCertificationPage.scss';
 import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import Loading from '../../common/utils/BallLoading';
@@ -23,17 +22,14 @@ function RecordCertificationPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const pageFrom = useLocation().state.from as string;
   const certInfo = useLocation().state.info as LocationState;
-  console.log(certInfo);
   const { certId, date, userId } = certInfo;
   const [certifications, setCertifications] = useState<Cert[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  // const { certifications, pageFrom } = locationState;
   useEffect(() => {
     console.log(pageFrom);
     if (pageFrom === RECORD_PATH.PHOTO || pageFrom === ROOT_PATH) {
       getRecordCertificationId(userId, certId, (response: AxiosResponse) => {
-        console.log(response);
         setCertifications(response.data.data);
       });
     } else if (pageFrom === RECORD_PATH.CALENDAR) {
@@ -50,11 +46,6 @@ function RecordCertificationPage() {
   const contents = certifications.map((e: Cert) => {
     return <RecordCertification certification={e} />;
   });
-
-  // let headerFrom: string;
-  // if (pageFrom === RECORD_PATH.CALENDAR) headerFrom = 'calendar';
-  // else if (pageFrom === ROOT_PATH) headerFrom = 'map';
-  // else headerFrom = 'photo';
 
   const navigateBack = () => {
     navigate(-1);

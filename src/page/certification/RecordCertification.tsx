@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useErrorHandlers } from '../../common/api/useErrorHandlers';
 import VerticalDevider from '../../common/icons/vertical-devide.svg';
 import Heart from '../../common/icons/heart-empty.svg';
@@ -40,7 +40,8 @@ function RecordCertification(props: { certification: any }) {
   const { user } = useSelector((state: RootState) => state.persist.user);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null); //Timeout 참조하는 useRef 훅
 
-  console.log('certification', certification.userId);
+  const queryClient = useQueryClient();
+
 
   //좋아요 api 훅
   const { mutate: certificationLikeMutate } = useMutation(
@@ -66,6 +67,9 @@ function RecordCertification(props: { certification: any }) {
 
         if (code === 200) {
           //삭제를 성공했으면 photo 페이지로 이동
+          queryClient.invalidateQueries(['getCertPhotos', user.id]);
+          queryClient.removeQueries(['getCertPhotos', user.id]);
+          queryClient.refetchQueries(['getCertPhotos', user.id]);
           moveToPhotoPage();
         }
       },
