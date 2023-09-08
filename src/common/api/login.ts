@@ -1,10 +1,9 @@
 /* eslint-disable dot-notation */
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { SIGN_IN_PATH } from 'common/constants/path.const';
-import store from 'redux/store';
+import store, {RootState} from 'redux/store';
 import { userActions } from 'redux/slice/userSlice';
 import axiosInstance from './interceptors';
+import {useSelector} from "react-redux";
 
 function login(info: { email: string; password: string }) {
   const data = axios.post(`https://www.test.delgo.pet/login`, {
@@ -37,6 +36,11 @@ async function tokenRefresh() {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/token/reissue`, {
       withCredentials: true,
     });
+
+    const { OS } = store.getState().persist.device;
+    if (OS === 'android')
+      window.BRIDGE.flushCookie();
+
     const accessToken = response.headers.authorization_access;
     axiosInstance.defaults.headers.authorization_access = `Bearer ${accessToken}`;
     return response.headers.authorization_access;
