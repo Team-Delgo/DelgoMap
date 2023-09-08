@@ -11,11 +11,16 @@ import { Cert } from '../../common/types/map';
 import './RecordCertification.scss';
 import { certificationLike, certificationDelete } from '../../common/api/certification';
 import { uploadAction } from '../../redux/slice/uploadSlice';
-import { UPLOAD_PATH, RECORD_PATH } from '../../common/constants/path.const';
+import {
+  UPLOAD_PATH,
+  RECORD_PATH,
+  SIGN_IN_PATH,
+} from '../../common/constants/path.const';
 import { RootState } from '../../redux/store';
 import DeleteBottomSheet from '../../common/dialog/ConfirmBottomSheet';
 import { categoryCode2 } from '../../common/types/category';
 import useActive from '../../common/hooks/useActive';
+import AlertConfirm from '../../common/dialog/AlertConfirm';
 import LikeAnimation from '../../common/utils/LikeAnimation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -27,17 +32,17 @@ interface CertificationLIkeDataType {
 }
 
 function RecordCertification(props: { certification: any }) {
+  const [loginAlertIsOpen, setLoginAlertIsOpen] = useState(false); //로그인 하라고 뜨는 alert창 오픈여부
   const [imageNumber, setImageNumber] = useState(0);
   const { certification } = props;
   const dispatch = useDispatch();
-  const [clickCount, setClickCount] = useState(0); //이미지 더블클릭시 좋아요 여부를 처리하기 위해 선언
   const [LikeAnimationLoading, setLikeAnimationLoading] = useState(false); //라이크에니메이션 로딩여부(이미지 더블클릭)
   const [selfHeart, setSelfHeart] = useState(certification.isLike); //본인이 좋아요 눌렀는지 여부
   const [count, setCount] = useState(certification.likeCount); //좋아요 갯수
   const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDeleteBottomSheet] =
     useActive(false); //삭제텍스트 클릭시 열리는 바텀시트 오픈여부를 담은 커스텀훅
   const navigate = useNavigate();
-  const { user } = useSelector((state: RootState) => state.persist.user);
+  const { user,isSignIn } = useSelector((state: RootState) => state.persist.user);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null); //Timeout 참조하는 useRef 훅
 
   console.log('certification', certification.userId);
@@ -74,8 +79,19 @@ function RecordCertification(props: { certification: any }) {
       },
     });
 
+    const likeCertification = () => {
+      if (!isSignIn) {
+        setLoginAlertIsOpen(true);
+        return;
+      }
+      certificationLikeMutate({
+        userId: certification.userId,
+        certificationId: certification.certificationId,
+      });
+    };
+
   //post 삭제 핸들러
-  const deleteCertification = useCallback(() => {
+  const deleteCertification = () => {
     if (cettificationDeleteIsLoading) {
       return;
     }
@@ -84,14 +100,24 @@ function RecordCertification(props: { certification: any }) {
       userId: user?.id,
       certificationId: certification.certificationId,
     });
-  }, []);
+  }
+  
+  const moveToCommentPage = () => {
+    if (!isSignIn) {
+      setLoginAlertIsOpen(true);
+      return;
+    }
+    navigate(`/comments/${certification.certificationId}`, {
+      state: { post: certification },
+    });
+  }
 
-  const moveToPhotoPage = useCallback(() => {
+  const moveToPhotoPage = () => {
     navigate(`${RECORD_PATH.PHOTO}/${user.id}`);
-  }, []);
+  }
 
   //업데이트 페이지 이동 핸들러
-  const moveToUpdatePage = useCallback(() => {
+  const moveToUpdatePage = () => {
     //업데이트 페이지 이동시 화면을 보여주기위해 현재 인증글을 store에 저장해줌(업데이트 페이지에서 필요한 상태값을 저장해주면 됨)
     dispatch(
       uploadAction.setCertificationUpdate({
@@ -110,38 +136,7 @@ function RecordCertification(props: { certification: any }) {
         prevPath: RECORD_PATH.PHOTO,
       },
     });
-  }, []);
-
-  //포스트 더블클릭 핸들러
-  const handleDoubleClick = () => {
-    // 이미 setTimeout이 설정되어 있다면 그것을 clear (연속적인 클릭을 대비)
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    // 이전 클릭 카운트를 기반으로 새로운 클릭 카운트를 설정
-    setClickCount((prevCount: number) => {
-      const newCount = prevCount + 1;
-      // 클릭 카운트가 2이면 (더블클릭)
-      if (newCount === 2) {
-        // 좋아요 애니메이션 로딩 시작
-        setLikeAnimationLoading(true);
-        // 좋아요 API 호출
-        certificationLikeMutate({
-          userId: certification.userId,
-          certificationId: certification.certificationId,
-        });
-        // 1초 후 클릭 카운트를 0으로 리셋 (더블클릭 감지를 초기화)
-        timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
-        // 0.5초 후 애니메이션 로딩 상태를 false로 변경
-        setTimeout(() => setLikeAnimationLoading(false), 500);
-      } else {
-        // 더블클릭이 아니면 1초 후 클릭 카운트만 0으로 리셋
-        timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
-      }
-      return newCount; // 새로운 클릭 카운트 반환
-    });
-  };
+  }
 
   return (
     <>
@@ -167,7 +162,6 @@ function RecordCertification(props: { certification: any }) {
                     src={image}
                     alt={certification.placeName}
                     aria-hidden="true"
-                    onClick={handleDoubleClick}
                   />
                 </SwiperSlide>
               );
@@ -198,12 +192,7 @@ function RecordCertification(props: { certification: any }) {
             src={selfHeart ? FillHeart : Heart}
             alt="heart"
             aria-hidden="true"
-            onClick={() =>
-              certificationLikeMutate({
-                userId: certification.userId,
-                certificationId: certification.certificationId,
-              })
-            }
+            onClick={likeCertification}
           />
           {count > 0 && <div className="record-cert-icons-count">{count}</div>}
           <img
@@ -211,11 +200,7 @@ function RecordCertification(props: { certification: any }) {
             src={Comments}
             alt="comments"
             aria-hidden="true"
-            onClick={() => {
-              navigate(`/comments/${certification.certificationId}`, {
-                state: { post: certification },
-              });
-            }}
+            onClick={moveToCommentPage}
           />
           {certification.commentCount > 0 && (
             <div className="record-cert-icons-count">{certification.commentCount}</div>
@@ -231,6 +216,14 @@ function RecordCertification(props: { certification: any }) {
         cancelButtonHandler={closeDeleteBottomSheet}
         bottomSheetIsOpen={deleteBottomSheetIsOpen}
       />
+      {loginAlertIsOpen && (
+        <AlertConfirm
+          text="로그인이 필요한 기능입니다."
+          buttonText="로그인"
+          yesButtonHandler={() => navigate(SIGN_IN_PATH.MAIN)}
+          noButtonHandler={() => setLoginAlertIsOpen(false)}
+        />
+      )}
     </>
   );
 }
