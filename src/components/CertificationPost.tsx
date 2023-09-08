@@ -49,7 +49,6 @@ function CertificationPost({
   pageSize,
 }: CertificationPostPropsType) {
   const [imageNumber, setImageNumber] = useState(0);
-  const [clickCount, setClickCount] = useState(0); //이미지 더블클릭시 좋아요 여부를 처리하기 위해 선언
   const [LikeAnimationLoading, setLikeAnimationLoading] = useState(false); //라이크에니메이션 로딩여부(이미지 더블클릭)
   const [likeCount, setLikeCount] = useState(post?.likeCount); //좋아요 갯수
   const [blockedUserName, setBlockedUserName] = useState(''); //차단한 유저이름
@@ -265,32 +264,6 @@ function CertificationPost({
     navigate(SIGN_IN_PATH.MAIN);
   };
 
-  //포스트 더블클릭 핸들러(이미지 더블클릭하면 작동)
-  const handleDoubleClick = () => {
-    // 이미 setTimeout이 설정되어 있다면 그것을 clear (연속적인 클릭을 대비)
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    // 이전 클릭 카운트를 기반으로 새로운 클릭 카운트를 설정
-    setClickCount((prevCount: number) => {
-      const newCount = prevCount + 1;
-      // 클릭 카운트가 2이면 (더블클릭)
-      if (newCount === 2) {
-        // 좋아요 애니메이션 로딩 시작
-        setLikeAnimationLoading(true);
-        // 좋아요 API 호출
-        handleCertificationLike();
-        // 1초 후 클릭 카운트를 0으로 리셋 (더블클릭 감지를 초기화)
-        timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
-        // 0.5초 후 애니메이션 로딩 상태를 false로 변경
-        setTimeout(() => setLikeAnimationLoading(false), 500);
-      } else {
-        // 더블클릭이 아니면 1초 후 클릭 카운트만 0으로 리셋
-        timeoutRef.current = setTimeout(() => setClickCount(0), 1000);
-      }
-      return newCount;
-    });
-  };
 
   return (
     <>
@@ -351,7 +324,6 @@ function CertificationPost({
                     height={window.innerWidth}
                     alt="postImg"
                     aria-hidden="true"
-                    onClick={handleDoubleClick}
                   />
                 </SwiperSlide>
               );
