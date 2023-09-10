@@ -90,6 +90,7 @@ async function getPhotoCount(userId: number) {
   const response = await axiosInstance.get<AxiosResponse<number>>(
     `/certification/count/${userId}`,
   );
+  console.log(response.data.data);
   return response.data.data;
 }
 
