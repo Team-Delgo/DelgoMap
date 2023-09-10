@@ -27,17 +27,28 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
       searchedKakaoPlace,
       userList,
     },
-    actions: { setIsFocus, setOption, inputChangeHandler, inputFoucs, setSelectedTab },
-  } = useSearch(cafeList);
-  const dispatch = useDispatch();
+    actions: {
+      inputChangeHandler,
+      inputFoucs,
+      setSelectedTab,
+      onClickMungpleHandler,
+      onClickRecentHandler,
+      onClickUserHandler,
+    },
+  } = useSearch(cafeList, selectId);
 
+  // 유저 검색
   const searchedUserList = useMemo(
     () =>
       userList.map((user) => {
         const nickname = user.nickname.split(new RegExp(`(${enteredInput})`, 'gi'));
         const petName = user.petName.split(new RegExp(`(${enteredInput})`, 'gi'));
         return (
-          <div className="mx-[55px] mt-[20px] flex items-center">
+          <div
+            className="mx-[55px] mt-[20px] flex items-center"
+            aria-hidden
+            onClick={() => onClickUserHandler(user)}
+          >
             <img
               className="mr-[12px] h-[39px] w-[39px] rounded-full"
               src={user.profile}
@@ -80,19 +91,13 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
   const mungpleAutoComplete = useMemo(
     () =>
       option.map((cafe) => {
-        const onClickHandler = () => {
-          selectId(cafe);
-          dispatch(searchAction.setRecentSearch(cafe));
-          setIsFocus(false);
-          setOption([]);
-        };
         const name = cafe.placeName.split(new RegExp(`(${enteredInput})`, 'gi'));
         const address = cafe.address.split(new RegExp(`(${enteredInput})`, 'gi'));
         return (
           <div
             className="mx-[55px] mt-[20px]"
             aria-hidden="true"
-            onClick={onClickHandler}
+            onClick={() => onClickMungpleHandler(cafe)}
             key={cafe.placeName}
           >
             <div className="flex items-center">
@@ -131,15 +136,11 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
   const recentPlace = useMemo(
     () =>
       recentSearch.map((cafe) => {
-        const onClickHandler = () => {
-          selectId(cafe);
-          setIsFocus(false);
-        };
         return (
           <div
             className="search-auto-item"
             aria-hidden="true"
-            onClick={onClickHandler}
+            onClick={() => onClickRecentHandler(cafe)}
             key={cafe.placeName}
           >
             {cafe.placeName}
@@ -202,10 +203,10 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
         </div>
       )}
       {enteredInput.length > 0 && selectedTab === 'keyword' && (
-        <div className="mt-[80px] w-full">
+        <div className="mt-[104px] w-full">
           <div>
             {isFocus && option.length > 0 && enteredInput.length > 0 && (
-              <div className="search-auto mt-[24px]">{mungpleAutoComplete}</div>
+              <div className="search-auto">{mungpleAutoComplete}</div>
             )}
           </div>
           <div>
@@ -231,7 +232,7 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
         </div>
       )}
       {selectedTab === 'user' && (
-        <div className="mt-[80px] w-full">{searchedUserList}</div>
+        <div className="mt-[104px] w-full">{searchedUserList}</div>
       )}
     </div>
   );

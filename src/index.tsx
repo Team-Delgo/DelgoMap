@@ -31,8 +31,6 @@ const app = initializeApp(firebaseConfig);
 const persistor = persistStore(store);
 window.Kakao.init('1fc2794c1008fd96115d7f57e7f68e04');
 
-console.log(window.Kakao.isInitialized());
-
 export const analytics = getAnalytics(app);
 logEvent(analytics, "notification_received");
 
