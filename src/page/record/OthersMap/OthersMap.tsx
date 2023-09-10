@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { getMapData } from '../../../common/api/record';
 import { useQuery } from 'react-query';
 import CertCard from '../../map/components/CertCard';
 import BackArrowComponent from '../../../components/BackArrowComponent';
 import { othersMapAction } from 'redux/slice/othersMapSlice';
+import { getUserInfo } from 'common/api/othersmap';
 import { useNavigate } from 'react-router-dom';
 import { Cert, certDefault } from '../../map/index.types';
 import { setNormalCertMarker } from './OthersMakerSet';
+import dogfoot from '../../../common/icons/dogfoot-small.svg';
+import dot from '../../../common/icons/dot.svg';
+import eye from '../../../common/icons/eye.svg';
 import { clear } from 'console';
 
 function OthersMap() {
@@ -22,9 +25,7 @@ function OthersMap() {
   const [certMarkers, setCertMarkers] = useState<kakao.maps.CustomOverlay[]>([]);
   const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
   const dispatch = useDispatch();
-  const { data: mapDataList } = useQuery(['getMapData', userId], () =>
-    getMapData(userId),
-  );
+  const { data: userInfo } = useQuery(['getUserInfo', userId], () => getUserInfo(userId));
   const clearSelectedCert = () => setSelectedCert(certDefault);
 
   const setCurrentMapLocation = () => {
@@ -54,18 +55,14 @@ function OthersMap() {
   };
 
   useEffect(() => {
-    if (mapDataList && map && isFirstRendering.cert) {
+    if (userInfo && map && isFirstRendering.cert) {
       if (userId > 0) {
-        const certMarkers = setNormalCertMarker(
-          mapDataList.normalCertList,
-          map,
-          setSelectedCert,
-        );
+        const certMarkers = setNormalCertMarker(userInfo.certs, map, setSelectedCert);
         setCertMarkers(certMarkers);
         setIsFirstRendering((prev) => ({ ...prev, cert: false }));
       }
     }
-  }, [map, mapDataList]);
+  }, [map, userInfo]);
 
   useEffect(() => {
     if (!map) return;
@@ -74,7 +71,29 @@ function OthersMap() {
 
   return (
     <div>
-      <BackArrowComponent onClickHandler={handleBackClick} />
+      <div className="relative z-50 h-[60px] w-screen bg-white pt-[9px]">
+        <BackArrowComponent onClickHandler={handleBackClick} />
+        {userInfo && (
+          <div className="text-center text-lg font-bold leading-[150%]">
+            {userInfo.nickname}
+          </div>
+        )}
+        <div className="flex justify-center">
+          <img src={dogfoot} />
+          {userInfo && (
+            <div className="ml-[4px] mr-[6px] text-[12px] font-bold leading-[150%] text-[#646566]">
+              {userInfo.totalCount}
+            </div>
+          )}
+          <img src={dot} />
+          <img className="ml-[6px]" src={eye} />
+          {userInfo && (
+            <div className="ml-[4px] mr-[6px] text-[12px] font-bold leading-[150%] text-[#646566]">
+              {userInfo.viewCount}
+            </div>
+          )}
+        </div>
+      </div>
       <div className="absolute bottom-0 h-screen w-screen" ref={mapElement} />
       {selectedCert.userId > 0 && (
         <CertCard
