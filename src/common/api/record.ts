@@ -112,7 +112,7 @@ async function getRecordCertificationId(
   success: (date: AxiosResponse) => void,
 ) {
   axiosInstance
-    .get(`/certification?userId=${userId}&certificationId=${certId}`)
+    .get(`/certification/id?userId=${userId}&certificationId=${certId}`)
     .then((data) => {
       success(data);
     })
