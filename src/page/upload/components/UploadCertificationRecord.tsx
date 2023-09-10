@@ -260,11 +260,11 @@ function UploadCertificationRecord({
                     }),
                   )
                 }
-                maxLength={199}
+                maxLength={999}
               >
                 {content}
               </textarea>
-              <div className="review-content-length">{content.length}/200</div>
+              <div className="review-content-length">{content.length}/1000</div>
             </body>
             <footer>
               {content.length > 0 ? (
@@ -382,11 +382,11 @@ function UploadCertificationRecord({
                           }),
                         )
                       }
-                      maxLength={199}
+                      maxLength={999}
                     >
                       {content}
                     </textarea>
-                    <div className="review-content-length">{content.length}/200</div>
+                    <div className="review-content-length">{content.length}/1000</div>
                   </body>
                   <footer>
                     {content.length > 0 ? (

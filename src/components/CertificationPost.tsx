@@ -48,6 +48,7 @@ function CertificationPost({
   certificationPostsFetch,
   pageSize,
 }: CertificationPostPropsType) {
+  const [moredesc,setMoreDesc] = useState(false)
   const [imageNumber, setImageNumber] = useState(0);
   const [LikeAnimationLoading, setLikeAnimationLoading] = useState(false); //라이크에니메이션 로딩여부(이미지 더블클릭)
   const [likeCount, setLikeCount] = useState(post?.likeCount); //좋아요 갯수
@@ -265,6 +266,10 @@ function CertificationPost({
   };
 
 
+  console.log(post?.description)
+  console.log(post?.description.length)
+
+
   return (
     <>
       <header className="post-img-result-header">
@@ -350,7 +355,25 @@ function CertificationPost({
             )}
           </div>
         </header>
-        <body className="post-img-result-main-body">{post?.description}</body>
+        {
+          /\n/.test(post?.description) ? <body className="post-img-result-main-body"> {
+            !moredesc ? post?.description.split('\n')[0] : post?.description
+          }
+            {
+              !moredesc ? <span style={{ color: "#AA93EC" }} onClick={() => setMoreDesc(true)}> ...더 보기</span>
+                : <div style={{ color: "#AA93EC" }} onClick={() => setMoreDesc(false)}>글 접기</div>
+            }
+          </body> : post?.description.length > 19 ?  <body className="post-img-result-main-body">{
+            !moredesc ?
+              post?.description.substring(0, 19) : post?.description}
+            {
+              !moredesc ? <span style={{ color: "#AA93EC" }} onClick={() => setMoreDesc(true)}> ...더 보기</span>
+                : <div style={{ color: "#AA93EC", margin: '15px 0' }} onClick={() => setMoreDesc(false)}>글 접기</div>
+            }
+          </body> : <body className="post-img-result-main-body">
+            {post?.description}
+          </body>
+        }
         <footer className="post-img-result-main-footer">
           <div className="post-img-result-main-footer-heart-wrapper">
             <img
