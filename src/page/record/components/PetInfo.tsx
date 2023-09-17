@@ -38,7 +38,7 @@ function PetInfo() {
   const mapButtonHandler = () => {
     if (isMyAccount) {
       if (OS === 'android') window.BRIDGE.shareDelgoProfile(window.location.href);
-      else window.webkit.messageHandlers.shareProfile.postMessage(window.location.href);
+      else window.webkit.messageHandlers.shareDelgoProfile.postMessage(window.location.href);
     } else {
       postVeiwCount(userId);
       navigate(`${RECORD_PATH.MAP}/${userId}`);
