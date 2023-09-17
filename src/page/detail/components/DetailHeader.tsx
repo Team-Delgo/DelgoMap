@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 import 'index.css';
 import DogFoot from '../../../common/icons/dogfoot.svg';
 import Heart from '../../../common/icons/heart.svg';
@@ -39,10 +41,13 @@ function DetailHeader({
   openingHours,
   categoryCode,
 }: Props) {
+  const { OS } = useSelector((state: RootState) => state.persist.device);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const sendScrap = async () => {
     console.log('click');
-    window.BRIDGE.shareDelgoProfile(window.location.href);
+    if (OS === 'android') window.BRIDGE.shareDelgoProfile(window.location.href);
+    else
+      window.webkit.messageHandlers.shareDelgoProfile.postMessage(window.location.href);
   };
   console.log(phoneNumber);
   return (
