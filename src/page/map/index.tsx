@@ -131,7 +131,9 @@ function Map() {
         !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
           <CertToggle onClick={certToggleClickHandler} state={isCertToggleOn} />
         )}
-      {isCertToggleOn && selectedCert.placeName.length === 0 && <CountBox />}
+      {isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
+        <CountBox />
+      )}
 
       {selectedMungple.title.length > 0 && <LinkCopy isMungple />}
       {isSelectedAnything && selectedMungple.title.length === 0 && (
