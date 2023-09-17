@@ -14,6 +14,14 @@ function certificationLike(data: { userId: number; certificationId: number }) {
   return axiosInstance.post(`/certification/like/${data.userId}/${data.certificationId}`);
 }
 
+function reactCertification(data: {
+  userId: number;
+  certificationId: number;
+  reactionCode: string;
+}) {
+  return axiosInstance.post(`/certification/reaction/${data.userId}/${data.certificationId}/${data.reactionCode}`);
+}
+
 function registerGalleryCertificationPost(formdata: FormData) {
   return axiosInstance.post(`/certification`, formdata, {
     headers: {
@@ -71,4 +79,5 @@ export {
   certificationLike,
   certificationDelete,
   getFiveOtherDogsCert,
+  reactCertification
 };
