@@ -12,7 +12,7 @@ function CountBox() {
   const { data: userInfo } = useQuery(['getUserInfo', userId], () => getUserInfo(userId));
   return (
     <div className="flex w-screen justify-center">
-      <div className="absolute bottom-[100px] z-[100] flex items-center rounded-[45px] bg-[#FFF] px-[15px] py-[8px] text-[12px] font-bold shadow-1">
+      <div className="absolute bottom-[90px] z-[100] flex items-center rounded-[45px] bg-[#FFF] px-[15px] py-[8px] text-[12px] font-bold shadow-1">
         <img src={dogfoot} />
         {userInfo && <div className="ml-[4px] text-[#000]">{userInfo.totalCount}</div>}
         <img src={dot} className="mx-[6px]" />
