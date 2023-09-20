@@ -9,7 +9,7 @@ import FillHeart from '../../common/icons/heart.svg';
 import Comments from '../../common/icons/comments.svg';
 import { Cert } from '../../common/types/map';
 import './RecordCertification.scss';
-import { certificationDelete, reactCertification } from '../../common/api/certification';
+import { certificationLike, certificationDelete } from '../../common/api/certification';
 import { uploadAction } from '../../redux/slice/uploadSlice';
 import {
   UPLOAD_PATH,
@@ -22,51 +22,51 @@ import { categoryCode2 } from '../../common/types/category';
 import useActive from '../../common/hooks/useActive';
 import AlertConfirm from '../../common/dialog/AlertConfirm';
 import LikeAnimation from '../../common/utils/LikeAnimation';
-import { postType } from '../../common/types/post';
-import { reactParam } from '../../common/constants/parameter.const';
-import CuteIcon from "../../common/icons/cute-icon.svg"
-import HelpIcon from "../../common/icons/help-icon.svg"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+interface CertificationLIkeDataType {
+  userId: number;
+  certificationId: number;
+}
 
-interface CertificationReactDataType {
-  userId: number;
-  certificationId: number;
-  reactionCode:string;
-}
-interface CertificationDeleteDataType {
-  userId: number;
-  certificationId: number;
-}
 function RecordCertification(props: { certification: any }) {
   const [loginAlertIsOpen, setLoginAlertIsOpen] = useState(false); //로그인 하라고 뜨는 alert창 오픈여부
   const [imageNumber, setImageNumber] = useState(0);
   const { certification } = props;
   const dispatch = useDispatch();
-  const [helpCount, setHelpCount] = useState(certification?.reactionCountMap?.HELPER); 
-  const [cuteCount, setCuteCount] = useState(certification?.reactionCountMap?.CUTE);
-  const [isHelp, setIsHelp] = useState(certification?.reactionMap?.HELPER); 
-  const [isCute, setIsCute] = useState(certification?.reactionMap?.CUTE)
+  const [LikeAnimationLoading, setLikeAnimationLoading] = useState(false); //라이크에니메이션 로딩여부(이미지 더블클릭)
+  const [selfHeart, setSelfHeart] = useState(certification.isLike); //본인이 좋아요 눌렀는지 여부
+  const [count, setCount] = useState(certification.likeCount); //좋아요 갯수
   const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDeleteBottomSheet] =
     useActive(false); //삭제텍스트 클릭시 열리는 바텀시트 오픈여부를 담은 커스텀훅
   const navigate = useNavigate();
   const { user,isSignIn } = useSelector((state: RootState) => state.persist.user);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null); //Timeout 참조하는 useRef 훅
 
   const queryClient = useQueryClient();
 
 
-  const { mutate: certificationReactMutate, isLoading: isLoadingCertificationReact } =
-    useMutation((data: CertificationReactDataType) => reactCertification(data), {
-      onError: (error: any) => {
+  //좋아요 api 훅
+  const { mutate: certificationLikeMutate } = useMutation(
+    (data: CertificationLIkeDataType) => certificationLike(data),
+    {
+      onSuccess: () => {
+        //성공하면 본인이 좋아요 여부를 바꿔주고 (좋아요 -> 좋아요취소 // 좋아요취소 -> 좋아요)
+        //좋아요 갯수도 바꿔줌(좋아요 -> 갯수 늘리기 // 좋아요 취소 -> 갯수 줄이기)
+        setSelfHeart(!selfHeart);
+        setCount(selfHeart ? count - 1 : count + 1);
+      },
+      onError: (error: any, variables, context) => {
         useErrorHandlers(dispatch, error);
       },
-    });
+    },
+  );
 
   // post삭제 api 훅
   const { mutate: certificationDeleteMutate, isLoading: cettificationDeleteIsLoading } =
-    useMutation((data: CertificationDeleteDataType) => certificationDelete(data), {
+    useMutation((data: CertificationLIkeDataType) => certificationDelete(data), {
       onSuccess: (response: any) => {
         const { code } = response.data;
 
@@ -83,27 +83,17 @@ function RecordCertification(props: { certification: any }) {
       },
     });
 
-    const handleReactCertification = (reactionCode: string) => (e: React.MouseEvent<HTMLDivElement>) => {
+    const likeCertification = () => {
       if (!isSignIn) {
         setLoginAlertIsOpen(true);
         return;
       }
-  
-      if(reactionCode === reactParam.cute){
-        setIsCute(!isCute)
-        setCuteCount(isCute ? cuteCount-1 : cuteCount +1)
-      }
-      else{
-        setIsHelp(!isHelp)
-        setHelpCount(isHelp ? helpCount-1 : helpCount +1)
-      }
-  
-      certificationReactMutate({
-        userId: user?.id,
-        certificationId: certification?.certificationId,
-        reactionCode
+      certificationLikeMutate({
+        userId: certification.userId,
+        certificationId: certification.certificationId,
       });
     };
+
   //post 삭제 핸들러
   const deleteCertification = () => {
     if (cettificationDeleteIsLoading) {
@@ -185,6 +175,11 @@ function RecordCertification(props: { certification: any }) {
             {imageNumber + 1} / {certification.photos.length}
           </div>
         </div>
+        {LikeAnimationLoading && (
+          <div className="like-animation-wrapper" style={{ height: window.innerWidth }}>
+            <LikeAnimation isLike={selfHeart} />
+          </div>
+        )}
         <div className="record-cert-main">
           <div className="record-cert-main-text">
             <div className="record-cert-main-text-title">{certification.placeName}</div>
@@ -193,24 +188,7 @@ function RecordCertification(props: { certification: any }) {
         </div>
         <div className="record-cert-devider" />
         <div className="record-cert-description">{certification.description}</div>
-        <body className="post-img-result-main-footer">
-          <div className={ isHelp ? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.helper)}>
-            <img src={HelpIcon} alt="help-icon" />
-            <span>도움돼요</span>
-            <span>{helpCount}</span>
-          </div>
-          <div style={{ marginRight: '9px' }} />
-          <div className={ isCute? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.cute)}>
-            <img src={CuteIcon} alt="cute-icon" />
-            <span>귀여워요</span>
-            <span>{cuteCount}</span>
-          </div>
-        </body>
-        <footer className="post-comment-wrapper" onClick={moveToCommentPage}>
-          <span>댓글</span>
-          <span style={{ color: 'var(--reward-gray-23, #ABABAB)',marginLeft:"3px" }}>{certification?.commentCount}개</span>
-        </footer>
-        {/* <div className="record-cert-icons">
+        <div className="record-cert-icons">
           <img
             className="record-cert-icons-heart"
             width={22}
@@ -231,7 +209,7 @@ function RecordCertification(props: { certification: any }) {
           {certification.commentCount > 0 && (
             <div className="record-cert-icons-count">{certification.commentCount}</div>
           )}
-        </div> */}
+        </div>
       </div>
       <DeleteBottomSheet
         text="기록을 삭제하실건가요?"

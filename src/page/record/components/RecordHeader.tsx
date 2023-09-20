@@ -1,13 +1,23 @@
 import classNames from 'classnames';
 import React, { useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './RecordHeader.scss';
-import { ROOT_PATH, POSTS_PATH } from '../../../common/constants/path.const';
+import PetInfo from './PetInfo';
+import BackArrow from '../common/icons/prev-arrow-black.svg';
+import { ROOT_PATH, POSTS_PATH, RECORD_PATH } from '../../../common/constants/path.const';
 import { RootState } from '../../../redux/store';
 import PageHeader from '../../../components/PageHeader';
+import useMap from '../../map/index.hook';
 import FooterNavigation from 'components/FooterNavigation';
 import { postType } from 'common/types/post';
+
+interface Pet {
+  petId: number;
+  petName: string;
+  breedName: string;
+  birthday: string;
+}
 
 function RecordHeader() {
   const splitUrl = window.location.href.split('/');
@@ -15,7 +25,14 @@ function RecordHeader() {
   const myId = useSelector((state: RootState) => state.persist.user.user.id);
   const pageFrom = (useLocation()?.state?.prevPath as string) || 'home';
   const post = useLocation()?.state?.post as postType;
-  let isMyRecordPage = userId === myId;
+  let isMyAccount = true;
+
+  // const {
+  //   action: { setCurrentMapLocation },
+  // } = useMap();
+
+  if (userId === myId) isMyAccount = true;
+  else isMyAccount = false;
 
   let tab = (useLocation().state as any) || 'photo';
   if (tab.from === 'home') {
@@ -29,9 +46,9 @@ function RecordHeader() {
   const navigate = useNavigate();
 
   const handleNavigate = useCallback(() => {
-    if (isMyRecordPage) navigate(ROOT_PATH);
-    else if(pageFrom === 'home') navigate(ROOT_PATH);
-    else if (pageFrom !== 'home') navigate(pageFrom, { state: { post } });
+    console.log(pageFrom);
+    if (isMyAccount) navigate(ROOT_PATH);
+    else if (pageFrom != 'home') navigate(pageFrom, { state: { post } });
     else navigate(POSTS_PATH);
   }, []);
   const clickHandler = (e: any) => {
@@ -47,10 +64,15 @@ function RecordHeader() {
     if (userId) {
       navigate(`/${id}/${userId}`, { state: id });
     }
+    console.log('click');
   };
 
   return (
     <div className={classNames('recordHeader-wrapper', { fixed: tab === 'calendar' })}>
+      {/* <div className='recordHeader-header'>
+        <img className='recordHeader-header-back' src={BackArrow} alt="back" aria-hidden="true" onClick={backButtonClickHandler}/>
+        <div className="recordHeader-header-title">내 기록</div>
+      </div> */}
       <PageHeader navigate={handleNavigate} title="" short />
       <div className="recordHeader">
         <div
@@ -80,7 +102,7 @@ function RecordHeader() {
         <div className="recordHeader-divider" />
         <div
           className="fixed bottom-0 w-[100%]"
-          style={{ display: isMyRecordPage ? 'block' : 'none' }}
+          style={{ display: isMyAccount ? 'block' : 'none' }}
         >
           <FooterNavigation />
         </div>

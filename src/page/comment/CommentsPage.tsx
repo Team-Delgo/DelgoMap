@@ -1,4 +1,4 @@
-import React, { useCallback,  useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ import { postType } from '../../common/types/post';
 import PageHeader from '../../components/PageHeader';
 import { useErrorHandlers } from '../../common/api/useErrorHandlers';
 import DogLoading from '../../common/utils/BallLoading';
-import { RECORD_PATH } from '../../common/constants/path.const';
+import { POSTS_PATH, RECORD_PATH } from '../../common/constants/path.const';
 
 interface StateType {
   post: postType;
@@ -49,7 +49,6 @@ function CommentsPage() {
     data: commentList,
     refetch: refetchCommentList,
     isLoading:getCommentListIsLoading,
-    isFetching:fetchingCommentListIsLoading
   } = useQuery('comments', () => getCommentList(post?.certificationId),{
     onError: (error: any) => {
       useErrorHandlers(dispatch, error);
@@ -167,10 +166,11 @@ function CommentsPage() {
   );
 
   const moveToPrevPage = useCallback(() => {
-    navigate(-1);
+    navigate(POSTS_PATH);
   }, []);
 
-  const isLoading = postCommentIsLoading || deleteCommentIsLoading;
+  const isLoading =
+    getCommentListIsLoading || postCommentIsLoading || deleteCommentIsLoading;
 
   const context = commentList?.data?.map((comment: commentType) => {
     return (
@@ -215,16 +215,12 @@ function CommentsPage() {
     );
   });
 
-  if(fetchingCommentListIsLoading){
-    return <DogLoading />
-  }
-
   return (
     <>
       {isLoading && <DogLoading />}
       <div className="comments">
         <PageHeader title="댓글" navigate={moveToPrevPage} />
-         <div className="comments-context">{context}</div>
+        {!getCommentListIsLoading && <div className="comments-context">{context}</div>}
         <div className="comments-post">
           <img src={profile} alt="myprofile" />
           <textarea

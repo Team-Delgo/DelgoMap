@@ -18,6 +18,7 @@ function DetailReviewHeader({ visited, heart }: Props) {
         친구들이 {visited}번 다녀갔어요
       </span>
       <div className="detail-review-header-div" />
+      {/* ????? */}
     </div>
   );
 }

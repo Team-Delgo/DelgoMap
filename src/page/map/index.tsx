@@ -14,7 +14,6 @@ import CertToggle from './components/CertToggle';
 import CertCard from './components/CertCard';
 import BallLoading from '../../common/utils/BallLoading';
 import UserLocation from './components/UserLocation';
-import CountBox from './components/CountBox';
 import useMap from './index.hook';
 
 function Map() {
@@ -43,7 +42,7 @@ function Map() {
       navigateToLoginPage,
       certToggleClickHandler,
       setCurrentMapLocation,
-      searchAndMoveToKakaoPlace,
+      searchAndMoveToKakaoPlace
     },
   } = useMap();
 
@@ -124,15 +123,13 @@ function Map() {
         )}
       {!isSelectedAnything &&
         selectedMungple.title.length === 0 &&
-        selectedCert.userId === 0 && <FooterNavigation />}
+        selectedCert.userId === 0 && (
+          <FooterNavigation />
+        )}
       {!isSelectedAnything &&
         !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
           <CertToggle onClick={certToggleClickHandler} state={isCertToggleOn} />
         )}
-      {isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
-        <CountBox />
-      )}
-
       {selectedMungple.title.length > 0 && <LinkCopy isMungple />}
       {isSelectedAnything && selectedMungple.title.length === 0 && (
         <LinkCopy isMungple={false} />

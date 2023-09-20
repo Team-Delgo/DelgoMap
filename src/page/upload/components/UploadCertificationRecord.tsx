@@ -22,7 +22,6 @@ import HospitalSmall from '../../../common/icons/hospital-map-small.svg';
 import WalkSmall from '../../../common/icons/walk-map-small.svg';
 import KinderSmall from '../../../common/icons/kinder-map-small.svg';
 import FootPrintSmall from '../../../common/icons/foot-print-small.svg';
-import CheckBox from '../../../common/icons/checkbox-purple.svg'
 
 interface Props {
   postCertificationIsLoading: boolean;
@@ -211,26 +210,18 @@ function UploadCertificationRecord({
               {mongPlaceId === 0 && (
                 <div className="review-place-address-hide">
                   <div style={{ display: 'flex' }}>
-                    {
-                      isHideAddress ? <img src={CheckBox} onClick={() =>
+                    <input
+                      className="review-place-address-hide-button"
+                      type="checkbox"
+                      checked={isHideAddress}
+                      onClick={() =>
                         dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
                           uploadAction.setHideAddress({
                             isHideAddress: !isHideAddress,
                           }),
                         )
-                      } />
-                        : <input
-                          className="review-place-address-hide-button"
-                          type="checkbox"
-                          onClick={() =>
-                            dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
-                              uploadAction.setHideAddress({
-                                isHideAddress: !isHideAddress,
-                              }),
-                            )
-                          }
-                        />
-                    }
+                      }
+                    />
                     <div
                       className="review-place-address-hide-label"
                       aria-hidden
@@ -269,11 +260,11 @@ function UploadCertificationRecord({
                     }),
                   )
                 }
-                maxLength={999}
+                maxLength={199}
               >
                 {content}
               </textarea>
-              <div className="review-content-length">{content.length}/1000</div>
+              <div className="review-content-length">{content.length}/200</div>
             </body>
             <footer>
               {content.length > 0 ? (
@@ -340,26 +331,18 @@ function UploadCertificationRecord({
                     {mongPlaceId === 0 && (
                       <div className="review-place-address-hide">
                         <div style={{ display: 'flex' }}>
-                          {
-                            isHideAddress ? <img src={CheckBox} onClick={() =>
-                              dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
+                          <input
+                            className="review-place-address-hide-button"
+                            type="checkbox"
+                            checked={isHideAddress}
+                            onClick={() =>
+                              dispatch(
                                 uploadAction.setHideAddress({
                                   isHideAddress: !isHideAddress,
                                 }),
                               )
-                            } />
-                              : <input
-                                className="review-place-address-hide-button"
-                                type="checkbox"
-                                onClick={() =>
-                                  dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
-                                    uploadAction.setHideAddress({
-                                      isHideAddress: !isHideAddress,
-                                    }),
-                                  )
-                                }
-                              />
-                          }
+                            }
+                          />
                           <div
                             className="review-place-address-hide-label"
                             aria-hidden="true"
@@ -399,11 +382,11 @@ function UploadCertificationRecord({
                           }),
                         )
                       }
-                      maxLength={999}
+                      maxLength={199}
                     >
                       {content}
                     </textarea>
-                    <div className="review-content-length">{content.length}/1000</div>
+                    <div className="review-content-length">{content.length}/200</div>
                   </body>
                   <footer>
                     {content.length > 0 ? (
