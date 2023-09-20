@@ -18,6 +18,7 @@ import DetailCertButton from './components/DetailCertButton';
 import { uploadAction } from 'redux/slice/uploadSlice';
 import { UPLOAD_PATH } from 'common/constants/path.const';
 
+
 function DetailPage() {
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const navigate = useNavigate();
@@ -101,8 +102,6 @@ function DetailPage() {
 
   if (isEditorOpen)
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
-
-  
 
   return (
     <div className="overflow-scroll bg-gray-200">
