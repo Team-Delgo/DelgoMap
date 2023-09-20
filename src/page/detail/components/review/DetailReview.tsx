@@ -36,7 +36,7 @@ function DetailReview({ mungpleId, visited, heart }: Props) {
   }, [inView]);
 
   return (
-    <div className="-translate-y-[15px] bg-white">
+    <div className="bg-white">
       <DetailReviewHeader visited={visited} heart={heart} />
       {data?.pages?.map((page) => (
         <>

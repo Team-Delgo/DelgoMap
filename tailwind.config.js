@@ -71,6 +71,14 @@ module.exports = {
             opacity: '0',
           },
         },
+        fadeIn: {
+          '0%': {
+            opacity: '0',
+          },
+          '100%': {
+            opacity: '1',
+          }
+        }
       },
       animation: {
         backButton: 'backButton 0.1s ease ',
@@ -78,6 +86,7 @@ module.exports = {
         checkboxCheck: 'checkboxCheck 0.3s ease-out',
         buttonMount: 'buttonMount 0.3s ease-in-out',
         buttonUnMount: 'buttonUnMount 0.3s ease-in-out',
+        fadeIn: 'fadeIn 0.5s ease',
       },
     },
   },

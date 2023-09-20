@@ -12,13 +12,17 @@ import FullScreenImageSlider from './components/FullScreenImageSlider';
 import EditorNote from './components/EditorNote';
 import DetailReview from './components/review/DetailReview';
 import BackArrowComponent from '../../components/BackArrowComponent';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
+import DetailCertButton from './components/DetailCertButton';
+import { uploadAction } from 'redux/slice/uploadSlice';
+import { UPLOAD_PATH } from 'common/constants/path.const';
 
 function DetailPage() {
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const navigate = useNavigate();
   const [imageNumber, setImageNumber] = useState(1);
+  const [isButtonRendering, setIsButtonRendering] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
@@ -28,7 +32,18 @@ function DetailPage() {
   const { data, isLoading } = useQuery(['getDetailPageData', detailPageId], () =>
     getDetailPageData(detailPageId, userId),
   );
-
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100 && !isButtonRendering) {
+        // 예: 100px 이상 스크롤됐을 때
+        setIsButtonRendering(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [data]);
   const navigateToHome = () => navigate('/');
   useEffect(() => {
     mutation.mutate({
@@ -38,6 +53,8 @@ function DetailPage() {
       },
     });
   }, []);
+
+  const dispatch = useDispatch();
 
   if (data === undefined || isLoading) return <BallLoading />;
   let imageArray: string[] = [];
@@ -59,6 +76,19 @@ function DetailPage() {
     setIsFullScreenSliderOpen(true);
   };
 
+  const buttonClickHandler = () => {
+    dispatch(
+      uploadAction.setMongPlace({
+        title: data.placeName,
+        mongPlaceId: data.mungpleId,
+        address: data.address,
+      }),
+    );
+    navigate(UPLOAD_PATH.CERTIFICATION, {
+      state: { prevPath: 'detail' },
+    });
+  };
+
   if (isFullScreenSliderOpen)
     return (
       <FullScreenImageSlider
@@ -72,7 +102,9 @@ function DetailPage() {
   if (isEditorOpen)
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
 
-    return (
+  
+
+  return (
     <div className="overflow-scroll bg-gray-200">
       <BackArrowComponent onClickHandler={navigateToHome} white />
       <DetailImageSlider
@@ -112,6 +144,8 @@ function DetailPage() {
         visited={data.certCount}
         heart={data.recommendCount}
       />
+      <div className="bg-white pb-[70px]" />
+      {isButtonRendering && <DetailCertButton onClick={buttonClickHandler} />}
     </div>
   );
 }
