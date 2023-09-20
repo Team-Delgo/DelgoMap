@@ -32,6 +32,7 @@ export const mapSlice = createSlice({
     setSelectedIdAddress(state, action) {
       state.selectedId = {
         ...state.selectedId,
+        categoryCode: 'CA9999',
         address: action.payload,
       };
     },
