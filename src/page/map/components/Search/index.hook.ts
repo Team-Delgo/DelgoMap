@@ -13,6 +13,7 @@ const useSearch = (cafeList: Mungple[]) => {
   const { ref: userRef, inView: userInView } = useInView();
   const [selectedTab, setSelectedTab] = useState<'keyword' | 'user'>('keyword');
   const [isFocus, setIsFocus] = useState(false);
+  const [isLast, setIsLast] = useState(false);
   const [enteredInput, setEnteredInput] = useState('');
   const [debouncedInput, setDebouncedInput] = useState('');
   const [page, setPage] = useState(1);
@@ -70,12 +71,15 @@ const useSearch = (cafeList: Mungple[]) => {
     const placeSearchCB = (
       data: kakao.maps.services.PlacesSearchResult,
       status: kakao.maps.services.Status,
+      pagination: kakao.maps.Pagination,
     ) => {
       if (status === kakao.maps.services.Status.OK) {
         const list = isFirst ? data : [...searchedKakaoPlace, ...data];
         setSearchedKakaoPlace(list);
+        if(!pagination.hasNextPage) setIsLast(true);
       }
     };
+    
     const ps = new kakao.maps.services.Places();
     ps.keywordSearch(place, placeSearchCB, {
       size: 15,
@@ -86,6 +90,7 @@ const useSearch = (cafeList: Mungple[]) => {
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEnteredInput(e.target.value);
+    setIsLast(false);
     if (cafeList.length > 0 && e.target.value.length > 0) {
       let autoComplete: Mungple[];
       if (e.target.value.length > 1) {
@@ -106,7 +111,7 @@ const useSearch = (cafeList: Mungple[]) => {
   };
 
   useEffect(() => {
-    if (placeInView) searchFromKakao(enteredInput);
+    if (placeInView && !isLast) searchFromKakao(enteredInput);
   }, [placeInView]);
 
   useEffect(() => {
