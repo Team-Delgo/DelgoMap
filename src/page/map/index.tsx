@@ -51,8 +51,6 @@ function Map() {
     setTimeout(() => globarMap?.setLevel(5), 200);
   };
 
-  console.log(selectedCert);
-
   return (
     <div className="map-wrapper">
       {isAlertOpen && (

@@ -12,15 +12,10 @@ function DetailReviewHeader({ visited, heart }: Props) {
     <div className="m-[23px] pt-[30px] pb-[20px] border-b border-gray-300 font-[400]">
       <div className="flex items-center">
         <img className="w-[18px]" src={DogFoot} alt="dogfoot" />
-        <span className="text-[16px] font-[500] mx-[7px]">방문 {visited}</span>
-        <span className="text-[14px] font-[500] flex flex-row">
-          (<img src={Heart} className="mx-[3px]" alt="heart" />
-          추천 {heart}
-          <span className="ml-[3px]">)</span>
-        </span>
+        <span className="text-[16px] font-[500] mx-[7px]">여기에 남긴 기록 {visited}개</span>
       </div>
       <span className="text-[12px] font-normal text-gray-700">
-        여기에 {visited}마리의 친구들이 방문했어요
+        친구들이 {visited}번 다녀갔어요
       </span>
       <div className="detail-review-header-div" />
       {/* ????? */}

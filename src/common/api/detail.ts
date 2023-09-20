@@ -33,6 +33,7 @@ interface DetailPageResponse {
   acceptSize: { S: string; M: string; L: string };
   representMenuPhotoUrls: string[];
   isParking: boolean;
+  isBookmarked: boolean;
   parkingInfo: string;
   recommendCount: number;
   editorNoteUrl: string;
@@ -48,9 +49,9 @@ interface ReivewsResponse {
   last: boolean;
 }
 
-export async function getDetailPageData(mungpleId: number) {
+export async function getDetailPageData(mungpleId: number, userId: number) {
   const { data } = await axiosInstance.get<APIResponse<DetailPageResponse>>(
-    `/mungple/detail?mungpleId=${mungpleId}`,
+    `/mungple/detail?mungpleId=${mungpleId}&userId=${userId}`,
   );
   return data.data;
 }
@@ -63,6 +64,20 @@ export async function getDetailPageReviews(
 ) {
   const { data } = await axiosInstance.get<APIResponse<ReivewsResponse>>(
     `/certification/mungple?userId=${userId}&mungpleId=${mungpleId}&page=${pageParam}&size=${pageSize}`,
+  );
+  return data.data;
+}
+
+interface SetBookmarkResponseDTO {
+  bookmarkId: number;
+  userId: number;
+  mungpleId: number;
+  isBookmarked: boolean;
+}
+
+export async function setBookmark(userId: number, mungpleId: number) {
+  const { data } = await axiosInstance.post<APIResponse<SetBookmarkResponseDTO>>(
+    `/bookmark/${userId}/${mungpleId}`,
   );
   return data.data;
 }

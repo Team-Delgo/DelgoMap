@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
@@ -22,7 +22,6 @@ function DetailReview({ mungpleId, visited, heart }: Props) {
     data,
     fetchNextPage,
     refetch: certificationPostsFetch,
-    isLoading,
   } = useInfiniteQuery(
     ['getDetailPageReviews', mungpleId],
     ({ pageParam = 0 }) => getDetailPageReviews(pageParam, user.id, mungpleId, 4),
