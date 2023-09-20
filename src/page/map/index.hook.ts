@@ -55,7 +55,6 @@ function useMap() {
     kakao.maps.CustomOverlay[]
   >([]);
 
-  console.log(1);
   /** API request */
   const { data: mapDataList } = useQuery(
     ['getMapData', userId],
@@ -238,7 +237,6 @@ function useMap() {
     dispatch(mapAction.setMapCustomPosition(dogFootMarkerLocation));
   }, [dogFootMarkerLocation]);
 
-  console.log(mapDataList);
   // 멍플, 인증 마커 렌더링
   useEffect(() => {
     if (mapDataList && map && (isFirstRendering.mungple || isFirstRendering.cert)) {

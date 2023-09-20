@@ -162,7 +162,7 @@ function DetailInfo({
           <div className="flex items-center text-sm font-normal text-[#646566]">
             <a
               href={`https://instagram.com/${instagram.slice(1)}`}
-              className="detail-info-dog-instagram"
+              className="detail-info-dog-instagram text-[#3b84c8]"
             >
               {instagram}
             </a>

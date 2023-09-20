@@ -20,6 +20,7 @@ import WalkSmall from '../../../common/icons/walk-map-small.svg';
 import KinderSmall from '../../../common/icons/kinder-map-small.svg';
 import FootPrintSmall from '../../../common/icons/foot-print-small.svg';
 import ToastPurpleMessage from '../../../common/dialog/ToastPurpleMessage';
+import CheckBox from '../../../common/icons/checkbox-purple.svg'
 
 interface updateCertPostData {
   certificationId: number;
@@ -70,7 +71,7 @@ function UploadCertificationUpdateRecord() {
 
 
   //인증수정 api hook
-  const { mutate: updateCertificationMutate ,isLoading:updateCertificationIsLoading} = useMutation(
+  const { mutate: updateCertificationMutate, isLoading: updateCertificationIsLoading } = useMutation(
     (data: updateCertPostData) => updateCertificationPost(data),
     {
       onSuccess: (response: AxiosResponse) => {
@@ -136,101 +137,109 @@ function UploadCertificationUpdateRecord() {
     switch (OS) {
       case 'ios':
         return (
-                <main
-                  className="capture-img-record ios-capture-record"
-                  style={{
-                    height: initialHeight.current - window.innerWidth + 10,
-                  }}
-                >
-                  <body className="review-container">
-                    <div className="review-place-info">
-                      <div className="review-place-info-title-wrapper">
-                        <img src={icon} alt="category-img" />
-                        <div className="review-place-info-title">
-                          {address !== '' ? address : '기록 남길 주소'}
-                        </div>
-                      </div>
-                      <input
-                        className="review-place-info-search-input"
-                        placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
-                        disabled
-                        value={title !== '' ? title : undefined}
+          <main
+            className="capture-img-record ios-capture-record"
+            style={{
+              height: initialHeight.current - window.innerWidth + 10,
+            }}
+          >
+            <body className="review-container">
+              <div className="review-place-info">
+                <div className="review-place-info-title-wrapper">
+                  <img src={icon} alt="category-img" />
+                  <div className="review-place-info-title">
+                    {address !== '' ? address : '기록 남길 주소'}
+                  </div>
+                </div>
+                <input
+                  className="review-place-info-search-input"
+                  placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
+                  disabled
+                  value={title !== '' ? title : undefined}
+                />
+                {/* <div className="review-place-info-address">{address}</div> */}
+              </div>
+
+              <div className="review-place-address-hide">
+                <div style={{ display: 'flex' }}>
+                  {
+                    isHideAddress ? <img src={CheckBox} onClick={() =>
+                      dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
+                        uploadAction.setHideAddress({
+                          isHideAddress: !isHideAddress,
+                        }),
+                      )
+                    } />
+                      : <input
+                        className="review-place-address-hide-button"
+                        type="checkbox"
+                        onClick={() =>
+                          dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
+                            uploadAction.setHideAddress({
+                              isHideAddress: !isHideAddress,
+                            }),
+                          )
+                        }
                       />
-                      {/* <div className="review-place-info-address">{address}</div> */}
+                  }
+                  <div
+                    className="review-place-address-hide-label"
+                    aria-hidden
+                    onClick={() =>
+                      dispatch(
+                        uploadAction.setHideAddress({
+                          isHideAddress: !isHideAddress,
+                        }),
+                      )
+                    }
+                  >
+                    주소 나만보기
+                  </div>
+                </div>
+                {isHideAddress && (
+                  <div style={{ position: 'relative' }}>
+                    <div className="review-place-address-hide-box">
+                      다른 사용자에게는 장소이름만 보여요
                     </div>
+                    <div className="review-place-address-hide-arrow" />
+                  </div>
+                )}
+              </div>
 
-                    <div className="review-place-address-hide">
-                      <div style={{ display: 'flex' }}>
-                        <input
-                          className="review-place-address-hide-button"
-                          type="checkbox"
-                          checked={isHideAddress}
-                          onClick={() =>
-                            dispatch(
-                              uploadAction.setHideAddress({
-                                isHideAddress: !isHideAddress,
-                              }),
-                            )
-                          }
-                        />
-                        <div
-                          className="review-place-address-hide-label"
-                          aria-hidden
-                          onClick={() =>
-                            dispatch(
-                              uploadAction.setHideAddress({
-                                isHideAddress: !isHideAddress,
-                              }),
-                            )
-                          }
-                        >
-                          주소 나만보기
-                        </div>
-                      </div>
-                      {isHideAddress && (
-                        <div style={{ position: 'relative' }}>
-                          <div className="review-place-address-hide-box">
-                            다른 사용자에게는 장소이름만 보여요
-                          </div>
-                          <div className="review-place-address-hide-arrow" />
-                        </div>
-                      )}
-                    </div>
+              <div className="review-guidance-text">
+                이곳에 대해 남기고 싶은 기록이 있나요?
+              </div>
 
-                    <div className="review-guidance-text">
-                      이곳에 대해 남기고 싶은 기록이 있나요?
-                    </div>
-
-                    <textarea
-                      className="review-content"
-                      placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
-                      onChange={(e) =>
-                        dispatch(
-                          uploadAction.setContent({
-                            content: e.target.value,
-                          }),
-                        )
-                      }
-                      maxLength={199}
-                    >
-                      {content}
-                    </textarea>
-                    <div className="review-content-length">{content.length}/200</div>
-                  </body>
-                  <footer>
-                    {content.length > 0 ? (
-                      <div
-                        className="writting-button-active"
-                        aria-hidden="true"
-                        onClick={uploadCertificationPost}
-                      >
-                        수정완료
-                      </div>
-                    ) : (
-                      <div className="writting-button">수정완료</div>
-                    )}
-                  </footer>
-                </main>
+              <textarea
+                className="review-content"
+                placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
+                onChange={(e) =>
+                  dispatch(
+                    uploadAction.setContent({
+                      content: e.target.value,
+                    }),
+                  )
+                }
+                maxLength={999}
+              >
+                {content}
+              </textarea>
+              <div className="review-content-length">{content.length}/1000</div>
+            </body>
+            <footer>
+              {content.length > 0 ? (
+                <div
+                  className="writting-button-active"
+                  aria-hidden="true"
+                  onClick={uploadCertificationPost}
+                >
+                  수정완료
+                </div>
+              ) : (
+                <div className="writting-button">수정완료</div>
+              )}
+            </footer>
+          </main>
         );
       case 'android':
         return (
@@ -273,18 +282,26 @@ function UploadCertificationUpdateRecord() {
 
                     <div className="review-place-address-hide">
                       <div style={{ display: 'flex' }}>
-                        <input
-                          className="review-place-address-hide-button"
-                          type="checkbox"
-                          checked={isHideAddress}
-                          onClick={() =>
-                            dispatch(
+                        {
+                          isHideAddress ? <img src={CheckBox} onClick={() =>
+                            dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
                               uploadAction.setHideAddress({
                                 isHideAddress: !isHideAddress,
                               }),
                             )
-                          }
-                        />
+                          } />
+                            : <input
+                              className="review-place-address-hide-button"
+                              type="checkbox"
+                              onClick={() =>
+                                dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
+                                  uploadAction.setHideAddress({
+                                    isHideAddress: !isHideAddress,
+                                  }),
+                                )
+                              }
+                            />
+                        }
                         <div
                           className="review-place-address-hide-label"
                           aria-hidden
@@ -323,11 +340,11 @@ function UploadCertificationUpdateRecord() {
                           }),
                         )
                       }
-                      maxLength={199}
+                      maxLength={999}
                     >
                       {content}
                     </textarea>
-                    <div className="review-content-length">{content.length}/200</div>
+                    <div className="review-content-length">{content.length}/1000</div>
                   </body>
                   <footer>
                     {content.length > 0 ? (

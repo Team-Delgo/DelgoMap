@@ -5,10 +5,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import useOnclickOutside from 'react-cool-onclickoutside';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { searchAction } from 'redux/slice/searchSlice';
 import { RootState } from 'redux/store';
 
-const useSearch = (cafeList: Mungple[]) => {
+const useSearch = (cafeList: Mungple[], selectId: (data: Mungple) => void) => {
   const { ref: placeRef, inView: placeInView } = useInView();
   const { ref: userRef, inView: userInView } = useInView();
   const [selectedTab, setSelectedTab] = useState<'keyword' | 'user'>('keyword');
@@ -24,6 +26,8 @@ const useSearch = (cafeList: Mungple[]) => {
     (state: RootState) => state.persist.search.recentSearch,
   );
   const [option, setOption] = useState<Mungple[]>([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const outsideRef = useOnclickOutside(() => {
     setIsFocus(false);
     document.getElementById('search')?.blur();
@@ -51,16 +55,30 @@ const useSearch = (cafeList: Mungple[]) => {
     },
   );
 
+  /* Searched Items onClickHandlers (Mungple, Recent, Users) */
+  const onClickMungpleHandler = (cafe: Mungple) => {
+    selectId(cafe);
+    dispatch(searchAction.setRecentSearch(cafe));
+    setIsFocus(false);
+    setOption([]);
+  };
+  const onClickRecentHandler = (cafe: Mungple) => {
+    selectId(cafe);
+    setIsFocus(false);
+  };
+  const onClickUserHandler = (user: SearchedUser) => {
+    navigate(`/photo/${user.userId}`, { state: { from: 'search' } });
+  };
+
   useEffect(() => {
     if (debouncedInput.length === 0) setSearchedKakaoPlace([]);
-    setPage(1);
     searchFromKakao(debouncedInput, true);
   }, [debouncedInput]);
 
   const userList = useMemo(
     () =>
       infiniteUserList && infiniteUserList.pages.length > 0
-        ? infiniteUserList.pages.flatMap((user) => user ? [...user.content]: [])
+        ? infiniteUserList.pages.flatMap((user) => (user ? [...user.content] : []))
         : [],
     [infiniteUserList],
   );
@@ -125,7 +143,14 @@ const useSearch = (cafeList: Mungple[]) => {
       searchedKakaoPlace,
       userList,
     },
-    actions: { setIsFocus, setOption, inputChangeHandler, inputFoucs, setSelectedTab },
+    actions: {
+      inputChangeHandler,
+      inputFoucs,
+      setSelectedTab,
+      onClickMungpleHandler,
+      onClickRecentHandler,
+      onClickUserHandler,
+    },
   };
 };
 

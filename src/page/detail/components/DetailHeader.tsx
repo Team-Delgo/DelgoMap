@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 import 'index.css';
 import DogFoot from '../../../common/icons/dogfoot.svg';
 import Phone from '../../../common/icons/phone.svg';
@@ -46,12 +48,16 @@ function DetailHeader({
   isBookmarked,
   mungpleId,
 }: Props) {
+  const { OS } = useSelector((state: RootState) => state.persist.device);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isBookmark, setIsBookmark] = useState(isBookmarked);
   const queryClient = useQueryClient();
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const sendScrap = async () => {
-    window.BRIDGE.shareDelgoProfile(window.location.href);
+    console.log('click');
+    if (OS === 'android') window.BRIDGE.shareDelgoProfile(window.location.href);
+    else
+      window.webkit.messageHandlers.shareDelgoProfile.postMessage(window.location.href);
   };
   const { mutate: setBookmarkMutation } = useMutation(
     () => setBookmark(userId, mungpleId),

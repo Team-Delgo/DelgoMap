@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { getMyProfileInfo, getOtherProfileInfo } from 'common/api/myaccount';
 import BallLoading from 'common/utils/BallLoading';
 import { useSelector } from 'react-redux';
+import { postVeiwCount } from '../../../common/api/othersmap';
 import { RootState } from 'redux/store';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ import { ROOT_PATH, RECORD_PATH } from '../../../common/constants/path.const';
 function PetInfo() {
   const splitUrl = window.location.href.split('/');
   const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
+  const { OS } = useSelector((state: RootState) => state.persist.device);
   const myId = useSelector((state: RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
   let isMyAccount = false;
@@ -34,8 +36,13 @@ function PetInfo() {
   }
 
   const mapButtonHandler = () => {
-    if (isMyAccount) window.BRIDGE.shareDelgoProfile(window.location.href);
-    else navigate(`${RECORD_PATH.MAP}/${userId}`);
+    if (isMyAccount) {
+      if (OS === 'android') window.BRIDGE.shareDelgoProfile(window.location.href);
+      else window.webkit.messageHandlers.shareDelgoProfile.postMessage(window.location.href);
+    } else {
+      postVeiwCount(userId);
+      navigate(`${RECORD_PATH.MAP}/${userId}`);
+    }
   };
   return (
     <div className=" fixed z-20 mt-[60px] w-screen">
