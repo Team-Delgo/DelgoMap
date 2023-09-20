@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["kakao.maps.d.ts", "@types/navermaps", "jest"],
+    "types": ["kakao.maps.d.ts", "@types/navermaps", "jest", "@testing-library/jest-dom"],
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -17,6 +17,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": "src",
+
     "paths": {
       //   // "@/*": ["src/*"],
       //   "@api/*": ["src/common/apis/*"],

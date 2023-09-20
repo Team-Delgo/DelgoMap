@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 import 'index.css';
 import DogFoot from '../../../common/icons/dogfoot.svg';
-import Heart from '../../../common/icons/heart.svg';
 import Phone from '../../../common/icons/phone.svg';
 import Upload from '../../../common/icons/upload.svg';
 import Clock from '../../../common/icons/clock.svg';
 import Arrow from '../../../common/icons/up-arrow.svg';
+import Star from '../../../common/icons/star.svg';
+import StartEmpty from '../../../common/icons/star-empty.svg';
+import { useMutation, useQueryClient } from 'react-query';
+import { setBookmark } from 'common/api/detail';
 
 interface Props {
   categoryCode: string;
   placeName: string;
   address: string;
   dogFootCount: number;
-  heartCount: number;
   phoneNumber: string;
   openingHours: OpeningHours;
+  isBookmarked: boolean;
+  mungpleId: number;
 }
 
 interface OpeningHours {
@@ -34,17 +40,31 @@ function DetailHeader({
   placeName,
   address,
   dogFootCount,
-  heartCount,
   phoneNumber,
   openingHours,
   categoryCode,
+  isBookmarked,
+  mungpleId,
 }: Props) {
+  const { OS } = useSelector((state: RootState) => state.persist.device);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [isBookmark, setIsBookmark] = useState(isBookmarked);
+  const queryClient = useQueryClient();
+  const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const sendScrap = async () => {
     console.log('click');
-    window.BRIDGE.shareDelgoProfile(window.location.href);
+    if (OS === 'android') window.BRIDGE.shareDelgoProfile(window.location.href);
+    else
+      window.webkit.messageHandlers.shareDelgoProfile.postMessage(window.location.href);
   };
-  console.log(phoneNumber);
+  const { mutate: setBookmarkMutation } = useMutation(
+    () => setBookmark(userId, mungpleId),
+    {
+      onSuccess: (data) => {
+        setIsBookmark(data.isBookmarked);
+      },
+    },
+  );
   return (
     <div className="-translate-y-[5px] bg-white p-5">
       <div className="flex justify-between">
@@ -55,8 +75,8 @@ function DetailHeader({
           <img className="mr-1 w-3" src={DogFoot} alt="foot" />
           <span>{dogFootCount}</span>
           <div className="mx-[3px] h-[3px] w-[3px] rounded-[100%] bg-[#ababab]" />
-          <img className="mr-1 w-3" src={Heart} alt="heart" />
-          <span>{heartCount}</span>
+          <img className="mr-1 w-3" src={Star} alt="heart" />
+          <span>{0}</span>
         </div>
       </div>
       <div className="mt-1 text-xs font-normal text-[#646566]">{address}</div>
@@ -87,10 +107,26 @@ function DetailHeader({
         <div className="h-[21px] w-[1px] bg-[#e6e6e6]" />
         <div
           aria-hidden
+          onClick={() => setBookmarkMutation()}
+          className={`flex items-center leading-[150%] 
+          ${isBookmark ? 'text-[#6f40f3]' : 'text-black'} 
+          ${isBookmark ? 'font-medium' : 'font-normal'} 
+          no-underline`}
+        >
+          <img
+            className="mr-[6px] h-[15px] w-[15px]"
+            src={isBookmark ? Star : StartEmpty}
+            alt="time"
+          />
+          저장
+        </div>
+        <div className="h-[21px] w-[1px] bg-[#e6e6e6]" />
+        <div
+          aria-hidden
           onClick={() => setIsInfoOpen(!isInfoOpen)}
           className="flex items-center leading-[150%] text-black no-underline"
         >
-          <img className="mr-[6px]" src={Clock} alt="time" />
+          <img className="mr-[6px] h-[15px] w-[15px]" src={Clock} alt="time" />
           {categoryCode === 'CA0005' ? '운영시간' : '영업시간'}
         </div>
       </div>
