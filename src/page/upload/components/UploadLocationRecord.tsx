@@ -56,18 +56,14 @@ function UploadLocationRecord() {
       const { mungpleId, placeName, address } = place;
       setCheckedPlaceId(mungpleId); //멍플아이디 등록 
       dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address })); //선택한 멍플데이터 store 저장
-      setTimeout(() => {
-        navigate(UPLOAD_PATH.CERTIFICATION); //다시 인증페이지 이동
-      }, 1000);
+      navigate(UPLOAD_PATH.CERTIFICATION); //다시 인증페이지 이동
     },
     [],
   );
 
   const selectManualPlace = useCallback(() => { //장소 수 동설정
     onCheckManual();
-    setTimeout(() => {
-      navigateCertMap(); //인증맵으로 이동
-    }, 500);
+    navigateCertMap(); //인증맵으로 이동
   }, [placeName]);
 
   const navigateCertMap = () => {
