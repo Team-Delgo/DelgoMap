@@ -5,12 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { certificationDelete, reactCertification } from '../common/api/certification';
-import Heart from '../common/icons/heart-empty.svg';
-import FillHeart from '../common/icons/heart.svg';
-import Comments from '../common/icons/comments.svg';
 import DogLoading from '../common/icons/dog-loading.svg';
-import CuteIcon from "../common/icons/cute-icon.svg"
-import HelpIcon from "../common/icons/help-icon.svg"
+import CuteIcon from "../common/icons/react-cute.svg"
+import HelpIcon from "../common/icons/react-help.svg"
+import DefaultIcon from "../common/icons/react-default.svg"
 import { RootState } from '../redux/store';
 import { UPLOAD_PATH, SIGN_IN_PATH, RECORD_PATH } from '../common/constants/path.const';
 import { uploadAction } from '../redux/slice/uploadSlice';
@@ -24,7 +22,6 @@ import { weekDay } from '../common/types/week';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import { useErrorHandlers } from '../common/api/useErrorHandlers';
-import LikeAnimation from '../common/utils/LikeAnimation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -413,14 +410,20 @@ function CertificationPost({
         )}
 
         <body className="post-img-result-main-footer">
-          <div className={ isHelp ? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.helper)}>
-            <img src={HelpIcon} alt="help-icon" />
+          <div
+            className={isHelp ? 'post-like-box-active' : 'post-like-box'}
+            onClick={handleReactCertification(reactParam.helper)}
+          >
+            <img src={isHelp ? HelpIcon : DefaultIcon} alt="help-icon" />
             <span>도움돼요</span>
             <span>{helpCount}</span>
           </div>
           <div style={{ marginRight: '9px' }} />
-          <div className={ isCute? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.cute)}>
-            <img src={CuteIcon} alt="cute-icon" />
+          <div
+            className={isCute ? 'post-like-box-active' : 'post-like-box'}
+            onClick={handleReactCertification(reactParam.cute)}
+          >
+            <img src={isCute ? CuteIcon : DefaultIcon} alt="cute-icon" />
             <span>귀여워요</span>
             <span>{cuteCount}</span>
           </div>
@@ -428,7 +431,9 @@ function CertificationPost({
 
         <footer className="post-comment-wrapper" onClick={moveToCommentPage}>
           <span>댓글</span>
-          <span style={{ color: 'var(--reward-gray-23, #ABABAB)',marginLeft:"3px" }}>{post?.commentCount}개</span>
+          <span style={{ color: 'var(--reward-gray-23, #ABABAB)', marginLeft: '3px' }}>
+            {post?.commentCount}개
+          </span>
         </footer>
       </main>
       <div className="border-line" />
