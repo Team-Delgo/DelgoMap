@@ -24,8 +24,9 @@ import AlertConfirm from '../../common/dialog/AlertConfirm';
 import LikeAnimation from '../../common/utils/LikeAnimation';
 import { postType } from '../../common/types/post';
 import { reactParam } from '../../common/constants/parameter.const';
-import CuteIcon from "../../common/icons/cute-icon.svg"
-import HelpIcon from "../../common/icons/help-icon.svg"
+import CuteIcon from "../../common/icons/react-cute.svg"
+import HelpIcon from "../../common/icons/react-help.svg"
+import DefaultIcon from "../../common/icons/react-default.svg"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -195,13 +196,13 @@ function RecordCertification(props: { certification: any }) {
         <div className="record-cert-description">{certification.description}</div>
         <body className="post-img-result-main-footer">
           <div className={ isHelp ? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.helper)}>
-            <img src={HelpIcon} alt="help-icon" />
+            <img src={isHelp ? HelpIcon : DefaultIcon} alt="help-icon" />
             <span>도움돼요</span>
             <span>{helpCount}</span>
           </div>
           <div style={{ marginRight: '9px' }} />
           <div className={ isCute? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.cute)}>
-            <img src={CuteIcon} alt="cute-icon" />
+            <img src={isCute ? CuteIcon : DefaultIcon} alt="cute-icon" />
             <span>귀여워요</span>
             <span>{cuteCount}</span>
           </div>
