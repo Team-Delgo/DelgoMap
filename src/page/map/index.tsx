@@ -15,6 +15,7 @@ import CertCard from './components/CertCard';
 import BallLoading from '../../common/utils/BallLoading';
 import UserLocation from './components/UserLocation';
 import CountBox from './components/CountBox';
+import ListBox from './components/ListBox';
 import useMap from './index.hook';
 
 function Map() {
@@ -134,7 +135,9 @@ function Map() {
       {isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
         <CountBox />
       )}
-
+      {!isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
+        <ListBox />
+      )}
       {selectedMungple.title.length > 0 && <LinkCopy isMungple />}
       {isSelectedAnything && selectedMungple.title.length === 0 && (
         <LinkCopy isMungple={false} />

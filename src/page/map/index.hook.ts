@@ -311,7 +311,6 @@ function useMap() {
   useEffect(() => {
     showMungpleMarkers();
   }, [selectedCategory]);
-
   return {
     state: {
       map,

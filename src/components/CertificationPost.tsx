@@ -10,7 +10,12 @@ import FillHeart from '../common/icons/heart.svg';
 import Comments from '../common/icons/comments.svg';
 import DogLoading from '../common/icons/dog-loading.svg';
 import { RootState } from '../redux/store';
-import { UPLOAD_PATH, SIGN_IN_PATH, RECORD_PATH } from '../common/constants/path.const';
+import {
+  UPLOAD_PATH,
+  SIGN_IN_PATH,
+  RECORD_PATH,
+  ROOT_PATH,
+} from '../common/constants/path.const';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { scrollActions } from '../redux/slice/scrollSlice';
 import DeleteBottomSheet from '../common/dialog/ConfirmBottomSheet';
@@ -48,7 +53,7 @@ function CertificationPost({
   certificationPostsFetch,
   pageSize,
 }: CertificationPostPropsType) {
-  const [moredesc,setMoreDesc] = useState(false)
+  const [moredesc, setMoreDesc] = useState(false);
   const [imageNumber, setImageNumber] = useState(0);
   const [LikeAnimationLoading, setLikeAnimationLoading] = useState(false); //라이크에니메이션 로딩여부(이미지 더블클릭)
   const [likeCount, setLikeCount] = useState(post?.likeCount); //좋아요 갯수
@@ -257,6 +262,15 @@ function CertificationPost({
       },
     });
   };
+  const placeClickHandler = () => {
+    navigate(ROOT_PATH, {
+      state: {
+        certId: post.certificationId,
+        certAddress: post.address,
+        isMungple: post.mungpleId,
+      },
+    });
+  };
   const closeAlert = () => {
     setLoginAlertIsOpen(false);
   };
@@ -265,10 +279,8 @@ function CertificationPost({
     navigate(SIGN_IN_PATH.MAIN);
   };
 
-
-  console.log(post?.description)
-  console.log(post?.description.length)
-
+  console.log(post?.description);
+  console.log(post?.description.length);
 
   return (
     <>
@@ -345,7 +357,10 @@ function CertificationPost({
         )}
         <header className="post-img-result-main-header">
           <div className="post-img-result-main-header-place">
-            <div className="post-img-result-main-header-place-name">
+            <div
+              className="post-img-result-main-header-place-name"
+              onClick={placeClickHandler}
+            >
               {post?.placeName}
             </div>
             {!post?.isHideAddress && (
@@ -355,25 +370,41 @@ function CertificationPost({
             )}
           </div>
         </header>
-        {
-          /\n/.test(post?.description) ? <body className="post-img-result-main-body"> {
-            !moredesc ? post?.description.split('\n')[0] : post?.description
-          }
-            {
-              !moredesc ? <span style={{ color: "#AA93EC" }} onClick={() => setMoreDesc(true)}> ...더 보기</span>
-                : <div style={{ color: "#AA93EC" }} onClick={() => setMoreDesc(false)}>글 접기</div>
-            }
-          </body> : post?.description.length > 19 ?  <body className="post-img-result-main-body">{
-            !moredesc ?
-              post?.description.substring(0, 19) : post?.description}
-            {
-              !moredesc ? <span style={{ color: "#AA93EC" }} onClick={() => setMoreDesc(true)}> ...더 보기</span>
-                : <div style={{ color: "#AA93EC", margin: '15px 0' }} onClick={() => setMoreDesc(false)}>글 접기</div>
-            }
-          </body> : <body className="post-img-result-main-body">
-            {post?.description}
+        {/\n/.test(post?.description) ? (
+          <body className="post-img-result-main-body">
+            {' '}
+            {!moredesc ? post?.description.split('\n')[0] : post?.description}
+            {!moredesc ? (
+              <span style={{ color: '#AA93EC' }} onClick={() => setMoreDesc(true)}>
+                {' '}
+                ...더 보기
+              </span>
+            ) : (
+              <div style={{ color: '#AA93EC' }} onClick={() => setMoreDesc(false)}>
+                글 접기
+              </div>
+            )}
           </body>
-        }
+        ) : post?.description.length > 19 ? (
+          <body className="post-img-result-main-body">
+            {!moredesc ? post?.description.substring(0, 19) : post?.description}
+            {!moredesc ? (
+              <span style={{ color: '#AA93EC' }} onClick={() => setMoreDesc(true)}>
+                {' '}
+                ...더 보기
+              </span>
+            ) : (
+              <div
+                style={{ color: '#AA93EC', margin: '15px 0' }}
+                onClick={() => setMoreDesc(false)}
+              >
+                글 접기
+              </div>
+            )}
+          </body>
+        ) : (
+          <body className="post-img-result-main-body">{post?.description}</body>
+        )}
         <footer className="post-img-result-main-footer">
           <div className="post-img-result-main-footer-heart-wrapper">
             <img

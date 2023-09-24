@@ -11,8 +11,9 @@ export interface postType {
   userId: number;
   userName: string;
   userProfile: string;
-  isHideAddress:boolean;
-  photos:Array<string>
+  mungpleId: number;
+  isHideAddress: boolean;
+  photos: Array<string>;
 }
 
 export interface userType {
