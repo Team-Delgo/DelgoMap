@@ -31,7 +31,7 @@ export const icons = {
   CA0005: BeautySmall,
   CA0006: HospitalSmall,
   CA0007: KinderSmall,
-  CA9999: EtcSmall
+  CA9999: EtcSmall,
 };
 
 function PlaceCard({ id, detailUrl, img, title, address, categoryCode, map }: Props) {

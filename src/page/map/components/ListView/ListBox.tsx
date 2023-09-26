@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import listIcon from '../../../common/icons/list.svg';
+import listIcon from '../../../../common/icons/list.svg';
 import ListView from './List';
 function ListBox() {
   const [isSearchViewOpen, setIsSearchViewOpen] = useState(false);

@@ -15,7 +15,7 @@ import CertCard from './components/CertCard';
 import BallLoading from '../../common/utils/BallLoading';
 import UserLocation from './components/UserLocation';
 import CountBox from './components/CountBox';
-import ListBox from './components/ListBox';
+import ListBox from './components/ListView/ListBox';
 import useMap from './index.hook';
 
 function Map() {
@@ -88,6 +88,7 @@ function Map() {
           onClick={(category) => {
             setSelectedCategory(category);
           }}
+          listView={false}
         />
       )}
       <div className="map" ref={mapElement} />
