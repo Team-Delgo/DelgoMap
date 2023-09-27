@@ -22,6 +22,12 @@ import { categoryCode2 } from '../../common/types/category';
 import useActive from '../../common/hooks/useActive';
 import AlertConfirm from '../../common/dialog/AlertConfirm';
 import LikeAnimation from '../../common/utils/LikeAnimation';
+
+import { postType } from '../../common/types/post';
+import { reactParam } from '../../common/constants/parameter.const';
+import CuteIcon from "../../common/icons/react-cute.svg"
+import HelpIcon from "../../common/icons/react-help.svg"
+import DefaultIcon from "../../common/icons/react-default.svg"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -188,7 +194,25 @@ function RecordCertification(props: { certification: any }) {
         </div>
         <div className="record-cert-devider" />
         <div className="record-cert-description">{certification.description}</div>
-        <div className="record-cert-icons">
+
+        <body className="post-img-result-main-footer">
+          <div className={ isHelp ? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.helper)}>
+            <img src={isHelp ? HelpIcon : DefaultIcon} alt="help-icon" />
+            <span>도움돼요</span>
+            <span>{helpCount}</span>
+          </div>
+          <div style={{ marginRight: '9px' }} />
+          <div className={ isCute? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.cute)}>
+            <img src={isCute ? CuteIcon : DefaultIcon} alt="cute-icon" />
+            <span>귀여워요</span>
+            <span>{cuteCount}</span>
+          </div>
+        </body>
+        <footer className="post-comment-wrapper" onClick={moveToCommentPage}>
+          <span>댓글</span>
+          <span style={{ color: 'var(--reward-gray-23, #ABABAB)',marginLeft:"3px" }}>{certification?.commentCount}개</span>
+        </footer>
+        {/* <div className="record-cert-icons">
           <img
             className="record-cert-icons-heart"
             width={22}

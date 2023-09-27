@@ -4,11 +4,12 @@ import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { certificationDelete, certificationLike } from '../common/api/certification';
-import Heart from '../common/icons/heart-empty.svg';
-import FillHeart from '../common/icons/heart.svg';
-import Comments from '../common/icons/comments.svg';
+
+import { certificationDelete, reactCertification } from '../common/api/certification';
 import DogLoading from '../common/icons/dog-loading.svg';
+import CuteIcon from "../common/icons/react-cute.svg"
+import HelpIcon from "../common/icons/react-help.svg"
+import DefaultIcon from "../common/icons/react-default.svg"
 import { RootState } from '../redux/store';
 import { UPLOAD_PATH, SIGN_IN_PATH, RECORD_PATH } from '../common/constants/path.const';
 import { uploadAction } from '../redux/slice/uploadSlice';
@@ -22,7 +23,6 @@ import { weekDay } from '../common/types/week';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import { useErrorHandlers } from '../common/api/useErrorHandlers';
-import LikeAnimation from '../common/utils/LikeAnimation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -388,23 +388,36 @@ function CertificationPost({
             {likeCount > 0 && (
               <div className="post-img-result-main-footer-count">{likeCount}</div>
             )}
+          </body>
+        ) : (
+          <body className="post-img-result-main-body">{post?.description}</body>
+        )}
+
+        <body className="post-img-result-main-footer">
+          <div
+            className={isHelp ? 'post-like-box-active' : 'post-like-box'}
+            onClick={handleReactCertification(reactParam.helper)}
+          >
+            <img src={isHelp ? HelpIcon : DefaultIcon} alt="help-icon" />
+            <span>도움돼요</span>
+            <span>{helpCount}</span>
           </div>
-          <div className="post-img-result-main-footer-comments-wrapper">
-            <img
-              className="post-img-result-main-footer-comments"
-              src={Comments}
-              alt="comments"
-              width={22}
-              height={22}
-              aria-hidden="true"
-              onClick={moveToCommentPage}
-            />
-            {post?.commentCount > 0 && (
-              <div className="post-img-result-main-footer-count">
-                {post?.commentCount}
-              </div>
-            )}
+          <div style={{ marginRight: '9px' }} />
+          <div
+            className={isCute ? 'post-like-box-active' : 'post-like-box'}
+            onClick={handleReactCertification(reactParam.cute)}
+          >
+            <img src={isCute ? CuteIcon : DefaultIcon} alt="cute-icon" />
+            <span>귀여워요</span>
+            <span>{cuteCount}</span>
           </div>
+        </body>
+
+        <footer className="post-comment-wrapper" onClick={moveToCommentPage}>
+          <span>댓글</span>
+          <span style={{ color: 'var(--reward-gray-23, #ABABAB)', marginLeft: '3px' }}>
+            {post?.commentCount}개
+          </span>
         </footer>
       </main>
       <div className="border-line" />
