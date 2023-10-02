@@ -51,24 +51,26 @@ function UploadLocationRecord() {
     },
   );
 
-  const selectMongPlace = useCallback( //멍플장속 선택
-    (place: MungPlaceType) => (event: React.MouseEvent) => {
-      const { mungpleId, placeName, address } = place;
-      setCheckedPlaceId(mungpleId); //멍플아이디 등록 
-      dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address })); //선택한 멍플데이터 store 저장
+  const selectMongPlace = (place: MungPlaceType) => (event: React.MouseEvent) => {
+    const { mungpleId, placeName, address } = place;
+    setCheckedPlaceId(mungpleId); //멍플아이디 등록
+    dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address })); //선택한 멍플데이터 store 저장
+    setTimeout(()=>{
       navigate(UPLOAD_PATH.CERTIFICATION); //다시 인증페이지 이동
-    },
-    [],
-  );
+    },100)
+  };
 
-  const selectManualPlace = useCallback(() => { //장소 수 동설정
+  const selectManualPlace = () => {
+    //장소 수 동설정
     onCheckManual();
     navigateCertMap(); //인증맵으로 이동
-  }, [placeName]);
+  };
 
   const navigateCertMap = () => {
     dispatch(mapAction.setCurrentPlaceName(inputRef.current.value));
-    navigate(UPLOAD_PATH.MAP);
+    setTimeout(()=>{
+      navigate(UPLOAD_PATH.MAP);
+    },100)
   };
 
   const manualPlace = () => {
