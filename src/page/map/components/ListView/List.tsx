@@ -26,32 +26,28 @@ interface ListData {
   bookmarkCount: number;
   isBookmarked: boolean;
 }
-function ListView(props: { onClick: (event: React.MouseEvent<HTMLDivElement>) => void }) {
-  const { onClick } = props;
-  const currentPosition = useSelector((state: RootState) => state.map);
+function ListView(props: {
+  lng: string;
+  lat: string;
+  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+}) {
+  const { onClick, lng, lat } = props;
   const [selectedCategory, setSelectedCategory] = useState('CA0000');
   const [sort, setSort] = useState('DISTANCE');
+  const [sortTitle, setSortTitle] = useState('거리순');
   const [showDropDown, setShowDropDown] = useState(false);
   const [isBookmarkList, setIsBookmarkList] = useState(false);
-  const [longditude, setlongditude] = useState(`${currentPosition.lng}`);
-  const [latitude, setlatitude] = useState(`${currentPosition.lat}`);
   const [listData, setListData] = useState<ListData[]>([]);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
-  }, [selectedCategory]);
+  }, [selectedCategory, sort]);
 
   const fetchData = async () => {
     try {
-      const res = await getMungPlaceCategory(
-        userId,
-        selectedCategory,
-        sort,
-        latitude,
-        longditude,
-      );
+      const res = await getMungPlaceCategory(userId, selectedCategory, sort, lat, lng);
       const { data, code } = res;
       setListData(data);
     } catch (error) {
@@ -59,8 +55,10 @@ function ListView(props: { onClick: (event: React.MouseEvent<HTMLDivElement>) =>
     }
   };
 
-  const dropDownHandler = (selectedValue: string) => {
-    console.log('Selected value:', selectedValue);
+  const dropDownHandler = (selectedCode: string, selectedName: string) => {
+    console.log('Selected:', selectedCode);
+    setSort(selectedCode);
+    setSortTitle(selectedName);
     setShowDropDown(false);
     fetchData();
   };
@@ -90,7 +88,7 @@ function ListView(props: { onClick: (event: React.MouseEvent<HTMLDivElement>) =>
         listView={true}
       />
       <div className="absolute left-[20px] top-[125px] flex">
-        {isBookmarkList ? '최신순' : '거리순'}
+        {sortTitle}
         <img
           src={dropDownArrow}
           className="ml-[4px]"
@@ -99,7 +97,7 @@ function ListView(props: { onClick: (event: React.MouseEvent<HTMLDivElement>) =>
           }}
         />
       </div>
-      <div className="ml-[20px] mt-[158px] overflow-y-scroll scrollbar-none">
+      <div className="ml-[20px] mt-[158px] h-screen overflow-y-scroll scrollbar-none">
         {listData.map((listItem: ListData) => (
           <div key={listItem.mungpleId} className="mb-[14px] flex">
             <img src={listItem.photoUrl} className="h-[88px] w-[88px] rounded-[6px]" />

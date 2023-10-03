@@ -122,7 +122,6 @@ function useMap() {
     marker.setZIndex(20);
     setDogFootMarkerLocation(() => ({ lat: 0, lng: 0 }));
   };
-
   // Markers visible handlers
   const hideMungpleMarkers = () => {
     mungpleMarkers.forEach((marker) => marker.marker.setVisible(false));

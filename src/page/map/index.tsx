@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 import './index.scss';
 import FooterNavigation from '../../components/FooterNavigation';
 import Logo from '../../common/icons/logo.svg';
@@ -17,10 +19,10 @@ import UserLocation from './components/UserLocation';
 import CountBox from './components/CountBox';
 import ListBox from './components/ListView/ListBox';
 import useMap from './index.hook';
+import { ROOT_PATH } from 'common/constants/path.const';
 
 function Map() {
   const [copyLoading, setCopyLoading] = useState(false);
-
   const {
     state: {
       map: globarMap,
@@ -47,6 +49,9 @@ function Map() {
       searchAndMoveToKakaoPlace,
     },
   } = useMap();
+  const center = globarMap?.getCenter();
+  const lat = `${center?.getLat()}`;
+  const lng = `${center?.getLng()}`;
 
   const moveKakaoMapCurrentLocation = (lat: number, lng: number) => {
     globarMap?.panTo(new kakao.maps.LatLng(lat, lng));
@@ -137,7 +142,7 @@ function Map() {
         <CountBox />
       )}
       {!isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
-        <ListBox />
+        <ListBox lng={lng} lat={lat} />
       )}
       {selectedMungple.title.length > 0 && <LinkCopy isMungple />}
       {isSelectedAnything && selectedMungple.title.length === 0 && (

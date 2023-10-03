@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 interface Props {
-  onClick: (selectedValue: string) => void;
+  onClick: (selectedCode: string, selectedName: string) => void;
   isBookmarkList: boolean;
 }
 const dropDownList1 = [
@@ -16,38 +16,45 @@ const dropDownList2 = [
   { code: 'DISTANCE', name: '거리순' },
 ];
 function DropDown({ onClick, isBookmarkList }: Props) {
-  const [selectedValue, setSelectedValue] = useState('DISTANCE');
-
   const clickEventHandler = (e: React.MouseEvent<HTMLElement>) => {
-    const value = e.currentTarget.getAttribute('value');
-    if (value) {
-      setSelectedValue(value);
-      onClick(value); // 부모 컴포넌트로 선택된 값을 전달
+    const value1 = e.currentTarget.getAttribute('data-code');
+    const value2 = e.currentTarget.getAttribute('data-name');
+
+    if (value1 && value2) {
+      onClick(value1, value2); // 부모 컴포넌트로 선택된 값을 전달
     }
   };
 
   return (
-    <div className="h-screen w-screen bg-black bg-opacity-60">
-      <div className="">
+    <div className="fixed z-[999] h-screen w-screen bg-black bg-opacity-60">
+      <div className="absolute bottom-0 h-[228px] w-screen rounded-t-[19px] bg-white">
         {isBookmarkList
           ? dropDownList1.map((data) => (
-              <div
-                key={data.code}
-                onClick={clickEventHandler}
-                className="text-[18px] font-normal leading-[150%]"
-              >
-                {data.name}
-                <hr />
+              <div>
+                <li
+                  key={data.code}
+                  data-code={data.code}
+                  data-name={data.name}
+                  onClick={clickEventHandler}
+                  className="my-[16px] list-none text-center text-[18px] font-normal leading-[150%]"
+                >
+                  {data.name}
+                </li>
+                {data.code != 'DISTANCE' && <hr />}
               </div>
             ))
           : dropDownList2.map((data) => (
-              <div
-                key={data.code}
-                onClick={clickEventHandler}
-                className="text-[18px] font-normal leading-[150%]"
-              >
-                {data.name}
-                <hr />
+              <div>
+                <li
+                  key={data.code}
+                  data-code={data.code}
+                  data-name={data.name}
+                  onClick={clickEventHandler}
+                  className="my-[16px] list-none text-center text-[18px] font-normal leading-[150%]"
+                >
+                  {data.name}
+                </li>
+                {data.code != 'DISTANCE' && <hr />}
               </div>
             ))}
       </div>
