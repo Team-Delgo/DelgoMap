@@ -38,6 +38,7 @@ function Map() {
     },
     action: {
       openSearchView,
+      listboxHandler,
       closeSearchView,
       searchAndMoveToMungple,
       setIsAlertOpen,
@@ -49,10 +50,6 @@ function Map() {
       searchAndMoveToKakaoPlace,
     },
   } = useMap();
-  const center = globarMap?.getCenter();
-  const lat = `${center?.getLat()}`;
-  const lng = `${center?.getLng()}`;
-
   const moveKakaoMapCurrentLocation = (lat: number, lng: number) => {
     globarMap?.panTo(new kakao.maps.LatLng(lat, lng));
     setTimeout(() => globarMap?.setLevel(5), 200);
@@ -142,7 +139,7 @@ function Map() {
         <CountBox />
       )}
       {!isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
-        <ListBox lng={lng} lat={lat} />
+        <ListBox onClick={listboxHandler} />
       )}
       {selectedMungple.title.length > 0 && <LinkCopy isMungple />}
       {isSelectedAnything && selectedMungple.title.length === 0 && (

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AxiosRequestConfig, AxiosError } from 'axios';
 import { tokenRefresh } from './login';
 
 const axiosInstance = axios.create({
@@ -26,6 +27,16 @@ const processQueue = (error: any, token: string | undefined = undefined): void =
 
   failedQueue = [];
 };
+
+axiosInstance.interceptors.request.use(
+  (config: any) => {
+    config.headers['version'] = process.env.REACT_APP_VERSION;
+    return config;
+  },
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  },
+);
 
 axiosInstance.interceptors.response.use(
   (response) => {

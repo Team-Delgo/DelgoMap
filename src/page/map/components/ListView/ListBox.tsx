@@ -2,10 +2,12 @@ import React from 'react';
 import { useState } from 'react';
 import listIcon from '../../../../common/icons/list.svg';
 import ListView from './List';
-function ListBox(props: { lng: string; lat: string }) {
-  const { lng, lat } = props;
+function ListBox(props: { onClick: () => { lat: string; lng: string } }) {
+  const { onClick } = props;
+  const { lat, lng } = onClick();
   const [isSearchViewOpen, setIsSearchViewOpen] = useState(false);
   const openListView = (event: React.MouseEvent<HTMLDivElement>) => {
+    onClick();
     setIsSearchViewOpen(true);
   };
   const closeListView = (event: React.MouseEvent<HTMLDivElement>) => {

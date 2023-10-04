@@ -11,9 +11,16 @@ export interface postType {
   userId: number;
   userName: string;
   userProfile: string;
-  mungpleId: number;
   isHideAddress: boolean;
   photos: Array<string>;
+  reactionCountMap: {
+    CUTE: number;
+    HELPER: number;
+  };
+  reactionMap: {
+    CUTE: boolean;
+    HELPER: boolean;
+  };
 }
 
 export interface userType {

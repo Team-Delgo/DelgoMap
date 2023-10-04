@@ -95,6 +95,13 @@ function useMap() {
   };
 
   // EventListener handlers
+  const listboxHandler = () => {
+    const center = map?.getCenter();
+    const lat = `${center?.getLat()}`;
+    const lng = `${center?.getLng()}`;
+    return { lat, lng };
+  };
+
   const mapClickHandler = (e: kakao.maps.event.MouseEvent) => {
     setIsSelectedAnything((prev) => {
       if (prev) {
@@ -326,6 +333,7 @@ function useMap() {
     },
     action: {
       openSearchView,
+      listboxHandler,
       closeSearchView,
       searchAndMoveToMungple,
       setIsAlertOpen,

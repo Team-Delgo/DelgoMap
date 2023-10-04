@@ -93,7 +93,7 @@ function Setting() {
         </div>
         <div className="setting-version">
           <div className="setting-label">버전정보</div>
-          <div className="setting-version-number">1.0.0</div>
+          <div className="setting-version-number">{process.env.REACT_APP_VERSION}</div>
         </div>
         <div
           aria-hidden="true"

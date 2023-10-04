@@ -87,15 +87,14 @@ function ListView(props: {
         }}
         listView={true}
       />
-      <div className="absolute left-[20px] top-[125px] flex">
+      <div
+        className="absolute left-[20px] top-[125px] flex"
+        onClick={() => {
+          setShowDropDown((prevState) => !prevState);
+        }}
+      >
         {sortTitle}
-        <img
-          src={dropDownArrow}
-          className="ml-[4px]"
-          onClick={() => {
-            setShowDropDown((prevState) => !prevState);
-          }}
-        />
+        <img src={dropDownArrow} className="ml-[4px]" />
       </div>
       <div className="ml-[20px] mt-[158px] h-screen overflow-y-scroll scrollbar-none">
         {listData.map((listItem: ListData) => (
@@ -108,7 +107,7 @@ function ListView(props: {
               >
                 {listItem.placeName}
               </div>
-              <div className="mr-[20px] max-h-[30%] overflow-hidden text-[12px] text-[#8a8a8a]">
+              <div className="mr-[20px] text-[12px] text-[#8a8a8a]">
                 {listItem.address}
               </div>
               <div className="flex">
