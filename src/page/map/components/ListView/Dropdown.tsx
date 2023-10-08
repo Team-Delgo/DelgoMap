@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 interface Props {
   onClick: (selectedCode: string, selectedName: string) => void;
   isBookmarkList: boolean;
+  sortCode: string;
 }
 const dropDownList1 = [
   { code: 'NEWEST', name: '최신순' },
@@ -11,16 +12,18 @@ const dropDownList1 = [
 ];
 
 const dropDownList2 = [
+  { code: 'DISTANCE', name: '거리순' },
   { code: 'CERT', name: '방문 기록 많은순' },
   { code: 'BOOKMARK', name: '저장 많은순' },
-  { code: 'DISTANCE', name: '거리순' },
 ];
-function DropDown({ onClick, isBookmarkList }: Props) {
+function DropDown({ onClick, isBookmarkList, sortCode }: Props) {
+  const [selectedCode, setSelectedCode] = useState('DISTANCE');
   const clickEventHandler = (e: React.MouseEvent<HTMLElement>) => {
     const value1 = e.currentTarget.getAttribute('data-code');
     const value2 = e.currentTarget.getAttribute('data-name');
 
     if (value1 && value2) {
+      setSelectedCode(value1);
       onClick(value1, value2); // 부모 컴포넌트로 선택된 값을 전달
     }
   };
@@ -36,7 +39,9 @@ function DropDown({ onClick, isBookmarkList }: Props) {
                   data-code={data.code}
                   data-name={data.name}
                   onClick={clickEventHandler}
-                  className="my-[16px] list-none text-center text-[18px] font-normal leading-[150%]"
+                  className={`my-[16px] list-none text-center text-[18px] leading-[150%] ${
+                    data.code === sortCode ? 'font-bold' : 'font-normal text-[#646566]'
+                  }`}
                 >
                   {data.name}
                 </li>
@@ -50,11 +55,13 @@ function DropDown({ onClick, isBookmarkList }: Props) {
                   data-code={data.code}
                   data-name={data.name}
                   onClick={clickEventHandler}
-                  className="my-[16px] list-none text-center text-[18px] font-normal leading-[150%]"
+                  className={`my-[16px] list-none text-center text-[18px] leading-[150%] ${
+                    data.code === sortCode ? 'font-bold' : 'font-normal text-[#646566]'
+                  }`}
                 >
                   {data.name}
                 </li>
-                {data.code != 'DISTANCE' && <hr />}
+                {data.code != 'BOOKMARK' && <hr />}
               </div>
             ))}
       </div>

@@ -10,7 +10,12 @@ import CuteIcon from '../common/icons/react-cute.svg';
 import HelpIcon from '../common/icons/react-help.svg';
 import DefaultIcon from '../common/icons/react-default.svg';
 import { RootState } from '../redux/store';
-import { UPLOAD_PATH, SIGN_IN_PATH, RECORD_PATH } from '../common/constants/path.const';
+import {
+  UPLOAD_PATH,
+  SIGN_IN_PATH,
+  RECORD_PATH,
+  ROOT_PATH,
+} from '../common/constants/path.const';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { scrollActions } from '../redux/slice/scrollSlice';
 import DeleteBottomSheet from '../common/dialog/ConfirmBottomSheet';
@@ -245,6 +250,15 @@ function CertificationPost({
     });
   };
 
+  const moveToMap = () => {
+    navigate(ROOT_PATH, {
+      state: {
+        lat: post.latitude,
+        lng: post.longitude,
+        isMungple: post.mungpleId !== 0 ? post.mungpleId : undefined,
+      },
+    });
+  };
   const moveToCommentPage = () => {
     //로그인 안되있으면 로그인alert창 띄워주고
     if (!isSignIn) {
@@ -358,7 +372,7 @@ function CertificationPost({
         </div>
         <header className="post-img-result-main-header">
           <div className="post-img-result-main-header-place">
-            <div className="post-img-result-main-header-place-name">
+            <div className="post-img-result-main-header-place-name" onClick={moveToMap}>
               {post?.placeName}
             </div>
             {!post?.isHideAddress && (

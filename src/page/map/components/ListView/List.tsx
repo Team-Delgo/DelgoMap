@@ -46,8 +46,12 @@ function ListView(props: {
   }, [selectedCategory, sort]);
 
   const fetchData = async () => {
+    let res;
     try {
-      const res = await getMungPlaceCategory(userId, selectedCategory, sort, lat, lng);
+      if (selectedCategory === 'BOOKMARKLIST') {
+        res = await getBookmark(userId, sort, lat, lng);
+        setIsBookmarkList(true);
+      } else res = await getMungPlaceCategory(userId, selectedCategory, sort, lat, lng);
       const { data, code } = res;
       setListData(data);
     } catch (error) {
@@ -68,7 +72,11 @@ function ListView(props: {
   return (
     <div className="z-[999] h-screen w-screen bg-white">
       {showDropDown && (
-        <DropDown onClick={dropDownHandler} isBookmarkList={isBookmarkList} />
+        <DropDown
+          onClick={dropDownHandler}
+          isBookmarkList={isBookmarkList}
+          sortCode={sort}
+        />
       )}
       <div className="fixed mt-[16px] w-screen ">
         <img
@@ -96,7 +104,7 @@ function ListView(props: {
         {sortTitle}
         <img src={dropDownArrow} className="ml-[4px]" />
       </div>
-      <div className="ml-[20px] mt-[158px] h-screen overflow-y-scroll scrollbar-none">
+      <div className="ml-[20px] mt-[158px] h-[100vh] overflow-y-scroll pb-[158px] scrollbar-none">
         {listData.map((listItem: ListData) => (
           <div key={listItem.mungpleId} className="mb-[14px] flex">
             <img src={listItem.photoUrl} className="h-[88px] w-[88px] rounded-[6px]" />

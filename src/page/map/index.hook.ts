@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { useQuery } from 'react-query';
 import { getMapData } from 'common/api/record';
 import { useDispatch, useSelector } from 'react-redux';
@@ -193,6 +194,7 @@ function useMap() {
       dispatch(mapAction.setCertToggle(!isCertToggleOn));
     }
   };
+  const { state } = useLocation();
 
   /** Rendering */
   // 지도 생성
@@ -317,6 +319,14 @@ function useMap() {
   useEffect(() => {
     showMungpleMarkers();
   }, [selectedCategory]);
+
+  //cert에서 제목 클릭시
+  useEffect(() => {
+    if (map) {
+      console.log(state.lat, state.lng);
+      map.panTo(new kakao.maps.LatLng(state.lat, state.lng));
+    }
+  }, [state]);
   return {
     state: {
       map,
