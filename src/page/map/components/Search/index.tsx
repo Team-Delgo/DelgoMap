@@ -1,16 +1,15 @@
-import React, { useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import { Mungple } from '../../index.types';
+import { useMemo } from 'react';
+import { Mungple } from '../../../../common/types/map';
 import './index.scss';
 import BackArrowComponent from '../../../../components/BackArrowComponent';
-import { searchAction } from '../../../../redux/slice/searchSlice';
 import { icons } from '../PlaceCard';
 import useSearch from './index.hook';
+import { MungpleMap, MungpleResponseDTO } from 'common/api/record';
 
 interface Props {
   selectKakaoPlace: (location: kakao.maps.LatLng) => void;
-  cafeList: Mungple[];
-  selectId: (data: Mungple) => void;
+  cafeList: MungpleResponseDTO;
+  selectId: (data: MungpleMap) => void;
   close: () => void;
 }
 

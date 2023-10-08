@@ -12,18 +12,21 @@ import FullScreenImageSlider from './components/FullScreenImageSlider';
 import EditorNote from './components/EditorNote';
 import DetailReview from './components/review/DetailReview';
 import BackArrowComponent from '../../components/BackArrowComponent';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 
 function DetailPage() {
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const navigate = useNavigate();
   const [imageNumber, setImageNumber] = useState(1);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
   const splitUrl = window.location.href.split('/');
   const detailPageId = parseInt(splitUrl[splitUrl.length - 1], 10);
   ('');
   const { data, isLoading } = useQuery(['getDetailPageData', detailPageId], () =>
-    getDetailPageData(detailPageId),
+    getDetailPageData(detailPageId, userId),
   );
 
   const navigateToHome = () => navigate('/');
@@ -68,8 +71,8 @@ function DetailPage() {
 
   if (isEditorOpen)
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
-  console.log(data.enterDesc);
-  return (
+
+    return (
     <div className="overflow-scroll bg-gray-200">
       <BackArrowComponent onClickHandler={navigateToHome} white />
       <DetailImageSlider
@@ -80,10 +83,11 @@ function DetailPage() {
         placeName={data.placeName}
         address={data.address}
         dogFootCount={data.certCount}
-        heartCount={data.recommendCount}
         phoneNumber={data.phoneNo}
         openingHours={data.businessHour}
         categoryCode={data.categoryCode}
+        isBookmarked={data.isBookmarked}
+        mungpleId={data.mungpleId}
       />
       <DetailInfo
         residentDog={data.residentDogName}

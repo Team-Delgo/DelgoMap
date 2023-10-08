@@ -1,26 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { Mungple } from "../../page/map/index.types";
+import { createSlice } from '@reduxjs/toolkit';
+import { Mungple } from '../../common/types/map';
+import { MungpleResponseDTO } from 'common/api/record';
 
 interface searchStateType {
-  recentSearch: Mungple[];
+  recentSearch: MungpleResponseDTO;
   viewCount: number;
 }
 
 const initialState: searchStateType = {
   recentSearch: [],
-  viewCount: 0
+  viewCount: 0,
 };
 
 export const searchSlice = createSlice({
-  name: "search",
+  name: 'search',
   initialState,
   reducers: {
     setRecentSearch(state, action) {
-      if (
-        !state.recentSearch.find(
-          (e) => e.placeName === action.payload.placeName
-        )
-      ) {
+      if (!state.recentSearch.find((e) => e.placeName === action.payload.placeName)) {
         if (state.recentSearch.length >= 5) {
           state.recentSearch.pop();
         }
@@ -32,8 +29,8 @@ export const searchSlice = createSlice({
     },
     addViewCount(state) {
       state.viewCount += 1;
-    }
-  }
+    },
+  },
 });
 
 export const searchAction = searchSlice.actions;

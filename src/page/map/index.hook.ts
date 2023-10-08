@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { getMapData } from 'common/api/record';
+import { MungpleMap, getMungple } from 'common/api/record';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { mapAction } from 'redux/slice/mapSlice';
@@ -10,15 +10,8 @@ import {
   clearSelectedId,
   setMarkerImageBig,
   setMarkerImageSmall,
-  setNormalCertMarker,
 } from './components/MarkerSet';
-import {
-  Cert,
-  Mungple,
-  MungpleMarkerType,
-  SelectedMungple,
-  certDefault,
-} from './index.types';
+import { Cert, MungpleMarkerType, SelectedMungple, certDefault } from './index.types';
 import DogFootMarkerSvg from '../../common/icons/cert-map-marker.svg';
 
 function useMap() {
@@ -58,7 +51,7 @@ function useMap() {
   /** API request */
   const { data: mapDataList } = useQuery(
     ['getMapData', userId],
-    () => getMapData(userId),
+    () => getMungple(userId),
     {
       refetchOnWindowFocus: false,
     },
@@ -68,6 +61,7 @@ function useMap() {
   const clearSelectedMungple = clearSelectedId(setSelectedMungple, selectedMungple);
   const clearSelectedCert = () => setSelectedCert(certDefault);
   const dispatchSelectedMungple = (prev: SelectedMungple, mungple: any) => {
+    console.log(prev, mungple);
     return {
       img: mungple.photoUrl,
       title: mungple.placeName,
@@ -79,6 +73,8 @@ function useMap() {
       lng: parseFloat(mungple.longitude),
       categoryCode: mungple.categoryCode,
       prevCategoryCode: prev.categoryCode,
+      isBookmarked: mungple.isBookmarked,
+      prevIsBookmarked: prev.isBookmarked,
     };
   };
   // 현재 지도 위치 + 줌 레벨 저장
@@ -117,7 +113,8 @@ function useMap() {
   ) => {
     setSelectedMungple((prev) => dispatchSelectedMungple(prev, mungple));
     setIsSelectedAnything(true);
-    image = setMarkerImageBig(mungple.categoryCode);
+    if (mungple.isBookmarked) image = setMarkerImageBig('BOOKMARK');
+    else image = setMarkerImageBig(mungple.categoryCode);
     marker.setImage(image);
     marker.setZIndex(20);
     setDogFootMarkerLocation(() => ({ lat: 0, lng: 0 }));
@@ -131,11 +128,14 @@ function useMap() {
     certMarkers.forEach((marker) => marker.setVisible(false));
   };
   const showMungpleMarkers = () => {
-    mungpleMarkers.forEach((marker) => {
-      if (selectedCategory === '' || marker.category === selectedCategory)
-        marker.marker.setVisible(true);
-      else marker.marker.setVisible(false);
-    });
+    if (selectedCategory === 'BOOKMARK') {
+    } else {
+      mungpleMarkers.forEach((marker) => {
+        if (selectedCategory === '' || marker.category === selectedCategory)
+          marker.marker.setVisible(true);
+        else marker.marker.setVisible(false);
+      });
+    }
   };
   const showCertMarkers = (certMarkers: kakao.maps.CustomOverlay[]) => {
     certMarkers.forEach((marker) => marker.setVisible(true));
@@ -155,7 +155,7 @@ function useMap() {
     map?.panTo(location);
   };
 
-  const searchAndMoveToMungple = (mungple: Mungple) => {
+  const searchAndMoveToMungple = (mungple: MungpleMap) => {
     dispatch(mapAction.setCertToggle(false));
     setIsSearchViewOpen(false);
     setIsCertToggleOn(false);
@@ -244,17 +244,17 @@ function useMap() {
         // hide other certs markers
         hideMungpleMarkers();
         // 일반 인증 마커 만들기
-        const certMarkers = setNormalCertMarker(
-          mapDataList.normalCertList,
-          map,
-          setSelectedCert,
-        );
+        // const certMarkers = setNormalCertMarker(
+        //   mapDataList.normalCertList,
+        //   map,
+        //   setSelectedCert,
+        // );
         // 멍플 인증 마커 만들기
-        const mungpleCertMarkers = setNormalCertMarker(
-          mapDataList.mungpleCertList,
-          map,
-          setSelectedCert,
-        );
+        // const mungpleCertMarkers = setNormalCertMarker(
+        //   mapDataList.mungpleCertList,
+        //   map,
+        //   setSelectedCert,
+        // );
         setCertMarkers(certMarkers);
         setMungpleCertMarkers(mungpleCertMarkers);
         setIsFirstRendering((prev) => ({ ...prev, cert: false }));
@@ -263,12 +263,15 @@ function useMap() {
         hideCertMarkers(mungpleCertMarkers);
         // hideMungpleMarkers();
 
-        const markers: MungpleMarkerType[] = mapDataList.mungpleList.map((mungple) => {
+        const markers: MungpleMarkerType[] = mapDataList.map((mungple) => {
           const position = new kakao.maps.LatLng(
             parseFloat(mungple.latitude),
             parseFloat(mungple.longitude),
           );
-          const image = setMarkerImageSmall(mungple.categoryCode);
+          let image: kakao.maps.MarkerImage;
+          if (mungple.isBookmarked) image = setMarkerImageSmall('BOOKMARK');
+          else image = setMarkerImageSmall(mungple.categoryCode);
+
           const marker = new kakao.maps.Marker({ position, image, zIndex: 10 });
           marker.setMap(map);
           kakao.maps.event.addListener(marker, 'click', () =>
@@ -301,7 +304,9 @@ function useMap() {
       const index = mungpleMarkers.findIndex(
         (marker) => marker.id === selectedMungple.prevId,
       );
-      const image = setMarkerImageSmall(selectedMungple.prevCategoryCode);
+      const image = selectedMungple.prevIsBookmarked
+        ? setMarkerImageSmall('BOOKMARK')
+        : setMarkerImageSmall(selectedMungple.prevCategoryCode);
       mungpleMarkers[index].marker.setImage(image);
       mungpleMarkers[index].marker.setZIndex(10);
     }

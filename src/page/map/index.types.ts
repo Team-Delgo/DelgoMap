@@ -24,7 +24,7 @@ export interface Cert {
   registDt: string;
   userId: number;
   userName: string;
-  photos:Array<string>
+  photos: Array<string>;
 }
 export const certDefault: Cert = {
   categoryCode: 'CA9999',
@@ -42,7 +42,7 @@ export const certDefault: Cert = {
   registDt: '',
   userId: 0,
   userName: '',
-  photos:[]
+  photos: [],
 };
 
 export interface SelectedMungple {
@@ -56,6 +56,8 @@ export interface SelectedMungple {
   lng: number;
   categoryCode: CategoryCode;
   prevCategoryCode: CategoryCode;
+  isBookmarked: boolean;
+  prevIsBookmarked: boolean;
 }
 
 export const defaultSelectedMungple: SelectedMungple = {
@@ -69,6 +71,8 @@ export const defaultSelectedMungple: SelectedMungple = {
   lng: 0,
   categoryCode: 'CA0001',
   prevCategoryCode: 'CA0001',
+  isBookmarked: false,
+  prevIsBookmarked: false,
 };
 
 export interface Mungple {
