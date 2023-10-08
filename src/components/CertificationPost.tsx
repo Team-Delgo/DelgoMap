@@ -201,7 +201,7 @@ function CertificationPost({
   );
   const profileClickHandler = () => {
     if (post.userId) {
-      console.log(post.userId);
+      dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
       navigate(`${RECORD_PATH.PHOTO}/${post.userId}`, {
         state: {
           prevPath: location.pathname,

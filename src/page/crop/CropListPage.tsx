@@ -71,13 +71,13 @@ function CropListPage() {
   }, []);
 
   return (
-    <Crop
-      // img={prevImg}
-      img={prevImgList[currentImageIndex]}
-      cancleImgCrop={moveToPrevPage}
-      showCroppedImage={showCroppedImage}
-      onCropComplete={onCropComplete}
-    />
+      <Crop
+        // img={prevImg}
+        img={prevImgList[currentImageIndex]}
+        cancleImgCrop={moveToPrevPage}
+        showCroppedImage={showCroppedImage}
+        onCropComplete={onCropComplete}
+      />
   );
 }
 
