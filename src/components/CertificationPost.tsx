@@ -255,7 +255,8 @@ function CertificationPost({
       state: {
         lat: post.latitude,
         lng: post.longitude,
-        isMungple: post.mungpleId !== 0 ? post.mungpleId : undefined,
+        categoryCode: post.categoryCode,
+        certMungpleId: post.mungpleId !== 0 ? post.mungpleId : undefined,
       },
     });
   };

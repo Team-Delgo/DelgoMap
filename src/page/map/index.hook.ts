@@ -194,7 +194,7 @@ function useMap() {
       dispatch(mapAction.setCertToggle(!isCertToggleOn));
     }
   };
-  const { state } = useLocation();
+  const { state: certLocationState } = useLocation();
 
   /** Rendering */
   // 지도 생성
@@ -322,11 +322,36 @@ function useMap() {
 
   //cert에서 제목 클릭시
   useEffect(() => {
-    if (map) {
-      console.log(state.lat, state.lng);
-      map.panTo(new kakao.maps.LatLng(state.lat, state.lng));
+    if (map && certLocationState) {
+      map?.panTo(new kakao.maps.LatLng(certLocationState.lat, certLocationState.lng));
+      if (certLocationState.certMungpleId) {
+        const targetMungple = mapDataList?.mungpleList.find((item) => {
+          return item.mungpleId === certLocationState.certMungpleId;
+        });
+
+        if (targetMungple && mungpleMarkers.length > 0) {
+          const position = new kakao.maps.LatLng(
+            parseFloat(targetMungple.latitude),
+            parseFloat(targetMungple.longitude),
+          );
+          setSelectedMungple((prev) => dispatchSelectedMungple(prev, targetMungple));
+          setIsSelectedAnything(true);
+          const image = setMarkerImageBig(targetMungple.categoryCode);
+          const index = mungpleMarkers.findIndex(
+            (marker) => marker.id === targetMungple.mungpleId,
+          );
+          mungpleMarkers[index].marker.setImage(image);
+          mungpleMarkers[index].marker.setZIndex(20);
+          setDogFootMarkerLocation(() => ({ lat: 0, lng: 0 }));
+        }
+      } else {
+        setDogFootMarkerLocation(() => ({
+          lat: certLocationState.lat,
+          lng: certLocationState.lng,
+        }));
+      }
     }
-  }, [state]);
+  }, [map, certLocationState, mungpleMarkers]);
   return {
     state: {
       map,
