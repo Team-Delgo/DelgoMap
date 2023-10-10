@@ -330,7 +330,7 @@ function useMap() {
     if (map && certLocationState) {
       map?.panTo(new kakao.maps.LatLng(certLocationState.lat, certLocationState.lng));
       if (certLocationState.certMungpleId) {
-        const targetMungple = mapDataList?.mungpleList.find((item) => {
+        const targetMungple = mapDataList?.find((item) => {
           return item.mungpleId === certLocationState.certMungpleId;
         });
 
