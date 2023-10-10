@@ -44,6 +44,7 @@ function CategoryItem({
 interface Props {
   selectedCategory: string;
   onClick: (category: string) => void;
+  listView: boolean;
 }
 
 const categoryList = [
@@ -55,9 +56,8 @@ const categoryList = [
   { code: 'CA0006', name: '병원', icon: hospitalIcon, color: 'border-[#7a5ccf]' },
 ];
 
-function Categroy({ selectedCategory, onClick }: Props) {
+function Categroy({ selectedCategory, onClick, listView }: Props) {
   const [selectedValue, setSelectedValue] = useState(selectedCategory);
-
   useEffect(() => {
     setSelectedValue(selectedCategory);
   }, [selectedCategory]);
@@ -78,7 +78,11 @@ function Categroy({ selectedCategory, onClick }: Props) {
   };
 
   return (
-    <div className="absolute top-[92px] flex w-screen overflow-x-scroll scrollbar-none">
+    <div
+      className={`absolute ${
+        listView ? 'top-[60px]' : 'top-[92px]'
+      } flex w-screen overflow-x-scroll scrollbar-none`}
+    >
       {categoryList.map((data, i) => (
         <CategoryItem
           code={data.code}

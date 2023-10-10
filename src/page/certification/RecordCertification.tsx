@@ -24,18 +24,17 @@ import AlertConfirm from '../../common/dialog/AlertConfirm';
 import LikeAnimation from '../../common/utils/LikeAnimation';
 import { postType } from '../../common/types/post';
 import { reactParam } from '../../common/constants/parameter.const';
-import CuteIcon from "../../common/icons/react-cute.svg"
-import HelpIcon from "../../common/icons/react-help.svg"
-import DefaultIcon from "../../common/icons/react-default.svg"
+import CuteIcon from '../../common/icons/react-cute.svg';
+import HelpIcon from '../../common/icons/react-help.svg';
+import DefaultIcon from '../../common/icons/react-default.svg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-
 interface CertificationReactDataType {
   userId: number;
   certificationId: number;
-  reactionCode:string;
+  reactionCode: string;
 }
 interface CertificationDeleteDataType {
   userId: number;
@@ -46,17 +45,16 @@ function RecordCertification(props: { certification: any }) {
   const [imageNumber, setImageNumber] = useState(0);
   const { certification } = props;
   const dispatch = useDispatch();
-  const [helpCount, setHelpCount] = useState(certification?.reactionCountMap?.HELPER); 
+  const [helpCount, setHelpCount] = useState(certification?.reactionCountMap?.HELPER);
   const [cuteCount, setCuteCount] = useState(certification?.reactionCountMap?.CUTE);
-  const [isHelp, setIsHelp] = useState(certification?.reactionMap?.HELPER); 
-  const [isCute, setIsCute] = useState(certification?.reactionMap?.CUTE)
+  const [isHelp, setIsHelp] = useState(certification?.reactionMap?.HELPER);
+  const [isCute, setIsCute] = useState(certification?.reactionMap?.CUTE);
   const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDeleteBottomSheet] =
     useActive(false); //삭제텍스트 클릭시 열리는 바텀시트 오픈여부를 담은 커스텀훅
   const navigate = useNavigate();
-  const { user,isSignIn } = useSelector((state: RootState) => state.persist.user);
+  const { user, isSignIn } = useSelector((state: RootState) => state.persist.user);
 
   const queryClient = useQueryClient();
-
 
   const { mutate: certificationReactMutate, isLoading: isLoadingCertificationReact } =
     useMutation((data: CertificationReactDataType) => reactCertification(data), {
@@ -84,25 +82,25 @@ function RecordCertification(props: { certification: any }) {
       },
     });
 
-    const handleReactCertification = (reactionCode: string) => (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleReactCertification =
+    (reactionCode: string) => (e: React.MouseEvent<HTMLDivElement>) => {
       if (!isSignIn) {
         setLoginAlertIsOpen(true);
         return;
       }
-  
-      if(reactionCode === reactParam.cute){
-        setIsCute(!isCute)
-        setCuteCount(isCute ? cuteCount-1 : cuteCount +1)
+
+      if (reactionCode === reactParam.cute) {
+        setIsCute(!isCute);
+        setCuteCount(isCute ? cuteCount - 1 : cuteCount + 1);
+      } else {
+        setIsHelp(!isHelp);
+        setHelpCount(isHelp ? helpCount - 1 : helpCount + 1);
       }
-      else{
-        setIsHelp(!isHelp)
-        setHelpCount(isHelp ? helpCount-1 : helpCount +1)
-      }
-  
+
       certificationReactMutate({
         userId: user?.id,
         certificationId: certification?.certificationId,
-        reactionCode
+        reactionCode,
       });
     };
   //post 삭제 핸들러
@@ -115,8 +113,8 @@ function RecordCertification(props: { certification: any }) {
       userId: user?.id,
       certificationId: certification.certificationId,
     });
-  }
-  
+  };
+
   const moveToCommentPage = () => {
     if (!isSignIn) {
       setLoginAlertIsOpen(true);
@@ -125,11 +123,11 @@ function RecordCertification(props: { certification: any }) {
     navigate(`/comments/${certification.certificationId}`, {
       state: { post: certification },
     });
-  }
+  };
 
   const moveToPhotoPage = () => {
     navigate(`${RECORD_PATH.PHOTO}/${user.id}`);
-  }
+  };
 
   //업데이트 페이지 이동 핸들러
   const moveToUpdatePage = () => {
@@ -151,7 +149,7 @@ function RecordCertification(props: { certification: any }) {
         prevPath: RECORD_PATH.PHOTO,
       },
     });
-  }
+  };
 
   return (
     <>
@@ -195,13 +193,19 @@ function RecordCertification(props: { certification: any }) {
         <div className="record-cert-devider" />
         <div className="record-cert-description">{certification.description}</div>
         <body className="post-img-result-main-footer">
-          <div className={ isHelp ? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.helper)}>
+          <div
+            className={isHelp ? 'post-like-box-active' : 'post-like-box'}
+            onClick={handleReactCertification(reactParam.helper)}
+          >
             <img src={isHelp ? HelpIcon : DefaultIcon} alt="help-icon" />
             <span>도움돼요</span>
             <span>{helpCount}</span>
           </div>
           <div style={{ marginRight: '9px' }} />
-          <div className={ isCute? "post-like-box-active" : "post-like-box" } onClick={handleReactCertification(reactParam.cute)}>
+          <div
+            className={isCute ? 'post-like-box-active' : 'post-like-box'}
+            onClick={handleReactCertification(reactParam.cute)}
+          >
             <img src={isCute ? CuteIcon : DefaultIcon} alt="cute-icon" />
             <span>귀여워요</span>
             <span>{cuteCount}</span>
@@ -209,7 +213,9 @@ function RecordCertification(props: { certification: any }) {
         </body>
         <footer className="post-comment-wrapper" onClick={moveToCommentPage}>
           <span>댓글</span>
-          <span style={{ color: 'var(--reward-gray-23, #ABABAB)',marginLeft:"3px" }}>{certification?.commentCount}개</span>
+          <span style={{ color: 'var(--reward-gray-23, #ABABAB)', marginLeft: '3px' }}>
+            {certification?.commentCount}개
+          </span>
         </footer>
         {/* <div className="record-cert-icons">
           <img

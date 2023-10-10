@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 import './index.scss';
 import FooterNavigation from '../../components/FooterNavigation';
 import Logo from '../../common/icons/logo.svg';
@@ -15,11 +17,12 @@ import CertCard from './components/CertCard';
 import BallLoading from '../../common/utils/BallLoading';
 import UserLocation from './components/UserLocation';
 import CountBox from './components/CountBox';
+import ListBox from './components/ListView/ListBox';
 import useMap from './index.hook';
+import { ROOT_PATH } from 'common/constants/path.const';
 
 function Map() {
   const [copyLoading, setCopyLoading] = useState(false);
-
   const {
     state: {
       map: globarMap,
@@ -35,6 +38,7 @@ function Map() {
     },
     action: {
       openSearchView,
+      listboxHandler,
       closeSearchView,
       searchAndMoveToMungple,
       setIsAlertOpen,
@@ -46,13 +50,12 @@ function Map() {
       searchAndMoveToKakaoPlace,
     },
   } = useMap();
-
   const moveKakaoMapCurrentLocation = (lat: number, lng: number) => {
     globarMap?.panTo(new kakao.maps.LatLng(lat, lng));
     setTimeout(() => globarMap?.setLevel(5), 200);
   };
 
-  console.log(selectedCert);
+  // console.log(selectedCert);
 
   return (
     <div className="map-wrapper">
@@ -87,6 +90,7 @@ function Map() {
           onClick={(category) => {
             setSelectedCategory(category);
           }}
+          listView={false}
         />
       )}
       <div className="map" ref={mapElement} />
@@ -134,7 +138,9 @@ function Map() {
       {isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
         <CountBox />
       )}
-
+      {!isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
+        <ListBox onClick={listboxHandler} />
+      )}
       {selectedMungple.title.length > 0 && <LinkCopy isMungple />}
       {isSelectedAnything && selectedMungple.title.length === 0 && (
         <LinkCopy isMungple={false} />
