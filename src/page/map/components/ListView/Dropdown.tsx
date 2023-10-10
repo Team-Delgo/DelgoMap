@@ -17,13 +17,11 @@ const dropDownList2 = [
   { code: 'BOOKMARK', name: '저장 많은순' },
 ];
 function DropDown({ onClick, isBookmarkList, sortCode }: Props) {
-  const [selectedCode, setSelectedCode] = useState('DISTANCE');
   const clickEventHandler = (e: React.MouseEvent<HTMLElement>) => {
     const value1 = e.currentTarget.getAttribute('data-code');
     const value2 = e.currentTarget.getAttribute('data-name');
 
     if (value1 && value2) {
-      setSelectedCode(value1);
       onClick(value1, value2); // 부모 컴포넌트로 선택된 값을 전달
     }
   };

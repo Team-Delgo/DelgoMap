@@ -79,7 +79,10 @@ function Categroy({ selectedCategory, onClick, listView }: Props) {
   };
 
   return (
-    <div className="absolute top-[92px] flex w-screen overflow-x-scroll scrollbar-none">
+    <div
+      className={`${listView ? 'top-[72px]' : 'top-[92px]'}
+    absolute flex w-screen overflow-x-scroll scrollbar-none`}
+    >
       <li
         className={`ml-[18px] ${
           selectedValue === 'BOOKMARK' ? 'border-[#6f40f3]' : 'border-white'

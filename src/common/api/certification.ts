@@ -30,7 +30,7 @@ async function getBookmark(
   longitude: string,
 ) {
   const { data } = await axiosInstance.get(
-    `/mungple/bookmark/all?userId=${userId}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
+    `/mungple/bookmark?userId=${userId}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
   );
   return data;
 }
@@ -44,7 +44,9 @@ function reactCertification(data: {
   certificationId: number;
   reactionCode: string;
 }) {
-  return axiosInstance.post(`/certification/reaction/${data.userId}/${data.certificationId}/${data.reactionCode}`);
+  return axiosInstance.post(
+    `/certification/reaction/${data.userId}/${data.certificationId}/${data.reactionCode}`,
+  );
 }
 
 function registerGalleryCertificationPost(formdata: FormData) {
@@ -106,5 +108,5 @@ export {
   certificationLike,
   certificationDelete,
   getFiveOtherDogsCert,
-  reactCertification
+  reactCertification,
 };
