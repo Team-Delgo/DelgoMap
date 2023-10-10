@@ -33,10 +33,10 @@ function ListView(props: {
 }) {
   const { onClick, lng, lat } = props;
   const [selectedCategory, setSelectedCategory] = useState('CA0000');
+  const [isBookmarkList, setIsBookmarkList] = useState(false);
   const [sort, setSort] = useState('DISTANCE');
   const [sortTitle, setSortTitle] = useState('거리순');
   const [showDropDown, setShowDropDown] = useState(false);
-  const [isBookmarkList, setIsBookmarkList] = useState(false);
   const [listData, setListData] = useState<ListData[]>([]);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
@@ -49,9 +49,12 @@ function ListView(props: {
     let res;
     try {
       if (selectedCategory === 'BOOKMARK') {
-        res = await getBookmark(userId, sort, lat, lng);
         setIsBookmarkList(true);
-      } else res = await getMungPlaceCategory(userId, selectedCategory, sort, lat, lng);
+        res = await getBookmark(userId, sort, lat, lng);
+      } else {
+        setIsBookmarkList(false);
+        res = await getMungPlaceCategory(userId, selectedCategory, sort, lat, lng);
+      }
       const { data, code } = res;
       setListData(data);
     } catch (error) {
@@ -60,8 +63,8 @@ function ListView(props: {
   };
 
   const dropDownHandler = (selectedCode: string, selectedName: string) => {
-    console.log('Selected:', selectedCode);
     setSort(selectedCode);
+    console.log('Selected:', selectedCode);
     setSortTitle(selectedName);
     setShowDropDown(false);
     fetchData();
@@ -92,6 +95,13 @@ function ListView(props: {
         selectedCategory={selectedCategory}
         onClick={(category) => {
           setSelectedCategory(category || 'CA0000');
+          if (category === 'BOOKMARK') {
+            setSort('NEWEST');
+            setSortTitle('최신순');
+          } else if (isBookmarkList && category != 'BOOKMARK') {
+            setSort('DISTANCE');
+            setSortTitle('거리순');
+          }
         }}
         listView={true}
       />
