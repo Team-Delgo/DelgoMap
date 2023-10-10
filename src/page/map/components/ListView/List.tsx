@@ -48,7 +48,7 @@ function ListView(props: {
   const fetchData = async () => {
     let res;
     try {
-      if (selectedCategory === 'BOOKMARKLIST') {
+      if (selectedCategory === 'BOOKMARK') {
         res = await getBookmark(userId, sort, lat, lng);
         setIsBookmarkList(true);
       } else res = await getMungPlaceCategory(userId, selectedCategory, sort, lat, lng);
