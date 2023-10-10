@@ -1,21 +1,51 @@
 import { AxiosResponse } from 'axios';
 import { AnyAction, Dispatch } from 'redux';
-import { Cert, Mungple } from 'page/map/index.types';
+import { Mungple } from '../types/map';
+import { Cert } from 'page/map/index.types';
 import axiosInstance from './interceptors';
 import { useErrorHandlers } from './useErrorHandlers';
 import { APIResponse } from '../types/api';
 
-export interface MapData {
-  mungpleList: Mungple[];
+export type MapDataResponseDTO = {
+  mungpleList: (Mungple & { photoUrl: string })[];
   normalCertList: any[];
   mungpleCertList: any[];
   exposedMungpleCertList: any[];
   exposedNormalCertList: any[];
-}
+};
 
 async function getMapData(userId: number) {
-  const { data } = await axiosInstance.get<APIResponse<MapData>>(`/map/${userId}`);
+  const { data } = await axiosInstance.get<APIResponse<MapDataResponseDTO>>(
+    `/map/${userId}`,
+  );
   return data.data;
+}
+
+export type SortOption = 'NEWEST' | 'OLDEST' | 'DISTANCE' | 'CERT' | 'BOOKMARK';
+export type MungpleMap = Pick<
+  Mungple,
+  | 'mungpleId'
+  | 'categoryCode'
+  | 'placeName'
+  | 'placeNameEn'
+  | 'latitude'
+  | 'longitude'
+  | 'address'
+  | 'detailUrl'
+> & {
+  photoUrl: string;
+  certCount: number;
+  bookmarkCount: number;
+  isBookmarked: boolean;
+};
+export type MungpleResponseDTO = MungpleMap[];
+
+export async function getMungple(userId: number) {
+  return (
+    await axiosInstance.get<APIResponse<MungpleResponseDTO>>(
+      `/mungple/category?userId=${userId}&categoryCode=CA0000&sort=NOT`,
+    )
+  ).data.data;
 }
 
 function getCalendarData(

@@ -98,7 +98,7 @@ function Map() {
         <SearchBar
           selectKakaoPlace={searchAndMoveToKakaoPlace}
           selectId={searchAndMoveToMungple}
-          cafeList={mapDataList!.mungpleList}
+          cafeList={mapDataList || []}
           close={closeSearchView}
         />
       )}

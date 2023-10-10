@@ -5,6 +5,7 @@ import walkIcon from '../../../common/icons/walk-category.svg';
 import kinderIcon from '../../../common/icons/kinder-category.svg';
 import beautyIcon from '../../../common/icons/beauty-category.svg';
 import hospitalIcon from '../../../common/icons/hospital-category.svg';
+import bookmarkIcon from '../../../common/icons/bookmark.svg';
 
 interface CategoryItemProps {
   code: string;
@@ -27,7 +28,7 @@ function CategoryItem({
 }: CategoryItemProps) {
   return (
     <li
-      className={`${isFirst && 'ml-[18px]'} ${
+      className={`${
         selectedValue === code ? color : 'border-white'
       } z-10 mr-[8px] flex shrink-0 items-center rounded-[25px] border-[1.5px] bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d] shadow-2`}
       key={code}
@@ -78,11 +79,19 @@ function Categroy({ selectedCategory, onClick, listView }: Props) {
   };
 
   return (
-    <div
-      className={`absolute ${
-        listView ? 'top-[60px]' : 'top-[92px]'
-      } flex w-screen overflow-x-scroll scrollbar-none`}
-    >
+    <div className="absolute top-[92px] flex w-screen overflow-x-scroll scrollbar-none">
+      <li
+        className={`ml-[18px] ${
+          selectedValue === 'BOOKMARK' ? 'border-[#6f40f3]' : 'border-white'
+        } z-10 mr-[8px] flex shrink-0 items-center rounded-[25px] border-[1.5px] bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d] shadow-2`}
+        key="BOOKMARK"
+        onClick={clickEventHandler}
+        role="none"
+        value="BOOKMARK"
+      >
+        <img src={bookmarkIcon} alt={'bookmark'} className="categoryIcon" />
+        저장
+      </li>
       {categoryList.map((data, i) => (
         <CategoryItem
           code={data.code}

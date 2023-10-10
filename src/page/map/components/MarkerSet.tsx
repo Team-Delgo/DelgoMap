@@ -15,6 +15,8 @@ import WalkSmall from '../../../common/icons/walk-map-small.svg';
 import Kinder from '../../../common/icons/kinder-map.svg';
 import KinderSmall from '../../../common/icons/kinder-map-small.svg';
 import NormalCert from '../../../common/icons/normal-cert.svg';
+import BookmarkSmall from '../../../common/icons/bookmark-small.svg';
+import Bookmark from '../../../common/icons/bookmark-big.svg';
 import { Cert, SelectedMungple, defaultSelectedMungple } from '../index.types';
 import './MarkerSet.scss';
 import { POSTS_PATH } from '../../../common/constants/path.const';
@@ -43,6 +45,7 @@ export function clearSelectedId(
         ...defaultSelectedMungple,
         prevId: prev.id,
         prevCategoryCode: prev.categoryCode,
+        prevIsBookmarked: prev.isBookmarked
       };
     });
   }, [selectedId]);
@@ -51,6 +54,7 @@ export function clearSelectedId(
 
 export function setMarkerImageBig(categoryCode: string) {
   const images = MarkerImages();
+  if (categoryCode === 'BOOKMARK') return images.images[7];
   if (categoryCode === 'CA0001') return images.images[0];
   if (categoryCode === 'CA0002') return images.images[1];
   if (categoryCode === 'CA0003') return images.images[2];
@@ -62,6 +66,9 @@ export function setMarkerImageBig(categoryCode: string) {
 
 export function setMarkerImageSmall(categoryCode: string) {
   const images = MarkerImages();
+  console.log(categoryCode);
+
+  if (categoryCode === 'BOOKMARK') return images.smallImages[7];
   if (categoryCode === 'CA0001') return images.smallImages[0];
   if (categoryCode === 'CA0002') return images.smallImages[1];
   if (categoryCode === 'CA0003') return images.smallImages[2];
@@ -184,7 +191,7 @@ export function MarkerImages() {
     offset: new kakao.maps.Point(25, 49),
   };
   const images: kakao.maps.MarkerImage[] = [];
-  [Walk, Cafe, Eat, Bath, Beauty, Hospital, Kinder].forEach((url: string) => {
+  [Walk, Cafe, Eat, Bath, Beauty, Hospital, Kinder, Bookmark].forEach((url: string) => {
     const image = loadImage(url);
     images.push(new kakao.maps.MarkerImage(url, imageSize, imageOptions));
   });
@@ -202,6 +209,7 @@ export function MarkerImages() {
     BeautySmall,
     HospitalSmall,
     KinderSmall,
+    BookmarkSmall,
   ].forEach((url: string) => {
     const image = loadImage(url);
     smallImages.push(new kakao.maps.MarkerImage(url, imageSize, imageOptions));

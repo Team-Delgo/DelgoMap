@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
@@ -9,8 +9,9 @@ import {
   UPLOAD_PATH,
 } from '../common/constants/path.const';
 import AlertConfirm from '../common/dialog/AlertConfirm';
-import DogFoot from '../common/icons/dogfoot.svg';
-import Home from '../common/icons/home.svg';
+import DogFoot from '../common/icons/dogfoot-empty.svg';
+import Pin from '../common/icons/pin.svg';
+import Friends from '../common/icons/friends.svg';
 import Plus from '../common/icons/plus.svg';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { RootState } from '../redux/store';
@@ -22,15 +23,17 @@ import { userActions } from 'redux/slice/userSlice';
 function FooterNavigation() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
-  const isFirstCert= useSelector((state:RootState) => state.persist.user.isFirstCert);
-  const isFirstCertToggle = useSelector((state:RootState) => state.persist.user.isFirstCertToggle);
+  const isFirstCert = useSelector((state: RootState) => state.persist.user.isFirstCert);
+  const isFirstCertToggle = useSelector(
+    (state: RootState) => state.persist.user.isFirstCertToggle,
+  );
   const selectedId = useSelector((state: RootState) => state.map.selectedId.id);
   const clickEvent = useAnalyticsCustomLogEvent(analytics, 'cert-button-click');
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const moveToPostsPage = () => {
-      navigate(POSTS_PATH, { state: { cert: null, from: 'home' } });
+    navigate(POSTS_PATH, { state: { cert: null, from: 'home' } });
   };
   const sendLoginPage = () => {
     navigate(SIGN_IN_PATH.MAIN);
@@ -53,13 +56,17 @@ function FooterNavigation() {
   const certButtonHandler = () => {
     clickEvent.mutate();
     if (userId) {
-      if(isFirstCert) {
+      if (isFirstCert) {
         dispatch(userActions.setIsFisrtCert(false));
         dispatch(userActions.setIsFirstCertToggle(true));
       }
       dispatch(uploadAction.initAchievements());
       navigate(UPLOAD_PATH.CERTIFICATION);
     } else setIsAlertOpen(true);
+  };
+
+  const pinButtonHandler = () => {
+    navigate('/');
   };
 
   return (
@@ -76,26 +83,35 @@ function FooterNavigation() {
         />
       )}
       <div
-        className="mt-[8px] flex  flex-col items-center pl-[40px] pr-[40px] text-[11px] text-[#212122]"
+        className="mt-[8px] flex  flex-col items-center text-[11px] text-[#212122]"
         aria-hidden="true"
         onClick={moveToPostsPage}
       >
-        <img className="mb-[4px] h-[20px] w-[20px]" src={Home} alt="home" />
-        동네강아지
+        <img className="mb-[4px] h-[20px] w-[20px]" src={Friends} alt="home" />
+        친구들
       </div>
       <div
-        className="absolute top-[-9px] flex h-[65px] w-[65px] items-center justify-center rounded-full bg-[#212122] shadow-1"
+        className="mt-[8px] flex  flex-col items-center text-[11px] text-[#212122]"
+        aria-hidden="true"
+        onClick={pinButtonHandler}
+      >
+        <img className="mb-[4px] h-[20px] w-[20px]" src={Pin} alt="home" />
+        지도
+      </div>
+      <div
+        className="mt-[8px] flex  flex-col items-center text-[11px] text-[#212122]"
         aria-hidden="true"
         onClick={certButtonHandler}
       >
-        <img src={Plus} alt="plus" />
+        <img className="mb-[4px] h-[20px] w-[20px]" src={Plus} alt="home" />
+        기록추가
       </div>
       <div
-        className="mt-[8px] flex  flex-col items-center pl-[40px] pr-[40px] text-[11px] text-[#212122]"
+        className="mt-[8px] flex  flex-col items-center text-[11px] text-[#212122]"
         aria-hidden="true"
         onClick={recordButtonHandler}
       >
-        <img className="mb-[4px] h-[20px] w-[20px]" src={DogFoot} alt="foot" />내 기록
+        <img className="mb-[4px] h-[20px] w-[20px]" src={DogFoot} alt="home" />내 기록
       </div>
     </div>
   );

@@ -76,15 +76,33 @@ export const defaultSelectedMungple: SelectedMungple = {
 };
 
 export interface Mungple {
-  categoryCode: string;
-  address: string;
+  mungpleId: number;
+  categoryCode: CategoryCode;
+  phoneNo: string;
+  placeName: string;
+  address:string;
+  placeNameEn: string;
+  geoCode: string;
+  pGeoCode: string;
   latitude: string;
   longitude: string;
   detailUrl: string;
-  mungpleId: number;
-  placeName: string;
-  placeNameEn: string | null;
-  photoUrl: string;
+  isActive: boolean;
+  createdAt: Date;
+  photoUrls: string[];
+  enterDesc: string;
+  // acceptSize
+  // businessHour
+  instaId: string;
+  isParking: boolean;
+  parkingInfo: string;
+  residentDogName: string;
+  residentDogPhoto: string;
+  representMenuTitle: string;
+  representMenuPhotoUrls: string[];
+  representMenuBoardPhotoUrls: string[];
+  isPriceTag: boolean;
+  priceTagPhotoUrls: string[];
 }
 
 export interface WardOffice {
