@@ -1,4 +1,6 @@
 export interface postType {
+  mungpleId: number;
+  categoryCode: string;
   address: string;
   certificationId: number;
   commentCount: number;
@@ -21,6 +23,8 @@ export interface postType {
     CUTE: boolean;
     HELPER: boolean;
   };
+  latitude: string;
+  longitude: string;
 }
 
 export interface userType {

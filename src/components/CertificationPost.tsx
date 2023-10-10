@@ -6,11 +6,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { certificationDelete, reactCertification } from '../common/api/certification';
 import DogLoading from '../common/icons/dog-loading.svg';
-import CuteIcon from "../common/icons/react-cute.svg"
-import HelpIcon from "../common/icons/react-help.svg"
-import DefaultIcon from "../common/icons/react-default.svg"
+import CuteIcon from '../common/icons/react-cute.svg';
+import HelpIcon from '../common/icons/react-help.svg';
+import DefaultIcon from '../common/icons/react-default.svg';
 import { RootState } from '../redux/store';
-import { UPLOAD_PATH, SIGN_IN_PATH, RECORD_PATH } from '../common/constants/path.const';
+import {
+  UPLOAD_PATH,
+  SIGN_IN_PATH,
+  RECORD_PATH,
+  ROOT_PATH,
+} from '../common/constants/path.const';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { scrollActions } from '../redux/slice/scrollSlice';
 import DeleteBottomSheet from '../common/dialog/ConfirmBottomSheet';
@@ -35,7 +40,7 @@ interface CertificationPostPropsType {
 interface CertificationReactDataType {
   userId: number;
   certificationId: number;
-  reactionCode:string;
+  reactionCode: string;
 }
 interface CertificationDeleteDataType {
   userId: number;
@@ -51,13 +56,13 @@ function CertificationPost({
   certificationPostsFetch,
   pageSize,
 }: CertificationPostPropsType) {
-  const [moredesc,setMoreDesc] = useState(false)
+  const [moredesc, setMoreDesc] = useState(false);
   const [imageNumber, setImageNumber] = useState(0);
   const [blockedUserName, setBlockedUserName] = useState('');
-  const [helpCount, setHelpCount] = useState(post?.reactionCountMap?.HELPER); 
+  const [helpCount, setHelpCount] = useState(post?.reactionCountMap?.HELPER);
   const [cuteCount, setCuteCount] = useState(post?.reactionCountMap?.CUTE);
-  const [isHelp, setIsHelp] = useState(post?.reactionMap?.HELPER); 
-  const [isCute, setIsCute] = useState(post?.reactionMap?.CUTE)
+  const [isHelp, setIsHelp] = useState(post?.reactionMap?.HELPER);
+  const [isCute, setIsCute] = useState(post?.reactionMap?.CUTE);
   const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDelteBottomSheet] = //삭제 바텀시트 오픈여부 담은 커스텀훅
     useActive(false);
   const [
@@ -114,10 +119,10 @@ function CertificationPost({
 
   //post props값이 변경되면 좋아요여부와 갯수를 갱신해줌(stale -> fresh)
   useEffect(() => {
-    setCuteCount(post?.reactionCountMap?.CUTE)
-    setIsCute(post?.reactionMap?.CUTE)
-    setHelpCount(post?.reactionCountMap?.HELPER)
-    setIsHelp(post?.reactionMap?.HELPER)
+    setCuteCount(post?.reactionCountMap?.CUTE);
+    setIsCute(post?.reactionMap?.CUTE);
+    setHelpCount(post?.reactionCountMap?.HELPER);
+    setIsHelp(post?.reactionMap?.HELPER);
   }, [post]);
 
   // console.log('post',post)
@@ -131,8 +136,6 @@ function CertificationPost({
     }
   }, [blockUserSuccessToastIsOpen]);
 
-
-
   const { mutate: certificationReactMutate, isLoading: isLoadingCertificationReact } =
     useMutation((data: CertificationReactDataType) => reactCertification(data), {
       onSuccess: () => {
@@ -142,8 +145,6 @@ function CertificationPost({
         useErrorHandlers(dispatch, error);
       },
     });
-
-
 
   //좋아요 api 훅
   // const { mutate: certificationLikeMutate, isLoading: isLoadingCertificationLike } =
@@ -201,7 +202,7 @@ function CertificationPost({
   );
   const profileClickHandler = () => {
     if (post.userId) {
-      console.log(post.userId);
+      dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
       navigate(`${RECORD_PATH.PHOTO}/${post.userId}`, {
         state: {
           prevPath: location.pathname,
@@ -209,27 +210,27 @@ function CertificationPost({
       });
     }
   };
-  const handleReactCertification = (reactionCode: string) => (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isSignIn) {
-      setLoginAlertIsOpen(true);
-      return;
-    }
+  const handleReactCertification =
+    (reactionCode: string) => (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!isSignIn) {
+        setLoginAlertIsOpen(true);
+        return;
+      }
 
-    if(reactionCode === reactParam.cute){
-      setIsCute(!isCute)
-      setCuteCount(isCute ? cuteCount-1 : cuteCount +1)
-    }
-    else{
-      setIsHelp(!isHelp)
-      setHelpCount(isHelp ? helpCount-1 : helpCount +1)
-    }
+      if (reactionCode === reactParam.cute) {
+        setIsCute(!isCute);
+        setCuteCount(isCute ? cuteCount - 1 : cuteCount + 1);
+      } else {
+        setIsHelp(!isHelp);
+        setHelpCount(isHelp ? helpCount - 1 : helpCount + 1);
+      }
 
-    certificationReactMutate({
-      userId: user?.id,
-      certificationId: post?.certificationId,
-      reactionCode
-    });
-  };
+      certificationReactMutate({
+        userId: user?.id,
+        certificationId: post?.certificationId,
+        reactionCode,
+      });
+    };
 
   //인증삭제 핸들러
   const handleCertificationDelete = () => {
@@ -249,6 +250,16 @@ function CertificationPost({
     });
   };
 
+  const moveToMap = () => {
+    navigate(ROOT_PATH, {
+      state: {
+        lat: post.latitude,
+        lng: post.longitude,
+        categoryCode: post.categoryCode,
+        certMungpleId: post.mungpleId !== 0 ? post.mungpleId : undefined,
+      },
+    });
+  };
   const moveToCommentPage = () => {
     //로그인 안되있으면 로그인alert창 띄워주고
     if (!isSignIn) {
@@ -291,7 +302,6 @@ function CertificationPost({
   const sendLoginPage = () => {
     navigate(SIGN_IN_PATH.MAIN);
   };
-
 
   return (
     <>
@@ -363,7 +373,7 @@ function CertificationPost({
         </div>
         <header className="post-img-result-main-header">
           <div className="post-img-result-main-header-place">
-            <div className="post-img-result-main-header-place-name">
+            <div className="post-img-result-main-header-place-name" onClick={moveToMap}>
               {post?.placeName}
             </div>
             {!post?.isHideAddress && (

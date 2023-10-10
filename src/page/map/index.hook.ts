@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { useQuery } from 'react-query';
 import { MungpleMap, getMungple } from 'common/api/record';
 import { useDispatch, useSelector } from 'react-redux';
@@ -91,6 +92,13 @@ function useMap() {
   };
 
   // EventListener handlers
+  const listboxHandler = () => {
+    const center = map?.getCenter();
+    const lat = `${center?.getLat()}`;
+    const lng = `${center?.getLng()}`;
+    return { lat, lng };
+  };
+
   const mapClickHandler = (e: kakao.maps.event.MouseEvent) => {
     setIsSelectedAnything((prev) => {
       if (prev) {
@@ -119,7 +127,6 @@ function useMap() {
     marker.setZIndex(20);
     setDogFootMarkerLocation(() => ({ lat: 0, lng: 0 }));
   };
-
   // Markers visible handlers
   const hideMungpleMarkers = () => {
     mungpleMarkers.forEach((marker) => marker.marker.setVisible(false));
@@ -187,6 +194,7 @@ function useMap() {
       dispatch(mapAction.setCertToggle(!isCertToggleOn));
     }
   };
+  const { state: certLocationState } = useLocation();
 
   /** Rendering */
   // 지도 생성
@@ -317,6 +325,38 @@ function useMap() {
     showMungpleMarkers();
   }, [selectedCategory]);
 
+  //cert에서 제목 클릭시
+  useEffect(() => {
+    if (map && certLocationState) {
+      map?.panTo(new kakao.maps.LatLng(certLocationState.lat, certLocationState.lng));
+      if (certLocationState.certMungpleId) {
+        const targetMungple = mapDataList?.mungpleList.find((item) => {
+          return item.mungpleId === certLocationState.certMungpleId;
+        });
+
+        if (targetMungple && mungpleMarkers.length > 0) {
+          const position = new kakao.maps.LatLng(
+            parseFloat(targetMungple.latitude),
+            parseFloat(targetMungple.longitude),
+          );
+          setSelectedMungple((prev) => dispatchSelectedMungple(prev, targetMungple));
+          setIsSelectedAnything(true);
+          const image = setMarkerImageBig(targetMungple.categoryCode);
+          const index = mungpleMarkers.findIndex(
+            (marker) => marker.id === targetMungple.mungpleId,
+          );
+          mungpleMarkers[index].marker.setImage(image);
+          mungpleMarkers[index].marker.setZIndex(20);
+          setDogFootMarkerLocation(() => ({ lat: 0, lng: 0 }));
+        }
+      } else {
+        setDogFootMarkerLocation(() => ({
+          lat: certLocationState.lat,
+          lng: certLocationState.lng,
+        }));
+      }
+    }
+  }, [map, certLocationState, mungpleMarkers]);
   return {
     state: {
       map,
@@ -333,6 +373,7 @@ function useMap() {
     },
     action: {
       openSearchView,
+      listboxHandler,
       closeSearchView,
       searchAndMoveToMungple,
       setIsAlertOpen,

@@ -45,6 +45,7 @@ function CategoryItem({
 interface Props {
   selectedCategory: string;
   onClick: (category: string) => void;
+  listView: boolean;
 }
 
 const categoryList = [
@@ -56,9 +57,8 @@ const categoryList = [
   { code: 'CA0006', name: '병원', icon: hospitalIcon, color: 'border-[#7a5ccf]' },
 ];
 
-function Categroy({ selectedCategory, onClick }: Props) {
+function Categroy({ selectedCategory, onClick, listView }: Props) {
   const [selectedValue, setSelectedValue] = useState(selectedCategory);
-
   useEffect(() => {
     setSelectedValue(selectedCategory);
   }, [selectedCategory]);
