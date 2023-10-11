@@ -63,6 +63,9 @@ function DetailHeader({
       onSuccess: (data) => {
         setIsBookmark(data.isBookmarked);
         queryClient.invalidateQueries(['getMapData', userId]);
+        queryClient.refetchQueries(['getMapData', userId]);
+        queryClient.invalidateQueries(['getDetailPageData', mungpleId]);
+        queryClient.refetchQueries(['getDetailPageData', mungpleId]);
       },
     },
   );

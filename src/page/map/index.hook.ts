@@ -12,7 +12,7 @@ import {
   setMarkerImageBig,
   setMarkerImageSmall,
 } from './components/MarkerSet';
-import { Cert, MungpleMarkerType, SelectedMungple, certDefault } from './index.types';
+import { Cert, MungpleMarkerType, SelectedMungple, certDefault, defaultSelectedMungple } from './index.types';
 import DogFootMarkerSvg from '../../common/icons/cert-map-marker.svg';
 
 function useMap() {
@@ -24,7 +24,7 @@ function useMap() {
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const initialMapCenter = useSelector((state: RootState) => state.map);
-  const initialSelectedMungple = useSelector((state: RootState) => state.map.selectedId);
+  // const initialSelectedMungple = useSelector((state: RootState) => state.map.selectedId);
   const initialCertMungpleToggle = useSelector(
     (state: RootState) => state.map.certToggle,
   );
@@ -36,7 +36,7 @@ function useMap() {
   const [isSelectedAnything, setIsSelectedAnything] = useState(false);
   const [dogFootMarkerLocation, setDogFootMarkerLocation] = useState({ lat: 0, lng: 0 });
   const [selectedMungple, setSelectedMungple] =
-    useState<SelectedMungple>(initialSelectedMungple);
+    useState<SelectedMungple>(defaultSelectedMungple);
   const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [isFirstRendering, setIsFirstRendering] = useState({ mungple: true, cert: true });
@@ -136,6 +136,10 @@ function useMap() {
   };
   const showMungpleMarkers = () => {
     if (selectedCategory === 'BOOKMARK') {
+      mungpleMarkers.forEach((marker) => {
+        if(marker.isBookmarked) marker.marker.setVisible(true);
+        else marker.marker.setVisible(false);
+      })
     } else {
       mungpleMarkers.forEach((marker) => {
         if (selectedCategory === '' || marker.category === selectedCategory)
@@ -285,7 +289,7 @@ function useMap() {
           kakao.maps.event.addListener(marker, 'click', () =>
             markerClickHandler(marker, image, mungple),
           );
-          return { id: mungple.mungpleId, category: mungple.categoryCode, marker };
+          return { id: mungple.mungpleId, category: mungple.categoryCode, marker, isBookmarked:mungple.isBookmarked };
         });
         setMungpleMarkers(markers);
         setIsFirstRendering((prev) => ({ ...prev, mungple: false }));
