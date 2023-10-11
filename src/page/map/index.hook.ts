@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router';
 import { useQuery } from 'react-query';
-import { MungpleMap, getMungple } from 'common/api/record';
+import { MungpleMap, getCerts, getMungple } from 'common/api/record';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { mapAction } from 'redux/slice/mapSlice';
@@ -11,8 +11,15 @@ import {
   clearSelectedId,
   setMarkerImageBig,
   setMarkerImageSmall,
+  setNormalCertMarker,
 } from './components/MarkerSet';
-import { Cert, MungpleMarkerType, SelectedMungple, certDefault, defaultSelectedMungple } from './index.types';
+import {
+  Cert,
+  MungpleMarkerType,
+  SelectedMungple,
+  certDefault,
+  defaultSelectedMungple,
+} from './index.types';
 import DogFootMarkerSvg from '../../common/icons/cert-map-marker.svg';
 
 function useMap() {
@@ -57,6 +64,12 @@ function useMap() {
       refetchOnWindowFocus: false,
     },
   );
+
+  const { data: certDataList } = useQuery(['getCertData', userId], () =>
+    getCerts(userId),
+  );
+
+  console.log(certDataList);
 
   /** Function */
   const clearSelectedMungple = clearSelectedId(setSelectedMungple, selectedMungple);
@@ -137,9 +150,9 @@ function useMap() {
   const showMungpleMarkers = () => {
     if (selectedCategory === 'BOOKMARK') {
       mungpleMarkers.forEach((marker) => {
-        if(marker.isBookmarked) marker.marker.setVisible(true);
+        if (marker.isBookmarked) marker.marker.setVisible(true);
         else marker.marker.setVisible(false);
-      })
+      });
     } else {
       mungpleMarkers.forEach((marker) => {
         if (selectedCategory === '' || marker.category === selectedCategory)
@@ -252,15 +265,16 @@ function useMap() {
   // 멍플, 인증 마커 렌더링
   useEffect(() => {
     if (mapDataList && map && (isFirstRendering.mungple || isFirstRendering.cert)) {
-      if (userId > 0 && isCertToggleOn) {
+      if (userId > 0 && isCertToggleOn && certDataList) {
+        console.log(certDataList.content);
         // hide other certs markers
         hideMungpleMarkers();
         // 일반 인증 마커 만들기
-        // const certMarkers = setNormalCertMarker(
-        //   mapDataList.normalCertList,
-        //   map,
-        //   setSelectedCert,
-        // );
+        const certMarkers = setNormalCertMarker(
+          certDataList.content,
+          map,
+          setSelectedCert,
+        );
         // 멍플 인증 마커 만들기
         // const mungpleCertMarkers = setNormalCertMarker(
         //   mapDataList.mungpleCertList,
@@ -289,7 +303,12 @@ function useMap() {
           kakao.maps.event.addListener(marker, 'click', () =>
             markerClickHandler(marker, image, mungple),
           );
-          return { id: mungple.mungpleId, category: mungple.categoryCode, marker, isBookmarked:mungple.isBookmarked };
+          return {
+            id: mungple.mungpleId,
+            category: mungple.categoryCode,
+            marker,
+            isBookmarked: mungple.isBookmarked,
+          };
         });
         setMungpleMarkers(markers);
         setIsFirstRendering((prev) => ({ ...prev, mungple: false }));
