@@ -6,6 +6,11 @@ import kinderIcon from '../../../common/icons/kinder-category.svg';
 import beautyIcon from '../../../common/icons/beauty-category.svg';
 import hospitalIcon from '../../../common/icons/hospital-category.svg';
 import bookmarkIcon from '../../../common/icons/bookmark.svg';
+import { RootState } from 'redux/store';
+import { useSelector } from 'react-redux';
+import AlertConfirm from 'common/dialog/AlertConfirm';
+import { useNavigate } from 'react-router-dom';
+import { SIGN_IN_PATH } from 'common/constants/path.const';
 
 interface CategoryItemProps {
   code: string;
@@ -59,23 +64,32 @@ const categoryList = [
 
 function Categroy({ selectedCategory, onClick, listView }: Props) {
   const [selectedValue, setSelectedValue] = useState(selectedCategory);
+  const userId = useSelector((state: RootState) => state.persist.user.user.id);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   useEffect(() => {
     setSelectedValue(selectedCategory);
   }, [selectedCategory]);
-
+  const navigate = useNavigate();
   const clickEventHandler = (e: React.MouseEvent<HTMLElement>) => {
     let value = e.currentTarget.getAttribute('value');
-
-    if (value === selectedValue) {
-      value = '';
-      setSelectedValue('');
-      onClick(value); // 부모 컴포넌트로 선택된 값을 전달
-      console.log(value);
-    } else if (value) {
-      setSelectedValue(value);
-      onClick(value); // 부모 컴포넌트로 선택된 값을 전달
-      console.log(value);
-    }
+    if (userId) {
+      if (value === selectedValue) {
+        value = '';
+        setSelectedValue('');
+        onClick(value); // 부모 컴포넌트로 선택된 값을 전달
+        console.log(value);
+      } else if (value) {
+        setSelectedValue(value);
+        onClick(value); // 부모 컴포넌트로 선택된 값을 전달
+        console.log(value);
+      }
+    } else setIsAlertOpen(true);
+  };
+  const closeAlert = () => {
+    setIsAlertOpen(false);
+  };
+  const sendLoginPage = () => {
+    navigate(SIGN_IN_PATH.MAIN);
   };
 
   return (
@@ -83,6 +97,14 @@ function Categroy({ selectedCategory, onClick, listView }: Props) {
       className={`${listView ? 'top-[72px]' : 'top-[92px]'}
     absolute flex w-screen overflow-x-scroll scrollbar-none`}
     >
+      {isAlertOpen && (
+        <AlertConfirm
+          text="로그인이 필요한 기능입니다."
+          buttonText="로그인"
+          yesButtonHandler={sendLoginPage}
+          noButtonHandler={closeAlert}
+        />
+      )}
       <li
         className={`ml-[18px] ${
           selectedValue === 'BOOKMARK' ? 'border-[#6f40f3]' : 'border-white'
