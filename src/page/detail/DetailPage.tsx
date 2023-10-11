@@ -28,7 +28,6 @@ function DetailPage() {
   const { data, isLoading } = useQuery(['getDetailPageData', detailPageId], () =>
     getDetailPageData(detailPageId, userId),
   );
-
   const navigateToHome = () => navigate('/');
   useEffect(() => {
     mutation.mutate({

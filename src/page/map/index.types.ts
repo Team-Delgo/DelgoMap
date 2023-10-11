@@ -99,5 +99,6 @@ export interface WardOffice {
 export interface MungpleMarkerType {
   id: number;
   category: string;
+  isBookmarked: boolean;
   marker: kakao.maps.Marker;
 }
