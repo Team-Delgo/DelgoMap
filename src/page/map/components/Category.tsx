@@ -72,7 +72,8 @@ function Categroy({ selectedCategory, onClick, listView }: Props) {
   const navigate = useNavigate();
   const clickEventHandler = (e: React.MouseEvent<HTMLElement>) => {
     let value = e.currentTarget.getAttribute('value');
-    if (userId) {
+    if (!userId && value == 'BOOKMARK') setIsAlertOpen(true);
+    else {
       if (value === selectedValue) {
         value = '';
         setSelectedValue('');
@@ -83,7 +84,7 @@ function Categroy({ selectedCategory, onClick, listView }: Props) {
         onClick(value); // 부모 컴포넌트로 선택된 값을 전달
         console.log(value);
       }
-    } else setIsAlertOpen(true);
+    }
   };
   const closeAlert = () => {
     setIsAlertOpen(false);
