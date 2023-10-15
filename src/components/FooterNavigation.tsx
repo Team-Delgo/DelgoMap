@@ -77,7 +77,7 @@ function FooterNavigation({ page }: Props) {
   };
 
   return (
-    <div className="absolute bottom-0 z-[100] flex h-[63px] w-screen justify-evenly rounded-t-[18px] bg-white">
+    <div className="fixed bottom-0 z-[100] flex h-[63px] w-screen justify-evenly rounded-t-[18px] bg-white shadow-1">
       {isFirstCert && selectedId > 0 && (
         <HelpFloatingMessage text="추억을 기록해보세요" guide="startCert" />
       )}
