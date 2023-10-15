@@ -20,6 +20,7 @@ interface CategoryItemProps {
   isFirst: boolean;
   color: string;
   selectedValue: string;
+  listView: boolean;
 }
 
 function CategoryItem({
@@ -30,12 +31,28 @@ function CategoryItem({
   isFirst,
   color,
   selectedValue,
+  listView,
 }: CategoryItemProps) {
+  if (listView)
+    return (
+      <li
+        className={`${
+          selectedValue === code ? color : 'border-[1px]'
+        } z-10 mr-[8px] flex shrink-0 items-center rounded-[25px] border-[1.5px] bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d]`}
+        key={code}
+        onClick={handler}
+        role="none"
+        value={code}
+      >
+        <img src={icon} alt={name} className="categoryIcon" />
+        {name}
+      </li>
+    );
   return (
     <li
-      className={`${
+      className={` ${
         selectedValue === code ? color : 'border-white'
-      } z-10 mr-[8px] flex shrink-0 items-center rounded-[25px] border-[1.5px] bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d] shadow-2`}
+      } z-10 mb-[3px] mr-[8px] flex shrink-0 items-center rounded-[25px] border-[1.5px] bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d] shadow-[0_1px_2px_0_rgba(0,0,0,0.2)]`}
       key={code}
       onClick={handler}
       role="none"
@@ -106,20 +123,38 @@ function Categroy({ selectedCategory, onClick, listView }: Props) {
           noButtonHandler={closeAlert}
         />
       )}
-      <li
-        className={`ml-[18px] ${
-          selectedValue === 'BOOKMARK' ? 'border-[#6f40f3]' : 'border-white'
-        } z-10 mr-[8px] flex shrink-0 items-center rounded-[25px] border-[1.5px] bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d] shadow-2`}
-        key="BOOKMARK"
-        onClick={clickEventHandler}
-        role="none"
-        value="BOOKMARK"
-      >
-        <img src={bookmarkIcon} alt={'bookmark'} className="categoryIcon" />
-        저장
-      </li>
+      {listView ? (
+        <li
+          className={`ml-[18px] ${
+            selectedValue === 'BOOKMARK'
+              ? 'border-[1.5px] border-[#6f40f3]'
+              : 'border-[1px]'
+          } z-10 mr-[8px] flex shrink-0 items-center rounded-[25px] bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d]`}
+          key="BOOKMARK"
+          onClick={clickEventHandler}
+          role="none"
+          value="BOOKMARK"
+        >
+          <img src={bookmarkIcon} alt={'bookmark'} className="categoryIcon" />
+          저장
+        </li>
+      ) : (
+        <li
+          className={` ml-[18px] ${
+            selectedValue === 'BOOKMARK' ? 'border-[#6f40f3]' : 'border-white'
+          } z-10 mb-[3px] mr-[8px] flex shrink-0 items-center rounded-[25px] border-[1.5px] bg-white pb-[3px] pl-[3px] pr-[9px] pt-[3px] text-center text-[12px] text-[#3d3d3d] shadow-[0_1px_2px_0_rgba(0,0,0,0.2)]`}
+          key="BOOKMARK"
+          onClick={clickEventHandler}
+          role="none"
+          value="BOOKMARK"
+        >
+          <img src={bookmarkIcon} alt={'bookmark'} className="categoryIcon" />
+          저장
+        </li>
+      )}
       {categoryList.map((data, i) => (
         <CategoryItem
+          listView={listView}
           code={data.code}
           name={data.name}
           icon={data.icon}
