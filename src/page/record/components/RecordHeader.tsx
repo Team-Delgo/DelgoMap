@@ -82,7 +82,7 @@ function RecordHeader() {
           className="fixed bottom-0 w-[100%]"
           style={{ display: isMyRecordPage ? 'block' : 'none' }}
         >
-          <FooterNavigation />
+          <FooterNavigation page='record'/>
         </div>
       </div>
     </div>

@@ -11,10 +11,9 @@ import DetailReviewHeader from './DetailReviewHeader';
 interface Props {
   mungpleId: number;
   visited: number;
-  heart: number;
 }
 
-function DetailReview({ mungpleId, visited, heart }: Props) {
+function DetailReview({ mungpleId, visited }: Props) {
   const user = useSelector((state: RootState) => state.persist.user.user);
   const [pageSizeCount, setPageSizeCount] = useState(0);
   const { ref, inView } = useInView();
@@ -36,8 +35,8 @@ function DetailReview({ mungpleId, visited, heart }: Props) {
   }, [inView]);
 
   return (
-    <div className="-translate-y-[15px] bg-white">
-      <DetailReviewHeader visited={visited} heart={heart} />
+    <div className="-translate-y-[15px] bg-white mb-[80px]">
+      <DetailReviewHeader visited={visited} />
       {data?.pages?.map((page) => (
         <>
           {page?.content?.map((post: postType) => (

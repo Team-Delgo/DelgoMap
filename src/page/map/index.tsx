@@ -130,7 +130,7 @@ function Map() {
         )}
       {!isSelectedAnything &&
         selectedMungple.title.length === 0 &&
-        selectedCert.userId === 0 && <FooterNavigation />}
+        selectedCert.userId === 0 && <FooterNavigation page='map' />}
       {!isSelectedAnything &&
         !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
           <CertToggle onClick={certToggleClickHandler} state={isCertToggleOn} />

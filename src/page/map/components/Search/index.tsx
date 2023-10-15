@@ -159,7 +159,7 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
             <input
               id="search"
               autoComplete="off"
-              placeholder="검색"
+              placeholder="장소, 프로필 검색"
               value={enteredInput}
               onChange={inputChangeHandler}
               onClick={inputFoucs}
@@ -173,7 +173,7 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
                 selectedTab === 'keyword'
                   ? ' border-b-[3px] border-b-black text-black'
                   : 'text-[#646566]'
-              } px-[3px]`}
+              } px-[3px] mr-[30px] text-[14px]`}
               aria-hidden
               onClick={() => setSelectedTab('keyword')}
             >
@@ -184,7 +184,7 @@ function SearchBar({ cafeList, selectId, close, selectKakaoPlace }: Props) {
                 selectedTab === 'user'
                   ? ' border-b-[3px] border-b-black text-black'
                   : 'text-[#646566]'
-              } px-[3px]`}
+              } px-[3px] ml-[30px] text-[14px]`}
               aria-hidden
               onClick={() => setSelectedTab('user')}
             >
