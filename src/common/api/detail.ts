@@ -35,7 +35,7 @@ interface DetailPageResponse {
   isParking: boolean;
   isBookmarked: boolean;
   parkingInfo: string;
-  recommendCount: number;
+  bookmarkCount: number;
   editorNoteUrl: string;
   copyLink: string;
   certCount: number;

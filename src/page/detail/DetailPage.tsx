@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -71,8 +71,8 @@ function DetailPage() {
   if (isEditorOpen)
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
 
-    return (
-    <div className="overflow-scroll bg-gray-200">
+  return (
+    <div className="overflow-scroll bg-gray-200" >
       <BackArrowComponent onClickHandler={navigateToHome} white />
       <DetailImageSlider
         openFullSlider={placeFullScreenHandler}
@@ -82,6 +82,7 @@ function DetailPage() {
         placeName={data.placeName}
         address={data.address}
         dogFootCount={data.certCount}
+        bookmarkCount={data.bookmarkCount}
         phoneNumber={data.phoneNo}
         openingHours={data.businessHour}
         categoryCode={data.categoryCode}
@@ -109,8 +110,13 @@ function DetailPage() {
       <DetailReview
         mungpleId={data.mungpleId}
         visited={data.certCount}
-        heart={data.recommendCount}
       />
+      <div
+        aria-hidden
+        className="fixed bottom-[38px] left-[50%] z-30 w-[92%] translate-x-[-50%] rounded-[12px] bg-[#7a5ccf] py-[18px] text-center text-[16px] font-medium text-white"
+      >
+        이곳에 기록 남기기
+      </div>
     </div>
   );
 }

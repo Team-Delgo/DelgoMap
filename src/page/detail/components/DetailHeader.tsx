@@ -17,6 +17,7 @@ interface Props {
   placeName: string;
   address: string;
   dogFootCount: number;
+  bookmarkCount: number;
   phoneNumber: string;
   openingHours: OpeningHours;
   isBookmarked: boolean;
@@ -42,12 +43,14 @@ function DetailHeader({
   dogFootCount,
   phoneNumber,
   openingHours,
+  bookmarkCount,
   categoryCode,
   isBookmarked,
   mungpleId,
 }: Props) {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [bookmarkCountState, setBookMarkCountState] = useState(bookmarkCount);
   const [isBookmark, setIsBookmark] = useState(isBookmarked);
   const queryClient = useQueryClient();
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
@@ -62,6 +65,11 @@ function DetailHeader({
     {
       onSuccess: (data) => {
         setIsBookmark(data.isBookmarked);
+        if(data.isBookmarked) {
+          setBookMarkCountState(bookmarkCountState + 1);
+        }else {
+          setBookMarkCountState(bookmarkCountState - 1);
+        }
         queryClient.invalidateQueries(['getMapData', userId]);
         queryClient.refetchQueries(['getMapData', userId]);
         queryClient.invalidateQueries(['getDetailPageData', mungpleId]);
@@ -79,8 +87,8 @@ function DetailHeader({
           <img className="mr-1 w-3" src={DogFoot} alt="foot" />
           <span>{dogFootCount}</span>
           <div className="mx-[3px] h-[3px] w-[3px] rounded-[100%] bg-[#ababab]" />
-          <img className="mr-1 w-3" src={Star} alt="heart" />
-          <span>{0}</span>
+          <img className="mr-1 w-3" src={isBookmark ? Star : StartEmpty} alt="heart" />
+          <span>{bookmarkCountState}</span>
         </div>
       </div>
       <div className="mt-1 text-xs font-normal text-[#646566]">{address}</div>

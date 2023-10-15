@@ -32,6 +32,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 90%;
     &-desc {
       margin-top: 30px;
       width: 225px;
@@ -67,7 +68,6 @@
     // top: 45px;
     // transform: translateX(-50%);
     background-color: white;
-    width: 88vw;
     display: flex;
     flex-direction: column;
     border-radius: 5px;
@@ -76,9 +76,9 @@
     z-index: 10;
     // position: absolute;
     &-item {
-      padding: 10px;
+
+      padding: 10px 0;
       font-size: 15px;
-      margin-left: 8vw;
       color: black;
       display: flex;
       flex-direction: column;
@@ -91,7 +91,7 @@
   }
   &-recent {
     background-color: white;
-    width: 88vw;
+    width: 90%;
     display: flex;
     flex-direction: column;
     border-radius: 5px;
