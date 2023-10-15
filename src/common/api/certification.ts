@@ -1,5 +1,6 @@
 import axiosInstance from './interceptors';
-import { Cert } from '../../../src/page/map/index.types';
+import { CategoryCode, Cert } from '../../../src/page/map/index.types';
+import { APIResponse } from 'common/types/api';
 
 interface CertResponse {
   data: Cert[];
@@ -10,6 +11,18 @@ async function getMungPlaceList() {
   return data;
 }
 
+type MungpleListResponseDTO = {
+  detailUrl: string;
+  mungpleId: number;
+  photoUrl: string;
+  placeName: string;
+  address: string;
+  categoryCode: CategoryCode;
+  certCount: number;
+  bookmarkCount: number;
+  isBookmarked: boolean;
+}[];
+
 async function getMungPlaceCategory(
   userId: number,
   categoryCode: string,
@@ -17,10 +30,10 @@ async function getMungPlaceCategory(
   latitude: string,
   longitude: string,
 ) {
-  const { data } = await axiosInstance.get(
+  const { data } = await axiosInstance.get<APIResponse<MungpleListResponseDTO>>(
     `/mungple/category?userId=${userId}&categoryCode=${categoryCode}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
   );
-  return data;
+  return data.data;
 }
 
 async function getBookmark(
@@ -29,10 +42,10 @@ async function getBookmark(
   latitude: string,
   longitude: string,
 ) {
-  const { data } = await axiosInstance.get(
+  const { data } = await axiosInstance.get<APIResponse<MungpleListResponseDTO>>(
     `/mungple/bookmark?userId=${userId}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
   );
-  return data;
+  return data.data;
 }
 
 function certificationLike(data: { userId: number; certificationId: number }) {

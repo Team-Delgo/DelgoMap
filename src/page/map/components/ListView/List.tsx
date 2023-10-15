@@ -15,17 +15,6 @@ import { RootState } from 'redux/store';
 import { CategoryCode } from '../../index.types';
 import { categoryCode } from 'common/types/category';
 
-interface ListData {
-  detailUrl: string;
-  mungpleId: number;
-  photoUrl: string;
-  placeName: string;
-  address: string;
-  categoryCode: CategoryCode;
-  certCount: number;
-  bookmarkCount: number;
-  isBookmarked: boolean;
-}
 function ListView(props: {
   lng: string;
   lat: string;
@@ -37,41 +26,41 @@ function ListView(props: {
   const [sort, setSort] = useState('DISTANCE');
   const [sortTitle, setSortTitle] = useState('거리순');
   const [showDropDown, setShowDropDown] = useState(false);
-  const [listData, setListData] = useState<ListData[]>([]);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchData();
-  }, [selectedCategory, sort]);
-
-  const fetchData = async () => {
-    let res;
-    try {
-      if (selectedCategory === 'BOOKMARK') {
-        setIsBookmarkList(true);
-        res = await getBookmark(userId, sort, lat, lng);
-      } else {
+  const { data: notBookmarkedData } = useQuery(
+    ['getnotBookmarkedData', userId, sort, selectedCategory, lat, lng],
+    () => getMungPlaceCategory(userId, selectedCategory, sort, lat, lng),
+    {
+      onSuccess: () => {
         setIsBookmarkList(false);
-        res = await getMungPlaceCategory(userId, selectedCategory, sort, lat, lng);
-      }
-      const { data, code } = res;
-      setListData(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+      },
+      enabled: selectedCategory !== 'BOOKMARK',
+    },
+  );
+
+  const { data: bookMarkedData } = useQuery(
+    ['getBookMarkedData', userId, sort, selectedCategory, lat, lng],
+    () => getBookmark(userId, sort, lat, lng),
+    {
+      onSuccess: () => {
+        setIsBookmarkList(true);
+      },
+      enabled: selectedCategory === 'BOOKMARK',
+    },
+  );
 
   const dropDownHandler = (selectedCode: string, selectedName: string) => {
     setSort(selectedCode);
     console.log('Selected:', selectedCode);
     setSortTitle(selectedName);
     setShowDropDown(false);
-    fetchData();
   };
   const placeNameClickHandler = (mungpleId: number) => {
     navigate(`detail/${mungpleId}`);
   };
+  const listData = selectedCategory === 'BOOKMARK' ? bookMarkedData : notBookmarkedData;
   return (
     <div className="z-[999] h-screen w-screen bg-white">
       {showDropDown && (
@@ -115,7 +104,7 @@ function ListView(props: {
         <img src={dropDownArrow} className="ml-[4px]" />
       </div>
       <div className="ml-[20px] mt-[158px] h-[100vh] overflow-y-scroll pb-[158px] scrollbar-none">
-        {listData.map((listItem: ListData) => (
+        {listData?.map((listItem) => (
           <div key={listItem.mungpleId} className="mb-[14px] flex">
             <img src={listItem.photoUrl} className="h-[88px] w-[88px] rounded-[6px]" />
             <div className="ml-[13px] max-h-[100%]">

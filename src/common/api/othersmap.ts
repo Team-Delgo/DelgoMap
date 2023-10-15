@@ -8,8 +8,7 @@ async function postVeiwCount(userId: number) {
   return response.data.data;
 }
 async function getUserInfo(userId: number) {
-  console.log(userId);
-  const response = await axiosInstance.get<AxiosResponse>(`/map/other?userId=${userId}`);
+  const response = await axiosInstance.get<AxiosResponse>(`/map/my?userId=${userId}`);
   console.log(response.data);
   return response.data.data;
 }
