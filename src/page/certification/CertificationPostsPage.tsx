@@ -15,6 +15,7 @@ import { scrollActions } from '../../redux/slice/scrollSlice';
 import { GET_ALL_CERTIFICATION_DATA_LIST } from '../../common/constants/queryKey.const';
 import { postType } from '../../common/types/post';
 import PageHeader from '../../components/PageHeader';
+import FooterNavigation from 'components/FooterNavigation';
 
 function CertificationPostsPage() {
   const firstCert = (useLocation()?.state?.cert as any) || null; //내기록 앨범부분에서 다른강아지들 뭐할까? post 클릭시 해당 post 맨위로 끌어내리기 위해 설정
@@ -128,6 +129,7 @@ function CertificationPostsPage() {
         ))}
         <div ref={ref}>&nbsp;</div>
       </div>
+      <FooterNavigation page='friends' />
     </>
   );
 }

@@ -9,10 +9,13 @@ import {
   UPLOAD_PATH,
 } from '../common/constants/path.const';
 import AlertConfirm from '../common/dialog/AlertConfirm';
-import DogFoot from '../common/icons/dogfoot-empty.svg';
+import DogFootEmpty from '../common/icons/dogfoot-empty.svg';
+import DogFoot from '../common/icons/dogfoot-small-black.svg';
 import Pin from '../common/icons/pin.svg';
+import PinEmpty from '../common/icons/pin-empty.svg';
 import Friends from '../common/icons/friends.svg';
 import Plus from '../common/icons/plus.svg';
+import FriendsEmpty from '../common/icons/friends-empty.svg';
 import { uploadAction } from '../redux/slice/uploadSlice';
 import { RootState } from '../redux/store';
 import 'index.css';
@@ -20,7 +23,11 @@ import HelpFloatingMessage from './HelpFloatingMessage';
 import { analytics } from '..';
 import { userActions } from 'redux/slice/userSlice';
 
-function FooterNavigation() {
+interface Props {
+  page: string;
+}
+
+function FooterNavigation({ page }: Props) {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const isFirstCert = useSelector((state: RootState) => state.persist.user.isFirstCert);
@@ -70,7 +77,7 @@ function FooterNavigation() {
   };
 
   return (
-    <div className="absolute bottom-0 z-[100] flex h-[63px] w-screen justify-evenly rounded-t-[18px] bg-white">
+    <div className="fixed bottom-0 z-[100] flex h-[63px] w-screen justify-evenly rounded-t-[18px] bg-white shadow-1">
       {isFirstCert && selectedId > 0 && (
         <HelpFloatingMessage text="추억을 기록해보세요" guide="startCert" />
       )}
@@ -87,7 +94,7 @@ function FooterNavigation() {
         aria-hidden="true"
         onClick={moveToPostsPage}
       >
-        <img className="mb-[4px] h-[20px] w-[20px]" src={Friends} alt="home" />
+        <img className="mb-[4px] h-[20px] w-[20px]" src={page === 'friends' ? Friends : FriendsEmpty} alt="home" />
         친구들
       </div>
       <div
@@ -95,7 +102,11 @@ function FooterNavigation() {
         aria-hidden="true"
         onClick={pinButtonHandler}
       >
-        <img className="mb-[4px] h-[20px] w-[20px]" src={Pin} alt="home" />
+        <img
+          className="mb-[4px] h-[20px] w-[20px]"
+          src={page === 'map' ? Pin : PinEmpty}
+          alt="home"
+        />
         지도
       </div>
       <div
@@ -111,7 +122,7 @@ function FooterNavigation() {
         aria-hidden="true"
         onClick={recordButtonHandler}
       >
-        <img className="mb-[4px] h-[20px] w-[20px]" src={DogFoot} alt="home" />내 기록
+        <img className="mb-[4px] h-[20px] w-[20px]" src={page === 'record' ? DogFoot : DogFootEmpty} alt="home" />내 기록
       </div>
     </div>
   );

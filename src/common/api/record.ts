@@ -48,6 +48,14 @@ export async function getMungple(userId: number) {
   ).data.data;
 }
 
+export async function getCerts(userId: number) {
+  return (
+    await axiosInstance.get<APIResponse<any>>(
+      `/certification/my?userId=${userId}&categoryCode=CA0000&page=0&size=100`,
+    )
+  ).data.data;
+}
+
 function getCalendarData(
   userId: number,
   success: (data: AxiosResponse) => void,

@@ -4,10 +4,9 @@ import Heart from '../../../../common/icons/heart.svg';
 
 interface Props {
   visited: number;
-  heart: number;
 }
 
-function DetailReviewHeader({ visited, heart }: Props) {
+function DetailReviewHeader({ visited }: Props) {
   return (
     <div className="m-[23px] pt-[30px] pb-[20px] border-b border-gray-300 font-[400]">
       <div className="flex items-center">
