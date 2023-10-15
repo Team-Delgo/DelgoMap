@@ -57,12 +57,16 @@ function ListView(props: {
     setSortTitle(selectedName);
     setShowDropDown(false);
   };
-  const placeNameClickHandler = (mungpleId: number) => {
+  const placeClickHandler = (mungpleId: number) => {
     navigate(`detail/${mungpleId}`);
   };
+  const dimmedClickHandler = () => {
+    if (showDropDown) setShowDropDown(false);
+  };
+
   const listData = selectedCategory === 'BOOKMARK' ? bookMarkedData : notBookmarkedData;
   return (
-    <div className="z-[999] h-screen w-screen bg-white">
+    <div className="z-[998] h-screen w-screen bg-white" onClick={dimmedClickHandler}>
       {showDropDown && (
         <DropDown
           onClick={dropDownHandler}
@@ -105,13 +109,14 @@ function ListView(props: {
       </div>
       <div className="ml-[20px] mt-[158px] h-[100vh] overflow-y-scroll pb-[158px] scrollbar-none">
         {listData?.map((listItem) => (
-          <div key={listItem.mungpleId} className="mb-[14px] flex">
+          <div
+            key={listItem.mungpleId}
+            className="mb-[14px] flex"
+            onClick={() => placeClickHandler(listItem.mungpleId)}
+          >
             <img src={listItem.photoUrl} className="h-[88px] w-[88px] rounded-[6px]" />
             <div className="ml-[13px] max-h-[100%]">
-              <div
-                className="flex items-center text-[16px] font-semibold"
-                onClick={() => placeNameClickHandler(listItem.mungpleId)}
-              >
+              <div className="flex items-center text-[16px] font-semibold">
                 {listItem.placeName}
               </div>
               <div className="mr-[20px] text-[12px] text-[#8a8a8a]">
