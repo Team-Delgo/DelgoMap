@@ -40,7 +40,6 @@ function DetailInfo({
   openFullSlider,
 }: Props) {
   const [isDogInfoOpen, setIsDogInfoOpen] = useState(false);
-  console.log(acceptSize);
   return (
     <div className="m-3 -translate-y-[5px] rounded-xl bg-white px-5 py-5">
       {residentDog && (
