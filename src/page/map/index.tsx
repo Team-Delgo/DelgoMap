@@ -128,7 +128,7 @@ function Map() {
         !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
           <UserLocation move={moveKakaoMapCurrentLocation} />
         )}
-      {!isSelectedAnything &&
+      {!isSelectedAnything && !isSearchViewOpen&&
         selectedMungple.title.length === 0 &&
         selectedCert.userId === 0 && <FooterNavigation page='map' />}
       {!isSelectedAnything &&
