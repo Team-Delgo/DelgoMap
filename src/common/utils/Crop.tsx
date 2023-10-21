@@ -1,47 +1,210 @@
-import React, { useState } from 'react';
-import Cropper from 'react-easy-crop'; //이미지 crop 핸들링 해주는 라이브러리
-import PrevArrowWhite from '../icons/prev-arrow-white.svg';
-import WhiteCheck from '../icons/white-check.svg';
-import "./Crop.scss";
+import React, { useState, MouseEventHandler, useEffect } from 'react';
+import Cropper from 'react-easy-crop';
+import WhiteX from '../icons/white-x.svg';
+import './Crop.scss';
 
 interface CropType {
+  x: number;
+  y: number;
+}
+
+interface CroppendAreaPixelType {
+  height: number;
+  width: number;
+  x: number;
+  y: number;
+}
+
+interface Props {
+  currentImageIndex?: number;
+  ImgListLength?: number;
   img: string;
+  croppedAreaPixelList?: CroppendAreaPixelType[];
+  croppedAreaPixel?: CroppendAreaPixelType;
+  zoomList?: number[];
+  cropList?: CropType[];
   cancleImgCrop: () => void;
   showCroppedImage: () => void;
   onCropComplete: (croppedArea: any, croppedAreaPixels: any) => void;
+  setCurrentImageIndex?: (idx: number) => void;
+  setCroppedAreaPixelList?: (pixelList: CroppendAreaPixelType[]) => void;
+  setZoomList?: (list: number[]) => void;
+  setCropList?: (cropList: CropType[]) => void;
 }
 
-function Crop({ img, cancleImgCrop, showCroppedImage, onCropComplete }: CropType) {
-  const [crop, setCrop] = useState({ x: 0, y: 0 }); // 이미지의 자르기 위치를 상태로 관리
-  const [zoom, setZoom] = useState(1); // 이미지의 확대/축소 레벨을 상태로 관리
+function Crop({
+  currentImageIndex,
+  ImgListLength,
+  img,
+  croppedAreaPixelList,
+  croppedAreaPixel,
+  zoomList,
+  cropList,
+  cancleImgCrop,
+  showCroppedImage,
+  onCropComplete,
+  setCurrentImageIndex,
+  setCroppedAreaPixelList,
+  setZoomList,
+  setCropList,
+}: Props) {
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+
+  const isSingleImage = () =>
+    (currentImageIndex === undefined && ImgListLength === undefined) ||
+    (currentImageIndex !== undefined && ImgListLength === 1);
+  const isFirstImage = () =>
+    setCurrentImageIndex !== undefined && currentImageIndex === 0;
+  const isLastImage = () =>
+    currentImageIndex !== undefined &&
+    currentImageIndex + 1 === ImgListLength &&
+    ImgListLength !== 1;
+  const isMiddleImage = () =>
+    setCurrentImageIndex !== undefined && currentImageIndex !== undefined;
+
+  useEffect(() => {
+    if (
+      cropList &&
+      currentImageIndex !== undefined &&
+      currentImageIndex >= 0 &&
+      cropList?.[currentImageIndex] &&
+      zoomList
+    ) {
+      setCrop(cropList[currentImageIndex]);
+      setZoom(zoomList[currentImageIndex]);
+    }
+  }, [currentImageIndex]);
+
+  const handleUpdateCropData = (
+    curIndex: number,
+    moveIndex: number,
+  ): MouseEventHandler<HTMLButtonElement> => {
+    return () => {
+      if (
+        croppedAreaPixelList &&
+        zoomList &&
+        cropList &&
+        croppedAreaPixel &&
+        setCroppedAreaPixelList &&
+        setZoomList &&
+        setCropList &&
+        setCurrentImageIndex
+      ) {
+        const newList: CroppendAreaPixelType[] = [...croppedAreaPixelList];
+        const newZoomList: number[] = [...zoomList];
+        const newCropList: CropType[] = [...cropList];
+
+        newList[curIndex] = croppedAreaPixel;
+        newZoomList[curIndex] = zoom;
+        newCropList[curIndex] = crop;
+
+        setCroppedAreaPixelList(newList);
+        setZoomList(newZoomList);
+        setCropList(newCropList);
+        setCurrentImageIndex(moveIndex);
+      }
+    };
+  };
+
+  const renderCropBtn = () => (
+    <div className="crop-btn-wrapper">
+      <button className="crop-complte-btn" onClick={showCroppedImage}>
+        자르기 완료
+      </button>
+    </div>
+  );
+
+  const renderFirstBtn = () => (
+    <div className="crop-btn-wrapper">
+      <button
+        className="crop-first-btn"
+        onClick={handleUpdateCropData(currentImageIndex!, currentImageIndex! + 1)}
+      >
+        다음
+      </button>
+    </div>
+  );
+
+  const renderMiddleBtn = () => (
+    <div className="crop-btn-container">
+      <div className="crop-btn-wrapper">
+        <button
+          className="crop-middle-btn"
+          onClick={handleUpdateCropData(currentImageIndex!, currentImageIndex! - 1)}
+        >
+          이전
+        </button>
+        <div style={{ padding: '0 7.5px' }} />
+        <button
+          className="crop-middle-btn"
+          onClick={handleUpdateCropData(currentImageIndex!, currentImageIndex! + 1)}
+        >
+          다음
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderLastBtn = () => (
+    <div className="crop-btn-container">
+      <div className="crop-btn-wrapper">
+        <button
+          className="crop-middle-btn"
+          onClick={handleUpdateCropData(currentImageIndex!, currentImageIndex! - 1)}
+        >
+          이전
+        </button>
+        <div style={{ padding: '0 7.5px' }} />
+        <button className="crop-complte-half-btn" onClick={showCroppedImage}>
+          자르기 완료
+        </button>
+      </div>
+    </div>
+  );
+
+  const btnList = [
+    { condition: isSingleImage, component: renderCropBtn },
+    { condition: isLastImage, component: renderLastBtn },
+    { condition: isFirstImage, component: renderFirstBtn },
+    { condition: isMiddleImage, component: renderMiddleBtn },
+  ];
+
+  const renderButtons = () => {
+    for (let btn of btnList) {
+      if (btn.condition()) {
+        return btn.component();
+      }
+    }
+    return null;
+  };
 
   return (
     <div className="crop-container">
       <img
-        src={PrevArrowWhite}
+        src={WhiteX}
         className="crop-container-prev-arrow"
         alt="crop-wrapper-prev-arrow"
         aria-hidden="true"
-        onClick={cancleImgCrop}  // 이미지 자르기 취소 핸들러
+        onClick={cancleImgCrop}
       />
-      <img
-        src={WhiteCheck}
-        className="crop-container-complition-check"
-        alt="crop-wrapper-complition-check"
-        aria-hidden="true"
-        onClick={showCroppedImage} // 이미지 자르기 완료 핸들러
-      />
+      <div className="crop-img-current-idx">
+        {currentImageIndex !== undefined &&
+          ImgListLength !== undefined &&
+          `${currentImageIndex + 1} / ${ImgListLength}`}
+      </div>
       <Cropper
         image={img}
         crop={crop}
         zoom={zoom}
-        aspect={1}  // 이미지의 종횡비(1은 정사각형을 의미)
-        onCropChange={setCrop}  // crop 상태를 업데이트하는 함수
-        onCropComplete={onCropComplete}  // 이미지 자르기가 완료될 때 호출되는 함수
-        onZoomChange={setZoom}  // zoom 상태를 업데이트하는 함수
+        aspect={1}
+        onCropChange={setCrop} 
+        onCropComplete={onCropComplete} 
+        onZoomChange={setZoom} 
       />
+      {renderButtons()}
     </div>
   );
 }
 
-export default Crop
+export default Crop;

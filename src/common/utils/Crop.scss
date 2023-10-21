@@ -7,7 +7,7 @@
         position: absolute;
         top: 8px;
         left: 6vw;
-        z-index: 100;
+        z-index: 1000;
     }
 
     &-complition-check {
@@ -16,4 +16,99 @@
         right: 6vw;
         z-index: 100;
     }
+}
+
+.crop-img-current-idx{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 8px;
+    width:100%;
+    z-index: 100;
+    color: var(--reward-gray-2-wt, #FFF);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.crop-btn-wrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.crop-complte-btn {
+    position: absolute;
+    bottom: 47px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 335px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--r-theme-purple-3, #7A5CCF);
+    box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.05);
+
+    color: var(--reward-gray-2-wt, #FFF);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.crop-first-btn{
+    position: absolute;
+    bottom: 47px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 335px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--reward-gray-25, #3D3D3D);
+    box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.05);
+
+    color: var(--reward-gray-2-wt, #FFF);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.crop-btn-container{
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+    width: 100%;
+    position: absolute;
+    bottom: 47px;
+}
+
+.crop-middle-btn{
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--reward-gray-25, #3D3D3D);
+    box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.05);
+
+    color: var(--reward-gray-2-wt, #FFF);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+
+.crop-complte-half-btn {
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--r-theme-purple-3, #7A5CCF);
+    box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.05);
+
+    color: var(--reward-gray-2-wt, #FFF);
+    font-size: 16px;
+    font-weight: 500;
 }
