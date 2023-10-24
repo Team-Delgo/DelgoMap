@@ -36,27 +36,6 @@ function DetailPage() {
     getDetailPageData(detailPageId, userId),
   );
 
-  // const setCertLocation = () => {
-  //   if (!isSignIn) {
-  //     setIsAlertOpen(true);
-  //     return;
-  //   }
-
-  //   dispatch(
-  //     uploadAction.setHomeCert({
-  //       latitude: data.lat,
-  //       longitude: data.lng,
-  //       mongPlaceId: data?.mungpleId,
-  //       title: data?.placeName,
-  //       address: data?.address,
-  //       categoryCode: data?.categoryCode,
-  //     }),
-  //   );
-  //   navigate(UPLOAD_PATH.CERTIFICATION, {
-  //     state: { prevPath: 'detail'  },
-  //   });
-  // };
-
   const navigateToHome = () => navigate('/');
   useEffect(() => {
     mutation.mutate({
@@ -136,7 +115,8 @@ function DetailPage() {
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
 
   return (
-    <div className="overflow-scroll bg-gray-200">
+
+    <div className="overflow-scroll bg-gray-200" >
       <BackArrowComponent onClickHandler={navigateToHome} white />
       <DetailImageSlider
         openFullSlider={placeFullScreenHandler}
@@ -181,6 +161,7 @@ function DetailPage() {
           이곳에 기록 남기기
         </div>
       )}
+
     </div>
   );
 }
