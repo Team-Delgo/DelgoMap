@@ -111,7 +111,7 @@ const useSearch = (
     const location = new kakao.maps.LatLng(currentLat, currentLng);
     ps.keywordSearch(place, placeSearchCB, {
       location, // 거리순으로 검색하기 위해 location 지정
-      sort: kakao.maps.services.SortBy.DISTANCE, // 거리순으로 검색
+      sort: kakao.maps.services.SortBy.ACCURACY, // 거리순으로 검색
       size: 15,
       page: 1,
     });

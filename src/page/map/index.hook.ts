@@ -69,7 +69,7 @@ function useMap() {
     getCerts(userId),
   );
 
-  console.log(certDataList);
+  const viewCount: number = certDataList ? certDataList.viewCount : 0;
 
   /** Function */
   const clearSelectedMungple = clearSelectedId(setSelectedMungple, selectedMungple);
@@ -389,6 +389,7 @@ function useMap() {
       selectedCert,
       selectedMungple,
       mungpleMarkers,
+      viewCount,
       isSearchViewOpen,
       isAlertOpen,
       isSelectedAnything,
