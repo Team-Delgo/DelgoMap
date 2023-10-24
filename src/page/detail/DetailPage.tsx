@@ -12,22 +12,30 @@ import FullScreenImageSlider from './components/FullScreenImageSlider';
 import EditorNote from './components/EditorNote';
 import DetailReview from './components/review/DetailReview';
 import BackArrowComponent from '../../components/BackArrowComponent';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
+import { UPLOAD_PATH } from 'common/constants/path.const';
+import { uploadAction } from 'redux/slice/uploadSlice';
 
 function DetailPage() {
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
   const navigate = useNavigate();
   const [imageNumber, setImageNumber] = useState(1);
+  const [showButton, setShowButton] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
+  const isSignIn = useSelector((state: RootState) => state.persist.user.isSignIn);
   const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
   const splitUrl = window.location.href.split('/');
+  const dispatch = useDispatch();
+
   const detailPageId = parseInt(splitUrl[splitUrl.length - 1], 10);
   ('');
   const { data, isLoading } = useQuery(['getDetailPageData', detailPageId], () =>
     getDetailPageData(detailPageId, userId),
   );
+
   const navigateToHome = () => navigate('/');
   useEffect(() => {
     mutation.mutate({
@@ -36,6 +44,20 @@ function DetailPage() {
         firebase_screen_class: 'DetailPage',
       },
     });
+    const handleScroll = () => {
+      if (window.scrollY > 250) {
+        // 300px 이상 스크롤하면 버튼을 마운트
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   if (data === undefined || isLoading) return <BallLoading />;
@@ -58,6 +80,27 @@ function DetailPage() {
     setIsFullScreenSliderOpen(true);
   };
 
+  const setCertLocation = () => {
+    if (!isSignIn) {
+      setIsAlertOpen(true);
+      return;
+    }
+
+    dispatch(
+      uploadAction.setHomeCert({
+        latitude: data.latitude,
+        longitude: data.longitude,
+        mongPlaceId: data.mungpleId,
+        title: data.placeName,
+        address: data.address,
+        categoryCode: data.categoryCode,
+      }),
+    );
+    navigate(UPLOAD_PATH.CERTIFICATION, {
+      state: { prevPath: `detail/${data.mungpleId}` },
+    });
+  };
+
   if (isFullScreenSliderOpen)
     return (
       <FullScreenImageSlider
@@ -72,6 +115,7 @@ function DetailPage() {
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
 
   return (
+
     <div className="overflow-scroll bg-gray-200" >
       <BackArrowComponent onClickHandler={navigateToHome} white />
       <DetailImageSlider
@@ -107,16 +151,17 @@ function DetailPage() {
         openFullSlider={menuFullScreenHandler}
         categoryCode={data.categoryCode}
       />
-      <DetailReview
-        mungpleId={data.mungpleId}
-        visited={data.certCount}
-      />
-      <div
-        aria-hidden
-        className="fixed bottom-[38px] left-[50%] z-30 w-[92%] translate-x-[-50%] rounded-[12px] bg-[#7a5ccf] py-[18px] text-center text-[16px] font-medium text-white"
-      >
-        이곳에 기록 남기기
-      </div>
+      <DetailReview mungpleId={data.mungpleId} visited={data.certCount} />
+      {showButton && (
+        <div
+          onClick={setCertLocation}
+          aria-hidden
+          className="fixed bottom-[38px] left-[50%] z-30 w-[92%] translate-x-[-50%] rounded-[12px] bg-[#7a5ccf] py-[16px] text-center text-[16px] font-medium text-white"
+        >
+          이곳에 기록 남기기
+        </div>
+      )}
+
     </div>
   );
 }

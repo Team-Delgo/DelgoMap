@@ -22,6 +22,8 @@ interface DetailPageResponse {
   placeNameEn: string;
   address: string;
   photoUrls: string[];
+  latitude:number;
+  longitude:number;
   phoneNo: string;
   businessHour: BusinessHours;
   residentDogName: string | null;

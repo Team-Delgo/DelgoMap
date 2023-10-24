@@ -30,6 +30,7 @@ function Map() {
       mapDataList,
       selectedCategory,
       selectedCert,
+      viewCount,
       selectedMungple,
       isSearchViewOpen,
       isAlertOpen,
@@ -128,15 +129,17 @@ function Map() {
         !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
           <UserLocation move={moveKakaoMapCurrentLocation} />
         )}
-      {!isSelectedAnything && !isSearchViewOpen&&
+      {!isSelectedAnything &&
+        !isSearchViewOpen &&
         selectedMungple.title.length === 0 &&
-        selectedCert.userId === 0 && <FooterNavigation page='map' />}
+        selectedCert.userId === 0 && <FooterNavigation page="map" />}
+
       {!isSelectedAnything &&
         !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
           <CertToggle onClick={certToggleClickHandler} state={isCertToggleOn} />
         )}
       {isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
-        <CountBox />
+        <CountBox viewCount={viewCount} />
       )}
       {!isCertToggleOn && selectedCert.placeName.length === 0 && !isSelectedAnything && (
         <ListBox onClick={listboxHandler} />
