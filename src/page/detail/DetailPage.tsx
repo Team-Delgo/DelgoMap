@@ -18,6 +18,7 @@ import { SIGN_IN_PATH, UPLOAD_PATH } from 'common/constants/path.const';
 import { uploadAction } from 'redux/slice/uploadSlice';
 import AlertConfirm from 'common/dialog/AlertConfirm';
 
+
 function DetailPage() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const mutation = useAnalyticsLogEvent(analytics, 'screen_view');
@@ -123,6 +124,7 @@ function DetailPage() {
     });
   };
   const navigateToLoginPage = () => navigate(SIGN_IN_PATH.MAIN);
+
   if (isFullScreenSliderOpen)
     return (
       <FullScreenImageSlider
