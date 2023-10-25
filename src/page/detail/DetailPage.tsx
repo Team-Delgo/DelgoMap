@@ -14,8 +14,9 @@ import DetailReview from './components/review/DetailReview';
 import BackArrowComponent from '../../components/BackArrowComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { UPLOAD_PATH } from 'common/constants/path.const';
+import { SIGN_IN_PATH, UPLOAD_PATH } from 'common/constants/path.const';
 import { uploadAction } from 'redux/slice/uploadSlice';
+import AlertConfirm from 'common/dialog/AlertConfirm';
 
 function DetailPage() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -121,7 +122,7 @@ function DetailPage() {
       state: { prevPath: `detail/${data.mungpleId}` },
     });
   };
-
+  const navigateToLoginPage = () => navigate(SIGN_IN_PATH.MAIN);
   if (isFullScreenSliderOpen)
     return (
       <FullScreenImageSlider
@@ -137,6 +138,14 @@ function DetailPage() {
 
   return (
     <div className="overflow-scroll bg-gray-200">
+      {isAlertOpen && (
+        <AlertConfirm
+          text="로그인이 필요한 기능입니다."
+          buttonText="로그인"
+          yesButtonHandler={navigateToLoginPage}
+          noButtonHandler={() => setIsAlertOpen(false)}
+        />
+      )}
       <BackArrowComponent onClickHandler={navigateToHome} white />
       <DetailImageSlider
         openFullSlider={placeFullScreenHandler}
