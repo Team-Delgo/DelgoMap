@@ -14,8 +14,10 @@ import DetailReview from './components/review/DetailReview';
 import BackArrowComponent from '../../components/BackArrowComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { UPLOAD_PATH } from 'common/constants/path.const';
+import { SIGN_IN_PATH, UPLOAD_PATH } from 'common/constants/path.const';
 import { uploadAction } from 'redux/slice/uploadSlice';
+import AlertConfirm from 'common/dialog/AlertConfirm';
+
 
 function DetailPage() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -35,6 +37,27 @@ function DetailPage() {
   const { data, isLoading } = useQuery(['getDetailPageData', detailPageId], () =>
     getDetailPageData(detailPageId, userId),
   );
+
+  // const setCertLocation = () => {
+  //   if (!isSignIn) {
+  //     setIsAlertOpen(true);
+  //     return;
+  //   }
+
+  //   dispatch(
+  //     uploadAction.setHomeCert({
+  //       latitude: data.lat,
+  //       longitude: data.lng,
+  //       mongPlaceId: data?.mungpleId,
+  //       title: data?.placeName,
+  //       address: data?.address,
+  //       categoryCode: data?.categoryCode,
+  //     }),
+  //   );
+  //   navigate(UPLOAD_PATH.CERTIFICATION, {
+  //     state: { prevPath: 'detail'  },
+  //   });
+  // };
 
   const navigateToHome = () => navigate('/');
   useEffect(() => {
@@ -100,6 +123,7 @@ function DetailPage() {
       state: { prevPath: `detail/${data.mungpleId}` },
     });
   };
+  const navigateToLoginPage = () => navigate(SIGN_IN_PATH.MAIN);
 
   if (isFullScreenSliderOpen)
     return (
@@ -115,8 +139,15 @@ function DetailPage() {
     return <EditorNote image={data.editorNoteUrl} close={() => setIsEditorOpen(false)} />;
 
   return (
-
-    <div className="overflow-scroll bg-gray-200" >
+    <div className="overflow-scroll bg-gray-200">
+      {isAlertOpen && (
+        <AlertConfirm
+          text="로그인이 필요한 기능입니다."
+          buttonText="로그인"
+          yesButtonHandler={navigateToLoginPage}
+          noButtonHandler={() => setIsAlertOpen(false)}
+        />
+      )}
       <BackArrowComponent onClickHandler={navigateToHome} white />
       <DetailImageSlider
         openFullSlider={placeFullScreenHandler}
@@ -161,7 +192,6 @@ function DetailPage() {
           이곳에 기록 남기기
         </div>
       )}
-
     </div>
   );
 }

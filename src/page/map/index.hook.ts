@@ -71,7 +71,6 @@ function useMap() {
 
   const viewCount: number = certDataList ? certDataList.viewCount : 0;
 
-
   /** Function */
   const clearSelectedMungple = clearSelectedId(setSelectedMungple, selectedMungple);
   const clearSelectedCert = () => setSelectedCert(certDefault);
