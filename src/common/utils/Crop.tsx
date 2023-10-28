@@ -74,6 +74,10 @@ function Crop({
       setCrop(cropList[currentImageIndex]);
       setZoom(zoomList[currentImageIndex]);
     }
+    else{
+      setCrop({ x: 0, y: 0 });
+      setZoom(1);
+    }
   }, [currentImageIndex]);
 
   const handleUpdateCropData = (
