@@ -6,11 +6,12 @@ import Crop from '../../common/utils/Crop';
 import getCroppedImg from '../../common/utils/CropHandle';
 import { uploadAction } from '../../redux/slice/uploadSlice';
 import { RootState } from '../../redux/store';
+import DogLoading from '../../common/utils/BallLoading';
 
 interface CropType {
   x: number;
   y: number;
-};
+}
 
 interface CroppendAreaPixelType {
   height: number;
@@ -26,7 +27,7 @@ function CropListPage() {
   >([]);
   const [cropList, setCropList] = useState<CropType[]>([]);
   const [zoomList, setZoomList] = useState<number[]>([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { prevImgList, prevImgNameList } = useSelector(
     (state: RootState) => state.persist.upload,
@@ -36,34 +37,38 @@ function CropListPage() {
   const location = useLocation();
 
   const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
-    setCropAreaPixel(croppedAreaPixels)
+    setCropAreaPixel(croppedAreaPixels);
   };
 
   const showCroppedImage = async () => {
     try {
-      let finalCropList: CroppendAreaPixelType[]
+      setIsLoading(true);
+      let finalCropList: CroppendAreaPixelType[];
 
-      if(currentImageIndex === prevImgList.length-1 && croppedAreaPixel){
-        finalCropList = [...croppedAreaPixelList,croppedAreaPixel];
+      if (currentImageIndex === prevImgList.length - 1 && croppedAreaPixel) {
+        finalCropList = [...croppedAreaPixelList, croppedAreaPixel];
       }
 
-      const cropPromises = prevImgList.map((image, index) => 
-        getCroppedImg(image, finalCropList[index])
+      const cropPromises = prevImgList.map((image, index) =>
+        getCroppedImg(image, finalCropList[index]),
       );
 
       const blobFiles = await Promise.all(cropPromises);
 
       const newFiles = blobFiles.map((blobFile, index) => {
-      const metadata = { type: `image/jpeg` };
+        const metadata = { type: `image/jpeg` };
         return new File([blobFile as Blob], prevImgNameList[index], metadata);
       });
 
-      const croppedImages = newFiles.map(file => URL.createObjectURL(file));
-      
-      dispatch(uploadAction.setImgList({ imgList: croppedImages,  fileList: newFiles }));
-      moveToNextPage()      
+      const croppedImages = newFiles.map((file) => URL.createObjectURL(file));
+
+      dispatch(uploadAction.setImgList({ imgList: croppedImages, fileList: newFiles }));
+      moveToNextPage();
     } catch (e) {
       console.error(e);
+    }
+    finally{
+      setIsLoading(false)
     }
   };
 
@@ -82,22 +87,25 @@ function CropListPage() {
   }, []);
 
   return (
-    <Crop
-      currentImageIndex={currentImageIndex}
-      ImgListLength={prevImgList.length}
-      img={prevImgList[currentImageIndex]}
-      croppedAreaPixelList={croppedAreaPixelList}
-      croppedAreaPixel={croppedAreaPixel}
-      zoomList={zoomList}
-      cropList={cropList}
-      cancleImgCrop={moveToPrevPage}
-      showCroppedImage={showCroppedImage}
-      onCropComplete={onCropComplete}
-      setCurrentImageIndex={setCurrentImageIndex}
-      setCroppedAreaPixelList={setCroppedAreaPixelList}
-      setZoomList={setZoomList}
-      setCropList={setCropList}
-    />
+    <>
+      {isLoading && <DogLoading />}
+      <Crop
+        currentImageIndex={currentImageIndex}
+        ImgListLength={prevImgList.length}
+        img={prevImgList[currentImageIndex]}
+        croppedAreaPixelList={croppedAreaPixelList}
+        croppedAreaPixel={croppedAreaPixel}
+        zoomList={zoomList}
+        cropList={cropList}
+        cancleImgCrop={moveToPrevPage}
+        showCroppedImage={showCroppedImage}
+        onCropComplete={onCropComplete}
+        setCurrentImageIndex={setCurrentImageIndex}
+        setCroppedAreaPixelList={setCroppedAreaPixelList}
+        setZoomList={setZoomList}
+        setCropList={setCropList}
+      />
+    </>
   );
 }
 
