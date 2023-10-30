@@ -36,14 +36,14 @@ async function tokenRefresh() {
       withCredentials: true,
     });
 
-    const { OS } = store.getState().persist.device;
-    if (OS === 'android')
+    const { OS, device } = store.getState().persist.device;
+    if (OS === 'android' && device !== 'pc')
       window.BRIDGE.flushCookie();
-
     const accessToken = response.headers.authorization_access;
     axiosInstance.defaults.headers.authorization_access = `Bearer ${accessToken}`;
     return response.headers.authorization_access;
-  } catch {
+  } catch (e) {
+    console.log("error : ", e);
     console.log('refresh token stale');
     store.dispatch(userActions.signout());
   }
