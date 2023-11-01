@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import CertCard from '../../map/components/CertCard';
 import BackArrowComponent from '../../../components/BackArrowComponent';
 import { othersMapAction } from 'redux/slice/othersMapSlice';
-import { getUserInfo } from 'common/api/othersmap';
+import { getOtherPhotoData } from 'common/api/record';
 import { useNavigate } from 'react-router-dom';
 import { Cert, certDefault } from '../../map/index.types';
 import { setNormalCertMarker } from './OthersMakerSet';
@@ -25,7 +25,9 @@ function OthersMap() {
   const [certMarkers, setCertMarkers] = useState<kakao.maps.CustomOverlay[]>([]);
   const [selectedCert, setSelectedCert] = useState<Cert>(certDefault);
   const dispatch = useDispatch();
-  const { data: userInfo } = useQuery(['getUserInfo', userId], () => getUserInfo(userId));
+  const { data: certInfo } = useQuery(['getCertInfo', userId], () =>
+    getOtherPhotoData(userId, 'CA0000', 0, 100, true),
+  );
   const clearSelectedCert = () => setSelectedCert(certDefault);
 
   const setCurrentMapLocation = () => {
@@ -55,14 +57,14 @@ function OthersMap() {
   };
 
   useEffect(() => {
-    if (userInfo && map && isFirstRendering.cert) {
+    if (certInfo && map && isFirstRendering.cert) {
       if (userId > 0) {
-        const certMarkers = setNormalCertMarker(userInfo.certs, map, setSelectedCert);
+        const certMarkers = setNormalCertMarker(certInfo.content, map, setSelectedCert);
         setCertMarkers(certMarkers);
         setIsFirstRendering((prev) => ({ ...prev, cert: false }));
       }
     }
-  }, [map, userInfo]);
+  }, [map, certInfo]);
 
   useEffect(() => {
     if (!map) return;
@@ -73,23 +75,23 @@ function OthersMap() {
     <div>
       <div className="relative z-50 h-[60px] w-screen bg-white pt-[9px]">
         <BackArrowComponent onClickHandler={handleBackClick} />
-        {userInfo && (
+        {certInfo && (
           <div className="text-center text-lg font-bold leading-[150%]">
-            {userInfo.nickname}
+            {certInfo.content[1].userName}
           </div>
         )}
         <div className="flex justify-center">
           <img src={dogfoot} />
-          {userInfo && (
+          {certInfo && (
             <div className="ml-[4px] mr-[6px] text-[12px] font-bold leading-[150%] text-[#646566]">
-              {userInfo.totalCount}
+              {certInfo.totalCount}
             </div>
           )}
           <img src={dot} />
           <img className="ml-[6px]" src={eye} />
-          {userInfo && (
+          {certInfo && (
             <div className="ml-[4px] mr-[6px] text-[12px] font-bold leading-[150%] text-[#646566]">
-              {userInfo.viewCount}
+              {certInfo.viewCount}
             </div>
           )}
         </div>

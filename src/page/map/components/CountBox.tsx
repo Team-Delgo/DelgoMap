@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { getUserInfo } from '../../../common/api/othersmap';
+import { getCerts } from '../../../common/api/record';
 import dogfoot from '../../../common/icons/dogfoot-small-black.svg';
 import dot from '../../../common/icons/dot.svg';
 import eye from '../../../common/icons/eye-black.svg';
@@ -13,7 +13,7 @@ interface Props {
 
 function CountBox({ viewCount }: Props) {
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
-  const { data: userInfo } = useQuery(['getUserInfo', userId], () => getUserInfo(userId));
+  const { data: userInfo } = useQuery(['getUserInfo', userId], () => getCerts(userId));
   return (
     <div className="flex w-screen justify-center">
       <div className="absolute bottom-[90px] z-[100] flex items-center rounded-[45px] bg-[#FFF] px-[15px] py-[8px] text-[12px] font-bold shadow-1">
