@@ -93,6 +93,7 @@ interface Photos {
   last: boolean;
   content: Cert[];
   totalCount: number;
+  viewCount: number;
 }
 
 async function getMyPhotoData(
