@@ -16,27 +16,53 @@ import Check from '../../../common/icons/place-check.svg';
 import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
 import { MungPlaceType } from '../../../common/types/mungPlace';
 import useActive from '../../../common/hooks/useActive';
-import useInput from '../../../common/hooks/useInput';
 import { mapAction } from '../../../redux/slice/mapSlice';
 import { RootState } from '../../../redux/store';
+import BathSmall from '../../../common/icons/bath-map-small.svg';
+import CafeSmall from '../../../common/icons/cafe-map-small.svg';
+import BeautySmall from '../../../common/icons/beauty-map-small.svg';
+import WalkSmall from '../../../common/icons/walk-map-small.svg';
+import KinderSmall from '../../../common/icons/kinder-map-small.svg';
+import HospitalSmall from '../../../common/icons/hospital-map-small.svg';
+import EatSmall from '../../../common/icons/eat-map-small.svg';
+import EtcSmall from '../../../common/icons/etc-small.svg';
+import { categoryType2 } from '../../../common/types/category';
+
+const icons: categoryType2 = {
+  CA0001: WalkSmall,
+  CA0002: CafeSmall,
+  CA0003: EatSmall,
+  CA0004: BathSmall,
+  CA0005: BeautySmall,
+  CA0006: HospitalSmall,
+  CA0007: KinderSmall,
+  CA9999: EtcSmall,
+};
+
+interface KaKaoPlace {
+  name: string;
+  address: string;
+  latitude: string;
+  longitude: string;
+}
 
 function UploadLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  const [placeName, onChangePlaceName] = useInput(''); //장소명
-  const [checkedPlaceId, setCheckedPlaceId] = useState(-1); //선택한 placeId (멍플장소만)
-  const [manualChecked, onCheckManual] = useActive(false); //선택된 장소 UI변경을 위해
+  // const [checkedPlaceId, setCheckedPlaceId] = useState(-1); //선택한 placeId (멍플장소만)
   const inputRef = useRef<any>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const initialHeight = useRef(window.innerHeight);
+  const [placeName, setPlaceName] = useState('');
+  const [kakaoPlaceList, setKaKaoPlaceList] = useState<Array<KaKaoPlace>>([]);
 
   const sheetStyle = {
     borderRadius: '18px 18px 0px 0px',
-    height: initialHeight.current - window.innerWidth + 10, //기본적으로 window.innerHeight,innerWidth등은 인라은으로설정 css에선 알수 x 
+    height: initialHeight.current - window.innerWidth + 10,
   };
 
-  const { data: mungPlaceList } = useQuery( //멍플장소 api hook
+  const { data: mungPlaceList } = useQuery(
     GET_MUNG_PLACE_LIST,
     () => getMungPlaceList(),
     {
@@ -53,42 +79,78 @@ function UploadLocationRecord() {
 
   const selectMongPlace = (place: MungPlaceType) => (event: React.MouseEvent) => {
     const { mungpleId, placeName, address } = place;
-    setCheckedPlaceId(mungpleId); //멍플아이디 등록
-    dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address })); //선택한 멍플데이터 store 저장
-    setTimeout(()=>{
-      navigate(UPLOAD_PATH.CERTIFICATION); //다시 인증페이지 이동
-    },100)
+    dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address }));
+    setTimeout(() => {
+      navigate(UPLOAD_PATH.CERTIFICATION);
+    }, 100);
   };
 
-  const selectManualPlace = () => {
-    //장소 수 동설정
-    onCheckManual();
-    navigateCertMap(); //인증맵으로 이동
+  const selectKaKaoPlace = (place: KaKaoPlace) => (event: React.MouseEvent) => {
+    const { name, address, latitude, longitude } = place;
+    dispatch(
+      uploadAction.setManualPlace({
+        placeName: name,
+        address,
+        latitude: latitude,
+        longitude: longitude,
+        mongPlaceId: 0,
+      }),
+    );
+    setTimeout(() => {
+      navigate(UPLOAD_PATH.CERTIFICATION); //다시 인증페이지 이동
+    }, 100);
   };
 
   const navigateCertMap = () => {
     dispatch(mapAction.setCurrentPlaceName(inputRef.current.value));
-    setTimeout(()=>{
+    setTimeout(() => {
       navigate(UPLOAD_PATH.MAP);
-    },100)
+    }, 100);
   };
+
+  const searchPlacesByKeyword = (
+    keyword: string,
+    callback: (places: KaKaoPlace[]) => void,
+  ): void => {
+    const places = new kakao.maps.services.Places();
+
+    const placesSearchCB = (data: any[], status: kakao.maps.services.Status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const placeList = data.map((place) => ({
+          name: place.place_name,
+          address: place.address_name,
+          latitude: place.y,
+          longitude: place.x,
+        }));
+        callback(placeList);
+      } else {
+        callback([]);
+      }
+    };
+
+    places.keywordSearch(keyword, placesSearchCB);
+  };
+
+  const onChangePlaceName = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+      const { value } = e.target;
+      setPlaceName(value);
+      searchPlacesByKeyword(value, (places: KaKaoPlace[]) => {
+        console.log('places', places);
+        setKaKaoPlaceList(places);
+      });
+    },
+    [],
+  );
 
   const manualPlace = () => {
     return (
       <div
         className="review-manual-place-wrapper"
         aria-hidden="true"
-        onClick={selectManualPlace}
+        onClick={navigateCertMap}
       >
-        <div
-          className={
-            manualChecked === true
-              ? 'review-place-wrapper-active-name'
-              : 'review-place-wrapper-name'
-          }
-        >
-          {placeName}
-        </div>
+        <div className={'review-place-wrapper-active-name'}>{placeName}</div>
         <div className="review-place-wrapper-second">
           <div className="review-place-map-choice">지도에 직접추가</div>
           <img
@@ -102,68 +164,118 @@ function UploadLocationRecord() {
       </div>
     );
   };
-  return OS === 'ios' ? (
-          <main
-            className="capture-img-record ios-capture-record"
-            style={{
-              height: initialHeight.current - window.innerWidth + 10,
-            }}
-          >
-            <body className="review-container">
-              <input
-                type="text"
-                ref={inputRef}
-                className="review-place-name"
-                placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
-                onChange={onChangePlaceName}
-              />
-              {/* 검색창에 입력한 장소명  */}
-              {placeName.length > 0 && manualPlace()}
-              {/* 검색창에 입력한 값을 포함하는 멍플리스트만 보여줌 */}
-              {mungPlaceList?.data.map((place: MungPlaceType) => {
-                if (placeName.length > 0) {
-                  if (place.placeName.includes(placeName)) {
-                    return (
-                      <div
-                        className="review-place-wrapper"
-                        aria-hidden="true"
-                        onClick={selectMongPlace(place)}
-                        key={place.mungpleId}
-                      >
-                        <div>
-                          <div
-                            className={
-                              checkedPlaceId === place.mungpleId
-                                ? 'review-place-wrapper-active-name'
-                                : 'review-place-wrapper-name'
-                            }
-                          >
-                            {place.placeName}
-                          </div>
-                          <div
-                            className={
-                              checkedPlaceId === place.mungpleId
-                                ? 'review-place-wrapper-active-address'
-                                : 'review-place-wrapper-address'
-                            }
-                          >
-                            {place.address}
-                          </div>
-                        </div>
-                        {checkedPlaceId === place.mungpleId ? (
-                          <img
-                            className="review-place-check"
-                            src={Check}
-                            alt="category-img"
-                          />
-                        ) : null}
+
+  const kakaoPlace = () => {
+    return (
+      <>
+        <div style={{ height: '1px', backgroundColor: '#F6F6F6', margin: '16px 0' }} />
+        <div>
+          {kakaoPlaceList.map((place: KaKaoPlace,idx:number) => {
+            if (placeName?.length > 0) {
+              return (
+                <div
+                  style={{ paddingBottom: '20px' }}
+                  aria-hidden="true"
+                  onClick={selectKaKaoPlace(place)}
+                  key={idx}
+                >
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <div className={'review-place-wrapper-active-name'}>
+                        {highlightText(place.name, placeName)}
                       </div>
-                    );
-                  }
-                }
-              })}
-            </body>
-          </main>
+                    </div>
+                    <div className={'review-place-wrapper-active-address'}>
+                      {highlightText(place.address, placeName)}
+                    </div>
+                  </div>
+                  {/* {checkedPlaceId === place.mungpleId ? (
+                    <img className="review-place-check" src={Check} alt="category-img" />
+                  ) : null} */}
+                </div>
+              );
+            }
+          })}
+        </div>
+      </>
+    );
+  };
+
+  const highlightText = (text: string, keyword: string) => {
+    const parts = text.split(new RegExp(`(${keyword})`, 'gi'));
+    return (
+      <span>
+        {parts.map((part, index) =>
+          part.toLowerCase() === keyword.toLowerCase() ? (
+            <span key={index} style={{ color: '#7A5CCF', fontWeight: 500 }}>
+              {part}
+            </span>
+          ) : (
+            part
+          ),
+        )}
+      </span>
+    );
+  };
+
+  return OS === 'ios' ? (
+    <main
+      className="capture-img-record ios-capture-record"
+      style={{
+        height: initialHeight.current - window.innerWidth + 10,
+      }}
+    >
+      <body className="review-container">
+        <input
+          type="text"
+          ref={inputRef}
+          className="review-place-name"
+          placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
+          onChange={onChangePlaceName}
+        />
+        {placeName.length > 0 && manualPlace()}
+        {mungPlaceList?.data.map((place: MungPlaceType) => {
+          if (placeName.length > 0) {
+            if (
+              place.placeName.includes(placeName) ||
+              place.address.includes(placeName)
+            ) {
+              return (
+                <div
+                  className="review-place-wrapper"
+                  aria-hidden="true"
+                  onClick={selectMongPlace(place)}
+                  key={place.mungpleId}
+                >
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <div className={'review-place-wrapper-active-name'}>
+                        {highlightText(place.placeName, placeName)}
+                      </div>
+                      <div style={{ display: 'flex', height: '100%' }}>
+                        <img
+                          src={icons[place.categoryCode]}
+                          width={14}
+                          height={14}
+                          style={{ marginLeft: '5px' }}
+                        />
+                      </div>
+                    </div>
+                    <div className={'review-place-wrapper-active-address'}>
+                      {highlightText(place.address, placeName)}
+                    </div>
+                  </div>
+                  {/* {checkedPlaceId === place.mungpleId ? (
+                    <img className="review-place-check" src={Check} alt="category-img" />
+                  ) : null} */}
+                </div>
+              );
+            }
+          }
+        })}
+        {kakaoPlaceList.length > 0 && kakaoPlace()}
+      </body>
+    </main>
   ) : (
     <Sheet
       isOpen={bottomSheetIsOpen}
@@ -186,17 +298,17 @@ function UploadLocationRecord() {
             }}
           >
             <body className="review-container">
-                <input
-                  type="text"
-                  ref={inputRef}
-                  className="review-place-name"
-                  placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
-                  onChange={onChangePlaceName}
-                />
-                {placeName.length > 0 && manualPlace()}
-                {mungPlaceList?.data.map((place: MungPlaceType) => {
-                  if (placeName.length > 0) {
-                    if (place.placeName.includes(placeName)) {
+              <input
+                type="text"
+                ref={inputRef}
+                className="review-place-name"
+                placeholder="여기는 어디인가요? (ex.델고카페, 동네 산책로)"
+                onChange={onChangePlaceName}
+              />
+              {placeName.length > 0 && manualPlace()}
+              {mungPlaceList?.data.map((place: MungPlaceType) => {
+                if (placeName.length > 0) {
+                  if (place.placeName.includes(placeName)) {
                     return (
                       <div
                         className="review-place-wrapper"
@@ -205,37 +317,34 @@ function UploadLocationRecord() {
                         key={place.mungpleId}
                       >
                         <div>
-                          <div
-                            className={
-                              checkedPlaceId === place.mungpleId
-                                ? 'review-place-wrapper-active-name'
-                                : 'review-place-wrapper-name'
-                            }
-                          >
-                            {place.placeName}
+                          <div style={{ display: 'flex' }}>
+                            <div className={'review-place-wrapper-active-name'}>
+                              {highlightText(place.placeName, placeName)}
+                            </div>
+                            <img
+                              src={icons[place.categoryCode]}
+                              width={14}
+                              height={14}
+                              style={{ marginLeft: '5px' }}
+                            />
                           </div>
-                          <div
-                            className={
-                              checkedPlaceId === place.mungpleId
-                                ? 'review-place-wrapper-active-address'
-                                : 'review-place-wrapper-address'
-                            }
-                          >
-                            {place.address}
+                          <div className={'review-place-wrapper-active-address'}>
+                            {highlightText(place.address, placeName)}
                           </div>
                         </div>
-                        {checkedPlaceId === place.mungpleId ? (
+                        {/* {checkedPlaceId === place.mungpleId ? (
                           <img
                             className="review-place-check"
                             src={Check}
                             alt="category-img"
                           />
-                        ) : null}
+                        ) : null} */}
                       </div>
                     );
                   }
                 }
               })}
+              {kakaoPlaceList.length > 0 && kakaoPlace()}
             </body>
           </main>
         </Sheet.Content>
