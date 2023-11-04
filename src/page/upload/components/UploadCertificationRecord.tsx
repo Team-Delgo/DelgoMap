@@ -94,6 +94,7 @@ function UploadCertificationRecord({
         onPostCertificationLoading();
       },
       onSuccess: (response: AxiosResponse) => {
+        console.log('response',response)
         const { code } = response.data;
 
         if (code === 200) {
