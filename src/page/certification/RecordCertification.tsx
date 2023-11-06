@@ -12,6 +12,7 @@ import './RecordCertification.scss';
 import { certificationDelete, reactCertification } from '../../common/api/certification';
 import { uploadAction } from '../../redux/slice/uploadSlice';
 import {
+  ROOT_PATH,
   UPLOAD_PATH,
   RECORD_PATH,
   SIGN_IN_PATH,
@@ -115,6 +116,18 @@ function RecordCertification(props: { certification: any }) {
     });
   };
 
+  const moveToMap = () => {
+    navigate(ROOT_PATH, {
+      state: {
+        lat: certification.latitude,
+        lng: certification.longitude,
+        categoryCode: certification.categoryCode,
+        certMungpleId:
+          certification.mungpleId !== 0 ? certification.mungpleId : undefined,
+      },
+    });
+  };
+
   const moveToCommentPage = () => {
     if (!isSignIn) {
       setLoginAlertIsOpen(true);
@@ -186,7 +199,9 @@ function RecordCertification(props: { certification: any }) {
         </div>
         <div className="record-cert-main">
           <div className="record-cert-main-text">
-            <div className="record-cert-main-text-title">{certification.placeName}</div>
+            <div className="record-cert-main-text-title" onClick={moveToMap}>
+              {certification.placeName}
+            </div>
             <div className="record-cert-main-text-sub">{certification.address}</div>
           </div>
         </div>

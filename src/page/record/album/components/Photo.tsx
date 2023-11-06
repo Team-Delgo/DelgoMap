@@ -27,9 +27,6 @@ function Photo() {
   const splitUrl = window.location.href.split('/');
   const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
   const myId = useSelector((state: RootState) => state.persist.user.user.id);
-  const { pageSize, scroll } = useSelector(
-    (state: RootState) => state.persist.scroll.photos,
-  );
   const sheetRef = useOnclickOutside(() => {
     setButtonIsClicked(false);
   });

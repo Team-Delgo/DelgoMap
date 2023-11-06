@@ -45,7 +45,7 @@ export function clearSelectedId(
         ...defaultSelectedMungple,
         prevId: prev.id,
         prevCategoryCode: prev.categoryCode,
-        prevIsBookmarked: prev.isBookmarked
+        prevIsBookmarked: prev.isBookmarked,
       };
     });
   }, [selectedId]);
