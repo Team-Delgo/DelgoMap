@@ -376,6 +376,7 @@ function useMap() {
           lat: certLocationState.lat,
           lng: certLocationState.lng,
         }));
+        setSelectedCert(certLocationState.cert);
       }
     }
   }, [map, certLocationState, mungpleMarkers]);

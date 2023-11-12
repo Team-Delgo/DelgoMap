@@ -23,6 +23,8 @@ import ToastPurpleMessage from '../common/dialog/ToastPurpleMessage';
 import { blockUser } from '../common/api/ban';
 import { analytics } from '../index';
 import { postType } from '../common/types/post';
+import { Cert } from 'page/map/index.types';
+import { CategoryCode } from 'page/map/index.types';
 import { weekDay } from '../common/types/week';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
@@ -257,9 +259,29 @@ function CertificationPost({
         lng: post.longitude,
         categoryCode: post.categoryCode,
         certMungpleId: post.mungpleId !== 0 ? post.mungpleId : undefined,
+        cert,
       },
     });
   };
+  const cert: Cert = {
+    categoryCode: post.categoryCode,
+    address: post.address,
+    certificationId: post.certificationId,
+    description: post.description,
+    latitude: post.latitude,
+    isLike: post.isLike,
+    longitude: post.longitude,
+    likeCount: post.likeCount,
+    commentCount: post.commentCount,
+    mungpleId: post.mungpleId,
+    photoUrl: post.photoUrl,
+    placeName: post.placeName,
+    registDt: post.registDt,
+    userId: post.userId,
+    userName: post.userName,
+    photos: post.photos,
+  };
+
   const moveToCommentPage = () => {
     //로그인 안되있으면 로그인alert창 띄워주고
     if (!isSignIn) {
