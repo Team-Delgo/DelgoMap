@@ -169,11 +169,6 @@ const uploadSlice = createSlice({
         isHideAddress:action.payload.isHideAddress
       };
     },
-    initAchievements() {
-      return {
-        ...initialState,
-      };
-    },
     setHomeCert(state,action) {
       return {
         ...initialState,
