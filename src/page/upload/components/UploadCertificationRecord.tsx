@@ -53,14 +53,14 @@ function UploadCertificationRecord({
     isHideAddress,
     categoryCode,
     imgList,
-    fileList
+    fileList,
+    cert
   } = useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const certCompleteEvent = useAnalyticsCustomLogEvent(analytics, 'cert_end');
-  const prevPath = location?.state?.prevPath;
   let icon = FootPrintSmall;
 
   //카테고리 코드에따라 아이콘설정
@@ -195,16 +195,16 @@ function UploadCertificationRecord({
                   className="review-place-info-search-input"
                   placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
                   onChange={
-                    prevPath === 'homeMap'
+                    cert === "manual"
                       ? (e) => dispatch(uploadAction.setTitle({ title: e.target.value })) //타이틀도 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
                       : undefined
                   }
                   onFocus={
-                    prevPath === undefined
+                    cert === ""
                       ? () => navigate(UPLOAD_PATH.LOCATION)
                       : undefined
                   }
-                  disabled={prevPath === 'homeMungple' && true}
+                  disabled={cert === 'mungple'}
                   value={title !== '' ? title : undefined}
                 />
               </div>
@@ -324,17 +324,17 @@ function UploadCertificationRecord({
                         className="review-place-info-search-input"
                         placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
                         onChange={
-                          prevPath === 'homeMap'
+                          cert === 'manual'
                             ? (e) =>
                                 dispatch(uploadAction.setTitle({ title: e.target.value }))
                             : undefined
                         }
                         onFocus={
-                          prevPath === undefined
+                          cert === ""
                             ? () => navigate(UPLOAD_PATH.LOCATION)
                             : undefined
                         }
-                        disabled={prevPath === 'homeMungple' && true}
+                        disabled={cert === 'mungple'}
                         value={title !== '' ? title : undefined}
                       />
                     </div>

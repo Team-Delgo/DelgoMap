@@ -16,7 +16,7 @@ function CertFloatingButton() {
 
   const certButtonHandler = () => {
     clickEvent.mutate();
-    dispatch(uploadAction.initAchievements());
+    dispatch(uploadAction.setUploadInit());
     navigate(UPLOAD_PATH.CERTIFICATION)
   };
 

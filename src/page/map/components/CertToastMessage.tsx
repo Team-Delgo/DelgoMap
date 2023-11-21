@@ -32,11 +32,10 @@ function LinkCopy(props: { isMungple: boolean }) {
         title: selectedMungple.title,
         address: selectedMungple.address,
         categoryCode: selectedMungple.categoryCode,
+        cert:isMungple ? 'mungple' : 'manual',
       }),
     );
-    navigate(UPLOAD_PATH.CERTIFICATION, {
-      state: { prevPath: isMungple ? 'homeMungple' : 'homeMap' },
-    });
+    navigate(UPLOAD_PATH.CERTIFICATION);
   };
 
   const sendLoginPage = () => {

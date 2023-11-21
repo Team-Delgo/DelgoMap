@@ -67,7 +67,7 @@ function FooterNavigation({ page }: Props) {
         dispatch(userActions.setIsFisrtCert(false));
         dispatch(userActions.setIsFirstCertToggle(true));
       }
-      dispatch(uploadAction.initAchievements());
+      dispatch(uploadAction.setUploadInit());
       navigate(UPLOAD_PATH.CERTIFICATION);
     } else setIsAlertOpen(true);
   };
