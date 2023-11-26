@@ -263,6 +263,7 @@ function CertificationPost({
       },
     });
   };
+
   const cert: Cert = {
     categoryCode: post.categoryCode,
     address: post.address,
