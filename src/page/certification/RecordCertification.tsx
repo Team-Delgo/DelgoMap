@@ -115,7 +115,7 @@ function RecordCertification(props: { certification: any }) {
       certificationId: certification.certificationId,
     });
   };
-
+  const cert: Cert = certification;
   const moveToMap = () => {
     navigate(ROOT_PATH, {
       state: {
@@ -124,6 +124,7 @@ function RecordCertification(props: { certification: any }) {
         categoryCode: certification.categoryCode,
         certMungpleId:
           certification.mungpleId !== 0 ? certification.mungpleId : undefined,
+        cert,
       },
     });
   };
