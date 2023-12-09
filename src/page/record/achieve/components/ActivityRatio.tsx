@@ -120,7 +120,6 @@ export const ActivityRatio = ({ counts }: Props) => {
         </ResponsiveContainer>
         <aside className="activity-ratio-icon-wrapper">
           {sortedIconList.map((entry) => {
-            // 각 항목의 비율 계산
             const percentage = total > 0 ? ((entry.count / total) * 100).toFixed(0) : 0;
             return (
               <figure className="activity-ratio-icon" key={entry.name}>
