@@ -47,6 +47,11 @@ const renderCustomizedLabel = ({
   outerRadius,
   percent,
 }: LabelProps) => {
+
+  if (percent === 0) {
+    return null;
+  }
+
   const radius = outerRadius - 18;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -110,6 +115,7 @@ export const ActivityRatio = ({ counts }: Props) => {
               label={renderCustomizedLabel}
               startAngle={90}
               endAngle={-270}
+              stroke="none"
             >
               {sortedIconList.map((entry) => {
                 const color = categoryColor[imgSmallKey[entry.name]];
