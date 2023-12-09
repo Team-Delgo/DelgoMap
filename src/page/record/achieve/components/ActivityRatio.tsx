@@ -20,7 +20,7 @@ interface LabelProps {
 }
 
 interface iconCount {
-  img: any;
+  img: string;
   name: string;
   count: number;
 }
@@ -91,6 +91,7 @@ export const ActivityRatio = ({ counts }: Props) => {
   });
 
   const sortedIconList = [...updatedIconList].sort((a, b) => b.count - a.count);
+  const total = updatedIconList.reduce((acc, icon) => acc + icon.count, 0);
 
   return (
     <section className="activity-ratio">
@@ -118,12 +119,16 @@ export const ActivityRatio = ({ counts }: Props) => {
           </PieChart>
         </ResponsiveContainer>
         <aside className="activity-ratio-icon-wrapper">
-          {sortedIconList.map((entry) => (
-            <figure className="activity-ratio-icon" key={entry.name}>
-              <img src={entry.img} alt="Icon" width={25} height={25} />
-              <figcaption>{entry.count}%</figcaption>
-            </figure>
-          ))}
+          {sortedIconList.map((entry) => {
+            // 각 항목의 비율 계산
+            const percentage = total > 0 ? ((entry.count / total) * 100).toFixed(0) : 0;
+            return (
+              <figure className="activity-ratio-icon" key={entry.name}>
+                <img src={entry.img} alt="Icon" width={25} height={25} />
+                <figcaption>{percentage}%</figcaption>
+              </figure>
+            );
+          })}
         </aside>
       </div>
     </section>

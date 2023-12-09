@@ -19,10 +19,6 @@ export default function ActivityWrapper() {
     onError: (error:AxiosError) => {
       useErrorHandlers(dispatch,error)
     },
-    onSuccess: (data:any) => {
-      console.log('data',data)
-    }
-
   });
 
   return (
