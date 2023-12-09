@@ -8,6 +8,7 @@ import { RootState } from 'redux/store';
 import { useNavigate } from 'react-router-dom';
 import dot from '../../../common/icons/dot.svg';
 import { RECORD_PATH } from '../../../common/constants/path.const';
+import { GET_ACCOUNT_INFO } from '../../../common/constants/queryKey.const';
 
 
 function PetInfo() {
@@ -20,7 +21,7 @@ function PetInfo() {
   let isMyAccount = false;
   if (userId === myId) isMyAccount = true;
 
-  const { data, isLoading } = useQuery(['getPetdata', userId], () => getAccountInfo(userId));
+  const { data, isLoading } = useQuery([GET_ACCOUNT_INFO, userId], () => getAccountInfo(userId));
 
   if (!data || isLoading) return <BallLoading />;
 

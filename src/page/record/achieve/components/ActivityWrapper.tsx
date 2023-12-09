@@ -8,14 +8,14 @@ import { FrequentPlaces } from './FrequentPlaces';
 import './ActivityWrapper.scss';
 import { useQuery } from 'react-query';
 import { useErrorHandlers } from 'common/api/useErrorHandlers';
-import { GET_MY_USER_INFO } from 'common/constants/queryKey.const';
+import { GET_ACCOUNT_INFO } from 'common/constants/queryKey.const';
 
 export default function ActivityWrapper() {
   const splitUrl = window.location.href.split('/');
   const userId = parseInt(splitUrl[splitUrl.length - 1], 10);
   const dispatch = useDispatch();
 
-  const { data , isLoading } = useQuery([GET_MY_USER_INFO, userId], () => getAccountInfo(userId), {
+  const { data , isLoading } = useQuery([GET_ACCOUNT_INFO, userId], () => getAccountInfo(userId), {
     enabled: !!userId,
     onError: (error:AxiosError) => {
       useErrorHandlers(dispatch,error)
