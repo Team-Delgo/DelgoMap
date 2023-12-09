@@ -110,17 +110,9 @@ function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch
 
 async function getMyInfo(
   userId: number,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
 ) {
-  axiosInstance
-    .get(`/account?userId=${userId}`)
-    .then((data) => {
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
+  const { data } = await axiosInstance.get(`/account?userId=${userId}`);
+  return data;
 }
 
 async function getMyPoint(userId: number) {
@@ -130,12 +122,10 @@ async function getMyPoint(userId: number) {
 
 async function getMyProfileInfo(userId: number) {
   const { data } = await axiosInstance.get(`/account?userId=${userId}`);
-  console.log(data);
   return data.data;
 }
 async function getOtherProfileInfo(userId: number) {
   const { data } = await axiosInstance.get(`/user/other?userId=${userId}`);
-  console.log(data);
   return data.data;
 }
 export {

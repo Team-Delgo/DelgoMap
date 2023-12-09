@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import RecordHeader from '../components/RecordHeader';
-import AchieveContainer from './components/AchieveContainer';
 import PetInfo from '../components/PetInfo';
+import ActivityWrapper from './components/ActivityWrapper'
+
 function AchievePage() {
   useEffect(() => {
     window.scroll(0, 0);
@@ -10,7 +11,7 @@ function AchievePage() {
     <>
       <PetInfo />
       <RecordHeader />
-      <AchieveContainer />
+      <ActivityWrapper/>
     </>
   );
 }
