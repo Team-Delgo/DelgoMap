@@ -1,18 +1,16 @@
 import React from 'react';
 import { MostVisitedPlace } from 'common/types/mungPlace';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
 
 interface Props {
   places: Array<MostVisitedPlace>;
+  petName: string
 }
 
-export const FrequentPlaces = ({ places }: Props) => {
-  const { pet } = useSelector((state: RootState) => state.persist.user);
+export const FrequentPlaces = ({ places,petName }: Props) => {
   return (
     <section className="frequent-places">
       <header>
-        <h1>{pet.name}의 가장 많이 방문한 장소</h1>
+        <h1>{petName}의 가장 많이 방문한 장소</h1>
       </header>
       {places?.length > 0 ? (
         <ul>

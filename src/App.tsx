@@ -60,7 +60,7 @@ import { deviceAction } from './redux/slice/deviceSlice';
 import HelpPage from './page/help/HelpPage';
 import { RootState } from './redux/store';
 import { userActions } from './redux/slice/userSlice';
-import { getMyInfo } from './common/api/myaccount';
+import { getAccountInfo } from './common/api/myaccount';
 
 import Map from './page/map';
 import TempDetailPage from './page/detail/TempDetailPage';
@@ -79,7 +79,7 @@ function App() {
     const fetchData = async () => {
       if (isSignIn && user.id) {
         try {
-          const {code,data} = await getMyInfo(user.id);
+          const {code,data} = await getAccountInfo(user.id);
           if (code === 200) {
             const { registDt } = data;
             dispatch(

@@ -108,35 +108,17 @@ function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch
     });
 }
 
-async function getMyInfo(
-  userId: number,
-) {
-  const { data } = await axiosInstance.get(`/account?userId=${userId}`);
-  return data;
-}
-
-async function getMyPoint(userId: number) {
-  const { data } = await axiosInstance.get(`/account/point?userId=${userId}`);
-  return data;
-}
-
-async function getMyProfileInfo(userId: number) {
+async function getAccountInfo(userId: number) {
   const { data } = await axiosInstance.get(`/account?userId=${userId}`);
   return data.data;
 }
-async function getOtherProfileInfo(userId: number) {
-  const { data } = await axiosInstance.get(`/user/other?userId=${userId}`);
-  return data.data;
-}
+
 export {
   changePetInfo,
   changePassword,
-  getOtherProfileInfo,
   changeGeoCode,
   changeName,
   setPushNotification,
   logOut,
-  getMyInfo,
-  getMyPoint,
-  getMyProfileInfo,
+  getAccountInfo,
 };

@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from 'react-query';
-import { getMyProfileInfo, getOtherProfileInfo } from 'common/api/myaccount';
+import { getAccountInfo } from 'common/api/myaccount';
 import BallLoading from 'common/utils/BallLoading';
 import { useSelector } from 'react-redux';
 import { postVeiwCount } from '../../../common/api/othersmap';
 import { RootState } from 'redux/store';
 import { useNavigate } from 'react-router-dom';
-
 import dot from '../../../common/icons/dot.svg';
-import { ROOT_PATH, RECORD_PATH } from '../../../common/constants/path.const';
+import { RECORD_PATH } from '../../../common/constants/path.const';
 
 
 function PetInfo() {
@@ -17,13 +16,11 @@ function PetInfo() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const myId = useSelector((state: RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
+
   let isMyAccount = false;
   if (userId === myId) isMyAccount = true;
-  else isMyAccount = false;
-  const { data, isLoading } = useQuery(['getPetdata', userId], () => {
-    if (isMyAccount) return getMyProfileInfo(userId);
-    else return getOtherProfileInfo(userId);
-  });
+
+  const { data, isLoading } = useQuery(['getPetdata', userId], () => getAccountInfo(userId));
 
   if (!data || isLoading) return <BallLoading />;
 

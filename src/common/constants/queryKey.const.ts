@@ -4,7 +4,6 @@ export const GET_ACHIEVEMENT_LIST = "getAchievementList";
 export const GET_TOP_RANKING_LIST = "getTopRankingList";
 export const GET_CERTIFICATION_POSTS_LIST_BY_MAIN = "getCertificationPostsListByMain";
 export const GET_MY_PET_RANKING_DATA  = 'getMyPetRankingData';
-export const GET_MY_POINT_DATA = 'getMyPointData';
 export const GET_PET_TYPE_DATA_LIST = 'getPetTypeDataList';
 export const GET_ALL_CERTIFICATION_DATA_LIST = "getAllCertificationPostsList";
 export const GET_MY_PROFILE_INFO_DATA = "getMyProfileInfoData";
