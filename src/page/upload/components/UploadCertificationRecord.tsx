@@ -37,7 +37,6 @@ function UploadCertificationRecord({
 }: Props) {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  const initialHeight = useRef(window.innerHeight);
   const [certificateErrorToastMessage, setCertificateErrorToastMessage] = useState('');
   const [errorToastIsOpen, openCertificateErrorToast, closeCertificateErrorToast] =
     useActive(false);
@@ -75,7 +74,7 @@ function UploadCertificationRecord({
   //sheet설정 -> 이부분은 기본적으로 화면 브라우저크기(모바일크기)에 따라 style이 바뀌므로 scss파일대신 인라인으로 설정해줘야함
   const sheetStyle = {
     borderRadius: '18px 18px 0px 0px',
-    height: initialHeight.current - window.innerWidth + 10, //업로드박스 높이는 뷰포트 높이-넓이+10 설정 (다른값으로 하면 무조건 화면꺠짐 겨우찾은 비율)
+    height: window.innerHeight - window.innerWidth + 10, //업로드박스 높이는 뷰포트 높이-넓이+10 설정 (다른값으로 하면 무조건 화면꺠짐 겨우찾은 비율)
   };
 
   useEffect(() => {
@@ -180,7 +179,7 @@ function UploadCertificationRecord({
           <main
             className="capture-img-record ios-capture-record"
             style={{
-              height: initialHeight.current - window.innerWidth + 10,
+              height: window.innerHeight - window.innerWidth + 10,
             }}
           >
             <body className="review-container">
@@ -201,7 +200,11 @@ function UploadCertificationRecord({
                   }
                   onFocus={
                     cert === ""
-                      ? () => navigate(UPLOAD_PATH.LOCATION)
+                      ? () => {
+                        setTimeout(()=>{
+                          navigate(UPLOAD_PATH.LOCATION)
+                        },100)
+                      }
                       : undefined
                   }
                   disabled={cert === 'mungple'}
@@ -297,10 +300,10 @@ function UploadCertificationRecord({
             isOpen={bottomSheetIsOpen}
             onClose={closeBottomSheet}
             snapPoints={[
-              initialHeight.current - window.innerWidth + 10,
-              initialHeight.current - window.innerWidth + 10,
-              initialHeight.current - window.innerWidth + 10,
-              initialHeight.current - window.innerWidth + 10,
+              window.innerHeight - window.innerWidth + 10,
+              window.innerHeight - window.innerWidth + 10,
+              window.innerHeight - window.innerWidth + 10,
+              window.innerHeight - window.innerWidth + 10,
             ]}
             disableDrag
           >
@@ -309,7 +312,7 @@ function UploadCertificationRecord({
                 <main
                   className="capture-img-record ios-capture-record"
                   style={{
-                    height: initialHeight.current - window.innerWidth + 10,
+                    height: window.innerHeight - window.innerWidth + 10,
                   }}
                 >
                   <body className="review-container">
@@ -331,7 +334,11 @@ function UploadCertificationRecord({
                         }
                         onFocus={
                           cert === ""
-                            ? () => navigate(UPLOAD_PATH.LOCATION)
+                            ? () => {
+                              setTimeout(()=>{
+                                navigate(UPLOAD_PATH.LOCATION)
+                              },100)
+                            }
                             : undefined
                         }
                         disabled={cert === 'mungple'}

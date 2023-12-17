@@ -49,17 +49,15 @@ interface KaKaoPlace {
 function UploadLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  // const [checkedPlaceId, setCheckedPlaceId] = useState(-1); //선택한 placeId (멍플장소만)
   const inputRef = useRef<any>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const initialHeight = useRef(window.innerHeight);
   const [placeName, setPlaceName] = useState('');
   const [kakaoPlaceList, setKaKaoPlaceList] = useState<Array<KaKaoPlace>>([]);
 
   const sheetStyle = {
     borderRadius: '18px 18px 0px 0px',
-    height: initialHeight.current - window.innerWidth + 10,
+    height: window.innerHeight - window.innerWidth + 10,
   };
 
   const { data: mungPlaceList } = useQuery(
@@ -222,7 +220,7 @@ function UploadLocationRecord() {
     <main
       className="capture-img-record ios-capture-record"
       style={{
-        height: initialHeight.current - window.innerWidth + 10,
+        height: window.innerHeight - window.innerWidth + 10,
       }}
     >
       <body className="review-container">
@@ -281,10 +279,10 @@ function UploadLocationRecord() {
       isOpen={bottomSheetIsOpen}
       onClose={closeBottomSheet}
       snapPoints={[
-        initialHeight.current - window.innerWidth + 10,
-        initialHeight.current - window.innerWidth + 10,
-        initialHeight.current - window.innerWidth + 10,
-        initialHeight.current - window.innerWidth + 10,
+        window.innerHeight - window.innerWidth + 10,
+        window.innerHeight - window.innerWidth + 10,
+        window.innerHeight - window.innerWidth + 10,
+        window.innerHeight - window.innerWidth + 10,
       ]}
       disableDrag
       className="modal-bottom-sheet"
@@ -294,7 +292,7 @@ function UploadLocationRecord() {
           <main
             className="capture-img-record"
             style={{
-              height: initialHeight.current - window.innerWidth - 10,
+              height: window.innerHeight - window.innerWidth - 10,
             }}
           >
             <body className="review-container">
