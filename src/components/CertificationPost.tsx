@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAnalyticsCustomLogEvent } from '@react-query-firebase/analytics';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { certificationDelete, reactCertification } from '../common/api/certification';
 import DogLoading from '../common/icons/dog-loading.svg';
 import CuteIcon from '../common/icons/react-cute.svg';
@@ -92,7 +92,7 @@ function CertificationPost({
   const mainImg = useRef<HTMLImageElement>(null); //인증이미지 참조하는 useRef훅
   const profileImg = useRef<HTMLImageElement>(null); //프로플이미지 참조하는 useRef훅
   const timeoutRef = useRef<NodeJS.Timeout | null>(null); //Timeout 참조하는 useRef 훅
-
+  const queryClient = useQueryClient();
   // console.log('post', post.photos);
 
   //이미지가 뷰포트에 나타나면 해당 이미지의 src 속성을 데이터 속성에서 가져와 설정
@@ -169,6 +169,9 @@ function CertificationPost({
           closeDelteBottomSheet();
           openDeletePostSuccessToast();
           certificationPostsFetch();
+          queryClient.invalidateQueries(['getCertPhotos', user.id]);
+          queryClient.removeQueries(['getCertPhotos', user.id]);
+          queryClient.refetchQueries(['getCertPhotos', user.id]);
           setTimeout(() => {
             closeDeletePostSuccessToast(); //2초후 삭제toast 닫아줌
           }, 2000);
