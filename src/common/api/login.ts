@@ -46,6 +46,7 @@ async function tokenRefresh() {
     console.log("error : ", e);
     console.log('refresh token stale');
     store.dispatch(userActions.signout());
+    store.dispatch(userActions.redirectToLogin());
   }
 }
 
