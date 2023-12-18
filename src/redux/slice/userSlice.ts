@@ -44,6 +44,12 @@ const userSlice = createSlice({
         moveToLogin: true,
       };
     },
+    redirectedToLogin(state) {
+      return {
+        ...state,
+        moveToLogin: false,
+      }
+    },
     setpetprofile(state, action) {
       return {
         ...state,
