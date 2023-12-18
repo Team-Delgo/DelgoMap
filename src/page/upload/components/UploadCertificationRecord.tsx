@@ -30,6 +30,8 @@ interface Props {
   offPostCertificationLoading: () => void;
 }
 
+const uploadBoxHeight =  window.innerHeight - window.innerWidth + 10
+
 function UploadCertificationRecord({
   postCertificationIsLoading,
   onPostCertificationLoading,
@@ -74,7 +76,7 @@ function UploadCertificationRecord({
   //sheet설정 -> 이부분은 기본적으로 화면 브라우저크기(모바일크기)에 따라 style이 바뀌므로 scss파일대신 인라인으로 설정해줘야함
   const sheetStyle = {
     borderRadius: '18px 18px 0px 0px',
-    height: window.innerHeight - window.innerWidth + 10, //업로드박스 높이는 뷰포트 높이-넓이+10 설정 (다른값으로 하면 무조건 화면꺠짐 겨우찾은 비율)
+    height: uploadBoxHeight, //업로드박스 높이는 뷰포트 높이-넓이+10 설정 (다른값으로 하면 무조건 화면꺠짐 겨우찾은 비율)
   };
 
   useEffect(() => {
@@ -154,9 +156,7 @@ function UploadCertificationRecord({
       isHideAddress,
     };
 
-    console.log('fileList',fileList)
-    const formData = blobFormDataForMultipleFiles(data, fileList); //utils에 정의된 blobFormData호출후 반환된 formData이용
-    // const compressedFormData = await compressFormData(formData); //폼데이터 압축해주고
+    const formData = blobFormDataForMultipleFiles(data, fileList);
 
     registerMutation.mutate(formData);
   };
@@ -179,7 +179,7 @@ function UploadCertificationRecord({
           <main
             className="capture-img-record ios-capture-record"
             style={{
-              height: window.innerHeight - window.innerWidth + 10,
+              height: uploadBoxHeight,
             }}
           >
             <body className="review-container">
@@ -300,19 +300,24 @@ function UploadCertificationRecord({
             isOpen={bottomSheetIsOpen}
             onClose={closeBottomSheet}
             snapPoints={[
-              window.innerHeight - window.innerWidth + 10,
-              window.innerHeight - window.innerWidth + 10,
-              window.innerHeight - window.innerWidth + 10,
-              window.innerHeight - window.innerWidth + 10,
+              uploadBoxHeight,
+              uploadBoxHeight,
+              uploadBoxHeight,
+              uploadBoxHeight,
             ]}
             disableDrag
           >
-            <Sheet.Container style={sheetStyle}>
+            <Sheet.Container
+              style={{
+                borderRadius: '18px 18px 0px 0px',
+                height: uploadBoxHeight,
+              }}
+            >
               <Sheet.Content>
                 <main
                   className="capture-img-record ios-capture-record"
                   style={{
-                    height: window.innerHeight - window.innerWidth + 10,
+                    height: uploadBoxHeight,
                   }}
                 >
                   <body className="review-container">
@@ -333,12 +338,12 @@ function UploadCertificationRecord({
                             : undefined
                         }
                         onFocus={
-                          cert === ""
+                          cert === ''
                             ? () => {
-                              setTimeout(()=>{
-                                navigate(UPLOAD_PATH.LOCATION)
-                              },100)
-                            }
+                                setTimeout(() => {
+                                  navigate(UPLOAD_PATH.LOCATION);
+                                }, 100);
+                              }
                             : undefined
                         }
                         disabled={cert === 'mungple'}
@@ -348,26 +353,32 @@ function UploadCertificationRecord({
                     {mongPlaceId === 0 && (
                       <div className="review-place-address-hide">
                         <div style={{ display: 'flex' }}>
-                          {
-                            isHideAddress ? <img src={CheckBox} onClick={() =>
-                              dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
-                                uploadAction.setHideAddress({
-                                  isHideAddress: !isHideAddress,
-                                }),
-                              )
-                            } />
-                              : <input
-                                className="review-place-address-hide-button"
-                                type="checkbox"
-                                onClick={() =>
-                                  dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
-                                    uploadAction.setHideAddress({
-                                      isHideAddress: !isHideAddress,
-                                    }),
-                                  )
-                                }
-                              />
-                          }
+                          {isHideAddress ? (
+                            <img
+                              src={CheckBox}
+                              onClick={() =>
+                                dispatch(
+                                  //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
+                                  uploadAction.setHideAddress({
+                                    isHideAddress: !isHideAddress,
+                                  }),
+                                )
+                              }
+                            />
+                          ) : (
+                            <input
+                              className="review-place-address-hide-button"
+                              type="checkbox"
+                              onClick={() =>
+                                dispatch(
+                                  //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
+                                  uploadAction.setHideAddress({
+                                    isHideAddress: !isHideAddress,
+                                  }),
+                                )
+                              }
+                            />
+                          )}
                           <div
                             className="review-place-address-hide-label"
                             aria-hidden="true"
