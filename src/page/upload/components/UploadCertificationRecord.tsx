@@ -30,7 +30,6 @@ interface Props {
   offPostCertificationLoading: () => void;
 }
 
-const uploadBoxHeight =  window.innerHeight - window.innerWidth + 10
 
 function UploadCertificationRecord({
   postCertificationIsLoading,
@@ -55,7 +54,8 @@ function UploadCertificationRecord({
     categoryCode,
     imgList,
     fileList,
-    cert
+    cert,
+    uploadBoxHeight
   } = useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();

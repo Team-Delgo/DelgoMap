@@ -22,7 +22,8 @@ interface initialStateType {
   prevImgList:Array<string>,
   prevImgNameList:Array<string>,
   imgList:Array<string>
-  fileList:Array<File>
+  fileList:Array<File>,
+  uploadBoxHeight:number
 }
 interface AchievementType {
   achievementsId: number;
@@ -67,7 +68,8 @@ const initialState: initialStateType = {
   prevImgList:[],
   prevImgNameList:[],
   imgList:[],
-  fileList:[]
+  fileList:[],
+  uploadBoxHeight: window.innerHeight - window.innerWidth + 10
 };
 
 const uploadSlice = createSlice({
@@ -199,6 +201,12 @@ const uploadSlice = createSlice({
       return {
         ...state,
         certificationId: action.payload.certificationId,
+      };
+    },
+    setUploadBoxHeight(state,action) {
+      return {
+        ...state,
+        uploadBoxHeight: action.payload.certificationId,
       };
     },
   },
