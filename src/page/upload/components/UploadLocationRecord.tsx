@@ -46,10 +46,11 @@ interface KaKaoPlace {
   longitude: string;
 }
 
-const uploadBoxHeight =  window.innerHeight - window.innerWidth + 10
-
 function UploadLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
+  const {
+    uploadBoxHeight
+  } = useSelector((state: RootState) => state.persist.upload);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const inputRef = useRef<any>();
   const navigate = useNavigate();
