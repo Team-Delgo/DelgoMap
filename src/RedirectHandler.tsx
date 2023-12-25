@@ -17,7 +17,7 @@ function RedirectHandler({ children }: Props) {
   // console.log(moveToLogin);
   useEffect(()=>{
     if(moveToLogin) {
-      dispatch(userActions.redirectToLogin());
+      dispatch(userActions.redirectedToLogin());
       navigate(SIGN_IN_PATH.MAIN);
     }
   } ,[moveToLogin]);
