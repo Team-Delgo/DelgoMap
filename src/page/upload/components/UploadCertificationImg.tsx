@@ -120,7 +120,8 @@ function UploadCertificationImg({ openBottomSheet }: props) {
                 aria-hidden
               >
                 <img src={Camera} alt="camera-icon" width={14} height={14} />
-                <div>사진 추가</div>
+                <p style={{padding:"0 4px"}} />
+                <div>사진 (0/5)</div>
               </div>
             </div>
           </div>
@@ -145,13 +146,6 @@ function UploadCertificationImg({ openBottomSheet }: props) {
               {imageNumber + 1} / {imgList.length}
             </div> */}
           </div>
-          // <img
-          //   className="capture-certification-img"
-          //   src={img}
-          //   width={window.innerWidth}
-          //   height={window.innerWidth}
-          //   alt="caputeImg"
-          // />
         )}
       </div>
       <img
