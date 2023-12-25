@@ -31,6 +31,7 @@ import DefaultIcon from '../../common/icons/react-default.svg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import FullScreenImageSlider from 'page/detail/components/FullScreenImageSlider';
 
 interface CertificationReactDataType {
   userId: number;
@@ -41,7 +42,13 @@ interface CertificationDeleteDataType {
   userId: number;
   certificationId: number;
 }
-function RecordCertification(props: { certification: any }) {
+
+interface RecordCertificationProps {
+  certification: any;
+  openFullScreenSlider: (images: string[], index: number, placeName: string) => void;
+}
+
+function RecordCertification(props: RecordCertificationProps) {
   const [loginAlertIsOpen, setLoginAlertIsOpen] = useState(false); //로그인 하라고 뜨는 alert창 오픈여부
   const [imageNumber, setImageNumber] = useState(0);
   const { certification } = props;
@@ -51,7 +58,7 @@ function RecordCertification(props: { certification: any }) {
   const [isHelp, setIsHelp] = useState(certification?.reactionMap?.HELPER);
   const [isCute, setIsCute] = useState(certification?.reactionMap?.CUTE);
   const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDeleteBottomSheet] =
-    useActive(false); //삭제텍스트 클릭시 열리는 바텀시트 오픈여부를 담은 커스텀훅
+    useActive(false);
   const navigate = useNavigate();
   const { user, isSignIn } = useSelector((state: RootState) => state.persist.user);
 
@@ -64,14 +71,12 @@ function RecordCertification(props: { certification: any }) {
       },
     });
 
-  // post삭제 api 훅
   const { mutate: certificationDeleteMutate, isLoading: cettificationDeleteIsLoading } =
     useMutation((data: CertificationDeleteDataType) => certificationDelete(data), {
       onSuccess: (response: any) => {
         const { code } = response.data;
 
         if (code === 200) {
-          //삭제를 성공했으면 photo 페이지로 이동
           queryClient.invalidateQueries(['getCertPhotos', user.id]);
           queryClient.removeQueries(['getCertPhotos', user.id]);
           queryClient.refetchQueries(['getCertPhotos', user.id]);
@@ -104,7 +109,7 @@ function RecordCertification(props: { certification: any }) {
         reactionCode,
       });
     };
-  //post 삭제 핸들러
+
   const deleteCertification = () => {
     if (cettificationDeleteIsLoading) {
       return;
@@ -142,9 +147,7 @@ function RecordCertification(props: { certification: any }) {
     navigate(`${RECORD_PATH.PHOTO}/${user.id}`);
   };
 
-  //업데이트 페이지 이동 핸들러
   const moveToUpdatePage = () => {
-    //업데이트 페이지 이동시 화면을 보여주기위해 현재 인증글을 store에 저장해줌(업데이트 페이지에서 필요한 상태값을 저장해주면 됨)
     dispatch(
       uploadAction.setCertificationUpdate({
         imgList: certification?.photos,
@@ -156,7 +159,6 @@ function RecordCertification(props: { certification: any }) {
         isHideAddress: certification?.isHideAddress,
       }),
     );
-    //업데이트 페이지 이동하고, 현재 페이지(prevPath)를 저장해줌 (업데이트페이지에서 prevPath에 따라 분기처리해줘하는 로직이 존재하기 때문)
     navigate(UPLOAD_PATH.UPDATE, {
       state: {
         prevPath: RECORD_PATH.PHOTO,
@@ -180,9 +182,18 @@ function RecordCertification(props: { certification: any }) {
         )}
         <div style={{ position: 'relative' }}>
           <Swiper onSlideChange={(swiper) => setImageNumber(swiper.activeIndex)}>
-            {certification.photos.map((image: string) => {
+            {certification.photos.map((image: string, index: number) => {
               return (
-                <SwiperSlide>
+                <SwiperSlide
+                  key={index}
+                  onClick={() =>
+                    props.openFullScreenSlider(
+                      certification.photos,
+                      index,
+                      certification.placeName,
+                    )
+                  }
+                >
                   <img
                     className="record-cert-img"
                     src={image}
@@ -232,28 +243,6 @@ function RecordCertification(props: { certification: any }) {
             {certification?.commentCount}개
           </span>
         </footer>
-        {/* <div className="record-cert-icons">
-          <img
-            className="record-cert-icons-heart"
-            width={22}
-            height={22}
-            src={selfHeart ? FillHeart : Heart}
-            alt="heart"
-            aria-hidden="true"
-            onClick={likeCertification}
-          />
-          {count > 0 && <div className="record-cert-icons-count">{count}</div>}
-          <img
-            className="record-cert-icons-comments"
-            src={Comments}
-            alt="comments"
-            aria-hidden="true"
-            onClick={moveToCommentPage}
-          />
-          {certification.commentCount > 0 && (
-            <div className="record-cert-icons-count">{certification.commentCount}</div>
-          )}
-        </div> */}
       </div>
       <DeleteBottomSheet
         text="기록을 삭제하실건가요?"
