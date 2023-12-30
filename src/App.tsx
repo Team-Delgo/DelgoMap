@@ -68,7 +68,6 @@ import Account from 'components/Account';
 import RedirectHandler from 'RedirectHandler';
 import OthersMap from 'page/record/OthersMap/OthersMap';
 import { useErrorHandlers } from 'common/api/useErrorHandlers';
-import { uploadAction } from './redux/slice/uploadSlice';
 
 function App() {
   const queryClient = new QueryClient();
@@ -145,14 +144,6 @@ function App() {
     ) {
       dispatch(deviceAction.ios());
     }
-  }, []);
-
-  useEffect(() => {
-    dispatch(
-      uploadAction.setUploadBoxHeight({
-        uploadBoxHeight: window.innerHeight - window.innerWidth + 10
-      }),
-    );
   }, []);
 
   return (

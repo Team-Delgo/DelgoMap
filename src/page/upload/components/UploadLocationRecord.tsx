@@ -12,7 +12,6 @@ import {
   STALE_TIME,
 } from '../../../common/constants/queryKey.const';
 import RightArrow from '../../../common/icons/right-arrow-gray.svg';
-import Check from '../../../common/icons/place-check.svg';
 import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
 import { MungPlaceType } from '../../../common/types/mungPlace';
 import useActive from '../../../common/hooks/useActive';
@@ -48,9 +47,6 @@ interface KaKaoPlace {
 
 function UploadLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
-  const {
-    uploadBoxHeight
-  } = useSelector((state: RootState) => state.persist.upload);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
   const inputRef = useRef<any>();
   const navigate = useNavigate();
@@ -215,7 +211,7 @@ function UploadLocationRecord() {
     <main
       className="capture-img-record ios-capture-record"
       style={{
-        height: uploadBoxHeight,
+        height: window.innerHeight - window.innerWidth + 10,
       }}
     >
       <body className="review-container">
@@ -270,21 +266,26 @@ function UploadLocationRecord() {
     <Sheet
       isOpen={bottomSheetIsOpen}
       onClose={closeBottomSheet}
-      snapPoints={[uploadBoxHeight, uploadBoxHeight, uploadBoxHeight, uploadBoxHeight]}
+      snapPoints={[
+        window.innerHeight - window.innerWidth + 10,
+        window.innerHeight - window.innerWidth + 10,
+        window.innerHeight - window.innerWidth + 10,
+        window.innerHeight - window.innerWidth + 10,
+      ]}
       disableDrag
       className="modal-bottom-sheet"
     >
       <Sheet.Container
         style={{
           borderRadius: '18px 18px 0px 0px',
-          height: uploadBoxHeight,
+          height: window.innerHeight - window.innerWidth + 10,
         }}
       >
         <Sheet.Content>
           <main
             className="capture-img-record"
             style={{
-              height: uploadBoxHeight,
+              height: window.innerHeight - window.innerWidth + 10,
             }}
           >
             <body className="review-container">
