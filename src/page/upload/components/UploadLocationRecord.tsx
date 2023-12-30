@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
@@ -53,6 +53,7 @@ function UploadLocationRecord() {
   const dispatch = useDispatch();
   const [placeName, setPlaceName] = useState('');
   const [kakaoPlaceList, setKaKaoPlaceList] = useState<Array<KaKaoPlace>>([]);
+  const uploadBoxHeight = useMemo(() => window.innerHeight - window.innerWidth + 10, []);
 
   const { data: mungPlaceList } = useQuery(
     GET_MUNG_PLACE_LIST,
@@ -211,7 +212,7 @@ function UploadLocationRecord() {
     <main
       className="capture-img-record ios-capture-record"
       style={{
-        height: window.innerHeight - window.innerWidth + 10,
+        height: uploadBoxHeight,
       }}
     >
       <body className="review-container">
@@ -267,10 +268,10 @@ function UploadLocationRecord() {
       isOpen={bottomSheetIsOpen}
       onClose={closeBottomSheet}
       snapPoints={[
-        window.innerHeight - window.innerWidth + 10,
-        window.innerHeight - window.innerWidth + 10,
-        window.innerHeight - window.innerWidth + 10,
-        window.innerHeight - window.innerWidth + 10,
+        uploadBoxHeight,
+        uploadBoxHeight,
+        uploadBoxHeight,
+        uploadBoxHeight,
       ]}
       disableDrag
       className="modal-bottom-sheet"
@@ -278,14 +279,14 @@ function UploadLocationRecord() {
       <Sheet.Container
         style={{
           borderRadius: '18px 18px 0px 0px',
-          height: window.innerHeight - window.innerWidth + 10,
+          height: uploadBoxHeight,
         }}
       >
         <Sheet.Content>
           <main
             className="capture-img-record"
             style={{
-              height: window.innerHeight - window.innerWidth + 10,
+              height: uploadBoxHeight,
             }}
           >
             <body className="review-container">
