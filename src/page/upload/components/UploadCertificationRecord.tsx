@@ -185,7 +185,7 @@ function UploadCertificationRecord({
                       ? (e) => dispatch(uploadAction.setTitle({ title: e.target.value }))
                       : undefined
                   }
-                  onFocus={
+                  onClick={
                     cert === ''
                       ? () => {
                           const textareas =
@@ -336,7 +336,7 @@ function UploadCertificationRecord({
                                 dispatch(uploadAction.setTitle({ title: e.target.value }))
                             : undefined
                         }
-                        onFocus={
+                        onClick={
                           cert === ''
                             ? () => {
                               const textareas = document.getElementsByClassName("review-content");
