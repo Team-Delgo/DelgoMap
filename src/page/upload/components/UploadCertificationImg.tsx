@@ -6,7 +6,7 @@ import PrevArrowWhite from '../../../common/icons/prev-arrow-white.svg';
 import X from '../../../common/icons/white-x.svg';
 import Camera from '../../../common/icons/camera.svg';
 import { uploadAction } from '../../../redux/slice/uploadSlice';
-import { CROP_PATH,CROP_LIST_PATH } from '../../../common/constants/path.const';
+import { CROP_LIST_PATH, UPLOAD_PATH, ROOT_PATH } from '../../../common/constants/path.const';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -91,7 +91,12 @@ function UploadCertificationImg({ openBottomSheet }: props) {
   };
 
   const moveToPreviousPage = () => {
-    navigate(-1);
+    if(location.pathname===UPLOAD_PATH.CERTIFICATION){
+      navigate(ROOT_PATH)
+    }
+    else{
+      navigate(-1)
+    }
   };
 
   return (
