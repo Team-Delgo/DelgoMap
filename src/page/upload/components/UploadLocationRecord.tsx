@@ -284,7 +284,7 @@ function UploadLocationRecord() {
           <main
             className="capture-img-record"
             style={{
-              height: window.innerHeight - window.innerWidth - 10,
+              height: uploadBoxHeight,
             }}
           >
             <body className="review-container">
