@@ -74,7 +74,7 @@ function UploadLocationRecord() {
     dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address }));
     setTimeout(() => {
       navigate(UPLOAD_PATH.CERTIFICATION);
-    }, 100);
+    }, 500);
   };
 
   const selectKaKaoPlace = (place: KaKaoPlace) => (event: React.MouseEvent) => {

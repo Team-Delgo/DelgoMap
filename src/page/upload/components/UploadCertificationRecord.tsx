@@ -181,24 +181,26 @@ function UploadCertificationRecord({
                   className="review-place-info-search-input"
                   placeholder="여기는 어디인가요? ex. 델고카페, 동네 산책로"
                   onChange={
-                    cert === "manual"
-                      ? (e) => dispatch(uploadAction.setTitle({ title: e.target.value })) //타이틀도 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
+                    cert === 'manual'
+                      ? (e) => dispatch(uploadAction.setTitle({ title: e.target.value }))
                       : undefined
                   }
                   onFocus={
-                    cert === ""
+                    cert === ''
                       ? () => {
-                        const textareas = document.getElementsByClassName("review-content");
-                        for (let i = 0; i < textareas.length; i++) {
-                          const textarea = textareas[i] as HTMLTextAreaElement;
-                          textarea.blur();
+                          const textareas =
+                            document.getElementsByClassName('review-content');
+                          for (let i = 0; i < textareas.length; i++) {
+                            const textarea = textareas[i] as HTMLTextAreaElement;
+                            textarea.blur();
+                          }
+                          setTimeout(() => {
+                            navigate(UPLOAD_PATH.LOCATION);
+                          }, 500);
                         }
-                        setTimeout(()=>{
-                          navigate(UPLOAD_PATH.LOCATION)
-                        },500)
-                      }
                       : undefined
                   }
+                  readOnly={cert !== 'manual'}
                   disabled={cert === 'mungple'}
                   value={title !== '' ? title : undefined}
                 />
@@ -207,26 +209,31 @@ function UploadCertificationRecord({
               {mongPlaceId === 0 && (
                 <div className="review-place-address-hide">
                   <div style={{ display: 'flex' }}>
-                    {
-                      isHideAddress ? <img src={CheckBox} onClick={() =>
-                        dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
-                          uploadAction.setHideAddress({
-                            isHideAddress: !isHideAddress,
-                          }),
-                        )
-                      } />
-                        : <input
-                          className="review-place-address-hide-button"
-                          type="checkbox"
-                          onClick={() =>
-                            dispatch( //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
-                              uploadAction.setHideAddress({
-                                isHideAddress: !isHideAddress,
-                              }),
-                            )
-                          }
-                        />
-                    }
+                    {isHideAddress ? (
+                      <img
+                        src={CheckBox}
+                        onClick={() =>
+                          dispatch(
+                            uploadAction.setHideAddress({
+                              isHideAddress: !isHideAddress,
+                            }),
+                          )
+                        }
+                      />
+                    ) : (
+                      <input
+                        className="review-place-address-hide-button"
+                        type="checkbox"
+                        onClick={() =>
+                          dispatch(
+                            //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
+                            uploadAction.setHideAddress({
+                              isHideAddress: !isHideAddress,
+                            }),
+                          )
+                        }
+                      />
+                    )}
                     <div
                       className="review-place-address-hide-label"
                       aria-hidden
@@ -259,7 +266,7 @@ function UploadCertificationRecord({
                 className="review-content"
                 placeholder="🐶 강아지 친구들이 참고할 내용을 적어주면 좋아요"
                 onChange={(e) =>
-                  dispatch( //내용도 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
+                  dispatch(
                     uploadAction.setContent({
                       content: e.target.value,
                     }),
@@ -343,6 +350,7 @@ function UploadCertificationRecord({
                               }
                             : undefined
                         }
+                        readOnly={cert !== 'manual'}
                         disabled={cert === 'mungple'}
                         value={title !== '' ? title : undefined}
                       />
