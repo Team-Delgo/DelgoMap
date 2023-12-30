@@ -17,7 +17,7 @@ import { POSTS_PATH, RECORD_PATH } from '../../../../common/constants/path.const
 import { analytics } from '../../../../index';
 import { scrollActions } from '../../../../redux/slice/scrollSlice';
 import { RootState } from '../../../../redux/store';
-import Plus from '../../../../common/icons/plus.svg';
+import Plus from '../../../../common/icons/nophoto-plus.svg';
 import { getFiveOtherDogsCert } from '../../../../common/api/certification';
 
 function Photo() {

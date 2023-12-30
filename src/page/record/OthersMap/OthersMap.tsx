@@ -77,7 +77,7 @@ function OthersMap() {
         <BackArrowComponent onClickHandler={handleBackClick} />
         {certInfo && (
           <div className="text-center text-lg font-bold leading-[150%]">
-            {certInfo.content[1].userName}
+            {certInfo.content[0].userName}
           </div>
         )}
         <div className="flex justify-center">
