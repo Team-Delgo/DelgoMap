@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -60,6 +60,7 @@ function UploadCertificationRecord({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const uploadBoxHeight = useMemo(() => window.innerHeight - window.innerWidth + 10, []);
   const certCompleteEvent = useAnalyticsCustomLogEvent(analytics, 'cert_end');
   let icon = FootPrintSmall;
 
@@ -166,7 +167,7 @@ function UploadCertificationRecord({
           <main
             className="capture-img-record ios-capture-record"
             style={{
-              height: window.innerHeight - window.innerWidth + 10,
+              height: uploadBoxHeight,
             }}
           >
             <body className="review-container">
@@ -299,24 +300,24 @@ function UploadCertificationRecord({
             isOpen={bottomSheetIsOpen}
             onClose={closeBottomSheet}
             snapPoints={[
-              window.innerHeight - window.innerWidth + 10,
-              window.innerHeight - window.innerWidth + 10,
-              window.innerHeight - window.innerWidth + 10,
-              window.innerHeight - window.innerWidth + 10,
+              uploadBoxHeight,
+              uploadBoxHeight,
+              uploadBoxHeight,
+              uploadBoxHeight,
             ]}
             disableDrag
           >
             <Sheet.Container
               style={{
                 borderRadius: '18px 18px 0px 0px',
-                height: window.innerHeight - window.innerWidth + 10,
+                height: uploadBoxHeight,
               }}
             >
               <Sheet.Content>
                 <main
                   className="capture-img-record ios-capture-record"
                   style={{
-                    height: window.innerHeight - window.innerWidth + 10,
+                    height: uploadBoxHeight,
                   }}
                 >
                   <body className="review-container">
