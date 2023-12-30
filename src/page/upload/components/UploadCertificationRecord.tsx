@@ -55,7 +55,6 @@ function UploadCertificationRecord({
     imgList,
     fileList,
     cert,
-    uploadBoxHeight
   } = useSelector((state: RootState) => state.persist.upload);
   const { user } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();
@@ -167,7 +166,7 @@ function UploadCertificationRecord({
           <main
             className="capture-img-record ios-capture-record"
             style={{
-              height: uploadBoxHeight,
+              height: window.innerHeight - window.innerWidth + 10,
             }}
           >
             <body className="review-container">
@@ -196,7 +195,7 @@ function UploadCertificationRecord({
                         }
                         setTimeout(()=>{
                           navigate(UPLOAD_PATH.LOCATION)
-                        },300)
+                        },500)
                       }
                       : undefined
                   }
@@ -293,24 +292,24 @@ function UploadCertificationRecord({
             isOpen={bottomSheetIsOpen}
             onClose={closeBottomSheet}
             snapPoints={[
-              uploadBoxHeight,
-              uploadBoxHeight,
-              uploadBoxHeight,
-              uploadBoxHeight,
+              window.innerHeight - window.innerWidth + 10,
+              window.innerHeight - window.innerWidth + 10,
+              window.innerHeight - window.innerWidth + 10,
+              window.innerHeight - window.innerWidth + 10,
             ]}
             disableDrag
           >
             <Sheet.Container
               style={{
                 borderRadius: '18px 18px 0px 0px',
-                height: uploadBoxHeight,
+                height: window.innerHeight - window.innerWidth + 10,
               }}
             >
               <Sheet.Content>
                 <main
                   className="capture-img-record ios-capture-record"
                   style={{
-                    height: uploadBoxHeight,
+                    height: window.innerHeight - window.innerWidth + 10,
                   }}
                 >
                   <body className="review-container">
@@ -340,7 +339,7 @@ function UploadCertificationRecord({
                               }
                               setTimeout(()=>{
                                 navigate(UPLOAD_PATH.LOCATION)
-                              },300)
+                              },500)
                               }
                             : undefined
                         }
