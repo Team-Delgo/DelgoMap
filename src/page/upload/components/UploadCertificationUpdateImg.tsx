@@ -8,8 +8,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-
-//인증수정 img부분(uploadCertificationImg와 동일하게 이해하면됨)
 function UploadCertificationUpdateImg() {
   const [imageNumber, setImageNumber] = useState(0);
   const imgList = useSelector((state: RootState) => state.persist.upload.imgList);
@@ -36,7 +34,6 @@ function UploadCertificationUpdateImg() {
     };
   }, []);
 
-  //
   const moveToPreviousPage = () => {
     if (location?.state?.prevPath === UPLOAD_PATH.RESULT) {
       navigate(UPLOAD_PATH.RESULT, {
@@ -70,9 +67,9 @@ function UploadCertificationUpdateImg() {
               );
             })}
           </Swiper>
-          {/* <div className="absolute bottom-[4px] right-[4px] z-[100] flex h-[23px] w-[55px] items-center justify-center bg-gray-700 bg-opacity-70 text-[11px] font-normal text-white">
-            {imageNumber + 1} / {imgList.length}
-          </div> */}
+          <div className="absolute bottom-[15px] right-[10px] z-[100] flex h-[23px] w-[55px] items-center justify-center bg-gray-700 bg-opacity-70 text-[11px] font-normal text-white">
+              {imageNumber + 1} / {imgList.length}
+            </div>
         </div>
       </div>
       <img

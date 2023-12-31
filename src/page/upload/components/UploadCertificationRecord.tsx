@@ -114,12 +114,10 @@ function UploadCertificationRecord({
     },
   );
 
-  //인증업로드 핸들러
   const uploadGalleryImgCertification = async () => {
     if (postCertificationIsLoading) {
       return;
     }
-    //해당 조건문값들은 서버에서 api호출하기전에 미리 프론트에서 막아줌
     if (imgList.length === 0) {
       setCertificateErrorToastMessage('이미지를 업로드해 주세요');
       openCertificateErrorToast();
@@ -227,7 +225,6 @@ function UploadCertificationRecord({
                         type="checkbox"
                         onClick={() =>
                           dispatch(
-                            //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
                             uploadAction.setHideAddress({
                               isHideAddress: !isHideAddress,
                             }),
@@ -364,7 +361,6 @@ function UploadCertificationRecord({
                               src={CheckBox}
                               onClick={() =>
                                 dispatch(
-                                  //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
                                   uploadAction.setHideAddress({
                                     isHideAddress: !isHideAddress,
                                   }),
@@ -377,7 +373,6 @@ function UploadCertificationRecord({
                               type="checkbox"
                               onClick={() =>
                                 dispatch(
-                                  //주소공개여부 store에 저장해줌(장소선택페이지 이동후 되돌아올때 store에서 꺼내서 사용해야됨)
                                   uploadAction.setHideAddress({
                                     isHideAddress: !isHideAddress,
                                   }),
