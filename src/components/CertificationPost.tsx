@@ -28,7 +28,6 @@ import { weekDay } from '../common/types/week';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
 import { useErrorHandlers } from '../common/api/useErrorHandlers';
-import FullScreenImageSlider from '../page/detail/components/FullScreenImageSlider';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -142,13 +141,11 @@ function CertificationPost({
       },
     });
 
-  //유저 차단 api 훅
   const { mutate: userBlockMutate, isLoading: userBlockIsLoading } = useMutation(
     (data: UserBlockDataType) => blockUser(data),
     {
       onSuccess: (response: AxiosResponse) => {
         const { code, data } = response.data;
-        //차단 성공하면
         if (code === 200) {
           setBlockedUserName(data?.name);
           openBlockUserSuccessToastIsOpen(); 
@@ -331,8 +328,6 @@ function CertificationPost({
                 <SwiperSlide>
                   <img
                     className="post-img-result-main-img"
-                    // ref={mainImg}
-                    // data-src={image ? image : DogLoading}
                     src={image}
                     width={window.innerWidth}
                     height={window.innerWidth}
