@@ -96,9 +96,9 @@ function ChangePassword() {
   };
 
   const submitButtonHandler = () => {
-    // changePassword(email, validInput.password, () => {
-    //   navigate(MY_ACCOUNT_PATH.MAIN);
-    // });
+    changePassword(email, validInput.password, () => {
+      navigate(MY_ACCOUNT_PATH.MAIN);
+    }, dispatch);
   };
 
   return (

@@ -42,8 +42,9 @@ function changePassword(
     });
 }
 
-function changeGeoCode(
-  email: string,
+function changeUserInfo(
+  userId: number,
+  name: string,
   geoCode: string,
   pGeoCode: string,
   success: (data: AxiosResponse) => void,
@@ -51,28 +52,10 @@ function changeGeoCode(
 ) {
   axiosInstance
     .put(`/account/user`, {
-      email,
-      geoCode,
-      pGeoCode,
-    })
-    .then((data) => {
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
-}
-
-function changeName(
-  userId: number,
-  name: string,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  axiosInstance
-    .put(`/account/user`, {
       userId,
       name,
+      geoCode,
+      pGeoCode,
     })
     .then((data) => {
       success(data);
@@ -116,8 +99,7 @@ async function getAccountInfo(userId: number) {
 export {
   changePetInfo,
   changePassword,
-  changeGeoCode,
-  changeName,
+  changeUserInfo,
   setPushNotification,
   logOut,
   getAccountInfo,
