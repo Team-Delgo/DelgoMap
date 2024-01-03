@@ -6,7 +6,7 @@ import regions, { regionType, placeType, GetRegion } from './region';
 import './RegionSelector.scss';
 import RightArrow from '../../../../common/icons/right-arrow.svg';
 import { Region } from './UserInfo';
-import { changeGeoCode } from '../../../../common/api/myaccount';
+import { changeUserInfo } from '../../../../common/api/myaccount';
 import { RootState } from '../../../../redux/store';
 import { userActions } from '../../../../redux/slice/userSlice';
 
@@ -20,6 +20,8 @@ interface selectedPlace {
 }
 
 function RegionSelector(props: {
+  userId?: number;
+  name?: string;
   change: (r: string, rg: Region) => void;
   close: (comment: string) => void;
   list: regionType[];
@@ -27,7 +29,7 @@ function RegionSelector(props: {
   pIndex: number | undefined;
   isChange: boolean;
 }) {
-  const { change, close, list, rIndex, pIndex, isChange } = props;
+  const { change, close, userId, name, list, rIndex, pIndex, isChange } = props;
   const [regionList, setRegionList] = useState<regionType[]>([]);
   const email = useSelector((state: RootState) => state.persist.user.user.email);
   const [index, setIndex] = useState({ rIndex, pIndex });
@@ -154,9 +156,10 @@ function RegionSelector(props: {
   };
 
   const buttonClickHandler = () => {
-    if (isChange) {
-      changeGeoCode(
-        email,
+    if (isChange && userId && name) {
+      changeUserInfo(
+        userId,
+        name,
         selectedPlace.selected.code.toString(),
         selectedRegion.selected.code.toString(),
         (response: AxiosResponse) => {

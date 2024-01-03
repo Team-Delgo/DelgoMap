@@ -13,13 +13,13 @@ function AppleLoginButton() {
         responseMode="fragment"
         usePopup={false}
         designProp={{
-          height: 60,
-          width: 280,
+          // height: 60,
+          // width: 60,
           color: 'black',
           border: false,
           type: 'sign-in',
           border_radius: 15,
-          scale: 1,
+          scale: 3,
           locale: 'en_US',
         }}
       />
