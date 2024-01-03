@@ -22,7 +22,7 @@ interface initialStateType {
   prevImgList:Array<string>,
   prevImgNameList:Array<string>,
   imgList:Array<string>
-  fileList:Array<File>
+  fileList:Array<File>,
 }
 interface AchievementType {
   achievementsId: number;
@@ -67,7 +67,7 @@ const initialState: initialStateType = {
   prevImgList:[],
   prevImgNameList:[],
   imgList:[],
-  fileList:[]
+  fileList:[],
 };
 
 const uploadSlice = createSlice({

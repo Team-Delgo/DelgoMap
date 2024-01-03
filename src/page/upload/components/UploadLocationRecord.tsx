@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
@@ -12,7 +12,6 @@ import {
   STALE_TIME,
 } from '../../../common/constants/queryKey.const';
 import RightArrow from '../../../common/icons/right-arrow-gray.svg';
-import Check from '../../../common/icons/place-check.svg';
 import { useErrorHandlers } from '../../../common/api/useErrorHandlers';
 import { MungPlaceType } from '../../../common/types/mungPlace';
 import useActive from '../../../common/hooks/useActive';
@@ -49,18 +48,12 @@ interface KaKaoPlace {
 function UploadLocationRecord() {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const [bottomSheetIsOpen, , closeBottomSheet] = useActive(true);
-  // const [checkedPlaceId, setCheckedPlaceId] = useState(-1); //선택한 placeId (멍플장소만)
   const inputRef = useRef<any>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const initialHeight = useRef(window.innerHeight);
   const [placeName, setPlaceName] = useState('');
   const [kakaoPlaceList, setKaKaoPlaceList] = useState<Array<KaKaoPlace>>([]);
-
-  const sheetStyle = {
-    borderRadius: '18px 18px 0px 0px',
-    height: initialHeight.current - window.innerWidth + 10,
-  };
+  const uploadBoxHeight = useMemo(() => window.innerHeight - window.innerWidth + 10, []);
 
   const { data: mungPlaceList } = useQuery(
     GET_MUNG_PLACE_LIST,
@@ -82,7 +75,7 @@ function UploadLocationRecord() {
     dispatch(uploadAction.setMongPlace({ mungpleId, placeName, address }));
     setTimeout(() => {
       navigate(UPLOAD_PATH.CERTIFICATION);
-    }, 100);
+    }, 500);
   };
 
   const selectKaKaoPlace = (place: KaKaoPlace) => (event: React.MouseEvent) => {
@@ -189,9 +182,6 @@ function UploadLocationRecord() {
                       {highlightText(place.address, placeName)}
                     </div>
                   </div>
-                  {/* {checkedPlaceId === place.mungpleId ? (
-                    <img className="review-place-check" src={Check} alt="category-img" />
-                  ) : null} */}
                 </div>
               );
             }
@@ -222,7 +212,7 @@ function UploadLocationRecord() {
     <main
       className="capture-img-record ios-capture-record"
       style={{
-        height: initialHeight.current - window.innerWidth + 10,
+        height: uploadBoxHeight,
       }}
     >
       <body className="review-container">
@@ -265,9 +255,6 @@ function UploadLocationRecord() {
                       {highlightText(place.address, placeName)}
                     </div>
                   </div>
-                  {/* {checkedPlaceId === place.mungpleId ? (
-                    <img className="review-place-check" src={Check} alt="category-img" />
-                  ) : null} */}
                 </div>
               );
             }
@@ -281,20 +268,25 @@ function UploadLocationRecord() {
       isOpen={bottomSheetIsOpen}
       onClose={closeBottomSheet}
       snapPoints={[
-        initialHeight.current - window.innerWidth + 10,
-        initialHeight.current - window.innerWidth + 10,
-        initialHeight.current - window.innerWidth + 10,
-        initialHeight.current - window.innerWidth + 10,
+        uploadBoxHeight,
+        uploadBoxHeight,
+        uploadBoxHeight,
+        uploadBoxHeight,
       ]}
       disableDrag
       className="modal-bottom-sheet"
     >
-      <Sheet.Container style={sheetStyle}>
+      <Sheet.Container
+        style={{
+          borderRadius: '18px 18px 0px 0px',
+          height: uploadBoxHeight,
+        }}
+      >
         <Sheet.Content>
           <main
             className="capture-img-record"
             style={{
-              height: initialHeight.current - window.innerWidth - 10,
+              height: uploadBoxHeight,
             }}
           >
             <body className="review-container">
@@ -332,13 +324,6 @@ function UploadLocationRecord() {
                             {highlightText(place.address, placeName)}
                           </div>
                         </div>
-                        {/* {checkedPlaceId === place.mungpleId ? (
-                          <img
-                            className="review-place-check"
-                            src={Check}
-                            alt="category-img"
-                          />
-                        ) : null} */}
                       </div>
                     );
                   }

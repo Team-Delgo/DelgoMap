@@ -11,6 +11,7 @@ import {
   getRecordCertificationId,
 } from '../../common/api/record';
 import PageHeader from '../../components/PageHeader';
+import FullScreenImageSlider from '../detail/components/FullScreenImageSlider';
 
 interface LocationState {
   certId: number;
@@ -25,7 +26,12 @@ function RecordCertificationPage() {
   const { certId, date, userId } = certInfo;
   const [certifications, setCertifications] = useState<Cert[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fullImgList,setFullImgList] = useState<Array<string>>([])
+  const [fullImgName,setFullImgName] = useState("")
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     console.log(pageFrom);
     if (pageFrom === RECORD_PATH.PHOTO || pageFrom === ROOT_PATH) {
@@ -43,13 +49,31 @@ function RecordCertificationPage() {
     }, 200);
   }, []);
 
+  const openFullScreenSlider = (images:Array<string>, index:number,placeName: string) => {
+    setFullImgList(images);
+    setSelectedImageIndex(index);
+    setFullImgName(placeName)
+    setIsFullScreenSliderOpen(true);
+  };
+
   const contents = certifications.map((e: Cert) => {
-    return <RecordCertification certification={e} />;
+    return <RecordCertification key={e.certificationId} certification={e} openFullScreenSlider={openFullScreenSlider}/>;
   });
 
   const navigateBack = () => {
     navigate(-1);
   };
+
+  if (isFullScreenSliderOpen) {
+    return (
+      <FullScreenImageSlider
+        close={() => setIsFullScreenSliderOpen(false)}
+        images={fullImgList}
+        index={selectedImageIndex}
+        placeName={fullImgName}
+      />
+    );
+  }
 
   return (
     <div className="record-certs" ref={scrollRef}>
