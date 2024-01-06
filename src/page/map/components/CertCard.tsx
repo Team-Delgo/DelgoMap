@@ -50,6 +50,7 @@ function CertCard({
   cert,
   setCenter,
 }: Props) {
+  
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const navigate = useNavigate();
   const descriptionText =
