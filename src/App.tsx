@@ -56,6 +56,7 @@ import CommentsPage from './page/comment/CommentsPage';
 import RecordCertificationPage from './page/certification/RecordCertificationPage';
 import CertificationMap from './page/certification/CertificationMap';
 import CropListPage from './page/crop/CropListPage';
+import CertDetailPage from './page/certification/CertDetailPage';
 import { deviceAction } from './redux/slice/deviceSlice';
 import HelpPage from './page/help/HelpPage';
 import { RootState } from './redux/store';
@@ -177,6 +178,7 @@ function App() {
               <Route path="/achieve/:id" element={<AchievePage />} />
               <Route path="/map/:id" element={<OthersMap />} />
               <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
+              <Route path={RECORD_PATH.CERT_DETAIL} element={<CertDetailPage />} />
               <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
               <Route element={<Account />}>
                 <Route
