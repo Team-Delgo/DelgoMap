@@ -209,6 +209,25 @@ function CertificationPost({
   };
 
   const moveToMap = () => {
+    const cert = {
+      categoryCode: post.categoryCode,
+      address: post.address,
+      certificationId: post.certificationId,
+      description: post.description,
+      latitude: post.latitude,
+      isLike: post.isLike,
+      longitude: post.longitude,
+      likeCount: post.likeCount,
+      commentCount: post.commentCount,
+      mungpleId: post.mungpleId,
+      photoUrl: post.photoUrl,
+      placeName: post.placeName,
+      registDt: post.registDt,
+      userId: post.userId,
+      userName: post.userName,
+      photos: post.photos,
+    };
+
     navigate(ROOT_PATH, {
       state: {
         lat: post.latitude,
@@ -218,24 +237,6 @@ function CertificationPost({
         cert,
       },
     });
-  };
-  const cert: Cert = {
-    categoryCode: post.categoryCode,
-    address: post.address,
-    certificationId: post.certificationId,
-    description: post.description,
-    latitude: post.latitude,
-    isLike: post.isLike,
-    longitude: post.longitude,
-    likeCount: post.likeCount,
-    commentCount: post.commentCount,
-    mungpleId: post.mungpleId,
-    photoUrl: post.photoUrl,
-    placeName: post.placeName,
-    registDt: post.registDt,
-    userId: post.userId,
-    userName: post.userName,
-    photos: post.photos,
   };
 
   const moveToCommentPage = () => {

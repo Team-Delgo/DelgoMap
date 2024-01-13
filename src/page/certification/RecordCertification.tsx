@@ -122,13 +122,32 @@ function RecordCertification(props: RecordCertificationProps) {
   };
 
   const moveToMap = () => {
+    const cert = {
+      categoryCode: certification.categoryCode,
+      address: certification.address,
+      certificationId: certification.certificationId,
+      description: certification.description,
+      latitude: certification.latitude,
+      isLike: certification.isLike,
+      longitude: certification.longitude,
+      likeCount: certification.likeCount,
+      commentCount: certification.commentCount,
+      mungpleId: certification.mungpleId,
+      photoUrl: certification.photoUrl,
+      placeName: certification.placeName,
+      registDt: certification.registDt,
+      userId: certification.userId,
+      userName: certification.userName,
+      photos: certification.photos,
+    };
+
     navigate(ROOT_PATH, {
       state: {
         lat: certification.latitude,
         lng: certification.longitude,
         categoryCode: certification.categoryCode,
-        certMungpleId:
-          certification.mungpleId !== 0 ? certification.mungpleId : undefined,
+        certMungpleId: certification.mungpleId !== 0 ? certification.mungpleId : undefined,
+        cert,
       },
     });
   };
