@@ -104,7 +104,7 @@ function RecordCertification(props: RecordCertificationProps) {
       }
 
       certificationReactMutate({
-        userId: user?.id,
+        userId: certification?.userId,
         certificationId: certification?.certificationId,
         reactionCode,
       });
