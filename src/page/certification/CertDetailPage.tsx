@@ -11,14 +11,15 @@ import {
 } from '../../common/api/record';
 import PageHeader from '../../components/PageHeader';
 import FullScreenImageSlider from '../detail/components/FullScreenImageSlider';
-import { ROOT_PATH } from 'common/constants/path.const';
+import { ROOT_PATH } from '../../common/constants/path.const';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-
+import footPrint from '../../common/icons/foot_print_purple.svg';
+import compass from '../../common/icons/compass_small.svg';
 
 function CertDetailPage() {
   const { id } = useParams();
-  const { user, isSignIn } = useSelector((state: RootState) => state.persist.user);
+  const { user } = useSelector((state: RootState) => state.persist.user);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [certifications, setCertifications] = useState<Cert[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,13 +27,19 @@ function CertDetailPage() {
   const [fullImgName,setFullImgName] = useState("")
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
+  const [isDeletedPost,setIsDeletedPost] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
     getRecordCertificationId(user.id, Number(id), (response: AxiosResponse) => {
+      if (response.data.data === null) {
         console.log("response.data.data",response.data.data)
-        setCertifications(response.data.data);
-      });
+        setIsDeletedPost(true);
+        return;
+      }
+      console.log('response.data.data', response.data.data);
+      setCertifications(response.data.data);
+    });
     scrollRef.current?.scrollIntoView({ block: 'start' });
     setTimeout(() => {
       setLoading(false);
@@ -53,6 +60,22 @@ function CertDetailPage() {
   const navigateBack = () => {
     navigate(ROOT_PATH);
   };
+
+  if (isDeletedPost) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="flex flex-col items-center text-black">
+          <img src={footPrint} className="h-9 w-9" />
+          <p className="my-6 text-base font-bold">게시물이 삭제되었어요</p>
+          <div className="flex h-10 w-36 items-center justify-center rounded-full border border-gray-300" onClick={navigateBack}>
+            <img src={compass} className="h-3.25 w-2.5" />
+            <span className="mx-1" />
+            <span className="text-sm">지도로 돌아가기</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isFullScreenSliderOpen) {
     return (
