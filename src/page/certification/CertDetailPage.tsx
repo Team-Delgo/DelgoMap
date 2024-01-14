@@ -12,10 +12,13 @@ import {
 import PageHeader from '../../components/PageHeader';
 import FullScreenImageSlider from '../detail/components/FullScreenImageSlider';
 import { ROOT_PATH } from 'common/constants/path.const';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 
 
 function CertDetailPage() {
   const { id } = useParams();
+  const { user, isSignIn } = useSelector((state: RootState) => state.persist.user);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [certifications, setCertifications] = useState<Cert[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +29,7 @@ function CertDetailPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getRecordCertificationId(0, Number(id), (response: AxiosResponse) => {
+    getRecordCertificationId(user.id, Number(id), (response: AxiosResponse) => {
         console.log("response.data.data",response.data.data)
         setCertifications(response.data.data);
       });
