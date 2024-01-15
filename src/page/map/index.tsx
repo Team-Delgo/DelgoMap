@@ -20,9 +20,11 @@ import CountBox from './components/CountBox';
 import ListBox from './components/ListView/ListBox';
 import useMap from './index.hook';
 import { ROOT_PATH } from 'common/constants/path.const';
+import { map } from 'lodash';
 
 function Map() {
   const [copyLoading, setCopyLoading] = useState(false);
+
   const {
     state: {
       map: globarMap,

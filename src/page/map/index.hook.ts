@@ -8,6 +8,7 @@ import { RootState } from 'redux/store';
 import { mapAction } from 'redux/slice/mapSlice';
 import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from 'common/constants/path.const';
 import {
+  MarkerImages,
   clearSelectedId,
   setMarkerImageBig,
   setMarkerImageSmall,
@@ -242,7 +243,6 @@ function useMap() {
     const imageOptions = { offset: new kakao.maps.Point(20, 40) };
     const image = new kakao.maps.MarkerImage(DogFootMarkerSvg, imageSize, imageOptions);
     const marker = new kakao.maps.Marker({ position, image });
-
     if (map) marker.setMap(map);
     setDogFootMarker(marker);
     if (dogFootMarkerLocation.lat !== 0) {
@@ -288,7 +288,11 @@ function useMap() {
         hideCertMarkers(certMarkers);
         hideCertMarkers(mungpleCertMarkers);
         // hideMungpleMarkers();
-
+        const clusterer = new kakao.maps.MarkerClusterer({
+          map: map,
+          averageCenter: true,
+          minLevel: 7,
+        });
         const markers: MungpleMarkerType[] = mapDataList.map((mungple) => {
           const position = new kakao.maps.LatLng(
             parseFloat(mungple.latitude),
@@ -299,6 +303,7 @@ function useMap() {
           else image = setMarkerImageSmall(mungple.categoryCode);
 
           const marker = new kakao.maps.Marker({ position, image, zIndex: 10 });
+          clusterer.addMarker(marker);
           marker.setMap(map);
           kakao.maps.event.addListener(marker, 'click', () =>
             markerClickHandler(marker, image, mungple),
@@ -347,7 +352,6 @@ function useMap() {
   useEffect(() => {
     showMungpleMarkers();
   }, [selectedCategory]);
-
   //cert에서 제목 클릭시
   useEffect(() => {
     if (map && certLocationState) {
