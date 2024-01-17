@@ -292,6 +292,20 @@ function useMap() {
           map: map,
           averageCenter: true,
           minLevel: 7,
+          styles: [
+            {
+              width: '50px',
+              height: '50px',
+              background: 'rgba(46,79,255)',
+              borderRadius: '25px',
+              color: '#FFF',
+              textAlign: 'center',
+              fontWeight: 'semibold',
+              lineHeight: '38px',
+              backgroundClip: 'padding-box',
+              border: '7px solid rgba(46,79,255,0.4)',
+            },
+          ],
         });
         const markers: MungpleMarkerType[] = mapDataList.map((mungple) => {
           const position = new kakao.maps.LatLng(
