@@ -23,6 +23,7 @@ import ToastPurpleMessage from '../common/dialog/ToastPurpleMessage';
 import { blockUser } from '../common/api/ban';
 import { analytics } from '../index';
 import { postType } from '../common/types/post';
+import { Cert } from 'page/map/index.types';
 import { weekDay } from '../common/types/week';
 import useActive from '../common/hooks/useActive';
 import AlertConfirm from '../common/dialog/AlertConfirm';
@@ -36,6 +37,7 @@ interface CertificationPostPropsType {
   post: postType;
   certificationPostsFetch: () => void;
   pageSize: number;
+  openFullScreenSlider?: (images: string[], index: number, placeName:string) => void;
 }
 interface CertificationReactDataType {
   userId: number;
@@ -55,6 +57,7 @@ function CertificationPost({
   post,
   certificationPostsFetch,
   pageSize,
+  openFullScreenSlider
 }: CertificationPostPropsType) {
   const [moredesc, setMoreDesc] = useState(false);
   const [imageNumber, setImageNumber] = useState(0);
@@ -63,61 +66,34 @@ function CertificationPost({
   const [cuteCount, setCuteCount] = useState(post?.reactionCountMap?.CUTE);
   const [isHelp, setIsHelp] = useState(post?.reactionMap?.HELPER);
   const [isCute, setIsCute] = useState(post?.reactionMap?.CUTE);
-  const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDelteBottomSheet] = //삭제 바텀시트 오픈여부 담은 커스텀훅
+  const [deleteBottomSheetIsOpen, openDeleteBottomSheet, closeDelteBottomSheet] = 
     useActive(false);
   const [
     deletePostSuccessToastIsOpen,
     openDeletePostSuccessToast,
     closeDeletePostSuccessToast,
-  ] = useActive(false); //인증글 삭제후 뜰 Toast 오픈여부 담은 커스텀훅
+  ] = useActive(false);
   const [
     blockUserbottomSheetIsOpen,
     openBlockUserBottomSheet,
     closeBlockUserBottomSheet,
-  ] = useActive(false); //차단 바텀시트 오픈여부 담은 커스텀훅
+  ] = useActive(false);
   const [
     blockUserSuccessToastIsOpen,
     openBlockUserSuccessToastIsOpen,
     closeBlockUserSuccessToast,
-  ] = useActive(false); //차단 완료후 뜰 Toast 오픈여부 담은 커스텀훅
-  const [loginAlertIsOpen, setLoginAlertIsOpen] = useState(false); //로그인 하라고 뜨는 alert창 오픈여부
+  ] = useActive(false);
+  const [loginAlertIsOpen, setLoginAlertIsOpen] = useState(false); 
   const { user, isSignIn } = useSelector((state: RootState) => state.persist.user);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const heartEvent = useAnalyticsCustomLogEvent(analytics, 'cert_like');
   const commentEvent = useAnalyticsCustomLogEvent(analytics, 'cert_comment_view');
-  const mainImg = useRef<HTMLImageElement>(null); //인증이미지 참조하는 useRef훅
-  const profileImg = useRef<HTMLImageElement>(null); //프로플이미지 참조하는 useRef훅
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null); //Timeout 참조하는 useRef 훅
+  const profileImg = useRef<HTMLImageElement>(null);
 
-  // console.log('post', post.photos);
 
-  //이미지가 뷰포트에 나타나면 해당 이미지의 src 속성을 데이터 속성에서 가져와 설정
-  //default img를 보여주고있다가 obeserver에 의해 관찰되면 그떄 이미지 dataset src속성을 해당 요소 src에 설정해줌
-  //즉 뷰포트에 이미지가 감지될떄 해당 이미지를 load하기 위한 설정(image lazy loading)
-  // const observeImg = (
-  //   entries: IntersectionObserverEntry[], // 감지된 요소의 정보를 제공하는 배열
-  //   observer: IntersectionObserver, // 해당 IntersectionObserver 인스턴스
-  // ) => {
-  //   entries.forEach((entry: any) => {
-  //     //감지된요소를 반복문으로 돌며
-  //     if (entry.isIntersecting) {
-  //       // 해당 요소가 뷰포트와 교차하는 경우
-  //       entry.target.src = entry.target.dataset.src; // 이미지의 src 속성을 데이터 속성에서 가져와 설정
-  //       observer.unobserve(entry.target); // 이미지가 로드되면 더 이상 관찰할 필요가 없으므로 관찰을 중단
-  //     }
-  //   });
-  // };
 
-  // //해당 컴포넌트가 마운트될 때 IntersectionObserver를 생성하고 이미지들을 관찰
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(observeImg); //IntersectionObserver를 생성
-  //   mainImg.current && observer.observe(mainImg.current); // mainImg가 존재하면 관찰을 시작
-  //   profileImg.current && observer.observe(profileImg.current); // profileImg가 존재하면 관찰을 시작
-  // }, [post]);
-
-  //post props값이 변경되면 좋아요여부와 갯수를 갱신해줌(stale -> fresh)
   useEffect(() => {
     setCuteCount(post?.reactionCountMap?.CUTE);
     setIsCute(post?.reactionMap?.CUTE);
@@ -125,9 +101,7 @@ function CertificationPost({
     setIsHelp(post?.reactionMap?.HELPER);
   }, [post]);
 
-  // console.log('post',post)
 
-  // blockUserSuccessToastIsOpen true되면 2초후 false로 변환해줌
   useEffect(() => {
     if (blockUserSuccessToastIsOpen) {
       setTimeout(() => {
@@ -146,32 +120,20 @@ function CertificationPost({
       },
     });
 
-  //좋아요 api 훅
-  // const { mutate: certificationLikeMutate, isLoading: isLoadingCertificationLike } =
-  //   useMutation((data: CertificationLIkeDataType) => certificationLike(data), {
-  //     onSuccess: () => {
-  //       heartEvent.mutate();
-  //     },
-  //     onError: (error: any) => {
-  //       useErrorHandlers(dispatch, error);
-  //     },
-  //   });
 
-  //인증글 삭제 api 훅
   const { mutate: certificationDeleteMutate, isLoading: cettificationDeleteIsLoading } =
     useMutation((data: CertificationDeleteDataType) => certificationDelete(data), {
       onSuccess: (response: AxiosResponse) => {
         const { code } = response.data;
         if (code === 200) {
-          //성공하면 삭제바텀시트 닫고, 삭제toast 열고, 인증 리스트 api refetch 해줌(stale -> fresh)
           closeDelteBottomSheet();
           openDeletePostSuccessToast();
           certificationPostsFetch();
           setTimeout(() => {
-            closeDeletePostSuccessToast(); //2초후 삭제toast 닫아줌
+            closeDeletePostSuccessToast();
           }, 2000);
         } else {
-          closeDelteBottomSheet(); //성공못해도 바텀시트 닫아줌
+          closeDelteBottomSheet();
         }
       },
       onError: (error: any) => {
@@ -179,18 +141,16 @@ function CertificationPost({
       },
     });
 
-  //유저 차단 api 훅
   const { mutate: userBlockMutate, isLoading: userBlockIsLoading } = useMutation(
     (data: UserBlockDataType) => blockUser(data),
     {
       onSuccess: (response: AxiosResponse) => {
         const { code, data } = response.data;
-        //차단 성공하면
         if (code === 200) {
-          setBlockedUserName(data?.name); //차단한 유저이름 상태값 바꿔주고(toast 메시지로 띄워야함) 상
-          openBlockUserSuccessToastIsOpen(); //유저차단 toast 열어줌
-          closeBlockUserBottomSheet(); //차단 바텀시트 닫아줌
-          certificationPostsFetch(); //인증 리스트 api refetch 해줌(stale -> fresh)
+          setBlockedUserName(data?.name);
+          openBlockUserSuccessToastIsOpen(); 
+          closeBlockUserBottomSheet(); 
+          certificationPostsFetch(); 
         } else {
           closeBlockUserBottomSheet();
         }
@@ -232,7 +192,6 @@ function CertificationPost({
       });
     };
 
-  //인증삭제 핸들러
   const handleCertificationDelete = () => {
     if (userBlockIsLoading) return;
     certificationDeleteMutate({
@@ -241,7 +200,6 @@ function CertificationPost({
     });
   };
 
-  //유저차단 핸들러
   const handleUserBlock = () => {
     if (cettificationDeleteIsLoading) return;
     userBlockMutate({
@@ -251,23 +209,42 @@ function CertificationPost({
   };
 
   const moveToMap = () => {
+    const cert = {
+      categoryCode: post.categoryCode,
+      address: post.address,
+      certificationId: post.certificationId,
+      description: post.description,
+      latitude: post.latitude,
+      isLike: post.isLike,
+      longitude: post.longitude,
+      likeCount: post.likeCount,
+      commentCount: post.commentCount,
+      mungpleId: post.mungpleId,
+      photoUrl: post.photoUrl,
+      placeName: post.placeName,
+      registDt: post.registDt,
+      userId: post.userId,
+      userName: post.userName,
+      photos: post.photos,
+    };
+
     navigate(ROOT_PATH, {
       state: {
         lat: post.latitude,
         lng: post.longitude,
         categoryCode: post.categoryCode,
         certMungpleId: post.mungpleId !== 0 ? post.mungpleId : undefined,
+        cert,
       },
     });
   };
+
   const moveToCommentPage = () => {
-    //로그인 안되있으면 로그인alert창 띄워주고
     if (!isSignIn) {
       setLoginAlertIsOpen(true);
       return;
     }
     commentEvent.mutate();
-    //현재 스크롤y,페이지사이즈 store에 저장해줌 (되돌아왔을때 스크롤 유지를 )위해
     dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
     navigate(`/comments/${post?.certificationId}`, {
       state: { post },
@@ -275,9 +252,7 @@ function CertificationPost({
   };
 
   const moveToUpdatePage = () => {
-    //현재 스크롤y,페이지사이즈 store에 저장해줌 (되돌아왔을때 스크롤 유지를 )위해
     dispatch(scrollActions.postsScroll({ scroll: window.scrollY, pageSize }));
-    //업데이트페이지에서 필요한 post관련 상태값 store에 저장
     dispatch(
       uploadAction.setCertificationUpdate({
         imgList: post?.photos,
@@ -286,7 +261,6 @@ function CertificationPost({
         content: post?.description,
         address: post?.address,
         isHideAddress: post?.isHideAddress,
-        // mongPlaceId:post?.
       }),
     );
     navigate(UPLOAD_PATH.UPDATE, {
@@ -355,13 +329,12 @@ function CertificationPost({
                 <SwiperSlide>
                   <img
                     className="post-img-result-main-img"
-                    // ref={mainImg}
-                    // data-src={image ? image : DogLoading}
                     src={image}
                     width={window.innerWidth}
                     height={window.innerWidth}
                     alt="postImg"
                     aria-hidden="true"
+                    onClick={() => openFullScreenSlider && openFullScreenSlider(post?.photos, imageNumber, post?.placeName)}
                   />
                 </SwiperSlide>
               );

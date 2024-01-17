@@ -74,7 +74,7 @@ const categoryList = [
   { code: 'CA0002', name: '카페', icon: cafeIcon, color: 'border-[#8e6947]' },
   { code: 'CA0003', name: '식당', icon: eatIcon, color: 'border-[#a33821]' },
   { code: 'CA0001', name: '산책', icon: walkIcon, color: 'border-[#4A8C48]' },
-  { code: 'CA0007', name: '유치원/호텔', icon: kinderIcon, color: 'border-[#d66615]' },
+  { code: 'CA0007', name: '유치원/운동장', icon: kinderIcon, color: 'border-[#d66615]' },
   { code: 'CA0005', name: '미용/목욕', icon: beautyIcon, color: 'border-[#df3390]' },
   { code: 'CA0006', name: '병원', icon: hospitalIcon, color: 'border-[#7a5ccf]' },
 ];
@@ -83,6 +83,7 @@ function Categroy({ selectedCategory, onClick, listView }: Props) {
   const [selectedValue, setSelectedValue] = useState(selectedCategory);
   const userId = useSelector((state: RootState) => state.persist.user.user.id);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  
   useEffect(() => {
     setSelectedValue(selectedCategory);
   }, [selectedCategory]);

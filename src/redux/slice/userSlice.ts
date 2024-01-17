@@ -13,8 +13,8 @@ const initialState = {
     email: '',
     phone: '',
     isSocial: false,
-    geoCode: 0,
-    pGeoCode: 0,
+    geoCode: '',
+    pGeoCode: '',
     registDt: '',
     notify: true,
   },
@@ -43,6 +43,12 @@ const userSlice = createSlice({
         ...state,
         moveToLogin: true,
       };
+    },
+    redirectedToLogin(state) {
+      return {
+        ...state,
+        moveToLogin: false,
+      }
     },
     setpetprofile(state, action) {
       return {

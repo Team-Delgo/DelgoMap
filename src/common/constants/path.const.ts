@@ -52,6 +52,7 @@ export const RECORD_PATH = {
   CERT: '/certs',
   COMMENT: '/comments/:id',
   MAP: '/map',
+  CERT_DETAIL: '/cert/:id',
 };
 
 export const CROP_PATH = '/crop';

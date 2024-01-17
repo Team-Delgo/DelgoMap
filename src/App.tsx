@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import './App.scss';
 import {
   ACHIEVEMENT_PATH,
@@ -50,23 +50,25 @@ import SignUpComplete from './page/sign/signup/SignUpComplete';
 import Terms from './page/sign/signup/term/Terms';
 import UserInfo from './page/sign/signup/userinfo/UserInfo';
 import CropPage from './page/crop/CropPage';
-import AchievementPage from './page/record/achieve/components/AchieveContainer';
+import AchievementPage from './page/record/achieve/AchievePage';
 import PostsPage from './page/certification/CertificationPostsPage';
 import CommentsPage from './page/comment/CommentsPage';
 import RecordCertificationPage from './page/certification/RecordCertificationPage';
 import CertificationMap from './page/certification/CertificationMap';
 import CropListPage from './page/crop/CropListPage';
+import CertDetailPage from './page/certification/CertDetailPage';
 import { deviceAction } from './redux/slice/deviceSlice';
 import HelpPage from './page/help/HelpPage';
 import { RootState } from './redux/store';
 import { userActions } from './redux/slice/userSlice';
-import { getMyInfo } from './common/api/myaccount';
+import { getAccountInfo } from './common/api/myaccount';
 
 import Map from './page/map';
 import TempDetailPage from './page/detail/TempDetailPage';
 import Account from 'components/Account';
 import RedirectHandler from 'RedirectHandler';
 import OthersMap from 'page/record/OthersMap/OthersMap';
+import { useErrorHandlers } from 'common/api/useErrorHandlers';
 
 function App() {
   const queryClient = new QueryClient();
@@ -74,20 +76,18 @@ function App() {
 
   const { isSignIn, user } = useSelector((state: RootState) => state.persist.user);
 
-  //회원정보수정(강아지 정보수정등)했을때 동시 로그인된 여러 기기에 상태값을 동기화해주기위해 설정 (실시간은 안되고 앱을 끄고 켯을때만 동작)
   useEffect(() => {
-    if (isSignIn) {
-      getMyInfo(
-        user.id,
-        (response: AxiosResponse) => {
-          const { code, data } = response.data;
+    const fetchData = async () => {
+      if (isSignIn && user.id) {
+        try {
+          const {code,data} = await getAccountInfo(user.id);
           if (code === 200) {
             const { registDt } = data;
             dispatch(
               userActions.signin({
                 isSignIn: true,
                 user: {
-                  id: data.userId,
+                  id: data.userId,  
                   address: data.address,
                   nickname: data.name,
                   email: data.email,
@@ -111,11 +111,15 @@ function App() {
               }),
             );
           }
-        },
-        dispatch,
-      );
-    }
+        } catch (error: AxiosError | any) {
+          useErrorHandlers(dispatch, error);
+        }
+      }
+    };
+
+    fetchData();
   }, []);
+
 
   //기기를 설정해주는부분(pc or mobile) -> 분기처리가 필요한 로직일떄 필요
   useEffect(() => {
@@ -174,6 +178,7 @@ function App() {
               <Route path="/achieve/:id" element={<AchievePage />} />
               <Route path="/map/:id" element={<OthersMap />} />
               <Route path={RECORD_PATH.CERT} element={<RecordCertificationPage />} />
+              <Route path={RECORD_PATH.CERT_DETAIL} element={<CertDetailPage />} />
               <Route path={RECORD_PATH.COMMENT} element={<CommentsPage />} />
               <Route element={<Account />}>
                 <Route

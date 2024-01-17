@@ -15,13 +15,14 @@ interface initialStateType {
   tool: string,
   file: string,
   address: string,
+  cert:string, // "", "mungple" , "manual"
   achievements:Array<AchievementType>,
   isHideAddress:boolean,
   categoryCode:string,
   prevImgList:Array<string>,
   prevImgNameList:Array<string>,
   imgList:Array<string>
-  fileList:Array<File>
+  fileList:Array<File>,
 }
 interface AchievementType {
   achievementsId: number;
@@ -59,13 +60,14 @@ const initialState: initialStateType = {
   tool: '',
   file: '',
   address: '',
+  cert:"",
   achievements: [],
   isHideAddress:false,
   categoryCode:'',
   prevImgList:[],
   prevImgNameList:[],
   imgList:[],
-  fileList:[]
+  fileList:[],
 };
 
 const uploadSlice = createSlice({
@@ -167,12 +169,6 @@ const uploadSlice = createSlice({
         isHideAddress:action.payload.isHideAddress
       };
     },
-    initAchievements() {
-      return {
-        ...initialState,
-        achievements: [],
-      };
-    },
     setHomeCert(state,action) {
       return {
         ...initialState,
@@ -183,7 +179,8 @@ const uploadSlice = createSlice({
         mongPlaceId: action.payload.mongPlaceId,
         title: action.payload.title,
         address:action.payload.address,
-        categoryCode:action.payload.categoryCode
+        categoryCode:action.payload.categoryCode,
+        cert:action.payload.cert
       };
     },
     setHideAddress(state,action) {

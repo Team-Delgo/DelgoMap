@@ -117,11 +117,10 @@ function DetailPage() {
         title: data.placeName,
         address: data.address,
         categoryCode: data.categoryCode,
+        cert: 'mungple',
       }),
     );
-    navigate(UPLOAD_PATH.CERTIFICATION, {
-      state: { prevPath: `detail/${data.mungpleId}` },
-    });
+    navigate(UPLOAD_PATH.CERTIFICATION);
   };
   const navigateToLoginPage = () => navigate(SIGN_IN_PATH.MAIN);
 

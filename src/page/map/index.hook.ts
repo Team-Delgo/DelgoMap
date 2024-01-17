@@ -366,9 +366,11 @@ function useMap() {
   useEffect(() => {
     showMungpleMarkers();
   }, [selectedCategory]);
-  //cert에서 제목 클릭시
+
+  //cert or record에서 제목 클릭시
   useEffect(() => {
     if (map && certLocationState) {
+      setIsCertToggleOn(false);
       map?.panTo(new kakao.maps.LatLng(certLocationState.lat, certLocationState.lng));
       if (certLocationState.certMungpleId) {
         const targetMungple = mapDataList?.find((item) => {
@@ -376,10 +378,7 @@ function useMap() {
         });
 
         if (targetMungple && mungpleMarkers.length > 0) {
-          const position = new kakao.maps.LatLng(
-            parseFloat(targetMungple.latitude),
-            parseFloat(targetMungple.longitude),
-          );
+          //멍플일때
           setSelectedMungple((prev) => dispatchSelectedMungple(prev, targetMungple));
           setIsSelectedAnything(true);
           const image = setMarkerImageBig(targetMungple.categoryCode);
@@ -391,10 +390,12 @@ function useMap() {
           setDogFootMarkerLocation(() => ({ lat: 0, lng: 0 }));
         }
       } else {
+        //멍플 아닐떄
         setDogFootMarkerLocation(() => ({
           lat: certLocationState.lat,
           lng: certLocationState.lng,
         }));
+        setSelectedCert(certLocationState.cert);
       }
     }
   }, [map, certLocationState, mungpleMarkers]);

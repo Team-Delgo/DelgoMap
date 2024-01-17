@@ -1,48 +1,45 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 import { Cert } from '../../common/types/map';
 import RecordCertification from './RecordCertification';
 import './RecordCertificationPage.scss';
-import { RECORD_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import Loading from '../../common/utils/BallLoading';
 import {
-  getRecordCertificationDate,
   getRecordCertificationId,
 } from '../../common/api/record';
 import PageHeader from '../../components/PageHeader';
 import FullScreenImageSlider from '../detail/components/FullScreenImageSlider';
+import { ROOT_PATH } from '../../common/constants/path.const';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
+import footPrint from '../../common/icons/foot_print_purple.svg';
+import compass from '../../common/icons/compass_small.svg';
 
-interface LocationState {
-  certId: number;
-  userId: number;
-  date: string;
-}
-
-function RecordCertificationPage() {
+function CertDetailPage() {
+  const { id } = useParams();
+  const { user } = useSelector((state: RootState) => state.persist.user);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const pageFrom = useLocation().state.from as string;
-  const certInfo = useLocation().state.info as LocationState;
-  const { certId, date, userId } = certInfo;
   const [certifications, setCertifications] = useState<Cert[]>([]);
   const [loading, setLoading] = useState(true);
   const [fullImgList,setFullImgList] = useState<Array<string>>([])
   const [fullImgName,setFullImgName] = useState("")
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
+  const [isDeletedPost,setIsDeletedPost] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(pageFrom);
-    if (pageFrom === RECORD_PATH.PHOTO || pageFrom === ROOT_PATH) {
-      getRecordCertificationId(userId, certId, (response: AxiosResponse) => {
-        setCertifications(response.data.data);
-      });
-    } else if (pageFrom === RECORD_PATH.CALENDAR) {
-      getRecordCertificationDate(userId, date, (response: AxiosResponse) => {
-        setCertifications(response.data.data);
-      });
-    }
+    getRecordCertificationId(user.id, Number(id), (response: AxiosResponse) => {
+      if (response.data.data === null) {
+        console.log("response.data.data",response.data.data)
+        setIsDeletedPost(true);
+        return;
+      }
+      console.log('response.data.data', response.data.data);
+      setCertifications(response.data.data);
+    });
     scrollRef.current?.scrollIntoView({ block: 'start' });
     setTimeout(() => {
       setLoading(false);
@@ -61,8 +58,24 @@ function RecordCertificationPage() {
   });
 
   const navigateBack = () => {
-    navigate(-1);
+    navigate(ROOT_PATH);
   };
+
+  if (isDeletedPost) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="flex flex-col items-center text-black">
+          <img src={footPrint} className="h-9 w-9" />
+          <p className="my-6 text-base font-bold">게시물이 삭제되었어요</p>
+          <div className="flex h-10 w-36 items-center justify-center rounded-full border border-gray-300" onClick={navigateBack}>
+            <img src={compass} className="h-3.25 w-2.5" />
+            <span className="mx-1" />
+            <span className="text-sm">지도로 돌아가기</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isFullScreenSliderOpen) {
     return (
@@ -81,7 +94,7 @@ function RecordCertificationPage() {
         <Loading />
       ) : (
         <>
-          <PageHeader title={date?.slice(0, 10)} navigate={navigateBack} isFixed />
+          <PageHeader title={certifications[0]?.placeName} navigate={navigateBack} isFixed />
           <div className="record-certs-content">{contents}</div>
         </>
       )}
@@ -89,4 +102,4 @@ function RecordCertificationPage() {
   );
 }
 
-export default RecordCertificationPage;
+export default CertDetailPage;

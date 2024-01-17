@@ -81,7 +81,7 @@ function UploadResultHeader() {
   //기본적으로 upload관련 페이지를 빠져나갈때는 upload 상태값을 전부 초기화 시켜줘야함
   //상태값이 스토어에 남아있으면 빠져나갔다가 다시 진입했을때 upload store에 상태가 남아있어서 페이지에 이전 업로드값들이 화면에 보여짐
   const handleInitAchievements = () => {
-    dispatch(uploadAction.initAchievements());
+    dispatch(uploadAction.setUploadInit());
   };
 
   return (

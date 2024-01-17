@@ -1,6 +1,7 @@
+import { CategoryCode } from 'page/map/index.types';
 export interface postType {
   mungpleId: number;
-  categoryCode: string;
+  categoryCode: CategoryCode;
   address: string;
   certificationId: number;
   commentCount: number;

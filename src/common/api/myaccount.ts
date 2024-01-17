@@ -42,8 +42,9 @@ function changePassword(
     });
 }
 
-function changeGeoCode(
-  email: string,
+function changeUserInfo(
+  userId: number,
+  name: string,
   geoCode: string,
   pGeoCode: string,
   success: (data: AxiosResponse) => void,
@@ -51,28 +52,10 @@ function changeGeoCode(
 ) {
   axiosInstance
     .put(`/account/user`, {
-      email,
-      geoCode,
-      pGeoCode,
-    })
-    .then((data) => {
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
-}
-
-function changeName(
-  userId: number,
-  name: string,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  axiosInstance
-    .put(`/account/user`, {
       userId,
       name,
+      geoCode,
+      pGeoCode,
     })
     .then((data) => {
       success(data);
@@ -108,45 +91,16 @@ function logOut(userId: number, success: (data: AxiosResponse) => void, dispatch
     });
 }
 
-async function getMyInfo(
-  userId: number,
-  success: (data: AxiosResponse) => void,
-  dispatch: any,
-) {
-  axiosInstance
-    .get(`/account?userId=${userId}`)
-    .then((data) => {
-      success(data);
-    })
-    .catch((error) => {
-      useErrorHandlers(dispatch, error);
-    });
-}
-
-async function getMyPoint(userId: number) {
-  const { data } = await axiosInstance.get(`/account/point?userId=${userId}`);
-  return data;
-}
-
-async function getMyProfileInfo(userId: number) {
+async function getAccountInfo(userId: number) {
   const { data } = await axiosInstance.get(`/account?userId=${userId}`);
-  console.log(data);
   return data.data;
 }
-async function getOtherProfileInfo(userId: number) {
-  const { data } = await axiosInstance.get(`/user/other?userId=${userId}`);
-  console.log(data);
-  return data.data;
-}
+
 export {
   changePetInfo,
   changePassword,
-  getOtherProfileInfo,
-  changeGeoCode,
-  changeName,
+  changeUserInfo,
   setPushNotification,
   logOut,
-  getMyInfo,
-  getMyPoint,
-  getMyProfileInfo,
+  getAccountInfo,
 };

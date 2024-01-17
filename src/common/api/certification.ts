@@ -7,7 +7,7 @@ interface CertResponse {
 }
 
 async function getMungPlaceList() {
-  const { data } = await axiosInstance.get(`/mungple/category/CA0000`);
+  const { data } = await axiosInstance.get(`/mungple/category?userId=${0}&categoryCode=CA0000&sort=NOT`);
   return data;
 }
 

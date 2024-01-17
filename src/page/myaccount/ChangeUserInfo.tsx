@@ -13,7 +13,7 @@ import { checkNickname } from '../sign/validcheck';
 import RegionSelector from '../sign/signup/userinfo/RegionSelector';
 import { Region } from '../sign/signup/userinfo/UserInfo';
 import { regionType, GetRegion } from '../sign/signup/userinfo/region';
-import { changeName } from '../../common/api/myaccount';
+import { changeUserInfo } from '../../common/api/myaccount';
 import { userActions } from '../../redux/slice/userSlice';
 
 function ChangeUserInfo() {
@@ -67,9 +67,11 @@ function ChangeUserInfo() {
           setNicknameDuplicated(false);
           setNicknameDupCheckFail(false);
           setFeedback('닉네임이 변경되었습니다.');
-          changeName(
+          changeUserInfo(
             user.id,
             enteredInput.nickname,
+            user.geoCode,
+            user.pGeoCode,
             (response: AxiosResponse) => {
               dispatch(userActions.changeNickName({ name: enteredInput.nickname }));
             },
@@ -134,6 +136,8 @@ function ChangeUserInfo() {
           />
           <div className="modal">
             <RegionSelector
+              userId={user.id}
+              name={user.nickname}
               list={regionList!}
               close={closeModal}
               change={regionChangeHandler}

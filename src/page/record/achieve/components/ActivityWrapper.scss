@@ -1,0 +1,106 @@
+.activity-wrapper {
+    padding-top: 274px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.frequent-places {
+    width: 335px;
+    min-height: 151px;
+    padding-left: 22px;
+    border-radius: 16px;
+    box-shadow: 0px 0px 3px 0px rgba(124, 68, 158, 0.25);
+
+    h1 {
+        padding: 22px 0 27px;
+        color: var(--reward-gray-2-bk, #000);
+        font-family: SUITE;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 150%;
+    }
+}
+
+.frequent-places-row {
+    height: 49px;
+    margin-bottom: 16px;
+    display: flex;
+
+    img {
+        border-radius: 4px;
+    }
+
+    &-info {
+        margin-left: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        &-place-name {
+            color: var(--reward-gray-2-bk, #000);
+            font-family: Spoqa Han Sans Neo;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 150%;
+        }
+
+        &-count {
+            color: var(--reward-gray-25, #3D3D3D);
+            font-family: Spoqa Han Sans Neo;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 150%;
+        }
+
+    }
+}
+
+.activity-ratio {
+    width: 335px;
+    // height: 2019px;
+    margin: 20px 0 100px 0;
+    padding-left: 28px;
+    border-radius: 16px;
+    box-shadow: 0px 0px 3px 0px rgba(124, 68, 158, 0.25);
+
+    h1 {
+        padding-top: 22px;
+        color: var(--reward-gray-2-bk, #000);
+        font-family: SUITE;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 150%;
+    }
+
+    &-wrapper {
+        display: flex;
+        align-items: center;
+        padding-bottom: 5px;
+    }
+
+    &-icon-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        column-gap: 16px;
+        row-gap: 4px;
+        // margin-left: 41px;
+    }
+
+    &-icon {
+        display: flex;
+
+        figcaption {
+            padding-left: 6px;
+            color: var(--reward-gray-2-bk, #000);
+            font-family: Inter;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 150%;
+        }
+    }
+}
