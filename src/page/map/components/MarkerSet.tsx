@@ -82,7 +82,6 @@ export function setNormalCertMarker(
   map: kakao.maps.Map,
   setCert: React.Dispatch<React.SetStateAction<Cert>>,
 ) {
-  console.log(certList);
   const markers = certList.map((m) => {
     const icon = NormalCert;
     const content = document.createElement('div');
@@ -109,7 +108,6 @@ export function setNormalCertMarker(
     });
     content.addEventListener('click', (e) => {
       e.stopPropagation();
-      console.log(e);
       setCert(m);
     });
     marker.setMap(map);
