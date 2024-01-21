@@ -66,7 +66,6 @@ export function setMarkerImageBig(categoryCode: string) {
 
 export function setMarkerImageSmall(categoryCode: string) {
   const images = MarkerImages();
-  console.log(categoryCode);
 
   if (categoryCode === 'BOOKMARK') return images.smallImages[7];
   if (categoryCode === 'CA0001') return images.smallImages[0];
@@ -83,7 +82,6 @@ export function setNormalCertMarker(
   map: kakao.maps.Map,
   setCert: React.Dispatch<React.SetStateAction<Cert>>,
 ) {
-  console.log(certList);
   const markers = certList.map((m) => {
     const icon = NormalCert;
     const content = document.createElement('div');
@@ -110,7 +108,6 @@ export function setNormalCertMarker(
     });
     content.addEventListener('click', (e) => {
       e.stopPropagation();
-      console.log(e);
       setCert(m);
     });
     marker.setMap(map);
