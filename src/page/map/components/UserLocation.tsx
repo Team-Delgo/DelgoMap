@@ -5,9 +5,15 @@ import { RootState } from 'redux/store';
 
 interface Props {
   move: (lat: number, lng: number) => void;
+  setLocation: React.Dispatch<
+    React.SetStateAction<{
+      lat: number;
+      lng: number;
+    }>
+  >;
 }
 
-function UserLocation({ move }: Props) {
+function UserLocation({ move, setLocation }: Props) {
   const { OS } = useSelector((state: RootState) => state.persist.device);
   const moveToCurrentLocation = () => {
     if (OS === '') window.BRIDGE.checkGPSService();
@@ -15,6 +21,7 @@ function UserLocation({ move }: Props) {
       navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
+        setLocation({ lat, lng });
         move(lat, lng);
       });
     }

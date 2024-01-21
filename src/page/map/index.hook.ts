@@ -22,6 +22,7 @@ import {
   defaultSelectedMungple,
 } from './index.types';
 import DogFootMarkerSvg from '../../common/icons/cert-map-marker.svg';
+import UserMarker from '../../common/icons/user-gps.svg';
 
 function useMap() {
   /** Variable */
@@ -42,6 +43,7 @@ function useMap() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isSearchViewOpen, setIsSearchViewOpen] = useState(false);
   const [isSelectedAnything, setIsSelectedAnything] = useState(false);
+  const [currentUserLocation, setCurrentUserLocation] = useState({ lat: 0, lng: 0 });
   const [dogFootMarkerLocation, setDogFootMarkerLocation] = useState({ lat: 0, lng: 0 });
   const [selectedMungple, setSelectedMungple] =
     useState<SelectedMungple>(defaultSelectedMungple);
@@ -50,6 +52,7 @@ function useMap() {
   const [isFirstRendering, setIsFirstRendering] = useState({ mungple: true, cert: true });
   const [isCertToggleOn, setIsCertToggleOn] = useState(initialCertMungpleToggle);
   // Markers
+  const [userMarker, setUserMarker] = useState<kakao.maps.Marker>();
   const [dogFootMarker, setDogFootMarker] = useState<kakao.maps.Marker>();
   const [mungpleMarkers, setMungpleMarkers] = useState<MungpleMarkerType[]>([]);
   const [certMarkers, setCertMarkers] = useState<kakao.maps.CustomOverlay[]>([]);
@@ -214,6 +217,21 @@ function useMap() {
   };
   const { state: certLocationState } = useLocation();
 
+  const getCurrentUserLocation = () => {
+    const option: PositionOptions = {
+      enableHighAccuracy: true,
+    };
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setCurrentUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      },
+      (error) => {
+        console.log(error);
+      },
+      option,
+    );
+  };
+
   /** Rendering */
   // 지도 생성
   useEffect(() => {
@@ -226,11 +244,32 @@ function useMap() {
     setMap(map);
   }, []);
 
+  // 내 위치 가져오기
+  useEffect(() => {
+    getCurrentUserLocation();
+  }, []);
+
   // 지도 클릭 이벤트 설정 (클릭 시 해당 좌표 저장)
   useEffect(() => {
     if (!map) return;
     kakao.maps.event.addListener(map, 'click', mapClickHandler);
   }, [map]);
+
+  // 유저 마커 렌더링
+  useEffect(() => {
+    if (userMarker) userMarker.setMap(null);
+    if (!map) return;
+    const position = new kakao.maps.LatLng(
+      currentUserLocation.lat,
+      currentUserLocation.lng,
+    );
+    
+    const imageSize = new kakao.maps.Size(33, 33);
+    const image = new kakao.maps.MarkerImage(UserMarker, imageSize);
+    const marker = new kakao.maps.Marker({ position, image });
+    marker.setMap(map);
+    setUserMarker(marker);
+  }, [map, currentUserLocation]);
 
   // 지도 클릭 시 마커 렌더링
   useEffect(() => {
@@ -409,6 +448,7 @@ function useMap() {
       selectedMungple,
       mungpleMarkers,
       viewCount,
+      currentUserLocation,
       isSearchViewOpen,
       isAlertOpen,
       isSelectedAnything,
@@ -421,6 +461,7 @@ function useMap() {
       searchAndMoveToMungple,
       setIsAlertOpen,
       setSelectedCategory,
+      setCurrentUserLocation,
       navigateToMyaccountPage,
       navigateToLoginPage,
       certToggleClickHandler,

@@ -49,6 +49,7 @@ function Map() {
       navigateToMyaccountPage,
       navigateToLoginPage,
       certToggleClickHandler,
+      setCurrentUserLocation,
       setCurrentMapLocation,
       searchAndMoveToKakaoPlace,
     },
@@ -127,7 +128,10 @@ function Map() {
       )}
       {!isSelectedAnything &&
         !(selectedMungple.title.length > 0 || selectedCert.userId > 0) && (
-          <UserLocation move={moveKakaoMapCurrentLocation} />
+          <UserLocation
+            move={moveKakaoMapCurrentLocation}
+            setLocation={setCurrentUserLocation}
+          />
         )}
       {!isSelectedAnything &&
         !isSearchViewOpen &&
