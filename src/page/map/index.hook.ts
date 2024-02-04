@@ -59,7 +59,7 @@ function useMap() {
   const [mungpleCertMarkers, setMungpleCertMarkers] = useState<
     kakao.maps.CustomOverlay[]
   >([]);
-
+  const [cluster, setCluster] = useState<kakao.maps.MarkerClusterer>();
   /** API request */
   const { data: mapDataList } = useQuery(
     ['getMapData', userId],
@@ -144,27 +144,113 @@ function useMap() {
     marker.setZIndex(20);
     setDogFootMarkerLocation(() => ({ lat: 0, lng: 0 }));
   };
+
   // Markers visible handlers
   const hideMungpleMarkers = () => {
-    mungpleMarkers.forEach((marker) => marker.marker.setVisible(false));
+    mungpleMarkers.forEach((marker) => marker.marker.setMap(null));
+    cluster?.clear();
   };
   const hideCertMarkers = (certMarkers: kakao.maps.CustomOverlay[]) => {
     certMarkers.forEach((marker) => marker.setVisible(false));
   };
+
   const showMungpleMarkers = () => {
+    if (!map) return;
     if (selectedCategory === 'BOOKMARK') {
-      mungpleMarkers.forEach((marker) => {
-        if (marker.isBookmarked) marker.marker.setVisible(true);
-        else marker.marker.setVisible(false);
-      });
+      if (map?.getLevel() >= 7) {
+        //클러스터 보일때
+        const currentCategoryMarkers = mungpleMarkers //해당 카테고리의 마커만 클러스터에 추가
+          .filter((marker) => marker.isBookmarked)
+          .map((m) => m.marker);
+
+        const elseCurrentCategoryMarkers = mungpleMarkers // 그외의 마커들은 클러스터에서 삭제
+          .filter((marker) => !marker.isBookmarked)
+          .map((m) => m.marker);
+
+        cluster?.addMarkers(currentCategoryMarkers);
+        cluster?.removeMarkers(elseCurrentCategoryMarkers);
+      } else {
+        //마커만 보일때
+        mungpleMarkers.forEach((marker) => {
+          if (marker.isBookmarked) marker.marker.setMap(map);
+          else marker.marker.setMap(null);
+        });
+      }
     } else {
-      mungpleMarkers.forEach((marker) => {
-        if (selectedCategory === '' || marker.category === selectedCategory)
-          marker.marker.setVisible(true);
-        else marker.marker.setVisible(false);
-      });
+      //클러스터 보일때
+      console.log(selectedCategory);
+      if (selectedCategory === '') {
+        //카테고리 선택 안했을때
+        console.log('클러스터');
+        const currentCategoryMarkers = mungpleMarkers.map((m) => m.marker); //모든 마커 클러스터에 추가
+        cluster?.addMarkers(currentCategoryMarkers);
+        if (map?.getLevel() < 7) {
+          //클러스터 안보이고 마커만 보일때
+          mungpleMarkers.forEach((marker) => {
+            marker.marker.setMap(map);
+          });
+        }
+      } else {
+        //카테고리 선택 했을때
+        const currentCategoryMarkers = mungpleMarkers //해당 카테고리의 마커만 클러스터에 추가
+          .filter((marker) => marker.category === selectedCategory)
+          .map((m) => m.marker);
+
+        const elseCurrentCategoryMarkers = mungpleMarkers // 그외의 마커들은 클러스터에서 삭제
+          .filter((marker) => marker.category !== selectedCategory)
+          .map((m) => m.marker);
+
+        cluster?.addMarkers(currentCategoryMarkers);
+        cluster?.removeMarkers(elseCurrentCategoryMarkers);
+        if (map?.getLevel() < 7) {
+          //클러스터 안보이고 마커만 보일때
+          mungpleMarkers.forEach((marker) => {
+            //해당 카테고리의 마커만 지도에 보이게
+            if (selectedCategory === '' || marker.category === selectedCategory) {
+              marker.marker.setMap(map);
+            } else {
+              marker.marker.setMap(null);
+            }
+          });
+        }
+      }
+
+      // mungpleMarkers.forEach((marker) => {
+      //   // console.log(selectedCategory, marker.category, marker.marker.setVisible);
+      //   // console.log('map');
+      //   if (selectedCategory === '' || marker.category === selectedCategory) {
+      //     // console.log('category');
+
+      //     // 요구사항 자체를 바꾼다. -> 클러스터가 켜져있을땐 카테고리를 숨긴다던지
+      //     // addMarker, addMarkers() <- 속도차이가 엄청 날꺼 같음.
+      //     // 마커들을 카테고리별로 리스트로 관리를 해야함 지금은 그렇게 안하고있음
+
+      //     /** 줌 레벨이 7보다 크면 클러스커가 나와있는 상태니까 클러스터만 조작하고 마커는 새로 렌더링 하지 않는다
+      //      *  줌 레벨이 7보다 작으면 클러스터가 안 나와있는 상태니까 마커만 조작하고 클러스터는 조작하지 않는다
+      //      */
+      //     if (map.getLevel() >= 7) {
+      //       console.log('cluster level 7 on');
+      //       cluster?.addMarker(marker.marker);
+      //       // cluster addMarker를 호출하면 cluster 자체가 바뀐다(가설)
+      //       // cluster addMarker를 하면 카테고리를 바꾼다(말이 안됨)
+      //       // 무한 렌더링이 아니엇던 거임
+      //     } else {
+      //       // console.log('들어옴');
+      //       marker.marker.setMap(map);
+      //     }
+      //     // console.log(map.getLevel());
+      //   } else {
+      //     if (map.getLevel() >= 7) {
+      //       console.log('cluster level 7 off');
+      //       cluster?.removeMarker(marker.marker);
+      //     } else {
+      //       marker.marker.setMap(null);
+      //     }
+      //   }
+      // });
     }
   };
+
   const showCertMarkers = (certMarkers: kakao.maps.CustomOverlay[]) => {
     certMarkers.forEach((marker) => marker.setVisible(true));
   };
@@ -263,7 +349,7 @@ function useMap() {
       currentUserLocation.lat,
       currentUserLocation.lng,
     );
-    
+
     const imageSize = new kakao.maps.Size(33, 33);
     const image = new kakao.maps.MarkerImage(UserMarker, imageSize);
     const marker = new kakao.maps.Marker({ position, image });
@@ -305,7 +391,7 @@ function useMap() {
   useEffect(() => {
     if (mapDataList && map && (isFirstRendering.mungple || isFirstRendering.cert)) {
       if (userId > 0 && isCertToggleOn && certDataList) {
-        console.log(certDataList.content);
+        // console.log(certDataList.content);
         // hide other certs markers
         hideMungpleMarkers();
         // 일반 인증 마커 만들기
@@ -324,28 +410,30 @@ function useMap() {
         setMungpleCertMarkers(mungpleCertMarkers);
         setIsFirstRendering((prev) => ({ ...prev, cert: false }));
       } else if (mungpleMarkers.length === 0) {
-        hideCertMarkers(certMarkers);
-        hideCertMarkers(mungpleCertMarkers);
-        // hideMungpleMarkers();
         const clusterer = new kakao.maps.MarkerClusterer({
-          map: map,
+          //클러스터 만들기
           averageCenter: true,
           minLevel: 7,
           styles: [
             {
-              width: '50px',
-              height: '50px',
+              width: '42px',
+              height: '42px',
               background: 'rgba(46,79,255)',
-              borderRadius: '25px',
+              borderRadius: '21px',
               color: '#FFF',
               textAlign: 'center',
               fontWeight: 'semibold',
-              lineHeight: '38px',
+              fontFamily: 'pretendard',
+              lineHeight: '36px',
+              fontSize: '12px',
               backgroundClip: 'padding-box',
-              border: '7px solid rgba(46,79,255,0.4)',
+              border: '6px solid rgba(46,79,255,0.4)',
             },
           ],
         });
+        hideCertMarkers(certMarkers);
+        hideCertMarkers(mungpleCertMarkers);
+        // hideMungpleMarkers();
         const markers: MungpleMarkerType[] = mapDataList.map((mungple) => {
           const position = new kakao.maps.LatLng(
             parseFloat(mungple.latitude),
@@ -356,7 +444,6 @@ function useMap() {
           else image = setMarkerImageSmall(mungple.categoryCode);
 
           const marker = new kakao.maps.Marker({ position, image, zIndex: 10 });
-          clusterer.addMarker(marker);
           marker.setMap(map);
           kakao.maps.event.addListener(marker, 'click', () =>
             markerClickHandler(marker, image, mungple),
@@ -368,7 +455,11 @@ function useMap() {
             isBookmarked: mungple.isBookmarked,
           };
         });
+        clusterer.addMarkers(markers.map((m) => m.marker));
+        setCluster(clusterer);
         setMungpleMarkers(markers);
+        console.log(mungpleMarkers[0]);
+        clusterer.setMap(map);
         setIsFirstRendering((prev) => ({ ...prev, mungple: false }));
       }
     }
