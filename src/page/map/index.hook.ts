@@ -59,7 +59,7 @@ function useMap() {
   const [mungpleCertMarkers, setMungpleCertMarkers] = useState<
     kakao.maps.CustomOverlay[]
   >([]);
-
+  const [cluster, setCluster] = useState<kakao.maps.MarkerClusterer>();
   /** API request */
   const { data: mapDataList } = useQuery(
     ['getMapData', userId],
@@ -174,20 +174,67 @@ function useMap() {
   const hideCertMarkers = (certMarkers: kakao.maps.CustomOverlay[]) => {
     certMarkers.forEach((marker) => marker.setVisible(false));
   };
+
   const showMungpleMarkers = () => {
+    // console.log("????");
     if (selectedCategory === 'BOOKMARK') {
       mungpleMarkers.forEach((marker) => {
         if (marker.isBookmarked) marker.marker.setVisible(true);
         else marker.marker.setVisible(false);
       });
     } else {
-      mungpleMarkers.forEach((marker) => {
-        if (selectedCategory === '' || marker.category === selectedCategory)
-          marker.marker.setVisible(true);
-        else marker.marker.setVisible(false);
-      });
+      if (!map) return;
+      if (map?.getLevel() >= 7) {
+        console.log(selectedCategory);
+        const currentCategoryMarkers =
+          selectedCategory === ''
+            ? mungpleMarkers.map((m) => m.marker)
+            : mungpleMarkers
+                .filter((marker) => marker.category === selectedCategory)
+                .map((m) => m.marker);
+        console.log(currentCategoryMarkers);
+        const elseCurrentCategoryMarkers = mungpleMarkers
+          .filter((marker) => marker.category !== selectedCategory)
+          .map((m) => m.marker);
+        cluster?.addMarkers(currentCategoryMarkers);
+        cluster?.removeMarkers(elseCurrentCategoryMarkers);
+      }
+      // mungpleMarkers.forEach((marker) => {
+      //   // console.log(selectedCategory, marker.category, marker.marker.setVisible);
+      //   // console.log('map');
+      //   if (selectedCategory === '' || marker.category === selectedCategory) {
+      //     // console.log('category');
+
+      //     // 요구사항 자체를 바꾼다. -> 클러스터가 켜져있을땐 카테고리를 숨긴다던지
+      //     // addMarker, addMarkers() <- 속도차이가 엄청 날꺼 같음.
+      //     // 마커들을 카테고리별로 리스트로 관리를 해야함 지금은 그렇게 안하고있음
+
+      //     /** 줌 레벨이 7보다 크면 클러스커가 나와있는 상태니까 클러스터만 조작하고 마커는 새로 렌더링 하지 않는다
+      //      *  줌 레벨이 7보다 작으면 클러스터가 안 나와있는 상태니까 마커만 조작하고 클러스터는 조작하지 않는다
+      //      */
+      //     if (map.getLevel() >= 7) {
+      //       console.log('cluster level 7 on');
+      //       cluster?.addMarker(marker.marker);
+      //       // cluster addMarker를 호출하면 cluster 자체가 바뀐다(가설)
+      //       // cluster addMarker를 하면 카테고리를 바꾼다(말이 안됨)
+      //       // 무한 렌더링이 아니엇던 거임
+      //     } else {
+      //       // console.log('들어옴');
+      //       marker.marker.setMap(map);
+      //     }
+      //     // console.log(map.getLevel());
+      //   } else {
+      //     if (map.getLevel() >= 7) {
+      //       console.log('cluster level 7 off');
+      //       cluster?.removeMarker(marker.marker);
+      //     } else {
+      //       marker.marker.setMap(null);
+      //     }
+      //   }
+      // });
     }
   };
+
   const showCertMarkers = (certMarkers: kakao.maps.CustomOverlay[]) => {
     certMarkers.forEach((marker) => marker.setVisible(true));
   };
@@ -286,7 +333,7 @@ function useMap() {
       currentUserLocation.lat,
       currentUserLocation.lng,
     );
-    
+
     const imageSize = new kakao.maps.Size(33, 33);
     const image = new kakao.maps.MarkerImage(UserMarker, imageSize);
     const marker = new kakao.maps.Marker({ position, image });
@@ -360,7 +407,6 @@ function useMap() {
           else image = setMarkerImageSmall(mungple.categoryCode);
 
           const marker = new kakao.maps.Marker({ position, image, zIndex: 10 });
-          clusterer.addMarker(marker);
           marker.setMap(map);
           kakao.maps.event.addListener(marker, 'click', () =>
             markerClickHandler(marker, image, mungple),
@@ -372,6 +418,8 @@ function useMap() {
             isBookmarked: mungple.isBookmarked,
           };
         });
+        clusterer.addMarkers(markers.map((m) => m.marker));
+        setCluster(clusterer);
         setMungpleMarkers(markers);
         console.log(mungpleMarkers[0]);
         clusterer.setMap(map);
