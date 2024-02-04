@@ -5,7 +5,7 @@ import { userActions } from 'redux/slice/userSlice';
 import axiosInstance from './interceptors';
 
 function login(info: { email: string; password: string }) {
-  const data = axios.post(`https://www.test.delgo.pet/login`, {
+  const data = axios.post(`https://www.test.delgo.pet/api/login`, {
     email: info.email,
     password: info.password,
   });
@@ -37,13 +37,12 @@ async function tokenRefresh() {
     });
 
     const { OS, device } = store.getState().persist.device;
-    if (OS === 'android' && device !== 'pc')
-      window.BRIDGE.flushCookie();
+    if (OS === 'android' && device !== 'pc') window.BRIDGE.flushCookie();
     const accessToken = response.headers.authorization_access;
     axiosInstance.defaults.headers.authorization_access = `Bearer ${accessToken}`;
     return response.headers.authorization_access;
   } catch (e) {
-    console.log("error : ", e);
+    console.log('error : ', e);
     console.log('refresh token stale');
     store.dispatch(userActions.signout());
     store.dispatch(userActions.redirectToLogin());
