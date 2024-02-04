@@ -71,6 +71,27 @@ function useMap() {
   );
 
   const viewCount: number = certDataList ? certDataList.viewCount : 0;
+  const clusterer = new kakao.maps.MarkerClusterer({
+    map: map,
+    averageCenter: true,
+    minLevel: 7,
+    styles: [
+      {
+        width: '42px',
+        height: '42px',
+        background: 'rgba(46,79,255)',
+        borderRadius: '21px',
+        color: '#FFF',
+        textAlign: 'center',
+        fontWeight: 'semibold',
+        fontFamily: 'pretendard',
+        lineHeight: '36px',
+        fontSize: '12px',
+        backgroundClip: 'padding-box',
+        border: '6px solid rgba(46,79,255,0.4)',
+      },
+    ],
+  });
 
   /** Function */
   const clearSelectedMungple = clearSelectedId(setSelectedMungple, selectedMungple);
@@ -141,8 +162,10 @@ function useMap() {
     marker.setZIndex(20);
     setDogFootMarkerLocation(() => ({ lat: 0, lng: 0 }));
   };
+
   // Markers visible handlers
   const hideMungpleMarkers = () => {
+    console.log(mungpleMarkers[0].marker);
     mungpleMarkers.forEach((marker) => marker.marker.setVisible(false));
   };
   const hideCertMarkers = (certMarkers: kakao.maps.CustomOverlay[]) => {
@@ -266,7 +289,7 @@ function useMap() {
   useEffect(() => {
     if (mapDataList && map && (isFirstRendering.mungple || isFirstRendering.cert)) {
       if (userId > 0 && isCertToggleOn && certDataList) {
-        console.log(certDataList.content);
+        // console.log(certDataList.content);
         // hide other certs markers
         hideMungpleMarkers();
         // 일반 인증 마커 만들기
@@ -288,25 +311,6 @@ function useMap() {
         hideCertMarkers(certMarkers);
         hideCertMarkers(mungpleCertMarkers);
         // hideMungpleMarkers();
-        const clusterer = new kakao.maps.MarkerClusterer({
-          map: map,
-          averageCenter: true,
-          minLevel: 7,
-          styles: [
-            {
-              width: '50px',
-              height: '50px',
-              background: 'rgba(46,79,255)',
-              borderRadius: '25px',
-              color: '#FFF',
-              textAlign: 'center',
-              fontWeight: 'semibold',
-              lineHeight: '38px',
-              backgroundClip: 'padding-box',
-              border: '7px solid rgba(46,79,255,0.4)',
-            },
-          ],
-        });
         const markers: MungpleMarkerType[] = mapDataList.map((mungple) => {
           const position = new kakao.maps.LatLng(
             parseFloat(mungple.latitude),
@@ -330,6 +334,8 @@ function useMap() {
           };
         });
         setMungpleMarkers(markers);
+        console.log(mungpleMarkers[0]);
+        clusterer.setMap(map);
         setIsFirstRendering((prev) => ({ ...prev, mungple: false }));
       }
     }

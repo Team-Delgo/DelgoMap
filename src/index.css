@@ -58,3 +58,9 @@ textarea:-moz-placeholder {
   font-weight: 700;
   font-display: swap;
 }
+@font-face {
+  font-family: 'pretendard';
+  src: url('./common/fonts/Pretendard-Medium.woff');
+  font-weight: 500;
+  font-display: swap;
+}

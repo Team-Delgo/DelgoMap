@@ -66,7 +66,6 @@ export function setMarkerImageBig(categoryCode: string) {
 
 export function setMarkerImageSmall(categoryCode: string) {
   const images = MarkerImages();
-  console.log(categoryCode);
 
   if (categoryCode === 'BOOKMARK') return images.smallImages[7];
   if (categoryCode === 'CA0001') return images.smallImages[0];
