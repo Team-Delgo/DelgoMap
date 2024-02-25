@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { CategoryCode } from '../../index.types';
 import { categoryCode } from 'common/types/category';
+import { ROOT_PATH } from 'common/constants/path.const';
 
 function ListView(props: {
   lng: string;
@@ -58,7 +59,9 @@ function ListView(props: {
     setShowDropDown(false);
   };
   const placeClickHandler = (mungpleId: number) => {
-    navigate(`detail/${mungpleId}`);
+    navigate(`detail/${mungpleId}`,{
+      state: { prevPath: ROOT_PATH },
+    });
   };
   const dimmedClickHandler = () => {
     if (showDropDown) setShowDropDown(false);

@@ -11,7 +11,7 @@ import {
 } from '../../common/api/record';
 import PageHeader from '../../components/PageHeader';
 import FullScreenImageSlider from '../detail/components/FullScreenImageSlider';
-import { ROOT_PATH } from '../../common/constants/path.const';
+import { ALARM_PATH, ROOT_PATH } from '../../common/constants/path.const';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import footPrint from '../../common/icons/foot_print_purple.svg';
@@ -58,7 +58,7 @@ function CertDetailPage() {
   });
 
   const navigateBack = () => {
-    navigate(ROOT_PATH);
+    navigate(ALARM_PATH);
   };
 
   if (isDeletedPost) {

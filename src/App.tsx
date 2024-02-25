@@ -18,6 +18,7 @@ import {
   SIGN_IN_PATH,
   SIGN_UP_PATH,
   CROP_LIST_PATH,
+  ALARM_PATH
 } from './common/constants/path.const';
 import UploadCertificationPage from './page/upload/UploadCertificationPage';
 import UploadCertificationResultPage from './page/upload/UploadCertificationResultPage';
@@ -69,6 +70,7 @@ import Account from 'components/Account';
 import RedirectHandler from 'RedirectHandler';
 import OthersMap from 'page/record/OthersMap/OthersMap';
 import { useErrorHandlers } from 'common/api/useErrorHandlers';
+import AlarmPage from './page/alarm/AlarmPage';
 
 function App() {
   const queryClient = new QueryClient();
@@ -121,7 +123,6 @@ function App() {
   }, []);
 
 
-  //기기를 설정해주는부분(pc or mobile) -> 분기처리가 필요한 로직일떄 필요
   useEffect(() => {
     const pcDevice = 'win16|win32|win64|mac|macintel';
     if (navigator.platform) {
@@ -133,7 +134,7 @@ function App() {
     }
   }, []);
 
-  //모바일 운영체제를 설정해주는부분(ios or android) -> 분기처리가 필요한 로직일떄 필요
+
   useEffect(() => {
     const varUA = navigator.userAgent.toLowerCase();
     if (varUA.indexOf('android') > -1) {
@@ -224,6 +225,10 @@ function App() {
               <Route
                 path={NAVER_REDIRECT_HANDLE_PATH}
                 element={<NaverRedirectHandler />}
+              />
+              <Route
+                path={ALARM_PATH}
+                element={<AlarmPage />}
               />
             </Routes>
           </RedirectHandler>

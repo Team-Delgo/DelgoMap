@@ -13,6 +13,7 @@ import HospitalSmall from '../../../common/icons/hospital-map-small.svg';
 import EatSmall from '../../../common/icons/eat-map-small.svg';
 import EtcSmall from '../../../common/icons/etc-small.svg';
 import { CategoryCode } from '../index.types';
+import { ROOT_PATH } from 'common/constants/path.const';
 
 interface Props {
   id: number;
@@ -51,7 +52,9 @@ function PlaceCard({ id, detailUrl, img, title, address, categoryCode, map }: Pr
       }),
     );
     dispatch(mapAction.setDetailUrl(detailUrl));
-    navigate(`detail/${id}`);
+    navigate(`detail/${id}`,{
+      state: { prevPath: ROOT_PATH },
+    });
   };
 
   console.log(icons[categoryCode], 1);
