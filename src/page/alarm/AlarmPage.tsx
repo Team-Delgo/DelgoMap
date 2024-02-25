@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PageHeader from 'components/PageHeader';
 import { DETAIL_MUNGPLE, RECORD_PATH, ROOT_PATH } from 'common/constants/path.const';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { getAlarmList } from 'common/api/alarm';
 import Loading from 'common/utils/BallLoading';
@@ -10,6 +10,8 @@ import AlarmTab from './AlarmTab';
 import AnnouncementList from './AnnouncementList';
 import ActivityList from './ActivityList';
 import { Notification, NotificationTab } from 'common/types/notifiication';
+import { useErrorHandlers } from 'common/api/useErrorHandlers';
+import { AxiosError } from 'axios';
 
 function AlarmPage() {
   const navigate = useNavigate();
@@ -18,6 +20,7 @@ function AlarmPage() {
   const [announcementList, setAnnouncementList] = useState([]);
   const [currentTab, setCurrentTab] = useState<NotificationTab>('activity');
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchAlarmList = async () => {
@@ -34,10 +37,10 @@ function AlarmPage() {
         );
         setActivityList(activityNotis);
         setAnnouncementList(announcementNotis);
-      } catch (err) {
+      } catch (err: AxiosError | any) {
+        useErrorHandlers(dispatch, err);
         console.log(err);
-      }
-      finally{
+      } finally {
         setIsLoading(false);
       }
     };
