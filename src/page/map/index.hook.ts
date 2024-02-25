@@ -6,7 +6,7 @@ import { MungpleMap, getCerts, getMungple } from 'common/api/record';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { mapAction } from 'redux/slice/mapSlice';
-import { MY_ACCOUNT_PATH, SIGN_IN_PATH } from 'common/constants/path.const';
+import { ALARM_PATH, MY_ACCOUNT_PATH, SIGN_IN_PATH } from 'common/constants/path.const';
 import {
   MarkerImages,
   clearSelectedId,
@@ -23,6 +23,7 @@ import {
 } from './index.types';
 import DogFootMarkerSvg from '../../common/icons/cert-map-marker.svg';
 import UserMarker from '../../common/icons/user-gps.svg';
+import { getNewAlarm } from 'common/api/alarm';
 
 function useMap() {
   /** Variable */
@@ -60,6 +61,8 @@ function useMap() {
     kakao.maps.CustomOverlay[]
   >([]);
   const [cluster, setCluster] = useState<kakao.maps.MarkerClusterer>();
+  const [isNewAlarm,setIsNewAlarm] = useState(false)
+  
   /** API request */
   const { data: mapDataList } = useQuery(
     ['getMapData', userId],
@@ -285,6 +288,13 @@ function useMap() {
   };
 
   // Navigate handlers
+  const navigateToMyAlarmPage = () => {
+    if (userId > 0) {
+      setCurrentMapLocation();
+      navigate(ALARM_PATH);
+    } else setIsAlertOpen(true);
+  };
+
   const navigateToMyaccountPage = () => {
     if (userId > 0) {
       setCurrentMapLocation();
@@ -317,6 +327,18 @@ function useMap() {
       option,
     );
   };
+
+    useEffect(() => {
+    const fetchAlarm = async () => {
+      try {
+        const { data } = await getNewAlarm(userId);
+        setIsNewAlarm(data)
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAlarm();
+  }, []);
 
   /** Rendering */
   // 지도 생성
@@ -544,6 +566,8 @@ function useMap() {
       isAlertOpen,
       isSelectedAnything,
       isCertToggleOn,
+      userId,
+      isNewAlarm
     },
     action: {
       openSearchView,
@@ -558,6 +582,7 @@ function useMap() {
       certToggleClickHandler,
       setCurrentMapLocation,
       searchAndMoveToKakaoPlace,
+      navigateToMyAlarmPage
     },
   };
 }

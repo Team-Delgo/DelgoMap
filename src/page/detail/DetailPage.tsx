@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAnalyticsLogEvent } from '@react-query-firebase/analytics';
 import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import BallLoading from '../../common/utils/BallLoading';
 import { analytics } from '../..';
 import DetailHeader from './components/DetailHeader';
@@ -14,7 +14,7 @@ import DetailReview from './components/review/DetailReview';
 import BackArrowComponent from '../../components/BackArrowComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { SIGN_IN_PATH, UPLOAD_PATH } from 'common/constants/path.const';
+import { ALARM_PATH, ROOT_PATH, SIGN_IN_PATH, UPLOAD_PATH } from 'common/constants/path.const';
 import { uploadAction } from 'redux/slice/uploadSlice';
 import AlertConfirm from 'common/dialog/AlertConfirm';
 
@@ -31,9 +31,9 @@ function DetailPage() {
   const [isFullScreenSliderOpen, setIsFullScreenSliderOpen] = useState(false);
   const splitUrl = window.location.href.split('/');
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const detailPageId = parseInt(splitUrl[splitUrl.length - 1], 10);
-  ('');
   const { data, isLoading } = useQuery(['getDetailPageData', detailPageId], () =>
     getDetailPageData(detailPageId, userId),
   );
@@ -59,7 +59,14 @@ function DetailPage() {
   //   });
   // };
 
-  const navigateToHome = () => navigate('/');
+  const navigateToPrev = () => {
+    if(location?.state?.prevPath ===ROOT_PATH){
+      navigate(ROOT_PATH);
+    }
+    else{
+      navigate(ALARM_PATH);
+    }
+  };
   useEffect(() => {
     mutation.mutate({
       params: {
@@ -147,7 +154,7 @@ function DetailPage() {
           noButtonHandler={() => setIsAlertOpen(false)}
         />
       )}
-      <BackArrowComponent onClickHandler={navigateToHome} white />
+      <BackArrowComponent onClickHandler={navigateToPrev} white />
       <DetailImageSlider
         openFullSlider={placeFullScreenHandler}
         images={data.photoUrls}

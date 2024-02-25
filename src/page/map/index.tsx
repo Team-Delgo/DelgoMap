@@ -10,6 +10,8 @@ import TempMarkerImageLoader from './components/MarkerSet';
 import SearchBar from './components/Search';
 import Search from '../../common/icons/search.svg';
 import Human from '../../common/icons/human.svg';
+import Alarm from '../../common/icons/alarm.svg';
+import AlarmActive from '../../common/icons/alarm-active.svg';
 import AlertConfirm from '../../common/dialog/AlertConfirm';
 import LinkCopy from './components/CertToastMessage';
 import CertToggle from './components/CertToggle';
@@ -19,12 +21,10 @@ import UserLocation from './components/UserLocation';
 import CountBox from './components/CountBox';
 import ListBox from './components/ListView/ListBox';
 import useMap from './index.hook';
-import { ROOT_PATH } from 'common/constants/path.const';
-import { map } from 'lodash';
+
 
 function Map() {
   const [copyLoading, setCopyLoading] = useState(false);
-
   const {
     state: {
       map: globarMap,
@@ -38,6 +38,8 @@ function Map() {
       isAlertOpen,
       isSelectedAnything,
       isCertToggleOn,
+      userId,
+      isNewAlarm
     },
     action: {
       openSearchView,
@@ -52,6 +54,7 @@ function Map() {
       setCurrentUserLocation,
       setCurrentMapLocation,
       searchAndMoveToKakaoPlace,
+      navigateToMyAlarmPage
     },
   } = useMap();
   const moveKakaoMapCurrentLocation = (lat: number, lng: number) => {
@@ -77,6 +80,15 @@ function Map() {
         alt="search"
         aria-hidden="true"
         onClick={openSearchView}
+      />
+      <img
+        className={
+          userId === 0 ? 'map-alarm' : isNewAlarm ? 'map-alarm-active' : 'map-alarm'
+        }
+        src={userId === 0 ? Alarm : isNewAlarm ? AlarmActive : Alarm}
+        alt="myalarm"
+        aria-hidden="true"
+        onClick={navigateToMyAlarmPage}
       />
       <img
         className="map-mypage"
