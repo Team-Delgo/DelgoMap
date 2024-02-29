@@ -33,7 +33,7 @@ function AlarmPage() {
         );
         const announcementNotis = data.filter(
           ({ notificationType }: Notification) =>
-            notificationType === 'MungpleByMe' || notificationType === 'MungpleByOther',
+            notificationType === 'Mungple' || notificationType === 'MungpleByOther',
         );
         setActivityList(activityNotis);
         setAnnouncementList(announcementNotis);
