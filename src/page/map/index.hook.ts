@@ -61,8 +61,8 @@ function useMap() {
     kakao.maps.CustomOverlay[]
   >([]);
   const [cluster, setCluster] = useState<kakao.maps.MarkerClusterer>();
-  const [isNewAlarm,setIsNewAlarm] = useState(false)
-  
+  const [isNewAlarm, setIsNewAlarm] = useState(false);
+
   /** API request */
   const { data: mapDataList } = useQuery(
     ['getMapData', userId],
@@ -154,7 +154,8 @@ function useMap() {
     cluster?.clear();
   };
   const hideCertMarkers = (certMarkers: kakao.maps.CustomOverlay[]) => {
-    certMarkers.forEach((marker) => marker.setVisible(false));
+    certMarkers.forEach((marker) => marker.setMap(null));
+    cluster?.clear();
   };
 
   const showMungpleMarkers = () => {
@@ -184,7 +185,7 @@ function useMap() {
       console.log(selectedCategory);
       if (selectedCategory === '') {
         //카테고리 선택 안했을때
-        console.log('클러스터');
+        // console.log('클러스터');
         const currentCategoryMarkers = mungpleMarkers.map((m) => m.marker); //모든 마커 클러스터에 추가
         cluster?.addMarkers(currentCategoryMarkers);
         if (map?.getLevel() < 7) {
@@ -255,7 +256,14 @@ function useMap() {
   };
 
   const showCertMarkers = (certMarkers: kakao.maps.CustomOverlay[]) => {
-    certMarkers.forEach((marker) => marker.setVisible(true));
+    if (!map) return;
+    if (map?.getLevel() >= 7) {
+      cluster?.addMarkers(certMarkers);
+    } else {
+      certMarkers.forEach((marker) => {
+        marker.setMap(map);
+      });
+    }
   };
 
   // Search handlers
@@ -328,11 +336,11 @@ function useMap() {
     );
   };
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchAlarm = async () => {
       try {
         const { data } = await getNewAlarm(userId);
-        setIsNewAlarm(data)
+        setIsNewAlarm(data);
       } catch (err) {
         console.log(err);
       }
@@ -412,6 +420,27 @@ function useMap() {
   // 멍플, 인증 마커 렌더링
   useEffect(() => {
     if (mapDataList && map && (isFirstRendering.mungple || isFirstRendering.cert)) {
+      const clusterer = new kakao.maps.MarkerClusterer({
+        //클러스터 만들기
+        averageCenter: true,
+        minLevel: 7,
+        styles: [
+          {
+            width: '42px',
+            height: '42px',
+            background: 'rgba(46,79,255)',
+            borderRadius: '21px',
+            color: '#FFF',
+            textAlign: 'center',
+            fontWeight: 'semibold',
+            fontFamily: 'pretendard',
+            lineHeight: '36px',
+            fontSize: '12px',
+            backgroundClip: 'padding-box',
+            border: '6px solid rgba(46,79,255,0.4)',
+          },
+        ],
+      });
       if (userId > 0 && isCertToggleOn && certDataList) {
         // console.log(certDataList.content);
         // hide other certs markers
@@ -428,31 +457,13 @@ function useMap() {
         //   map,
         //   setSelectedCert,
         // );
+        clusterer.addMarkers(certMarkers.map((m) => m));
+        setCluster(clusterer);
+        clusterer.setMap(map);
         setCertMarkers(certMarkers);
         setMungpleCertMarkers(mungpleCertMarkers);
         setIsFirstRendering((prev) => ({ ...prev, cert: false }));
       } else if (mungpleMarkers.length === 0) {
-        const clusterer = new kakao.maps.MarkerClusterer({
-          //클러스터 만들기
-          averageCenter: true,
-          minLevel: 7,
-          styles: [
-            {
-              width: '42px',
-              height: '42px',
-              background: 'rgba(46,79,255)',
-              borderRadius: '21px',
-              color: '#FFF',
-              textAlign: 'center',
-              fontWeight: 'semibold',
-              fontFamily: 'pretendard',
-              lineHeight: '36px',
-              fontSize: '12px',
-              backgroundClip: 'padding-box',
-              border: '6px solid rgba(46,79,255,0.4)',
-            },
-          ],
-        });
         hideCertMarkers(certMarkers);
         hideCertMarkers(mungpleCertMarkers);
         // hideMungpleMarkers();
@@ -567,7 +578,7 @@ function useMap() {
       isSelectedAnything,
       isCertToggleOn,
       userId,
-      isNewAlarm
+      isNewAlarm,
     },
     action: {
       openSearchView,
@@ -582,7 +593,7 @@ function useMap() {
       certToggleClickHandler,
       setCurrentMapLocation,
       searchAndMoveToKakaoPlace,
-      navigateToMyAlarmPage
+      navigateToMyAlarmPage,
     },
   };
 }
